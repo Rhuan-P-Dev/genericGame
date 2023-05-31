@@ -7,16 +7,17 @@ const verde = {
     "color":"green",
     "x":10,
     "y":10,
-    "width":20,
+    "width":10,
     "height":10,
-    "bombs":1
+    "bombs":1,
+    "tiros":1,
 }
 
 const AI = {
     "color":"red",
     "x":200,
     "y":100,
-    "width":20,
+    "width":10,
     "height":10,
     "exe":(gameObjects) => {
 
@@ -62,8 +63,6 @@ const gameObjects = {
 
 function bombExe(gameObjects,life){
 
-    console.log(life)
-
     if(life < 1){
         delete gameObjects.initBomb
         gameObjects.verde.bombs +=1
@@ -94,8 +93,57 @@ function bombExe(gameObjects,life){
 
 }
 
+function tiro(gameObjects,alvo,life){
+
+    if(life < 1){
+        delete gameObjects.tiro
+        gameObjects.verde.tiros += 1
+        return
+    }
+
+    setTimeout(function(){
+
+        if(gameObjects.tiro.y < alvo.y){
+            gameObjects.tiro.y += 1
+        }else{
+            gameObjects.tiro.y -= 1
+        }
+
+        if(gameObjects.tiro.x < alvo.x){
+            gameObjects.tiro.x += 1
+        }else{
+            gameObjects.tiro.x -= 1
+        }
+
+        tiro(gameObjects, alvo, life-5)
+
+
+    },10)
+
+}
 
 html.addEventListener("keydown", (e)=>{
+
+
+    if(e["key"] == " "){
+        if(gameObjects.verde.tiros > 0){
+
+            gameObjects.tiro = {
+                "color":"green",
+                "width":5,
+                "height":5,
+                "x":gameObjects.verde.x,
+                "y":gameObjects.verde.y,
+            }
+
+            gameObjects.verde.tiros -= 1
+
+            tiro(gameObjects,{"x":gameObjects.AI.x,"y":gameObjects.AI.y,},1000)
+
+        }
+
+    }
+
     if(e["key"] == "ArrowUp"){
         verde.y -= 10
     }
@@ -116,7 +164,7 @@ html.addEventListener("keydown", (e)=>{
         if(gameObjects.verde.bombs > 0){
             gameObjects.initBomb = {
                 "color":"blue",
-                "width":10,
+                "width":5,
                 "height":5,
                 "x":gameObjects.verde.x,
                 "y":gameObjects.verde.y,
@@ -135,7 +183,7 @@ html.addEventListener("keydown", (e)=>{
 
 
 function gameLoopInit(){
-    setInterval(gameRender, 10)
+    setInterval(gameRender, 1)
     setInterval( () => {
         if(gameObjects.AI && gameObjects.verde){
             AI.exe(gameObjects)
@@ -169,6 +217,14 @@ function destroy(){
             delete gameObjects.AI
             delete gameObjects.initBomb
             gameObjects.verde.bombs +=1
+        }
+    }
+
+    if(gameObjects.tiro && gameObjects.AI){
+        if(gameObjects.tiro.x == gameObjects.AI.x && gameObjects.tiro.y == gameObjects.AI.y){
+            delete gameObjects.AI
+            delete gameObjects.tiro
+            gameObjects.verde.tiros +=1
         }
     }
 
