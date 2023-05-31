@@ -21,8 +21,8 @@ img{
 
 canvas{
     display: block;
-    width: 500px;
-    height: 500px;
+    width: 700px;
+    height: 700px;
     border: 5px solid black;
     margin: auto;
     image-rendering: pixelated;
