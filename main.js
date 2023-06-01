@@ -14,6 +14,8 @@ const verde = {
     "frente":1,
     "rota":0,
     "tiros":1,
+    "life":-1,
+    "exe":() => {}
 }
 
 var fMultP = 0.5
@@ -98,10 +100,15 @@ html.addEventListener("keydown", (e)=>{
                 "y":verde.y+(verde.height/2)-5,
                 "width":10,
                 "height": 10,
-                "xAcc":-verde.rota*2,
-                "yAcc":-verde.frente*2,
+                "xAcc":((-verde.rota * 2) - -verde.xAcc)*1.5,
+                "yAcc":((-verde.frente * 2) - -verde.yAcc)*1.5,
                 "frente":0,
                 "rota":0,
+                "life":150,
+                "exe":() => {
+                    verde.tiros += 1
+                    delete gameObjects.tiro
+                }
             }
 
             gameObjects.verde.tiros -= 1
@@ -123,8 +130,14 @@ function simu(){
 
     for (y in gameObjects) {
         let x = gameObjects[y]
+        if(x.life < 0){
+            x.exe()
+        }
         x.x += x.xAcc
         x.y += x.yAcc
+        if(x.life != -1){
+            x.life -= 1
+        }
     }
 
 }
