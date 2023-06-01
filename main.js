@@ -14,8 +14,10 @@ const verde = {
     "frente":1,
     "rota":0,
     "tiros":1,
+    "missi":1,
     "life":-1,
-    "exe":() => {}
+    "exe":() => {},
+    "ser":() => {},
 }
 
 var fMultP = 0.5
@@ -32,6 +34,67 @@ var rProx = rMultN
 const gameObjects = {
     "verde":verde,
 }
+
+canvas.addEventListener("click", (e)=>{
+
+    if(gameObjects.verde.missi > 0){
+        gameObjects.aaa = {
+            "color":"blue",
+            "x":verde.x+(verde.width/2)-10,
+            "y":verde.y+(verde.height/2)-10,
+            "width":20,
+            "height": 20,
+            "xAcc":0,
+            "yAcc":0,
+            "frente":0,
+            "rota":0,
+            "life":2500,
+            "exe":() => {
+                verde.missi += 1
+                delete gameObjects.aaa
+            },
+            "target":{"x":e.offsetX,"y":e.offsetY},
+            "ser":(eu, alvo) => {
+
+                if(gameObjects.aaa.yAcc < -2){
+                    gameObjects.aaa.yAcc = -2
+                }
+        
+                if(gameObjects.aaa.yAcc > 2){
+                    gameObjects.aaa.yAcc = 2
+                }
+        
+                if(gameObjects.aaa.xAcc < -2){
+                    gameObjects.aaa.xAcc = -2
+                }
+        
+                if(gameObjects.aaa.xAcc > 2){
+                    gameObjects.aaa.xAcc = 2
+                }
+
+                if(eu.y < alvo.y){
+                    gameObjects.aaa.yAcc += 0.01
+                }else{
+                    gameObjects.aaa.yAcc -= 0.01
+                }
+        
+                if(eu.x < alvo.x){
+                    gameObjects.aaa.xAcc += 0.01
+                }else{
+                    gameObjects.aaa.xAcc -= 0.01
+                }
+
+
+            },
+        }
+
+        gameObjects.aaa.ser({"x":gameObjects.aaa.x,"y":gameObjects.aaa.y} , gameObjects.aaa.target)
+
+        gameObjects.verde.missi -= 1
+        
+    }
+
+})
 
 html.addEventListener("keydown", (e)=>{
 
@@ -108,7 +171,8 @@ html.addEventListener("keydown", (e)=>{
                 "exe":() => {
                     verde.tiros += 1
                     delete gameObjects.tiro
-                }
+                },
+                "ser":() => {},
             }
 
             gameObjects.verde.tiros -= 1
@@ -138,6 +202,10 @@ function simu(){
         if(x.life != -1){
             x.life -= 1
         }
+        if(gameObjects.aaa){
+            gameObjects.aaa.ser({"x":gameObjects.aaa.x,"y":gameObjects.aaa.y} , gameObjects.aaa.target)
+        }
+        
     }
 
 }
