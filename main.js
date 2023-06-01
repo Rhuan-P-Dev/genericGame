@@ -6,13 +6,14 @@ const ctx = canvas.getContext("2d",{ alpha: true })
 const verde = {
     "color":"green",
     "x":50,
-    "y":0,
+    "y":50,
     "width":20,
     "height": 20,
     "xAcc":0,
     "yAcc":0,
     "frente":1,
     "rota":0,
+    "tiros":1,
 }
 
 var fMultP = 0.5
@@ -89,6 +90,25 @@ html.addEventListener("keydown", (e)=>{
 
     }
 
+    if(e["key"] == " "){
+        if(gameObjects.verde.tiros > 0){
+            gameObjects.tiro = {
+                "color":"black",
+                "x":verde.x+(verde.width/2)-5,
+                "y":verde.y+(verde.height/2)-5,
+                "width":10,
+                "height": 10,
+                "xAcc":-verde.rota*2,
+                "yAcc":-verde.frente*2,
+                "frente":0,
+                "rota":0,
+            }
+
+            gameObjects.verde.tiros -= 1
+        }
+
+    }
+
 
 })
 
@@ -100,8 +120,13 @@ function gameLoopInit(){
 }
 
 function simu(){
-    verde.x += verde.xAcc
-    verde.y += verde.yAcc
+
+    for (y in gameObjects) {
+        let x = gameObjects[y]
+        x.x += x.xAcc
+        x.y += x.yAcc
+    }
+
 }
 
 function gameRender(){
