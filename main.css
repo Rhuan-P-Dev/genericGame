@@ -14,18 +14,15 @@ textarea,input{
     outline: 0;
 }
 
-img{
-    width: 100%;
-    height: 100%;
-}
 
 canvas{
     display: block;
-    border: 5px solid black;
+    border: 5px solid white;
     margin: auto;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     image-rendering: -moz-crisp-edges;
+    background-color: gray;
 }
 
 /* CLASSES PREDEFINIDAS */
