@@ -29,11 +29,9 @@ export class AIController {
 
         for(let objectName in allAI){
             let object = allAI[objectName]
-            if(object.AI){
                 AItypes[object.AI.type](object)
             }
         }
-    }
 
 }
 
