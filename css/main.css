@@ -1,19 +1,9 @@
-/* PREDEFINIDO
+/* new default */
 
-
-
-
-*/
-
-a{
-    text-decoration: none;
-}
-
-textarea,input{
+textarea,input,select{
     box-shadow: 0 0 0 0;
     outline: 0;
 }
-
 
 canvas{
     display: block;
@@ -25,11 +15,9 @@ canvas{
     background-color: gray;
 }
 
-/* CLASSES PREDEFINIDAS */
+/* class predefined */
 
-
-
-/* CÓDIGO */
+/* CSS */
 
 *{
     margin: 0px;
@@ -39,19 +27,9 @@ canvas{
 
 html,body{
     height: 100%;
-    background-color: rgb(54, 54, 54);
+    background-color: rgb(59, 59, 59);
 }
 
-
-
-/* INTERATIVO */
-
-
+/* INTERACTIVE */
 
 /* MEDIA */
-
-@media screen and (max-width: 000px){
-
-    
-
-}
