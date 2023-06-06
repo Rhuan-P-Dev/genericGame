@@ -3,7 +3,7 @@ function onInit(func) {
 }
 
 function randomInteger(min = 0, max = 1){
-    return parseFloat( (Math.random() * max) + min )
+    return parseInt( (Math.random() * (max + 1) ) + min )
 }
 
 function randomUniqueID() {
