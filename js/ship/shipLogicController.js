@@ -1,10 +1,13 @@
 import { GameStateController } from "../gameState/gameStateController.js"
+import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
 
 var GameState = ""
+var ObjectCreator = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
+    ObjectCreator = new ObjectCreatorController()
 
 })
 
@@ -150,6 +153,13 @@ export class ShipLogicController{
 
     }
 
+    useAbilityOne(object){
+        ObjectCreator.createMissile(object)
+    }
+
+    useAbilityTwo(object){
+        ObjectCreator.createPipi(object)
+    }
 
 }
 

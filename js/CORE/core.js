@@ -3,6 +3,11 @@ import { AIController } from "../AI/AIController.js"
 
 var AI = ""
 
+/* OBJECT CONTROLLER */
+import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
+
+var ObjectCreator = ""
+
 /* SHIP */
 import { ShipCreatorController } from "../ship/shipCreatorController.js"
 
@@ -34,8 +39,11 @@ onInit(function(){
 
     AI = new AIController()
 
-    /* SHIP */
+    /* OBJECT CONTROLLER */
 
+    ObjectCreator = new ObjectCreatorController()
+
+    /* SHIP */
     ShipCreator = new ShipCreatorController()
 
     /* KEYBOARD */
@@ -61,11 +69,19 @@ onInit(function(){
 
 function browseInit(){
 
-    ShipCreator.createShip(true)
-    ShipCreator.createShip()
-    ShipCreator.createShip()
+    ShipCreator.createShip("playerTeam", false, true)
+    ShipCreator.createShip("enemyTeam")
+    ShipCreator.createShip("enemyTeam", {
+        "type":"mine"
+    })
 
     KeyBoard.addTriggers()
+
+    setInterval(() => {
+        ShipCreator.createShip("enemyTeam", {
+            "type":"missile"
+        })
+    }, 500)
 
 }
 

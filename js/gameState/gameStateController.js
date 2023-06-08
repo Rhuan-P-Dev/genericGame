@@ -9,11 +9,18 @@ GAME.rules = {}
 
 GAME.AI = {}
 
+GAME.team = {}
+
+GAME.team.playerTeam = {}
+GAME.team.enemyTeam = {}
+
 export class GameStateController {
 
     addObject(object, AI = false, render = true, physics = true, rules = true){
 
         GAME.allInOne[object.ID] = object
+
+        GAME.team[object.team][object.ID] = object
 
         if(AI){
             GAME.AI[object.ID] = object
@@ -33,12 +40,11 @@ export class GameStateController {
 
     }
 
-    removeObject(ID){
-        delete GAME.allInOne[ID]
-        delete GAME.render[ID]
-        delete GAME.physics[ID]
-        delete GAME.rules[ID]
-        delete GAME.AI[ID]
+    removeObject(object){
+        for(let area in GAME){
+            delete GAME[area][object.ID]
+        }
+        delete GAME.team[object.team][object.ID]
     }
 
     getObject(ID){
@@ -59,6 +65,10 @@ export class GameStateController {
 
     getAllObjectsRender(){
         return GAME.render
+    }
+
+    getAllObjectsTeam(){
+        return GAME.team
     }
 
 }

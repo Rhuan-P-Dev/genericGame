@@ -9,9 +9,11 @@ onInit(function(){
     ShipLogic = new ShipLogicController()
 
     keyBoardFunctions = {
-        "ArrowUp":ShipLogic.advanceShip,
-        "ArrowLeft":ShipLogic.rotateToLeft,
-        "ArrowRight":ShipLogic.rotateToRight,
+        "ArrowUp": ShipLogic.advanceShip,
+        "ArrowLeft": ShipLogic.rotateToLeft,
+        "ArrowRight": ShipLogic.rotateToRight,
+        "a": ShipLogic.useAbilityOne,
+        "s": ShipLogic.useAbilityTwo,
     }
 
 })
