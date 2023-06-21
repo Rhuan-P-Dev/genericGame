@@ -1,24 +1,37 @@
-import { ShipLogicController } from "../ship/shipLogicController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { AIUtilsController } from "./utils/AIUtils.js"
+import { SpecialController } from "../shipUnits/special/specialController.js"
+import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
+import { DamageController } from "../damage/damageController.js"
 
-var ShipLogic = ""
 var GameState = ""
 var AIUtils = ""
+var Special = ""
+var Weapons = ""
+var Damage = ""
 
 onInit(function(){
 
-    ShipLogic = new ShipLogicController()
     GameState = new GameStateController()
     AIUtils = new AIUtilsController()
+    Special = new SpecialController()
+    Weapons = new WeaponsController()
+    Damage = new DamageController()
 
 })
 
 export class TypeOfAI {
 
     AItypes = {
-        "missile":missile,
-        "mine":mine,
+        "missile": missile,
+        "mine": mine,
+        "replicator": replicator,
+        "bot": bot,
+        "movable": movable,
+        "dummy": dummy,
+        "missile_v2": missile_v2,
+        "turret": turret,
+        "robo": robo,
     }
 
     getAllTypeOfAI(){
@@ -27,18 +40,33 @@ export class TypeOfAI {
 
 }
 
-function missileOLD(object){
+function mine(object){
 
-    // don't work. :(
+    let target = AIUtils.getClosestObjectOfTeams(object)
 
-    let target = object.AI.target
+    let distance = AIUtils.getDistanceOfObjects(object, target)
+
+    if(distance < object.width*4){
+        Damage.damage(object, target)
+        GameState.removeObject(object)
+    }
+
+}
+
+function missile(object){
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    object.advanceShip()
+
+    if(!target){return}
 
     let tar_ob_difer_x = object.x - target.x
-    let tar_ob_difer_y = object.y - target.y
+    let tar_ob_difer_y = object.y - target.y 
 
-    let XY = parsePositive(tar_ob_difer_x) + parsePositive(tar_ob_difer_y)
+    let distancia = AIUtils.getDistanceOfObjects(object, target)
 
-    ShipLogic.fixRotateRight(object)
+    object.fixRotateRight()
 
     let tempXMult = object.xMult
     let tempYMult = object.yMult
@@ -48,10 +76,10 @@ function missileOLD(object){
 
     let direita_x = (tar_ob_difer_x * tempXMult)
     let direita_y = (tar_ob_difer_y * tempYMult)
-
+    
     let direita_xy = direita_x + direita_y
 
-    ShipLogic.fixRotateRightLeft(object)
+    object.fixRotateLeft()
 
     tempXMult = object.xMult
     tempYMult = object.yMult
@@ -64,135 +92,277 @@ function missileOLD(object){
 
     let esquerda_xy = esquerda_x + esquerda_y
 
-    //console.log(direita_x)
-    //console.log(esquerda_x)
-
-    if(direita_xy < 0){
-        //direita_xy = direita_xy - (direita_xy*2)
-    }
-
-    if(esquerda_xy < 0){
-
-        //esquerda_xy = esquerda_xy - (direita_xy*2)
-    }
-
-
-    //console.log(direita_xy)
-    //console.log(esquerda_xy)
-
-
-    if(
-        esquerda_xy > direita_xy 
-    )
-    
-    {
-        //console.log("IR PARA DIREITA")
-        ShipLogic.rotateToRight(object)
+    if(esquerda_xy > direita_xy){
+        object.rotateToRight()
     }else{
-        //console.log("IR PARA ESQUERDA")
-        ShipLogic.rotateToLeft(object)
+        object.rotateToLeft()
     }
 
-    ShipLogic.advanceShip(object)
-
-    if(XY < 20){
-        //qunado o alvo morre, o object continua perseguindo o vestigio do objecto
-        GameState.removeObject(target.ID)
-        GameState.removeObject(object.ID)
+    if(distancia < object.width*2){
+        Damage.damage(object, target)
+        GameState.removeObject(object)
     }
 
 }
 
-function mine(object){
+function replicator(object){ //delet
 
-    let allObjects = GameState.getAllObjectsRender()
+    object.AI.remove("replicator")
 
-    for(let objectName in allObjects){
-        let target = allObjects[objectName]
-        if(target.ID == object.ID || target.team == object.team){continue}
+    Special.makeWeakClone(object)
 
-        let tar_ob_difer_x = object.x - target.x
-        let tar_ob_difer_y = object.y - target.y
+    setTimeout( () => {
+        object.AI.add("replicator")
+    }, 20000)
 
-        let XY = parsePositive(tar_ob_difer_x) + parsePositive(tar_ob_difer_y)
+}
 
-        if(XY < object.width*2){
-            GameState.removeObject(target)
-            GameState.removeObject(object)
+function bot(object){
+
+    //object.AI.remove("bot")
+
+    //Weapons.useWeapon(object, "batchMissile")
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    if(!target){return}
+
+    let weapon_shoot = Weapons.getWeaponInfo("shoot")
+
+    //console.log(weapon_shoot)
+
+    let distance = AIUtils.getDistanceOfObjects(object, target)
+
+    if(weapon_shoot.range > distance){
+        Weapons.useWeapon(object, "shoot")
+    }
+
+    setTimeout( () => {
+      //  object.AI.add("bot")
+    }, 6500)
+
+}
+
+function movable(object){
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    object.advanceShip()
+
+    if(!target){return}
+
+    let tar_ob_difer_x = object.x - target.x
+    let tar_ob_difer_y = object.y - target.y 
+
+    let XY = AIUtils.getDistanceOfObjects(object, target)
+
+    object.fixRotateRight()
+
+    let tempXMult = object.xMult
+    let tempYMult = object.yMult
+
+    tempXMult -= object.xStepMult
+    tempYMult -= object.yStepMult
+
+    let direita_x = (tar_ob_difer_x * tempXMult)
+    let direita_y = (tar_ob_difer_y * tempYMult)
+    
+    let direita_xy = direita_x + direita_y
+
+    object.fixRotateLeft()
+
+    tempXMult = object.xMult
+    tempYMult = object.yMult
+
+    tempXMult += object.xStepMult
+    tempYMult += object.yStepMult
+
+    let esquerda_x = (tar_ob_difer_x * tempXMult)
+    let esquerda_y = (tar_ob_difer_y * tempYMult)
+
+    let esquerda_xy = esquerda_x + esquerda_y
+
+    if(XY > 150){
+        if(esquerda_xy > direita_xy){
+            object.rotateToRight()
+        }else{
+            object.rotateToLeft()
         }
-
-    }
-
-}
-
-function missile(object){ // tauvez usar o xMult e yMult para determinar qual lado seguir, ou se o valor for menor que X a pnas AVANÇE
-
-    let allObjectsRender = GameState.getAllObjectsRender()
-    let allObjectsTeam = GameState.getAllObjectsTeam()
-
-    for(let objectNameTeam in allObjectsTeam){
-
-        let targetTeam = allObjectsTeam[objectNameTeam]
-
-        for(let objectName in targetTeam){
-
-            let target = targetTeam[objectName]
-
-            if(target.team != object.team && allObjectsRender[target.ID]){
-
-                target = AIUtils.getClosestObject(targetTeam, object)
-
-                let tar_ob_difer_x = object.x - target.x
-                let tar_ob_difer_y = object.y - target.y
-
-                let XY = parsePositive(tar_ob_difer_x) + parsePositive(tar_ob_difer_y)
-
-                ShipLogic.fixRotateRight(object)
-            
-                let tempXMult = object.xMult
-                let tempYMult = object.yMult
-            
-                tempXMult -= object.xStepMult
-                tempYMult -= object.yStepMult
-            
-                let direita_x = (tar_ob_difer_x * tempXMult)
-                let direita_y = (tar_ob_difer_y * tempYMult)
-            
-                let direita_xy = direita_x + direita_y
-            
-                ShipLogic.fixRotateRightLeft(object)
-            
-                tempXMult = object.xMult
-                tempYMult = object.yMult
-            
-                tempXMult += object.xStepMult
-                tempYMult += object.yStepMult
-            
-                let esquerda_x = (tar_ob_difer_x * tempXMult)
-                let esquerda_y = (tar_ob_difer_y * tempYMult)
-            
-                let esquerda_xy = esquerda_x + esquerda_y
-            
-                if(
-                    esquerda_xy > direita_xy
-                ){
-                    ShipLogic.rotateToRight(object)
-                }else{
-                    ShipLogic.rotateToLeft(object)
-                }
-            
-                ShipLogic.advanceShip(object)
-            
-                if(XY < 20){
-                    GameState.removeObject(target)
-                    GameState.removeObject(object)
-                }
-            
+    }else{
+        if(esquerda_xy < direita_xy){
+            object.rotateToRight()
+        }else{
+            object.rotateToLeft()
         }
+    }
+}
 
+function dummy(object){
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    let distance = AIUtils.getDistanceOfObjects(object, target)
+
+    if(distance < 200){
+        object.rotateToLeft()
     }
 
 }
 
+function missile_v2(object){
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    object.advanceShip()
+
+    if(!target){return}
+
+    let distancia = AIUtils.getDistanceOfObjects(object, target)
+
+    let cateto_opost = target.y - object.y
+    let cateto_adj = target.x - object.x
+
+    object.xMult = cateto_adj / distancia
+    object.yMult = cateto_opost / distancia
+
+    if(distancia < object.width*2){
+        Damage.damage(object, target)
+        GameState.removeObject(object)
+    }
 
 }
+
+function turret(object){
+
+    object.AI.remove("turret")
+
+    setTimeout( () => {
+      object.AI.add("turret")
+    }, 1000)
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    if(!target){return}
+
+    let distancia = AIUtils.getDistanceOfObjects(object, target)
+
+    let cateto_opost = target.y - object.y
+    let cateto_adj = target.x - object.x
+
+    object.xMult = cateto_adj / distancia
+    object.yMult = cateto_opost / distancia
+
+    Weapons.useWeapon(object, "sniper")
+
+    Weapons.useWeapon(object, "shoot")
+
+    setTimeout( () => {
+        Weapons.useWeapon(object, "shoot")
+    }, 25)
+
+    setTimeout( () => {
+        Weapons.useWeapon(object, "shoot")
+    }, 50)
+
+    setTimeout( () => {
+        Weapons.useWeapon(object, "shoot")
+    }, 75)
+
+}
+
+function robo(object){
+
+    object.AI.remove("robo")
+
+    setTimeout( () => {
+      object.AI.add("robo")
+    }, 100)
+
+    let target = AIUtils.getClosestObjectOfTeams(object)
+
+    if(!target){return}
+
+    let distancia = AIUtils.getDistanceOfObjects(object, target)
+
+    let cateto_opost = target.y - object.y
+    let cateto_adj = target.x - object.x
+
+    object.xMult = cateto_adj / distancia
+    object.yMult = cateto_opost / distancia
+
+    Weapons.sniper(object)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+function toRadians(graus){
+    return ( Math.PI * graus ) / 180
+}
+
+function toGraus(rad){
+    return 180 / ( Math.PI / rad )
+}
+
+function raiz(value){
+    return Math.sqrt(value)
+}
+
+
+const PI = Math.PI
+
+let cateto_oposto = 1
+let cateto_adj = 1
+let hip = raiz(cateto_adj**2 + cateto_oposto**2)
+
+let seno = cateto_oposto / hip
+let coseno = cateto_adj / hip
+let tangent = cateto_oposto / cateto_adj
+
+console.log(seno)
+console.log(coseno)
+console.log(tangent)
+
+*/

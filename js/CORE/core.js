@@ -28,6 +28,11 @@ import { PhysicsController } from "../physics/physicsController.js"
 
 var Physics = ""
 
+/* HUD */
+import { HUDController } from "../graphics/HUDController.js"
+
+var HUD = ""
+
 /* GRAPHICS */
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
 
@@ -58,6 +63,10 @@ onInit(function(){
 
     Physics = new PhysicsController()
 
+    /* HUD */
+
+    HUD = new HUDController()
+
     /* GRAPHICS */
 
     ScreenRender = new ScreenRenderController()
@@ -70,26 +79,36 @@ onInit(function(){
 function browseInit(){
 
     ShipCreator.createShip("playerTeam", false, true)
-    ShipCreator.createShip("enemyTeam")
-    ShipCreator.createShip("enemyTeam", {
-        "type":"mine"
-    })
-
-    KeyBoard.addTriggers()
+    //ShipCreator.createShip("playerTeam", ["turret"]).color = "blue"
+    //ShipCreator.createShip("neutralTeam", ["robo"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["dummy"])
+    //ShipCreator.createShip("enemyTeam", ["missile_v2", "mine"])
+    //ShipCreator.createShip("enemyTeam", ["robo"])
+    //ShipCreator.createShip("enemyTeam", ["raio", "dummy", "missile"])
+    //ShipCreator.createShip("enemyTeam", ["movable"])
+    ShipCreator.createShip("enemyTeam", ["bot"])
 
     setInterval(() => {
-        ShipCreator.createShip("enemyTeam", {
-            "type":"missile"
-        })
+        //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
+        //ShipCreator.createShip("enemyTeam", ["movable"])
+        //ShipCreator.createShip("enemyTeam", ["mine"])
+        //ShipCreator.createShip("enemyTeam", ["missile"])
+        //ShipCreator.createShip("enemyTeam", ["raio", "dummy"])
     }, 500)
+
+    KeyBoard.addTriggers()
 
 }
 
 function gameLoop(){
 
+    KeyBoard.runCommands()
+
     AI.updateAI()
     Physics.updatePhysics()
     Rules.updateRules()
+
+    HUD.updateHUD()
 
     ScreenRender.updateRender()
 

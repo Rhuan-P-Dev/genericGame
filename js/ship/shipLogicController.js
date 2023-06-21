@@ -1,87 +1,33 @@
 import { GameStateController } from "../gameState/gameStateController.js"
 import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
+import { DefenseController } from "../shipUnits/defense/defenseController.js"
+import { FactoryController } from "../shipUnits/factory/factoryController.js"
+import { SpecialController } from "../shipUnits/special/specialController.js"
+import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
+
 
 var GameState = ""
 var ObjectCreator = ""
+var Weapons = ""
+var Special = ""
+var Defense = ""
+var Factory = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     ObjectCreator = new ObjectCreatorController()
+    Weapons = new WeaponsController()
+    Special = new SpecialController()
+    Defense = new DefenseController()
+    Factory = new FactoryController()
 
 })
 
 export class ShipLogicController{
 
     getPlayer(){
-        return  GameState.getObject("player")
-    }
-
-    advanceShip(object){
-        if(ShipLogic.checkVelocityX(object)){
-            ShipLogic.advanceShipX(object)
-        }
-
-        if(ShipLogic.checkVelocityY(object)){
-            ShipLogic.advanceShipY(object)
-        }
-
-    }
-
-    advanceShipX(object){
-        object.currentXVel += object.vel * object.xMult
-    }
-
-    advanceShipY(object){
-        object.currentYVel += object.vel * object.yMult
-    }
-
-    rotateToRight(object){
-
-        ShipLogic.fixRotateRight(object)
-
-        object.xMult -= object.xStepMult
-        object.yMult -= object.yStepMult
-
-    }
-
-    rotateToLeft(object){
-
-        ShipLogic.fixRotateRightLeft(object)
-
-        object.xMult += object.xStepMult
-        object.yMult += object.yStepMult
-
-    }
-
-    fixRotateRight(object){
-
-        if(object.xMult <= -object.xyMultLimit){
-            object.xStepMult = -object.stepMult
-        }else if(object.xMult >= object.xyMultLimit){
-            object.xStepMult = object.stepMult
-        }
-    
-        if(object.yMult <= -object.xyMultLimit){
-            object.yStepMult = -object.stepMult
-        }else if(object.yMult >= object.xyMultLimit){
-            object.yStepMult = object.stepMult
-        }
-
-    }
-
-    fixRotateRightLeft(object){
-        if(object.xMult <= -object.xyMultLimit){
-            object.xStepMult = object.stepMult
-        }else if(object.xMult >= object.xyMultLimit){
-            object.xStepMult = -object.stepMult
-        }
-    
-        if(object.yMult <= -object.xyMultLimit){
-            object.yStepMult = object.stepMult
-        }else if(object.yMult >= object.xyMultLimit){
-            object.yStepMult = -object.stepMult
-        }
+        return GameState.getObject("player")
     }
 
     objectExist(object){
@@ -92,73 +38,36 @@ export class ShipLogicController{
         }
     }
 
-    checkVelocityX(object){
-
-        let currentTempXVel = object.currentXVel
-
-        currentTempXVel += object.vel * object.xMult
-
-        let currentTempXVel_positive = parsePositive(currentTempXVel)
-        let currentXVel_positive = parsePositive(object.currentXVel)
-
-        if(currentXVel_positive > currentTempXVel_positive){
-            return true
-        }
-
-        let softXMult = parsePositive(object.xMult)
-
-        if(parsePositive(object.xMult) == parsePositive(object.yMult)){
-            softXMult = 1
-        }
-
-        if(
-            currentTempXVel < ( -object.maxVel * softXMult )
-            ||
-            currentTempXVel > ( object.maxVel * softXMult )
-        ){
-            return false
-        }
-
-        return true
-    }
-
-    checkVelocityY(object){
-
-        let currentTempYVel = object.currentYVel
-
-        currentTempYVel += object.vel * object.yMult
-
-        let currentTempYVel_positive = parsePositive(currentTempYVel)
-        let currentYVel_positive = parsePositive(object.currentYVel)
-
-        if(currentYVel_positive > currentTempYVel_positive){
-            return true
-        }
-
-        let softYMult = parsePositive(object.yMult)
-
-        if(parsePositive(object.xMult) == parsePositive(object.yMult)){
-            softYMult = 1
-        }
-
-        if(
-            currentTempYVel < ( -object.maxVel * softYMult )
-            ||
-            currentTempYVel > ( object.maxVel * softYMult )
-        ){
-            return false
-        }
-
-        return true
-
-    }
-
     useAbilityOne(object){
-        ObjectCreator.createMissile(object)
+        Weapons.useWeapon(object, "batchMissile")
     }
 
     useAbilityTwo(object){
-        ObjectCreator.createPipi(object)
+        Weapons.useWeapon(object, "shoot")
+    }
+
+    useAbilityThree(object){
+        Special.makeWeakClone(object)
+    }
+
+    useAbilityFour(object){
+        Defense.regen(object)
+    }
+
+    useAbilityFive(object){
+        Weapons.useWeapon(object, "shotgun")
+    }
+
+    useAbility6(object){
+        Special.lvUp(object)
+    }
+
+    useAbility7(object){
+        Factory.createTurret(object)
+    }
+
+    useAbility8(object){
+        Weapons.useWeapon(object, "sniper")
     }
 
 }

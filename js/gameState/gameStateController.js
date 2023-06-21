@@ -13,8 +13,20 @@ GAME.team = {}
 
 GAME.team.playerTeam = {}
 GAME.team.enemyTeam = {}
+GAME.team.neutralTeam = {}
+
+let player = undefined
 
 export class GameStateController {
+
+    setPlayer(object){
+        player = object
+    }
+
+    getPlayer(){
+        return player
+    }
+
 
     addObject(object, AI = false, render = true, physics = true, rules = true){
 

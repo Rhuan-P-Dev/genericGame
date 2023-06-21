@@ -15,6 +15,11 @@ canvas{
     background-color: gray;
 }
 
+span{
+    font-size: 35px;
+    color: white;
+}
+
 /* class predefined */
 
 /* CSS */
@@ -23,6 +28,7 @@ canvas{
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 html,body{

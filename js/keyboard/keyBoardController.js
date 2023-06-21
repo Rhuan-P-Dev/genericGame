@@ -1,47 +1,104 @@
-import { ShipLogicController } from "../ship/shipLogicController.js"
-
-var ShipLogic = ""
 
 var keyBoardFunctions = {}
 
-onInit(function(){
+var keyBoardFunctionsBoolean = {}
 
-    ShipLogic = new ShipLogicController()
+var player = ""
 
-    keyBoardFunctions = {
-        "ArrowUp": ShipLogic.advanceShip,
-        "ArrowLeft": ShipLogic.rotateToLeft,
-        "ArrowRight": ShipLogic.rotateToRight,
-        "a": ShipLogic.useAbilityOne,
-        "s": ShipLogic.useAbilityTwo,
-    }
-
-})
-
-
-
-
+var arbitraryKeysSequence = {
+   "a":"s",
+   "s":"d",
+   "d":"q",
+   "q":"w",
+   "w":"e",
+   "e":"z",
+   "z":"x",
+   "x":"c",
+}
 
 export class KeyBoardController {
 
     HTML = document.querySelector("html")
 
-    addTriggers(){
-        this.HTML.addEventListener("keydown", (event) => {
+    player = undefined
 
-            if(keyBoardFunctions[event["key"]]){
+    addObjectInPlayerControl(object){
+        player = object
 
-                let player = ShipLogic.getPlayer()
+        keyBoardFunctions = {
+            "ArrowUp": () => {player.advanceShip()},
+            "ArrowLeft": () => {player.rotateToLeft()},
+            "ArrowRight": () => {player.rotateToRight()},
+        }
 
-                if(ShipLogic.objectExist(player)){
+        keyBoardFunctionsBoolean = {
+            "ArrowUp": false,
+            "ArrowLeft": false,
+            "ArrowRight": false,
+        }
 
-                    keyBoardFunctions[event["key"]](player)
+    }
+
+    updateKeyBoardKeys(func, key = "a", overwrite = false){
+
+        if(overwrite){
+            keyBoardFunctions[key] = func
+            keyBoardFunctionsBoolean[key] = false
+            return
+        }
+
+        while(keyBoardFunctions[key]){
+            key = arbitraryKeysSequence[key]
+        }
+
+        if(key == undefined){return}
+
+        keyBoardFunctions[key] = func
+        keyBoardFunctionsBoolean[key] = false
+    }
+
+    runCommands(){
+
+        for(let key in keyBoardFunctionsBoolean){
+            let value = keyBoardFunctionsBoolean[key]
+
+            if(value){
+
+                if(player){
+
+                    keyBoardFunctions[key]()
 
                 }
 
             }
 
+        }
+
+    }
+
+    addTriggers(){
+
+        this.HTML.addEventListener("keydown", (event) => {
+
+            if(keyBoardFunctionsBoolean[event["key"]] != undefined){
+
+                keyBoardFunctionsBoolean[event["key"]] = true
+
+            }
+
+
         })
+
+        this.HTML.addEventListener("keyup", (event) => {
+
+            if(keyBoardFunctionsBoolean[event["key"]] != undefined){
+
+                keyBoardFunctionsBoolean[event["key"]] = false
+
+            }
+
+        })
+
     }
 
 }

@@ -3,25 +3,17 @@ function onInit(func) {
 }
 
 function randomInteger(min = 0, max = 1){
-    return parseInt( (Math.random() * (max + 1) ) + min )
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomFloat(min = 0, max = 1){
+    return Math.random() * (max - min) + min
 }
 
 function randomUniqueID() {
     return "ID"+randomInteger(0, 2**52)
 }
 
-function checkPositive(number){
-    if(number >= 0){
-        return true
-    }else{
-        return false
-    }
-}
-
 function parsePositive(number){
-    if(!checkPositive(number)){
-        return number - number*2
-    }else{
-        return number
-    }
+    return Math.abs(number)
 }

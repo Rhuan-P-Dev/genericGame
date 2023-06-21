@@ -8,9 +8,9 @@ export class WeaponLessShip extends MovableObject { //TODO: rename this class
     frontLineMult = undefined
 
     constructor(
-            stepMult = 0.25,
-            xStepMult = 0.25,
-            yStepMult = 0.25,
+            stepMult = 0.05,
+            xStepMult = 0.05,
+            yStepMult = 0.05,
             frontLineMult = 7,
         ){
             super()
