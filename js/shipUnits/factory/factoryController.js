@@ -1,9 +1,7 @@
 import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
-import { MovableObject } from "../../object/movableObject.js"
-import { WeaponLessShip } from "../../object/weaponLessShip.js"
-import { Object } from "../../object/object.js"
-import { EnergizadObject } from "../../object/energizedObject.js"
+import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
+import { Turret } from "../../object/turrent.js"
 
 var GameState = ""
 var ObjectCreator = ""
@@ -23,7 +21,7 @@ export class FactoryController{
 
         object.energy -= 25
 
-        let turret = new EnergizadObject()
+        let turret = new Turret()
 
         turret.x = object.x
         turret.y = object.y
@@ -32,6 +30,9 @@ export class FactoryController{
         turret.ID = randomUniqueID()
 
         ObjectCreator.giveObjectAI(turret, ["turret"])
+
+        new ObjectActivatesController().giveOffensiveActivate(turret)
+
         GameState.addObject(turret, true)
 
     }

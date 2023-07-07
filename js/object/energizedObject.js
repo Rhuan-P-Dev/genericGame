@@ -2,19 +2,23 @@ import { Object } from "./object.js"
 
 export class EnergizadObject extends Object {
 
-    energy = undefined
-    maxEnergy = undefined
-    energyRegen = undefined
+    energy = 500
+    maxEnergy = 500
+    energyRegen = 0.3
 
-    constructor(
-            energy = 500,
-            maxEnergy = 500,
-            energyRegen = 0.3,
-        ){
-            super()
-            this.energy = energy
-            this.maxEnergy = maxEnergy
-            this.energyRegen = energyRegen
+    prioritys = {
+        priority: 1,
+        targetPriority: undefined,
+        above: undefined,
+        nothing: undefined,
+    }
+
+    constructor(){
+
+        super()
+
+        this.typeOfObject = "EnergizadObject"
+        
     }
 
 }

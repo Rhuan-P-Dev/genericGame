@@ -1,7 +1,6 @@
 import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { MovableObject } from "../../object/movableObject.js"
-import { WeaponLessShip } from "../../object/weaponLessShip.js"
 import { Object } from "../../object/object.js"
 import { EnergizadObject } from "../../object/energizedObject.js"
 

@@ -25,6 +25,7 @@ export class RulesController {
 
             Rules.screenRules(object)
             Rules.statsRules(object)
+            Rules.activatesRules(object)
 
         }
     }
@@ -51,13 +52,9 @@ export class RulesController {
 
     statsRules(object){
 
-        object.life += object.lifeRegen
-
         if(object.life > object.maxLife){
             object.life = object.maxLife
         }
-
-        object.energy += object.energyRegen
 
         if(object.energy > object.maxEnergy){
             object.energy = object.maxEnergy
@@ -67,12 +64,24 @@ export class RulesController {
             GameState.removeObject(object)
         }
 
-        if(object.lifeTime){
-
-            object.lifeTime -= 1
-
+        if(typeof(object.lifeTime) == "number"){
+         
             if(object.lifeTime <= 0){
                 GameState.removeObject(object)
+            }
+
+        }
+
+
+    }
+
+    activatesRules(object){
+
+        for(let activateName in object.activates){
+            let activate = object.activates[activateName]
+
+            if(activate.reloadTemp < 0){
+                activate.reloadTemp = 0
             }
 
         }

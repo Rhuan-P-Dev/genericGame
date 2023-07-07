@@ -2,6 +2,7 @@ import { ObjectCreatorController } from "../../objectController/objectCreatorCon
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { MovableObject } from "../../object/movableObject.js"
 import { Object } from "../../object/object.js"
+import { WeaponsInfoController } from "./info/weaponsInfoController.js"
 
 var GameState = ""
 var ObjectCreator = ""
@@ -15,140 +16,112 @@ onInit(function(){
 
 export class WeaponsController{
 
-    weapons = {
-        "batchMissile": {
-            "name": "batchMissile",
-            "cost": 30,
-            "type": "long",
-            "range": 550,
-            "func": this.batchMissile,
-            "callBack": this.useWeapon,
-        },
-        "shoot": {
-            "name": "shoot",
-            "cost": 5,
-            "type": "medium",
-            "range": 390,
-            "func": this.shoot,
-            "callBack": this.useWeapon,
-        },
-        "shotgun": {
-            "name": "shotgun",
-            "cost": 30,
-            "type": "short",
-            "range": 160,
-            "func": this.shotgun,
-            "callBack": this.useWeapon,
-        },
-        "sniper": {
-            "name": "sniper",
-            "cost": 20,
-            "type": "very long",
-            "range": 730,
-            "func": this.sniper,
-            "callBack": this.useWeapon,
+    ajustObject(weapon, object, config){
+
+        object.ID = randomUniqueID()
+        object.team = weapon.owner.team
+
+        object.color = weapon.owner.color
+
+        object.lifeTime = weapon.lifeTime
+
+        object.x = weapon.owner.x
+        object.y = weapon.owner.y
+
+        object.currentXVel = ( weapon.xMult - config.tempXSpread ) * ( weapon.config.multVel * config.tempMultVel )
+        object.currentYVel = ( weapon.yMult - config.tempYSpread ) * ( weapon.config.multVel * config.tempMultVel )
+
+        object.damage *= weapon.config.damageMult
+
+        if(!weapon.prioritys){
+            return
         }
+
+        object.prioritys = weapon.prioritys
+        
     }
 
     getAllWeapons(){
-        return this.weapons
+        return new WeaponsInfoController(true)
     }
 
     getWeaponInfo(weaponName){
-        return Weapons.weapons[weaponName]
+        return new WeaponsInfoController(true)[weaponName]
     }
 
-    useWeapon(object, weaponName){
-        let weapon = Weapons.getWeaponInfo(weaponName)
+    useWeapon(object, ID){
+
+        let weapon = object.activates[ID]
 
         let cost = weapon.cost
 
-        if(object.energy >= cost){
+        let newObjects = {}
+
+        if(object.energy >= cost && weapon.reloadTemp <= 0){
+
             object.energy -= cost
 
-            weapon.func(object)
+            weapon.reloadTemp = weapon.reload
+
+            if(weapon.config){
+                newObjects = weapon.func(object, weapon)
+            }else{
+                newObjects = weapon.func(object)
+            }
+
+            Weapons.processObjects(weapon, newObjects)
+
+        }
+
+    }
+
+    processObjects(weapon, newObjects){
+
+        if(!newObjects){return}
+
+        if(newObjects.length == undefined){
+
+            Weapons.addObjects(weapon, newObjects, {
+                "tempXSpread": 0,
+                "tempYSpread": 0,
+                "tempMultVel": 1
+            })
+
+        }else{
+
+            for (let index = 0; index < newObjects.length; index++) {
             
+                let newObject = newObjects[index].object
+                let newObjectConfig = newObjects[index].config
+    
+                setTimeout( () => {
+
+                    Weapons.addObjects(weapon, newObject, newObjectConfig)
+    
+                }, newObjectConfig.interval)
+    
+            }
+
         }
+    
 
     }
 
-    createMissile(object){
+    addObjects(weapon, object, config){
 
-        let missile = new MovableObject()
-
-        missile.ID = randomUniqueID()
-
-        missile.width /= 2
-        missile.height /= 2
-
-        missile.stepMult *= 5
-        missile.xStepMult *= 5
-        missile.yStepMult *= 5
-
-        missile.maxVel *= 1.25
-        missile.vel *= 2
-
-        missile.maxLife = 15
-        missile.life = 20
-
-        missile.lifeTime = 150
-
-        missile.damage = 30
-
-        missile.team = object.team
-        missile.x = object.x
-        missile.y = object.y
-        missile.color = object.color
-        missile.xMult = object.xMult
-        missile.yMult = object.yMult
-
-        ObjectCreator.giveObjectAI(missile, ["missile_v2"])
-
-        return missile
-
-    }
-
-    batchMissile(object){
-
-        let missiles = {}
+        Weapons.ajustObject(weapon, object, config)
+        GameState.addObject(object, true)
         
-        for (let index = 0; index < 4; index++) {
-            let tempMissile = Weapons.createMissile(object)
-            missiles[tempMissile.ID] = tempMissile
-        }
-
-        for (let missileName in missiles) {
-            let missile = missiles[missileName]
-
-            missile.currentXVel = object.xMult - randomFloat(-0.5, 0.5)
-            missile.currentYVel = object.yMult - randomFloat(-0.5, 0.5)
-
-            missile.currentXVel *= 2
-            missile.currentYVel *= 2
-
-            GameState.addObject(missile, true)
-        }
-
     }
 
-    createShoot(object){
+    createShoot(){
 
         let shoot = new Object()
 
         shoot.width /= 3
         shoot.height /= 3
-        shoot.x = object.x
-        shoot.y = object.y
-        shoot.team = object.team
-        shoot.color = object.color
-        shoot.ID = randomUniqueID()
-
-        shoot.lifeTime = 50
 
         shoot.damage = 10
-
-        shoot.currentXVel = (10 * object.xMult)
-        shoot.currentYVel = (10 * object.yMult)
         
         ObjectCreator.giveObjectAI(shoot, ["mine"])
 
@@ -156,58 +129,35 @@ export class WeaponsController{
 
     }
 
-    shoot(object){
+    createMissile(object){
 
-        let shoot = Weapons.createShoot(object)
+        let missile = new MovableObject()
 
-        shoot.currentXVel = object.xMult - randomFloat(-0.2, 0.2)
-        shoot.currentYVel = object.yMult - randomFloat(-0.2, 0.2)
+        missile.width = 2
+        missile.height = 2
 
-        shoot.currentXVel *= 7
-        shoot.currentYVel *= 7
+        missile.stepMult *= 5
+        missile.xStepMult *= 5
+        missile.yStepMult *= 5
 
-        GameState.addObject(shoot, true)
+        missile.maxVel *= 1.5
+        missile.vel *= 2
 
-    }
+        missile.maxLife = 15
+        missile.life = 15
 
-    sniper(object){
+        missile.lifeTime = 150
 
-        let shoot = Weapons.createShoot(object)
+        missile.damage = 30
 
-        shoot.currentXVel *= 1.5
-        shoot.currentYVel *= 1.5
+        missile.xMult = object.xMult
+        missile.yMult = object.yMult
 
-        shoot.damage *= 6
+        //ObjectCreator.giveObjectAI(missile, ["missile_v2"])
+        ObjectCreator.giveObjectAI(missile, ["missile_v3"])
 
-        GameState.addObject(shoot, true)
-
-    }
-
-    shotgun(object){
-
-        let shoots = {}
-        
-        for (let index = 0; index < 20; index++) {
-            let tempShoot = Weapons.createShoot(object)
-            shoots[tempShoot.ID] = tempShoot
-        }
-
-        for (let shootName in shoots) {
-            let shoot = shoots[shootName]
-
-            shoot.currentXVel = object.xMult - randomFloat(-0.3, 0.3)
-            shoot.currentYVel = object.yMult - randomFloat(-0.3, 0.3)
-
-            shoot.lifeTime = 15
-        
-            shoot.currentXVel *= 10
-            shoot.currentYVel *= 10
-
-            shoot.damage = 30
-
-            GameState.addObject(shoot, true)
-        }
-
+        return missile
+    
     }
 
 }

@@ -32,6 +32,10 @@ export class TypeOfAI {
         "missile_v2": missile_v2,
         "turret": turret,
         "robo": robo,
+        "ship_turret": ship_turret,
+        "missile_v3": missile_v3,
+        "movable_v2": movable_v2,
+        "turret_v2": turret_v2,
     }
 
     getAllTypeOfAI(){
@@ -46,7 +50,7 @@ function mine(object){
 
     let distance = AIUtils.getDistanceOfObjects(object, target)
 
-    if(distance < object.width*4){
+    if(distance < object.width*1.5 + target.width*1.5){
         Damage.damage(object, target)
         GameState.removeObject(object)
     }
@@ -113,7 +117,7 @@ function replicator(object){ //delet
 
     setTimeout( () => {
         object.AI.add("replicator")
-    }, 20000)
+    }, 100)
 
 }
 
@@ -121,20 +125,23 @@ function bot(object){
 
     //object.AI.remove("bot")
 
-    //Weapons.useWeapon(object, "batchMissile")
-
     let target = AIUtils.getClosestObjectOfTeams(object)
 
     if(!target){return}
 
-    let weapon_shoot = Weapons.getWeaponInfo("shoot")
-
-    //console.log(weapon_shoot)
+    let allWeapons = object.getActivates()
 
     let distance = AIUtils.getDistanceOfObjects(object, target)
 
-    if(weapon_shoot.range > distance){
-        Weapons.useWeapon(object, "shoot")
+    for(let weaponName in allWeapons){
+
+        let weapon = allWeapons[weaponName]
+
+        if(weapon.range > distance){
+            AIUtils.aimToTarget(object, target)
+            object.activate(weaponName)
+        }
+
     }
 
     setTimeout( () => {
@@ -225,7 +232,7 @@ function missile_v2(object){
     object.xMult = cateto_adj / distancia
     object.yMult = cateto_opost / distancia
 
-    if(distancia < object.width*2){
+    if(distancia < object.width*2 + target.width*2){
         Damage.damage(object, target)
         GameState.removeObject(object)
     }
@@ -234,51 +241,78 @@ function missile_v2(object){
 
 function turret(object){
 
-    object.AI.remove("turret")
-
-    setTimeout( () => {
-      object.AI.add("turret")
-    }, 1000)
-
     let target = AIUtils.getClosestObjectOfTeams(object)
 
     if(!target){return}
 
-    let distancia = AIUtils.getDistanceOfObjects(object, target)
+    let allWeapons = object.getActivates()
 
-    let cateto_opost = target.y - object.y
-    let cateto_adj = target.x - object.x
+    let distance = AIUtils.getDistanceOfObjects(object, target)
 
-    object.xMult = cateto_adj / distancia
-    object.yMult = cateto_opost / distancia
+    for(let weaponName in allWeapons){
 
-    Weapons.useWeapon(object, "sniper")
+        let weapon = allWeapons[weaponName]
 
-    Weapons.useWeapon(object, "shoot")
+        if(weapon.range > distance){
+            AIUtils.aimToTarget(object, target)
+            object.activate(weaponName)
+        }
 
-    setTimeout( () => {
-        Weapons.useWeapon(object, "shoot")
-    }, 25)
+    }
 
-    setTimeout( () => {
-        Weapons.useWeapon(object, "shoot")
-    }, 50)
+}
 
-    setTimeout( () => {
-        Weapons.useWeapon(object, "shoot")
-    }, 75)
+function ship_turret(object){
+
+    if(!object.owner){return}
+
+    object.x = object.owner.x + 5
+    object.y = object.owner.y + 1
+
+    let target = AIUtils.getClosestObjectOfTeams(object.owner)
+
+    if(!target){return}
+
+    let distance = AIUtils.getDistanceOfObjects(object.owner, target)
+
+    if(object.range > distance){
+
+        AIUtils.aimToTarget(object, target)
+
+        object.owner.activate(object.ID)
+
+    }
+
 
 }
 
 function robo(object){
 
-    object.AI.remove("robo")
-
-    setTimeout( () => {
-      object.AI.add("robo")
-    }, 100)
-
     let target = AIUtils.getClosestObjectOfTeams(object)
+
+    if(!target){return}
+
+    let allWeapons = object.getActivates()
+
+    let distance = AIUtils.getDistanceOfObjects(object, target)
+
+    for(let weaponName in allWeapons){
+
+        let weapon = allWeapons[weaponName]
+
+        if(weapon.range > distance){
+            AIUtils.aimToTarget(object, target)
+            object.activate(weaponName)
+        }
+
+    }
+}
+
+function missile_v3(object){
+
+    let target = AIUtils.getClosestPriorityObjectOfTeams(object)
+
+    object.advanceShip()
 
     if(!target){return}
 
@@ -290,8 +324,90 @@ function robo(object){
     object.xMult = cateto_adj / distancia
     object.yMult = cateto_opost / distancia
 
-    Weapons.sniper(object)
+    if(distancia < object.width*2 + target.width*2){
+        Damage.damage(object, target)
+        GameState.removeObject(object)
+    }
+
 }
+
+function movable_v2(object){
+
+    let target = AIUtils.getClosestPriorityObjectOfTeams(object)
+
+    object.advanceShip()
+
+    if(!target){return}
+
+    let tar_ob_difer_x = object.x - target.x
+    let tar_ob_difer_y = object.y - target.y 
+
+    let XY = AIUtils.getDistanceOfObjects(object, target)
+
+    object.fixRotateRight()
+
+    let tempXMult = object.xMult
+    let tempYMult = object.yMult
+
+    tempXMult -= object.xStepMult
+    tempYMult -= object.yStepMult
+
+    let direita_x = (tar_ob_difer_x * tempXMult)
+    let direita_y = (tar_ob_difer_y * tempYMult)
+    
+    let direita_xy = direita_x + direita_y
+
+    object.fixRotateLeft()
+
+    tempXMult = object.xMult
+    tempYMult = object.yMult
+
+    tempXMult += object.xStepMult
+    tempYMult += object.yStepMult
+
+    let esquerda_x = (tar_ob_difer_x * tempXMult)
+    let esquerda_y = (tar_ob_difer_y * tempYMult)
+
+    let esquerda_xy = esquerda_x + esquerda_y
+
+    if(XY > 150){
+        if(esquerda_xy > direita_xy){
+            object.rotateToRight()
+        }else{
+            object.rotateToLeft()
+        }
+    }else{
+        if(esquerda_xy < direita_xy){
+            object.rotateToRight()
+        }else{
+            object.rotateToLeft()
+        }
+    }
+}
+
+function turret_v2(object){
+
+    let target = AIUtils.getClosestPriorityObjectOfTeams(object)
+
+    if(!target){return}
+
+    let allWeapons = object.getActivates()
+
+    let distance = AIUtils.getDistanceOfObjects(object, target)
+
+    for(let weaponName in allWeapons){
+
+        let weapon = allWeapons[weaponName]
+
+        if(weapon.range > distance){
+            AIUtils.aimToTarget(object, target)
+            object.activate(weaponName)
+        }
+
+    }
+
+}
+
 
 
 
@@ -327,17 +443,6 @@ function robo(object){
 /*
 
 
-
-
-
-
-
-
-
-
-
-
-
 function toRadians(graus){
     return ( Math.PI * graus ) / 180
 }
@@ -361,8 +466,14 @@ let seno = cateto_oposto / hip
 let coseno = cateto_adj / hip
 let tangent = cateto_oposto / cateto_adj
 
-console.log(seno)
-console.log(coseno)
-console.log(tangent)
+//console.log(seno)
+//console.log(coseno)
+//console.log(tangent)
+
+console.log(PI)
+
+console.log(
+    toGraus(PI)
+)
 
 */

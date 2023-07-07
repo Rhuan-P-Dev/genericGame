@@ -18,6 +18,11 @@ import { KeyBoardController } from "../keyboard/keyBoardController.js"
 
 var KeyBoard = ""
 
+/* STATS */
+import { StatsController } from "../stats/statsController.js"
+
+var stats = ""
+
 /* RULES */
 import { RulesController } from "../rules/rulesController.js"
 
@@ -55,6 +60,10 @@ onInit(function(){
 
     KeyBoard = new KeyBoardController()
 
+    /* STATS */
+
+    stats = new StatsController()
+
     /* RULES */
 
     Rules = new RulesController()
@@ -79,14 +88,30 @@ onInit(function(){
 function browseInit(){
 
     ShipCreator.createShip("playerTeam", false, true)
+
+    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+
+    ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+
+    //ShipCreator.createShip("neutralTeam", ["dummy"]).color = "black"
+
+    //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
+
     //ShipCreator.createShip("playerTeam", ["turret"]).color = "blue"
+    //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
     //ShipCreator.createShip("neutralTeam", ["robo"]).color = "red"
     //ShipCreator.createShip("enemyTeam", ["dummy"])
     //ShipCreator.createShip("enemyTeam", ["missile_v2", "mine"])
     //ShipCreator.createShip("enemyTeam", ["robo"])
     //ShipCreator.createShip("enemyTeam", ["raio", "dummy", "missile"])
-    //ShipCreator.createShip("enemyTeam", ["movable"])
-    ShipCreator.createShip("enemyTeam", ["bot"])
+    //ShipCreator.createShip("enemyTeam", ["movable"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
+
+    //ShipCreator.createShip("playerTeam", ["movable", "turret"]).color = "blue"
+    //ShipCreator.createShip("enemyTeam", ["movable_v2", "turret_v2"]).color = "red"
+    //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
+
+    //ShipCreator.createShip("enemyTeam", ["movable"]).color = "pink"
 
     setInterval(() => {
         //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
@@ -94,15 +119,32 @@ function browseInit(){
         //ShipCreator.createShip("enemyTeam", ["mine"])
         //ShipCreator.createShip("enemyTeam", ["missile"])
         //ShipCreator.createShip("enemyTeam", ["raio", "dummy"])
-    }, 500)
+
+        //ShipCreator.createShip("playerTeam", ["turret"]).color = "blue"
+        //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+        //ShipCreator.createShip("neutralTeam", ["turret"]).color = "black"
+
+        //ShipCreator.createShip("playerTeam", ["movable", "turret"]).color = "blue"
+        //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+        //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
+
+    }, 1000)
 
     KeyBoard.addTriggers()
 
 }
 
+//adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada!
+
+// tauvel fazer uma lisda de prioridades tipo, eu quero: ships, missie, turret, bulet
+
+// naves especialis tipo: um namo com energia infinita!
+
 function gameLoop(){
 
     KeyBoard.runCommands()
+
+    stats.updateStatus()
 
     AI.updateAI()
     Physics.updatePhysics()

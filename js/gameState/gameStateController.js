@@ -6,6 +6,7 @@ GAME.allInOne = {}
 GAME.render = {}
 GAME.physics = {}
 GAME.rules = {}
+GAME.stats = {}
 
 GAME.AI = {}
 
@@ -28,11 +29,13 @@ export class GameStateController {
     }
 
 
-    addObject(object, AI = false, render = true, physics = true, rules = true){
+    addObject(object, AI = false, team = true, render = true, physics = true, rules = true, stats = true){
 
         GAME.allInOne[object.ID] = object
 
-        GAME.team[object.team][object.ID] = object
+        if(team){
+            GAME.team[object.team][object.ID] = object
+        }
 
         if(AI){
             GAME.AI[object.ID] = object
@@ -48,6 +51,10 @@ export class GameStateController {
 
         if(rules){
             GAME.rules[object.ID] = object
+        }
+
+        if(stats){
+            GAME.stats[object.ID] = object
         }
 
     }
@@ -81,6 +88,10 @@ export class GameStateController {
 
     getAllObjectsTeam(){
         return GAME.team
+    }
+
+    getAllObjectsStatus(){
+        return GAME.stats
     }
 
 }

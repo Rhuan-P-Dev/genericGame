@@ -1,21 +1,28 @@
-import { RotableObject } from "./rotableObject.js"
+import { Object } from "./object.js"
 
-export class MovableObject extends RotableObject {
+export class MovableObject extends Object {
 
-    vel = undefined
-    maxVel = undefined
+    vel = 0.05
+    maxVel = 3
 
-    constructor(
-            vel = 0.05,
-            maxVel = 3,
-        ){
-            super()
-            this.vel = vel
-            this.maxVel = maxVel
+    prioritys = {
+        priority: 1,
+        targetPriority: undefined,
+        above: undefined,
+        nothing: undefined,
+    }
+
+    constructor(){
+
+        super()
+
+        this.typeOfObject = "MovableObject"
+
     }
 
 
     advanceShip(){
+
         if(this.checkVelocityX()){
             this.advanceShipX()
         }

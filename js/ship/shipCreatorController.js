@@ -1,8 +1,9 @@
 import { GameStateController } from "../gameState/gameStateController.js"
-import { ship } from "../object/ship.js"
+import { Ship } from "../object/ship.js"
 import { ObjectActivatesController } from "../objectController/objectActivatesController.js"
 import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
 import { ShipLogicController } from "../ship/shipLogicController.js"
+import { SpecialController } from "../shipUnits/special/specialController.js"
 
 var GameState = ""
 var ShipLogic = ""
@@ -33,13 +34,23 @@ export class ShipCreatorController{
         if(AI){
             newShip = ObjectCreator.giveObjectAI(newShip, AI)
             haveAI = true
+
+            //ObjectActivates.giveOffensiveActivate(newShip, "P1")
+            ObjectActivates.giveOffensiveActivate(newShip, "auto_P1")
+            ObjectActivates.giveOffensiveActivate(newShip, "auto_P1")
+            ObjectActivates.giveOffensiveActivate(newShip, "auto_P1")
+            ObjectActivates.giveOffensiveActivate(newShip, "auto_P1")
+            ObjectActivates.giveOffensiveActivate(newShip, "M1")
+            
         }
 
         if(isPlayer){
             newShip = ObjectCreator.makeObjectInPlayerControl(newShip)
-        }
+            //new SpecialController().lvUp(newShip)
+            ObjectActivates.giveOffensiveActivate(newShip, "P1")
+            ObjectActivates.giveOffensiveActivate(newShip, "M1")
 
-        ObjectActivates.giveOffensiveActivate(newShip)
+        }
 
         GameState.addObject(newShip, haveAI)
 
@@ -49,7 +60,7 @@ export class ShipCreatorController{
 
     createShipFactory(){
 
-        let newShip = new ship()
+        let newShip = new Ship()
 
         newShip.ID = randomUniqueID()
         newShip.x = randomInteger(0, ShipCreator.mainCanvas.width)

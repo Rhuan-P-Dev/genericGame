@@ -1,30 +1,30 @@
+
 import { InheritController } from "../generalUtils/inherit.js"
 import { EnergizadObject } from "./energizedObject.js"
-import { MovableObject } from "./movableObject.js"
 import { RotableObject } from "./rotableObject.js"
 
-export class Ship {
+export class Turret {
 
     prioritys = {
-        priority: 5,
+        priority: 3,
         targetPriority: undefined,
         above: undefined,
         nothing: undefined,
     }
 
     constructor(){
-
+        
         new InheritController().inherit(
             this,
             [
-                EnergizadObject,
                 RotableObject,
-                MovableObject
+                EnergizadObject
             ]
         )
 
-        this.typeOfObject = "Ship"
+        this.typeOfObject = "Turret"
 
     }
+
 
 }

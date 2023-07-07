@@ -1,18 +1,45 @@
 import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
-import { MovableObject } from "../../object/movableObject.js"
-import { WeaponLessShip } from "../../object/weaponLessShip.js"
-import { Object } from "../../object/object.js"
+import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 
 var GameState = ""
 var ObjectCreator = ""
+var MultiplyStats = ""
+var CloneObject = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     ObjectCreator = new ObjectCreatorController()
+    MultiplyStats = new MultiplyStatsController()
+    CloneObject = new CloneObjectController()
 
 })
+
+const stats = {
+    "stats":[
+        "damage",
+        "defense",
+        "energy",
+        "energyRegen",
+        "life",
+        "lifeRegen",
+        "maxEnergy",
+        "maxLife",
+        "maxVel",
+        "vel",
+        "lifeTime",
+    ],
+
+    "invertedStatus":[
+        "resistance"
+    ],
+
+    "statsMult": undefined,
+}
+
+// o modulo que faz os clones NÃO esta fazendos os clones direito / clonando os modificadores
 
 export class SpecialController{
 
@@ -20,32 +47,14 @@ export class SpecialController{
 
     makeWeakClone(object){
 
-        if(object.energy < 50){return}
+        if(object.energy < 100){return}
 
-        object.energy -= 50
+        object.energy -= 100
 
-        let weakClone = structuredClone(object)
+        let weakClone = CloneObject.clone(object)
 
-        for (let atribute in object) {
-            if(typeof(weakClone[atribute]) != "number"){continue}
-            if(atribute == "x" ||
-               atribute == "y" ||
-               atribute == "frontLineMult" ||
-               atribute == "yStepMult" ||
-               atribute == "xStepMult" ||
-               atribute == "stepMult" ||
-               atribute == "xyMultLimit" ||
-               atribute == "yMult" ||
-               atribute == "xMult" ||
-               atribute == "width" ||
-               atribute == "height" ||
-               atribute == "currentXVel" ||
-               atribute == "currentYVel"
-            ){continue}
-
-            weakClone[atribute] *= 0.75
-
-        }
+        stats.statsMult = 0.8
+        MultiplyStats.multiply(weakClone, stats)
 
         weakClone.ID = randomUniqueID()
 
@@ -61,30 +70,34 @@ export class SpecialController{
 
     lvUp(object){
 
-        if(object.energy < 100){return}
+        //if(object.energy < 100){return}
 
-        object.energy -= 100
+        //object.energy -= 100
 
-        for (let atribute in object) {
-            if(typeof(object[atribute]) != "number"){continue}
-            if(atribute == "x" ||
-               atribute == "y" ||
-               atribute == "frontLineMult" ||
-               atribute == "yStepMult" ||
-               atribute == "xStepMult" ||
-               atribute == "stepMult" ||
-               atribute == "xyMultLimit" ||
-               atribute == "yMult" ||
-               atribute == "xMult" ||
-               atribute == "width" ||
-               atribute == "height" ||
-               atribute == "currentXVel" ||
-               atribute == "currentYVel"
-            ){continue}
+        stats.statsMult = 1.5
+        MultiplyStats.multiply(object, stats)
 
-            object[atribute] *= 1.1
+    }
 
-        }
+    overclock(object){
+
+        //???????????????????
+
+        if(object.energy < 10){return}
+
+        object.energy -= 10
+
+        let aaa = object.energyRegen/10
+
+        object.lifeRegen -= aaa
+        object.energyRegen += aaa
+
+        setTimeout( () => {
+
+            object.lifeRegen += aaa
+            object.energyRegen -= aaa
+
+        }, 1900)
 
     }
 

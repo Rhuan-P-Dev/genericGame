@@ -1,75 +1,74 @@
 
 export class Object {
 
-    team = undefined
-    ID = undefined
+    typeOfObject = "Object"
 
-    life = undefined
-    maxLife = undefined
-    lifeRegen = undefined
+    team = "newTeam"
+    ID = "newID"
 
-    defense = undefined
-    resistance = undefined
+    life = 200
+    maxLife = 200
+    lifeRegen = 0
 
-    damage = undefined
+    defense = 2
+    resistance = 0.95
 
-    x = undefined
-    y = undefined
+    damage = 15
 
-    width = undefined
-    height = undefined
+    x = 10
+    y = 10
 
-    color = undefined
+    width = 5
+    height = 5
 
-    currentXVel = undefined
-    currentYVel = undefined
+    color = "black"
 
-    constructor(
-            team = "newTeam",
-            ID = "newID",
+    currentXVel = 0
+    currentYVel = 0
 
-            life = 200,
-            maxLife = 200,
-            lifeRegen = 0,
+    prioritys = {
+        priority: 0,
+        targetPriority: undefined,
+        above: undefined,
+        nothing: undefined,
+    }
 
-            defense = 5,
-            resistance = 1,
+    activates = {}
 
-            damage = 15,
+    addWeapon(weapon){
 
-            x = 10,
-            y = 10,
+        if(!weapon.auto){
 
-            width = 5,
-            height = 5,
+            this.rightRotateOb.add( () => {
+                weapon.rotateToRight()
+            })
+    
+            this.leftRotateOb.add( () => {
+                weapon.rotateToLeft()
+            })
 
-            color = "black",
+        }
+    }
 
-            currentXVel = 0,
-            currentYVel = 0,
-        ){
-            this.team = team
-            this.ID = ID
+    addActivate(activate){
 
-            this.life = life
-            this.maxLife = maxLife
-            this.lifeRegen = lifeRegen
+        activate.owner = this
 
-            this.defense = defense
-            this.resistance = resistance
+        if(activate.typeOfObject == "weapon"){
+            this.addWeapon(activate)
+        }
 
-            this.damage = damage
+        this.activates[activate.ID] = activate
+    }
 
-            this.x = x
-            this.y = y
+    activate(ID){
+        if(this.activates[ID]){
+            this.activates[ID].callBack(this, ID)
+        }
+    }
 
-            this.width = width
-            this.height = height
-
-            this.color = color
-
-            this.currentXVel = currentXVel
-            this.currentYVel = currentYVel
+    getActivates(){
+        return this.activates
     }
 
 }

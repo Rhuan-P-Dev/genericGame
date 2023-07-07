@@ -1,80 +1,23 @@
-import { EnergizadObject } from "./energizedObject.js"
 
-export class RotableObject extends EnergizadObject {
+import { InheritController } from "../generalUtils/inherit.js"
+import { Object } from "./object.js"
+import { Rotable } from "./rotable.js"
 
-    frontLineMult = undefined
-    xMult = undefined
-    yMult = undefined
-    stepMult = undefined
-    xStepMult = undefined
-    yStepMult = undefined
-    xyMultLimit = undefined
+export class RotableObject {
 
-    constructor(
-            frontLineMult = 7,
-            xMult = 0,
-            yMult = 1,
-            stepMult = 0.05,
-            xStepMult = 0.05,
-            yStepMult = 0.05,
-            xyMultLimit = 1,
-        ){
-            super()
-            this.frontLineMult = frontLineMult
-            this.xMult = xMult
-            this.yMult = yMult
-            this.stepMult = stepMult
-            this.xStepMult = xStepMult
-            this.yStepMult = yStepMult
-            this.xyMultLimit = xyMultLimit
-    }
+    constructor(){
+        
+        new InheritController().inherit(
+            this,
+            [
+                Rotable,
+                Object
+            ]
+        )
 
-    rotateToRight(){
-
-        this.fixRotateRight()
-
-        this.xMult -= this.xStepMult
-        this.yMult -= this.yStepMult
+        this.typeOfObject = "RotableObject"
 
     }
 
-    rotateToLeft(){
-
-        this.fixRotateLeft()
-
-        this.xMult += this.xStepMult
-        this.yMult += this.yStepMult
-
-    }
-
-    fixRotateRight(){
-
-        if(this.xMult <= -this.xyMultLimit){
-            this.xStepMult = -this.stepMult
-        }else if(this.xMult >= this.xyMultLimit){
-            this.xStepMult = this.stepMult
-        }
-    
-        if(this.yMult <= -this.xyMultLimit){
-            this.yStepMult = -this.stepMult
-        }else if(this.yMult >= this.xyMultLimit){
-            this.yStepMult = this.stepMult
-        }
-
-    }
-
-    fixRotateLeft(){
-        if(this.xMult <= -this.xyMultLimit){
-            this.xStepMult = this.stepMult
-        }else if(this.xMult >= this.xyMultLimit){
-            this.xStepMult = -this.stepMult
-        }
-    
-        if(this.yMult <= -this.xyMultLimit){
-            this.yStepMult = this.stepMult
-        }else if(this.yMult >= this.xyMultLimit){
-            this.yStepMult = -this.stepMult
-        }
-    }
 
 }
