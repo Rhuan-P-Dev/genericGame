@@ -11,11 +11,7 @@ onInit(function(){
 
 export class StatsController {
 
-    updateStatus(){
-        stats.stats()
-    }
-
-    stats(){
+    update(){
 
         let allObjectsStatus = GameState.getAllObjectsStatus()
 

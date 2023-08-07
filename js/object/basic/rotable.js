@@ -1,38 +1,16 @@
 
 export class Rotable {
 
-    frontLineMult = undefined
-    xMult = undefined
-    yMult = undefined
-    stepMult = undefined
-    xStepMult = undefined
-    yStepMult = undefined
-    xyMultLimit = undefined
+    frontLineMult = 7
+    xMult = 0
+    yMult = 1
+    stepMult = 0.05
+    xStepMult = 0.05
+    yStepMult = 0.05
+    xyMultLimit = 1
 
-    rightRotateOb = new obeserver()
-    leftRotateOb = new obeserver()
-
-    constructor(
-        frontLineMult = 7,
-        xMult = 0,
-        yMult = 1,
-        stepMult = 0.05,
-        xStepMult = 0.05,
-        yStepMult = 0.05,
-        xyMultLimit = 1,
-    ){
-
-        this.typeOfObject = "Rotable"
-
-        this.frontLineMult = frontLineMult
-        this.xMult = xMult
-        this.yMult = yMult
-        this.stepMult = stepMult
-        this.xStepMult = xStepMult
-        this.yStepMult = yStepMult
-        this.xyMultLimit = xyMultLimit
-        
-    }
+    rightRotateOb = new Obeserver()
+    leftRotateOb = new Obeserver()
 
     rotateToRight(){
 

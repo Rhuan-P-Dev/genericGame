@@ -1,18 +1,8 @@
 
+import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { AutoWeapon } from "../weapon_extend/autoWapon.js"
+import { AutoWeapon } from "../weapon_extend/autoWeapon.js"
 import { P1 } from "./P1.js"
-
-
-import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
-
-var WeaponsModifiers = ""
-
-onInit(function(){
-
-    WeaponsModifiers = new WeaponsModifiersController()
-
-})
 
 export class Auto_P1{
 
@@ -22,6 +12,7 @@ export class Auto_P1{
             this,
             [
                 AutoWeapon,
+                TopDownBehavior,
                 P1,
             ]
         )

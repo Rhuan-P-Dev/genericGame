@@ -2,11 +2,15 @@ import { ObjectCreatorController } from "../../objectController/objectCreatorCon
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
+import { ActivateController } from "../forAllShipUnits/activateController.js"
+import { SpecialInfoController } from "./info/specialInfoController.js"
+import { setFrameOut } from "../../frame/frameController.js"
 
 var GameState = ""
 var ObjectCreator = ""
 var MultiplyStats = ""
 var CloneObject = ""
+var Activate = ""
 
 onInit(function(){
 
@@ -14,6 +18,7 @@ onInit(function(){
     ObjectCreator = new ObjectCreatorController()
     MultiplyStats = new MultiplyStatsController()
     CloneObject = new CloneObjectController()
+    Activate = new ActivateController()
 
 })
 
@@ -39,65 +44,84 @@ const stats = {
     "statsMult": undefined,
 }
 
-// o modulo que faz os clones NÃO esta fazendos os clones direito / clonando os modificadores
-
 export class SpecialController{
 
-    mainCanvas = document.getElementById("mainCanvas")
+    useSpecial(object, ID){
 
-    makeWeakClone(object){
+        Activate.useActivate(object, ID)
 
-        if(object.energy < 100){return}
+    }
 
-        object.energy -= 100
+    getAll(){
+        return new SpecialInfoController()
+    }
+
+    getInfo(specialName){
+
+        return new SpecialInfoController(true)[specialName]
+    }
+
+    weakClone(object, activate, config){
 
         let weakClone = CloneObject.clone(object)
 
-        stats.statsMult = 0.8
+        stats.statsMult = config.statsMult
+
         MultiplyStats.multiply(weakClone, stats)
 
         weakClone.ID = randomUniqueID()
-
-        if(object.AI){
-            ObjectCreator.giveObjectAI(weakClone, object.AI.returnAll(), true)
-        }else{
-            ObjectCreator.giveObjectAI(weakClone, ["movable", "bot", "replicator"], true)
-        }
 
         GameState.addObject(weakClone, true)
 
     }
 
-    lvUp(object){
+    lvUp(object, activate, config){
 
-        //if(object.energy < 100){return}
+        stats.statsMult = config.statsMult
 
-        //object.energy -= 100
-
-        stats.statsMult = 1.5
         MultiplyStats.multiply(object, stats)
 
     }
 
-    overclock(object){
+    overclock(object, activate, config){
 
-        //???????????????????
+        let overclockMult = config.overclockMult
+        let overclockDiv = config.overclockDiv
 
-        if(object.energy < 10){return}
+        let overclockBuff = object.energyRegen * overclockMult
+        let overclockDebuff = overclockBuff / overclockDiv
 
-        object.energy -= 10
+        object.lifeRegen -= overclockDebuff
+        object.energyRegen += overclockBuff
 
-        let aaa = object.energyRegen/10
+        
 
-        object.lifeRegen -= aaa
-        object.energyRegen += aaa
+        setFrameOut( () => {
 
-        setTimeout( () => {
+            object.lifeRegen += overclockDebuff
+            object.energyRegen -= overclockBuff
 
-            object.lifeRegen += aaa
-            object.energyRegen -= aaa
+        }, 600)
 
-        }, 1900)
+    }
+
+    illusion(object, activate, config){
+
+        let illusion = CloneObject.clone(object)
+
+        illusion.life = 1
+        illusion.maxLife = 1
+        illusion.defense = 0
+        illusion.resistance = 1
+
+        illusion.activates = {}
+
+        illusion.ID = randomUniqueID()
+
+        illusion.onDeathFunctions = new OnLinkedList()
+        illusion.onHitFunctions = new OnLinkedList()
+
+        GameState.addObject(illusion, true)
 
     }
 

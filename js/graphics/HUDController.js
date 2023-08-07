@@ -1,10 +1,10 @@
-import { ShipLogicController } from "../ship/shipLogicController.js"
+import { GameStateController } from "../gameState/gameStateController.js"
 
-var ShipLogic = ""
+var GameState = ""
 
 onInit(function(){
 
-    ShipLogic = new ShipLogicController()
+    GameState = new GameStateController()
 
 })
 
@@ -13,13 +13,9 @@ export class HUDController {
     HP = document.getElementById("HP")
     energy = document.getElementById("energy")
 
-    updateHUD(){
-        HUD.HUD()
-    }
+    update(){
 
-    HUD(){
-
-        let player = ShipLogic.getPlayer()
+        let player = GameState.getPlayer()
         
         if(!player){return}
 

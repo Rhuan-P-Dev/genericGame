@@ -1,0 +1,35 @@
+import { WeaponsController } from "../../weaponsController.js"
+
+import { P1 } from "./P1.js"
+
+var Weapons = ""
+
+onInit(function(){
+
+    Weapons = new WeaponsController()
+
+})
+
+export class SP1 extends P1 {
+
+    constructor(){
+        
+        super()
+
+        this.cost *= 15
+        this.reload *= 15
+
+        this.config.multVel *= 2
+        this.config.damageMult = 10
+
+        this.lifeTime *= 1.5
+
+    }
+
+    name = "SP1"
+
+    func = Weapons.createShoot
+
+    modifiersList = []
+
+}

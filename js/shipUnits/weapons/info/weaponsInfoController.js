@@ -3,7 +3,9 @@ import { ObjectCreatorController } from "../../../objectController/objectCreator
 import { WeaponsController } from "../weaponsController.js"
 import { M1 } from "./weapons/M1.js"
 import { P1 } from "./weapons/P1.js"
+import { SP1 } from "./weapons/SP1.js"
 import { Auto_P1 } from "./weapons/auto_P1.js"
+import { Auto_SP1 } from "./weapons/auto_SP1.js"
 
 
 var GameState = ""
@@ -27,7 +29,9 @@ export class WeaponsInfoController{
         let weapons = {
             "P1": new P1(),
             "auto_P1": new Auto_P1(),
-            "M1": new M1()
+            "M1": new M1(),
+            "SP1": new SP1(),
+            "auto_SP1": new Auto_SP1(),
         }
 
         if(build){
@@ -48,9 +52,6 @@ export class WeaponsInfoController{
                 if(weapon.build){
                     weapon.build()
                 }
-
-
-
 
                 weapon.calcStats()
 

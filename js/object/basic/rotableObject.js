@@ -1,5 +1,5 @@
 
-import { InheritController } from "../generalUtils/inherit.js"
+import { InheritController } from "../../generalUtils/inherit.js"
 import { Object } from "./object.js"
 import { Rotable } from "./rotable.js"
 
@@ -16,6 +16,8 @@ export class RotableObject {
         )
 
         this.typeOfObject = "RotableObject"
+
+        this.priority += 1
 
     }
 

@@ -15,11 +15,10 @@ export class Machinegun {
 
         this.name = "machinegun"
         this.costMult = 1.05
-        this.callBackFunction = undefined
         this.func = new WeaponsModifiersController().machinegun
         this.value = 1
         this.valueBase = 1
-        this.valueStep = 0.1
+        this.valueStep = 0.01
 
     }
 

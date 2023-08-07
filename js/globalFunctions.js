@@ -17,3 +17,21 @@ function randomUniqueID() {
 function parsePositive(number){
     return Math.abs(number)
 }
+
+function alwaysPositive(number){
+    if(number < 0){
+        return 0
+    }else{
+        return number
+    }
+}
+
+
+
+function returnRandomObject(objects){
+
+    let index = randomInteger(0, Object.keys(objects).length-1)
+
+    return Object.keys(objects)[index]
+
+}

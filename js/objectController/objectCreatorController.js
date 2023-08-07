@@ -21,7 +21,7 @@ export class ObjectCreatorController{
         }
 
         AI.forEach(AIType => {
-            object.AI.add(AIType)
+            object.AI.add("AIType", AIType)
         })
         
         return object

@@ -1,5 +1,5 @@
 
-import { ModifiersLinkedList, WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
+import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
 import { WeaponsController } from "../../weaponsController.js"
 import { Weapon } from "../weapon_extend/weapon.js"
 
@@ -19,25 +19,20 @@ export class P1 extends Weapon {
         
         super()
 
-        this.name = "P1"
-        this.cost = 5
-        this.type = "???"
-        this.reload = 7
-        this.reloadTemp = 0
-        this.reloadStep = 1
-        this.config = {
-            multVel: 8,
-            damageMult: 1,
-        }
-        this.lifeTime = 30
-
-        this.func = WeaponsModifiers.useModifier
-        this.hasModifier = true
-        this.baseFunc = Weapons.createShoot
-
-        this.modifiers = new ModifiersLinkedList()
-
     }
+
+    name = "P1"
+    cost = 5
+    reload = 7
+    reloadTemp = 0
+    reloadStep = 1
+    config = {
+        multVel: 8,
+        damageMult: 1,
+    }
+    lifeTime = 30
+
+    baseFunc = Weapons.createShoot
 
     modifiersList = ["spread"]
 
@@ -50,6 +45,5 @@ export class P1 extends Weapon {
         }
 
     }
-
 
 }

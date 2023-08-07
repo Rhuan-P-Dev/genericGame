@@ -12,11 +12,7 @@ export class RulesController {
 
     mainCanvas = document.getElementById("mainCanvas")
 
-    updateRules(){
-        Rules.rules()
-    }
-
-    rules(){
+    update(){
 
         let allObjectsRules = GameState.getAllObjectsRules()
 
@@ -61,15 +57,21 @@ export class RulesController {
         }
 
         if(object.life <= 0){
+
+            object.onDeath(object)
+
             GameState.removeObject(object)
         }
 
-        if(typeof(object.lifeTime) == "number"){
-         
-            if(object.lifeTime <= 0){
-                GameState.removeObject(object)
-            }
+        if(
+            typeof(object.lifeTime) == "number"
+            &&
+            object.lifeTime <= 0
+        ){
 
+            object.onDeath(object)
+
+            GameState.removeObject(object)
         }
 
 
@@ -80,7 +82,7 @@ export class RulesController {
         for(let activateName in object.activates){
             let activate = object.activates[activateName]
 
-            if(activate.reloadTemp < 0){
+            if(activate.reloadTemp < 0){ //useless?
                 activate.reloadTemp = 0
             }
 

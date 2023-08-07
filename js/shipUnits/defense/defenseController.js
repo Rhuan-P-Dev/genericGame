@@ -1,36 +1,61 @@
+
 import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
-import { MovableObject } from "../../object/movableObject.js"
-import { Object } from "../../object/object.js"
-import { EnergizadObject } from "../../object/energizedObject.js"
+import { ActivateController } from "../forAllShipUnits/activateController.js"
+import { DefenseInfoController } from "./info/defenseInfoController.js"
+import { setFrameOut } from "../../frame/frameController.js"
 
 var GameState = ""
 var ObjectCreator = ""
+
+var Activate = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     ObjectCreator = new ObjectCreatorController()
 
+    Activate = new ActivateController()
+
 })
 
 export class DefenseController{
 
-    regen(object){
+    useDefense(object, ID){
 
-        if(object.energy < 10){return}
+        let result = Activate.useActivate(object, ID)
 
-        object.energy -= 10
+        return
 
-        object.lifeRegen += 0.25
-        object.energyRegen -= 0.05
+        if(result.return){
+            //Activate.addObject(result.return)
+        }
 
-        setTimeout( () => {
+    }
 
-            object.lifeRegen -= 0.25
-            object.energyRegen += 0.05
+    getAll(){
 
-        }, 2500)
+        return new DefenseInfoController()
+
+    }
+
+    getInfo(DefenseName){
+
+        return new DefenseInfoController(true)[DefenseName]
+
+    }
+
+    regen(object, activate, config){
+
+        object.lifeRegen += config.lifeRegenBuff
+        object.energyRegen -= config.energyRegenDebuff
+
+        setFrameOut( () => {
+
+            object.lifeRegen -= config.lifeRegenBuff
+            object.energyRegen += config.energyRegenDebuff
+
+        }, 120)
 
     }
 

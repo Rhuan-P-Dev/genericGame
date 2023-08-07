@@ -3,10 +3,12 @@ import { KeyBoardController } from "../keyboard/keyBoardController.js"
 import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
 import { WeaponsModifiersController } from "../shipUnits/weapons/modifiers/weaponsModifiersController.js"
 import { ObjectCreatorController } from "./objectCreatorController.js"
+import { SpecialController } from "../shipUnits/special/specialController.js"
+import { FactoryController } from "../shipUnits/factory/factoryController.js"
+import { DefenseController } from "../shipUnits/defense/defenseController.js"
 
 var GameState = ""
 var KeyBoard = ""
-var Weapons = ""
 var ObjectCreator = ""
 
 var WeaponsModifiers = ""
@@ -15,7 +17,6 @@ onInit(function(){
 
     GameState = new GameStateController()
     KeyBoard = new KeyBoardController()
-    Weapons = new WeaponsController()
     ObjectCreator = new ObjectCreatorController()
 
     WeaponsModifiers = new WeaponsModifiersController()
@@ -24,61 +25,89 @@ onInit(function(){
 
 export class ObjectActivatesController{
 
-    giveOffensiveActivate(object, weaponName = "random"){
+    loaders = {
+        "weapon": new WeaponsController(),
+        "special": new SpecialController(),
+        "factory": new FactoryController(),
+        "defense": new DefenseController()
+    }
 
-        let weapon = undefined
+    giveActivate(object, typeOfLoader = "random", activateName = "random"){
 
-        if(weaponName == "random"){
-            weapon = ObjectActivates.giveRandomOffensiveActivate()
+        let activate = undefined
+
+        if(activateName == "random"){
+            activate = this.returnRandomActivate(typeOfLoader)
         }else{
-            weapon = ObjectActivates.returnOffensiveActivate(weaponName)
+            activate = this.returnActivate(typeOfLoader, activateName)
         }
 
-        if(GameState.getPlayer().ID == object.ID){
+        if(activate){
 
-            KeyBoard.updateKeyBoardKeys(() => {
-                object.activate(weapon.ID)
-            })
+            if(GameState.getPlayer().ID == object.ID){
 
-            //WeaponsModifiers.addModifier(weapon, "spread")
+                KeyBoard.updateKeyBoardKeys(() => {
+                    object.activate(activate.ID)
+                })
+    
+            }
 
-            //WeaponsModifiers.addModifier(weapon, "shotgun")
-
-            //WeaponsModifiers.addModifier(weapon, "burst")
-
-            //WeaponsModifiers.addModifier(weapon, "machinegun")
-
-            //WeaponsModifiers.addModifier(weapon, "growing")
-
-            //ObjectCreator.giveObjectAI(weapon, ["ship_turret"])
-            //GameState.addObject(weapon, true, false, false, false, false, false)
-
+            object.addActivate(activate)
+            
+        }else{
+            console.error("The loader have:",this.returnLoader(typeOfLoader).getAll())
+            throw new Error(
+                "The loader: [" + typeOfLoader + "] don't have: [" + activateName + "]"
+            )
         }
-
-        object.addActivate(weapon)
-
-        //console.log(weapon)
 
     }
     
-    giveRandomOffensiveActivate(){
+    returnRandomActivate(typeOfLoader = "random"){
 
-        let allWeapons = Weapons.getAllWeapons()
+        let loader = this.defineLoader(typeOfLoader)
 
-        let weaponIndex = randomInteger(0,Object.keys(allWeapons).length-1)
+        let allActivates = loader.getAll()
 
-        let weaponName = Object.keys(allWeapons)[weaponIndex]
+        let activateName = returnRandomObject(allActivates)
 
-        return ObjectActivates.returnOffensiveActivate(weaponName)
+        return loader.getInfo(activateName)
 
     }
 
-    returnOffensiveActivate(weaponName){
+    returnActivate(typeOfLoader, activateName){
 
-        return Weapons.getWeaponInfo(weaponName)
+        var loader = this.defineLoader(typeOfLoader)
+
+        return loader.getInfo(activateName)
+
+    }
+
+    returnLoader(typeOfLoader){
+
+        return this.loaders[typeOfLoader]
+
+    }
+
+
+    defineLoader(typeOfLoader){
+
+        if(typeOfLoader == "random"){
+            var loader = this.returnRandomLoader()
+        }else{
+            var loader = this.returnLoader(typeOfLoader)
+        }
+
+        return loader
+
+    }
+    
+    returnRandomLoader(){
+
+        return this.loaders[returnRandomObject(
+            this.loaders
+        )]
 
     }
 
 }
-
-var ObjectActivates = new ObjectActivatesController()

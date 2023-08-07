@@ -1,6 +1,3 @@
-import { FactoryController } from "../shipUnits/factory/factoryController.js"
-import { SpecialController } from "../shipUnits/special/specialController.js"
-
 var keyBoardFunctions = {}
 
 var keyBoardFunctionsBoolean = {}
@@ -32,20 +29,12 @@ export class KeyBoardController {
             "ArrowUp": () => {player.advanceShip()},
             "ArrowLeft": () => {player.rotateToLeft()},
             "ArrowRight": () => {player.rotateToRight()},
-            "d": () => {
-                new SpecialController().makeWeakClone(player)
-            },
-            "f": () => {
-                new FactoryController().createTurret(player)
-            },
         }
 
         keyBoardFunctionsBoolean = {
             "ArrowUp": false,
             "ArrowLeft": false,
             "ArrowRight": false,
-            "d": false,
-            "f": false,
         }
 
     }

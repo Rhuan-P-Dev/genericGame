@@ -1,3 +1,4 @@
+import { setFrameOut } from "../../../frame/frameController.js"
 import { CloneObjectController } from "../../../generalUtils/cloneObject.js"
 import { MultiplyStatsController } from "../../../generalUtils/multiplyStats.js"
 import { WeaponsController } from "../weaponsController.js"
@@ -37,15 +38,12 @@ export class WeaponsModifiersController{
         this.modifiers.growing = new Growing()
         this.modifiers.shotgun = new Shotgun()
         this.modifiers.spread = new ModSpread()
+
+        for(let modifierName in this.modifiers){
+            this.modifiers[modifierName].ID = randomUniqueID()
+        }
+
     }
-
-    // fazer varios projeteis com "metade" da força. o nome poderiaser replicator???
-
-    // uma arma que aao inver de sobre escrever novos projeteis essa arma criar mais projeteis facros e junta com os antigos
-
-    // um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão
-
-    // alem de modificados eu quero >effects< nos projetesi
 
     spread(output, modifier, config, node){
 
@@ -126,9 +124,7 @@ export class WeaponsModifiersController{
 
         modifier.value += modifier.valueStep
 
-        clearTimeout(modifier.callBackFunction)
-        
-        modifier.callBackFunction = setTimeout( () => {
+        setFrameOut( () => {
 
             modifier.stats.statsMult = modifier.value
 
@@ -143,30 +139,37 @@ export class WeaponsModifiersController{
 
             modifier.activate.modifiers.runAll(node.next, output)
 
-            return false
-
-        }, 200) // TODO fazer um sisma que leve em comsiderasão os fremes do jogo
+        },
+        modifier.activate.reload + 1,
+        1,
+        true,
+        modifier.ID + " - growing",
+        )
 
         return false
     }
 
     machinegun(output, modifier, config, node){
 
-        modifier.value += modifier.valueStep
+        modifier.value += modifier.activate.reload * modifier.valueStep
 
         modifier.activate.reloadTemp -= modifier.value
-        
-        clearTimeout(modifier.callBackFunction)
-        
-        modifier.callBackFunction = setTimeout( () => {
+
+        setFrameOut( () => {
 
             modifier.value = modifier.valueBase
 
             return false
 
-        }, 200)
+        },
+        alwaysPositive(modifier.activate.reloadTemp) + 2,
+        1,
+        true,
+        modifier.ID + " - machinegun",
+        )
 
         return output
+        
     }
 
     getAllModifiers(){
@@ -274,6 +277,7 @@ export class ModifiersLinkedList{
                     "tempXSpread": 0,
                     "tempYSpread": 0,
                     "tempMultVel": 1,
+                    "interval": 1,
                 }
             })
 
@@ -301,6 +305,7 @@ export class ModifiersLinkedList{
         }
 
         Weapons.processObjects(node.modifier.activate, outputObjects)
+        
     }
 
 }

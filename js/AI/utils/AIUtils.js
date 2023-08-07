@@ -11,43 +11,46 @@ onInit(function(){
 
 export class AIUtilsController {
 
-    prioritysDontHaveFucnions = {
-
+    typesOfObjectSearch = {
+        "closest": this.getDistanceOfObjects,
+        "step": this.getStepDistanceOfObjects,
     }
 
-    getClosestObject(objects, yourObject){
+    getStepDistanceOfObjects(object, goal){
 
-        let closestObject = undefined
+        // The greater the difference, the lower the priority
+        // Difference = goal.priority - object.searchPriority.targetPriority
 
-        for(let objectName in objects){
+        /* > TargetObsession <
+        higher values:
+        will determine if the object will chase objects with smaller difference
+        OR
+        smaller values:
+        will determine if the object will chase objects with smaller distance
+        */
 
-            closestObject = {"distance": AIUtils.getDistanceOfObjects(objects[objectName], yourObject),
-                             "object": objects[objectName]}
-            break
-        }
+        let targetObsession = 6
 
-        for(let objectName in objects){
+        let difference = parsePositive(
+            goal.priority - object.searchPriority.targetPriority
+        ) ** targetObsession + 1
 
-            let object = objects[objectName]
-
-            //console.log(object.typeOfObject)
-
-            let distance = AIUtils.getDistanceOfObjects(object, yourObject)
-
-            if(closestObject.distance > distance){
-                closestObject.distance = distance
-                closestObject.object = object
-            }
-
-        }
-
-        return closestObject.object
+        return Math.sqrt(
+            ( ( object.x - goal.x ) ** 2 )
+            +
+            ( ( object.y - goal.y ) ** 2 )
+        ) * difference
 
     }
 
     getDistanceOfObjects(object, goal){
 
-        return Math.sqrt( ( ( object.x - goal.x ) ** 2 ) + ( ( object.y - goal.y ) ** 2 ) )
+        return Math.sqrt(
+            ( ( object.x - goal.x ) ** 2 )
+            +
+            ( ( object.y - goal.y ) ** 2 )
+        )
+
     }
 
     getDistanceOfObjects_x(object, goal){
@@ -59,32 +62,6 @@ export class AIUtilsController {
     getDistanceOfObjects_y(object, goal){
 
         return Math.sqrt( ( object.y - goal.y ) ** 2 )
-
-    }
-
-    getClosestObjectOfTeams(object){
-
-        let allObjectsTeam = GameState.getAllObjectsTeam()
-
-        let closestObjectOfEachTeam = {}
-
-        for(let objectNameTeam in allObjectsTeam){
-
-            if(objectNameTeam == object.team){continue}
-
-            let targetTeam = allObjectsTeam[objectNameTeam]
-
-            if(Object.keys(targetTeam).length == 0){continue}
-
-            let closetObject = AIUtils.getClosestObject(targetTeam, object)
-
-            closestObjectOfEachTeam[closetObject.ID] = closetObject
-
-        }
-
-        if(Object.keys(closestObjectOfEachTeam).length == 0){return false}
-        
-        return AIUtils.getClosestObject(closestObjectOfEachTeam, object)
 
     }
 
@@ -100,7 +77,165 @@ export class AIUtilsController {
 
     }
 
+    getObject(objects, yourObject, method = "closest"){
+
+        let closestObject = undefined
+
+        let getDistanceFunction = AIUtils.typesOfObjectSearch[method]
+
+        for(let objectName in objects){
+
+            let object = objects[objectName]
+
+            closestObject = {
+                "distance": getDistanceFunction(yourObject, object),
+                "object": object,
+            }
+
+            break
+            
+        }
+
+        for(let objectName in objects){
+
+            let object = objects[objectName]
+
+            let distance = getDistanceFunction(yourObject, object)
+
+            if(closestObject.distance > distance){
+                closestObject.distance = distance
+                closestObject.object = object
+            }
+
+        }
+
+        if(closestObject){
+            return closestObject.object
+        }else{
+            return false
+        }
+
+    }
+
+    getClosestObjectOfTeams(object){
+
+        let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            object,
+            {
+                "minPriority": object.searchPriority.min,
+                "maxPriority": object.searchPriority.max,
+            }
+        )
+
+        if(array.length == 0){return false}
+
+        return AIUtils.getObject(array, object, "closest")
+
+    }
+
+    getStepPriorityObjectOfTeams(object){
+
+        let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            object,
+            {
+                "minPriority": object.searchPriority.min,
+                "maxPriority": object.searchPriority.max,
+            }
+        )
+
+        if(array.length == 0){return false}
+
+        return AIUtils.getObject(array, object, "step")
+
+    }
+
+    returnArrayWithAlllObjectsOfTeams(
+        object,
+        config = {
+            "includeSameTeam": false,
+            "includeEnemyTeam": true,
+            "includeYourself": false,
+            "minPriority": undefined,
+            "maxPriority": undefined,
+            "minDistance": undefined,
+            "maxDistance": undefined,
+        }
+    ){
+
+        let allObjectsTeam = GameState.getAllObjectsTeam()
+
+        let array = []
+
+        for(let objectNameTeam in allObjectsTeam){
+
+            if(
+                !config.includeSameTeam
+                ||
+                config.includeSameTeam == undefined
+            ){
+                if(objectNameTeam == object.team){continue}
+            }
+
+            if(
+                !config.includeEnemyTeam
+                &&
+                config.includeEnemyTeam != undefined
+            ){
+                if(objectNameTeam != object.team){continue}
+            }
+
+            let targetTeam = allObjectsTeam[objectNameTeam]
+
+            if(Object.keys(targetTeam).length == 0){continue}
+
+            for(let newObjectName in targetTeam){
+
+                let newObject = targetTeam[newObjectName]
+
+
+                if(
+                    !config.includeYourself
+                    ||
+                    config.includeYourself == undefined
+                ){
+                    if(newObject.ID == object.ID){continue}
+                }
+
+                if(
+                    newObject.priority < config.minPriority
+                    ||
+                    newObject.priority > config.maxPriority
+                    ||
+                    AIUtils.getDistanceOfObjects(object, newObject) < config.minDistance
+                    ||
+                    AIUtils.getDistanceOfObjects(object, newObject) > config.maxDistance
+                ){
+                    continue
+                }
+                
+                array.push(newObject)
+                
+            }
+
+        }
+
+        return array
+
+    }
+
     getClosestPriorityObjectOfTeams(object){
+
+        let result = this.buildPriorityObjectOfTeams(object)
+
+        let arrayObjects = result.returnQueueR(object.searchPriority)
+
+        if(!arrayObjects){return false}
+
+        return this.getClosestObject(arrayObjects, object)
+
+    } // useless?
+
+    buildPriorityObjectOfTeams(object, sameTeam = true){
 
         let allObjectsTeam = GameState.getAllObjectsTeam()
 
@@ -108,7 +243,9 @@ export class AIUtilsController {
 
         for(let objectNameTeam in allObjectsTeam){
 
-            if(objectNameTeam == object.team){continue}
+            if(!sameTeam){
+                if(objectNameTeam == object.team){continue}
+            }
 
             let targetTeam = allObjectsTeam[objectNameTeam]
 
@@ -118,17 +255,17 @@ export class AIUtilsController {
 
                 let currentObject = targetTeam[objectName]
 
-                if(!object.prioritys.above){
+                if(!object.searchPriority.above){
 
-                    if(currentObject.prioritys.priority > object.prioritys.targetPriority){
+                    if(currentObject.priority > object.searchPriority.targetPriority){
                         continue
                     }
 
                 }
 
-                if(!object.prioritys.below){
+                if(!object.searchPriority.below){
 
-                    if(currentObject.prioritys.priority < object.prioritys.targetPriority){
+                    if(currentObject.priority < object.searchPriority.targetPriority){
                         continue
                     }
 
@@ -136,108 +273,20 @@ export class AIUtilsController {
 
                 result.add(
                     currentObject,
-                    currentObject.prioritys.priority
+                    currentObject.priority
                 )
 
             }
 
         }
 
-        let arrayObjects = result.getQueueR(
-            object.prioritys.targetPriority,
-            object.prioritys.ifDontHave,
-        )
+        return result
 
-        if(!arrayObjects){ return false}
-
-        return this.getClosestObject(arrayObjects, object)
-
-        /*
-        ifDontHave: {
-            first: "left",
-            all: true,
-        },
-        */
-
-        /*
-        prioritys = {
-            priority: 0,
-            targetPriority: 5,
-            above: true,
-            below: true,
-        }
-        */
-
-        return false
-
-        if(Object.keys(closestObjectOfEachTeamSamePriority).length == 0){
-
-            let dontHave = object.prioritys.dontHave
-           
-            if(object.prioritys[dontHave]){
-
-                this.prioritysDontHaveFucnions[dontHave](object)
-
-            }
-
-            
-        }
-
-        //AIUtils.getClosestPriorityObject(closestObjectOfEachTeam, object)
-
-        //return AIUtils.getClosestPriorityObject(closestObjectOfEachTeam, object)
-
-    }
+    } // useless?
 
 }
 
 var AIUtils = new AIUtilsController()
-
-
-
-
-/*
-
-CADA OBJETO TERA UM PRIORIDADE
-
-QUANTO MAIOR FOR O NUMERO MAIOR SERA A PRIORIDADE
-
-PARGUNTAS????!!!!!
-
-APARTIR DE QUAL NUMERO??
-
-SE NÃO TIVER O QUE EU QUERO FAÇO OQUE? O MAIS PROXIMO? NADA?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
 
 class queue{
 
@@ -262,7 +311,7 @@ class queue{
         }
     }
     
-}
+} // useless?
 
 class CustomPriorityQueue {
 
@@ -280,7 +329,11 @@ class CustomPriorityQueue {
 
     }
 
-    getQueue(priority){
+    getAllQueue(){
+        return this.list
+    }
+
+    returnQueue(priority){
 
         let queue = this.list[priority]
 
@@ -292,24 +345,23 @@ class CustomPriorityQueue {
 
     }
 
-    getQueueR(priority, ifDontHave){
+    returnQueueR(searchPriority){
 
         let queue = undefined
-
-        let loop = ifDontHave.all
-
-        let value = ifDontHave.first
+        let priority = searchPriority.targetPriority
+        let loop = searchPriority.ifDontHave.all
+        let value = searchPriority.ifDontHave.first
         
         while(true){
 
-            queue = this.getQueue(priority)
+            queue = this.returnQueue(priority)
 
             if(queue){return queue}
 
             if(
-                priority + value < 0
+                priority + value < searchPriority.min
                 ||
-                priority + value > 10
+                priority + value > searchPriority.max
             ){
 
                 if(loop){
@@ -354,4 +406,4 @@ class CustomPriorityQueue {
     }
 
 
-}
+} // useless?

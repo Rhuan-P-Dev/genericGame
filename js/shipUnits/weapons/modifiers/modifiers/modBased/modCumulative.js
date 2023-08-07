@@ -11,7 +11,6 @@ export class ModCumulative extends Mod {
         value = 0,
         valueStep = 0.1,
         valueBase = 0,
-        callBackFunction = undefined ,
     ){
 
         super()
@@ -19,7 +18,6 @@ export class ModCumulative extends Mod {
         this.value = value
         this.valueStep = valueStep
         this.valueBase = valueBase
-        this.callBackFunction = callBackFunction
 
     }
 

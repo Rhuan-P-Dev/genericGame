@@ -1,30 +1,72 @@
+import { AIUtilsController } from "../AI/utils/AIUtils.js"
+import { ScreenRenderController } from "../graphics/screenRenderController.js"
+
+var AIUtils = ""
+var ScreenRender = ""
+
+onInit(function(){
+
+    AIUtils = new AIUtilsController()
+    ScreenRender = new ScreenRenderController()
+
+})
+
 export class DamageController {
 
-    damage(object_1, object_2){
+    damageTypeTable = {
+        "single": this.damageCalc,
+        "radius": this.radiusCalc,
+    }
 
-        //console.log(object_1)
-        //console.log(object_2)
+    damage(attacker, victim){
 
-        if(object_1.a){
-            object_1.a(object_2)
+        if(!attacker.damageConfig){
+            this.damageCalc(attacker, victim)
+            return
         }
 
-        if(object_2.a){
-            object_2.a(object_1)
-        }
-        
-        Damage.damageCalc(object_1, object_2)
-        Damage.damageCalc(object_2, object_1)
+        this.damageTypeTable[attacker.damageConfig.type](
+            attacker,
+            victim
+        )
 
     }
 
-    damageCalc(object_1, object_2){
+    damageCalc(attacker, victim){
 
-        let damage = (object_2.damage * object_1.resistance) - object_1.defense
+        let damage = (attacker.damage * victim.resistance) - victim.defense
 
         if(damage <= 0){return}
 
-        object_1.life -= damage
+        victim.life -= damage
+
+    }
+
+    radiusCalc(attacker){
+
+        ScreenRender.addDrawRequest(
+            ScreenRender.drawCircle,
+            {
+                "x": attacker.x,
+                "y": attacker.y,
+                "radius": attacker.damageConfig.range,
+            }
+        )
+
+        let allEnemyObject = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            attacker,
+            {
+                "maxDistance": attacker.damageConfig.range,
+            }
+        )
+
+        for (let index = 0; index < allEnemyObject.length; index++) {
+
+            let victim = allEnemyObject[index]
+
+            Damage.damageCalc(attacker, victim)
+            
+        }
 
     }
 

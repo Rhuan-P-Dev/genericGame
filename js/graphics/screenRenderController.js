@@ -9,18 +9,68 @@ onInit(function(){
 
 })
 
+class DrawRequestLinkedList{
+
+    list = {
+        next:{}
+    }
+
+    add(func, param){
+        let node = this.list.next
+        while(1){
+            if(!node.next){
+                
+                node.func = func
+                node.param = param
+                node.next = {}
+
+                return true
+            }else{
+                node = node.next
+            }
+        }
+    }
+    
+    runAll(){
+
+        let node = this.list.next
+
+        while(1){
+            if(!node.next){return}
+
+            node.func(node.param)
+
+            node = node.next
+
+        }
+
+    }
+
+}
+
+var drawRequestQueue = new DrawRequestLinkedList()
+
 export class ScreenRenderController {
 
     mainCanvas = document.getElementById("mainCanvas")
     mainCanvasContext = mainCanvas.getContext("2d")
 
-    updateRender(){
-        ScreenRender.render()
+    addDrawRequest(func, param){
+
+        drawRequestQueue.add(func, param)
+
     }
 
-    render(){
+    runRequests(){
+        drawRequestQueue.runAll()
+        drawRequestQueue = new DrawRequestLinkedList()
+    }
+
+    update(){
         
         ScreenRender.clean()
+
+        ScreenRender.runRequests()
 
         let allObjectsRenderable = GameState.getAllObjectsRender()
 
@@ -56,6 +106,12 @@ export class ScreenRenderController {
 
         if(object.ID != "player"){return}
 
+        ScreenRender.mainCanvasContext.beginPath();
+        ScreenRender.mainCanvasContext.arc(object.x, object.y, 100, 0, Math.PI * 2);
+        ScreenRender.mainCanvasContext.stroke();
+
+        return
+
         object.x = 20
         object.y = 20
 
@@ -83,6 +139,36 @@ export class ScreenRenderController {
         ScreenRender.mainCanvasContext.lineTo(object.x + object.width, object.y + object.height)
         ScreenRender.mainCanvasContext.lineTo(object.x - object.width, object.y + object.height)
         ScreenRender.mainCanvasContext.fill()
+
+    }
+
+    drawCircle(config) {
+
+        ScreenRender.mainCanvasContext.beginPath();
+        ScreenRender.mainCanvasContext.arc(
+            config.x,
+            config.y,
+            config.radius,
+            0,
+            Math.PI * 2);
+        ScreenRender.mainCanvasContext.stroke();
+
+    }
+
+    drawLine(config){
+
+        ScreenRender.mainCanvasContext.beginPath()
+        ScreenRender.mainCanvasContext.moveTo(
+            config.start.x,
+            config.start.y
+        )
+        ScreenRender.mainCanvasContext.lineTo(
+            config.goal.x,
+            config.goal.y
+        )
+        //ScreenRender.mainCanvasContext.strokeStyle = "red";
+        ScreenRender.mainCanvasContext.stroke()
+        ScreenRender.mainCanvasContext.closePath()
 
     }
 

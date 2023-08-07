@@ -28,7 +28,6 @@ export class GameStateController {
         return player
     }
 
-
     addObject(object, AI = false, team = true, render = true, physics = true, rules = true, stats = true){
 
         GAME.allInOne[object.ID] = object

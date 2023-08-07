@@ -43,6 +43,11 @@ import { ScreenRenderController } from "../graphics/screenRenderController.js"
 
 var ScreenRender = ""
 
+/* FRAME */
+import { FrameController } from "../frame/frameController.js"
+
+var Frame = ""
+
 onInit(function(){
 
     /* AI */
@@ -80,6 +85,10 @@ onInit(function(){
 
     ScreenRender = new ScreenRenderController()
 
+    /* FRAME */
+
+    Frame = new FrameController()
+
     setTimeout(browseInit,1)
     setTimeout(gameLoop,1)
 
@@ -88,10 +97,21 @@ onInit(function(){
 function browseInit(){
 
     ShipCreator.createShip("playerTeam", false, true)
+    ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
 
-    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
 
-    ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam").color = "red"
+
+    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
+
+    //ShipCreator.createShip("enemyTeam", ["dummy"])
+
+    //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
+
+    //ShipCreator.createShip("playerTeam", ["dummy"]).color = "green"
 
     //ShipCreator.createShip("neutralTeam", ["dummy"]).color = "black"
 
@@ -101,7 +121,6 @@ function browseInit(){
     //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
     //ShipCreator.createShip("neutralTeam", ["robo"]).color = "red"
     //ShipCreator.createShip("enemyTeam", ["dummy"])
-    //ShipCreator.createShip("enemyTeam", ["missile_v2", "mine"])
     //ShipCreator.createShip("enemyTeam", ["robo"])
     //ShipCreator.createShip("enemyTeam", ["raio", "dummy", "missile"])
     //ShipCreator.createShip("enemyTeam", ["movable"]).color = "red"
@@ -113,7 +132,13 @@ function browseInit(){
 
     //ShipCreator.createShip("enemyTeam", ["movable"]).color = "pink"
 
+
+    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+
     setInterval(() => {
+
         //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
         //ShipCreator.createShip("enemyTeam", ["movable"])
         //ShipCreator.createShip("enemyTeam", ["mine"])
@@ -128,31 +153,79 @@ function browseInit(){
         //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
         //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
 
-    }, 1000)
+    }, 100)
 
     KeyBoard.addTriggers()
 
 }
 
-//adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada!
+//
+//// DEPOIS DE COMIITAR EU DEVO CORRIGIR OS BUGS []
+//// E ESTRUTURAR MELHOR O PROJETO []
+//
 
-// tauvel fazer uma lisda de prioridades tipo, eu quero: ships, missie, turret, bulet
 
-// naves especialis tipo: um namo com energia infinita!
+// adicionar um mecanismo que o objeto de atensao adicional para outro objeto
+
+// adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada!
+
+// fazer varios projeteis com "metade" da força. o nome poderiaser replicator???
+
+// uma arma que aao inver de sobre escrever novos projeteis essa arma criar mais projeteis facros e junta com os antigos
+
+// um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão
+
+// alem de modificados eu quero >effects< nos projetesi
+
+// um tipo de objeto especial que NÃO morre
+
+// algo que resusite!
+
+// uma mina. factory...
+
+// o modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
+
+/* > BUG <
+
+as armas NÃO estão sendo deletadas
+
+os effetios NÃO estão sendo deletados
+
+os effects NÃO estão sendo clonados
+
+*/
+
+// fazer uma nave especial que caça outras naves e recebe recompensas
+// buff para o nave caçada: + dano, etc
+// debuff para naves NÃO caçadas: - dano, etc
+
+// duplicator??? [?]
+// ilusionista [?]
+
+// um nave FODA porem... tem um caçador de recompesans [/]
+// algo depois de um tempo vai para a SEGUNDA ETAPA [/]
+
+// nave special: um nave que com opaser dos segundos fica mais forter! [/]
+// nave: que reduz enormemente e pelozidade dos objetos aoredor. pique gojo [/]
+// naves especialis tipo: um namo com energia infinita! [/]
 
 function gameLoop(){
 
+    Frame.update()
+
     KeyBoard.runCommands()
 
-    stats.updateStatus()
+    stats.update()
 
-    AI.updateAI()
-    Physics.updatePhysics()
-    Rules.updateRules()
+    Physics.update()
 
-    HUD.updateHUD()
+    AI.update()
 
-    ScreenRender.updateRender()
+    Rules.update()
+
+    HUD.update()
+
+    ScreenRender.update()
 
     window.requestAnimationFrame(gameLoop)
 

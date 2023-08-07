@@ -17,7 +17,6 @@ export class Growing {
 
         this.name = "growing"
         this.costMult = 5
-        this.callBackFunction = undefined
         this.func = new WeaponsModifiersController().cumulative
         this.value = 1
         this.valueBase = 1

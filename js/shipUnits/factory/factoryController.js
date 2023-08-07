@@ -1,39 +1,76 @@
 import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
-import { Turret } from "../../object/turrent.js"
+import { FactoryInfoController } from "./info/factoryInfoController.js"
+import { ActivateController } from "../forAllShipUnits/activateController.js"
 
 var GameState = ""
 var ObjectCreator = ""
+var ObjectActivates = ""
+
+var Activate = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     ObjectCreator = new ObjectCreatorController()
+    ObjectActivates = new ObjectActivatesController()
+
+    Activate = new ActivateController()
 
 })
 
 export class FactoryController{
 
-    createTurret(object){
+    useFactory(object, ID){
 
-        if(object.energy < 25){return}
+        let result = Activate.useActivate(object, ID)
 
-        object.energy -= 25
+        if(result.return){
+            Activate.addObject(result.return)
+        }
 
-        let turret = new Turret()
+    }
 
-        turret.x = object.x
-        turret.y = object.y
-        turret.team = object.team
-        turret.color = object.color
-        turret.ID = randomUniqueID()
+    getAll(){
 
-        ObjectCreator.giveObjectAI(turret, ["turret"])
+        return new FactoryInfoController()
 
-        new ObjectActivatesController().giveOffensiveActivate(turret)
+    }
 
-        GameState.addObject(turret, true)
+    getInfo(factoryName){
+
+        return new FactoryInfoController(true)[factoryName]
+
+    }
+
+    createFactoryObject(object, activate, config){
+
+        let newObject = new config.objectClass()
+
+        Activate.basicAjustObject(object, newObject)
+
+        ObjectCreator.giveObjectAI(newObject, config.AI)
+
+        Factory.setActivates(newObject, config.apply)
+
+        return newObject
+
+    }
+
+    setActivates(object, activates){
+
+        for (let key in activates) {
+
+            for (let index = 0; index < activates[key].length; index++) {
+
+                let activateName = activates[key][index]
+
+                ObjectActivates.giveActivate(object, key, activateName)
+
+            }
+
+        }
 
     }
 

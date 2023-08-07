@@ -1,0 +1,33 @@
+import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
+import { Drone } from "../../../../object/drone.js"
+import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
+import { FactoryController } from "../../factoryController.js"
+
+var Factory = ""
+
+onInit(function(){
+
+    Factory = new FactoryController()
+
+})
+
+export class MSP1 extends BasicActivate {
+
+    name = "MSP1"
+    cost = 20
+    type = "factory"
+    func = Factory.createFactoryObject
+    reload = 60
+    reloadTemp = 0
+    reloadStep = 1
+
+    config = {
+        "objectClass": Drone,
+        "AI": ["movable","turret"],
+        "apply": {
+            "weapon": ["auto_P1"],
+        },
+        "behavior": new TopDownBehavior().searchPriority
+    }
+
+}

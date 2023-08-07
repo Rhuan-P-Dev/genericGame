@@ -5,16 +5,18 @@ export class ModSpread extends Mod {
 
     spread = undefined
 
-    constructor(
-        spread = 0.1,
-    ){
+    constructor(){
 
         super()
 
-        this.name = "spread"
-        this.spread = spread
-        this.func = new WeaponsModifiersController().spread
-
     }
+
+    name = "spread"
+
+    spread = 0.1
+
+    costMult = 1.01
+
+    func = new WeaponsModifiersController().spread
 
 }

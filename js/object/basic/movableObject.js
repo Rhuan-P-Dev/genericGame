@@ -5,21 +5,15 @@ export class MovableObject extends Object {
     vel = 0.05
     maxVel = 3
 
-    prioritys = {
-        priority: 1,
-        targetPriority: undefined,
-        above: undefined,
-        nothing: undefined,
-    }
-
     constructor(){
 
         super()
 
         this.typeOfObject = "MovableObject"
 
+        this.priority += 1
+        
     }
-
 
     advanceShip(){
 

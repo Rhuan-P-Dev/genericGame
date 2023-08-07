@@ -1,19 +1,26 @@
 
-import { Rotable } from "../../../../object/rotable.js"
+import { InheritController } from "../../../../generalUtils/inherit.js"
+import { Rotable } from "../../../../object/basic/rotable.js"
+import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 
-export class Weapon extends Rotable{
+export class Weapon{
 
-    typeOfObject = "weapon"
 
-    name = undefined
-    cost = 10
-    type = "???"
-    range = 180 // 3 * 60
-    func = undefined
-    baseFunc = undefined
-    reload = 60
-    reloadTemp = 0
-    reloadStep = 1
+    constructor(){
+
+        new InheritController().inherit(
+            this,
+            [
+                Rotable,
+                BasicActivate
+            ]
+        )
+
+    }
+
+    type = "weapon"
+
+    range = 180
     xMult = 0
     yMult = 1
     hasModifier = false
@@ -22,6 +29,7 @@ export class Weapon extends Rotable{
         damageMult: 1,
     }
     lifeTime = 60
+    baseFunc = undefined
 
     calcStats(){
 
