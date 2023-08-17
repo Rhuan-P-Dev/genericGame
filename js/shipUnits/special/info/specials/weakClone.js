@@ -21,7 +21,7 @@ export class WeakClone extends BasicActivate {
     reloadStep = 1
 
     config = {
-        "statsMult": 0.5
+        "mult": -0.5
     }
 
 }

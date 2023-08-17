@@ -23,7 +23,7 @@ export class AIController {
             let object = allAI[objectName]
 
             object.AI.runAll((node) => {
-                AItypes[node.AIType](object)
+                AItypes[node.value](object)
             })
 
 
@@ -33,7 +33,6 @@ export class AIController {
 }
 
 var AI = new AIController()
-
 
 export class AILinkedList extends LinkedList{
 
@@ -57,7 +56,7 @@ export class AILinkedList extends LinkedList{
                 return tempArray
             }else{
 
-                tempArray.push(node.AIType)
+                tempArray.push(node.value)
 
                 node = node.next
             }

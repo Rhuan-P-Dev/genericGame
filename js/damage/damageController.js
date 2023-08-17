@@ -1,13 +1,17 @@
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
+import { CloneObjectController } from "../generalUtils/cloneObject.js"
+import { MathController } from "../generalUtils/math.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
 
 var AIUtils = ""
 var ScreenRender = ""
+var CloneObject = ""
 
 onInit(function(){
 
     AIUtils = new AIUtilsController()
     ScreenRender = new ScreenRenderController()
+    CloneObject = new CloneObjectController()
 
 })
 
@@ -16,18 +20,25 @@ export class DamageController {
     damageTypeTable = {
         "single": this.damageCalc,
         "radius": this.radiusCalc,
+        "illusion": () => {},
     }
 
-    damage(attacker, victim){
+    schedulerTypeTable = {
+        "linear": this.linear,
+        "linearReverse": this.linearReverse,
+        "uniform": this.uniform
+    }
 
-        if(!attacker.damageConfig){
-            this.damageCalc(attacker, victim)
+    damage(params){
+
+        if(!params.object.damageConfig){
+            this.damageCalc(params.object, params.victim)
             return
         }
 
-        this.damageTypeTable[attacker.damageConfig.type](
-            attacker,
-            victim
+        this.damageTypeTable[params.object.damageConfig.type](
+            params.object,
+            params.otherObject
         )
 
     }
@@ -40,16 +51,27 @@ export class DamageController {
 
         victim.life -= damage
 
+        victim.onDamage(
+            {
+                "otherObject": attacker,
+                "object": victim,
+                "calcDamage": damage,
+                "damage": attacker.damage
+            }
+        )
+
     }
 
     radiusCalc(attacker){
 
         ScreenRender.addDrawRequest(
-            ScreenRender.drawCircle,
             {
-                "x": attacker.x,
-                "y": attacker.y,
-                "radius": attacker.damageConfig.range,
+                "func":ScreenRender.drawCircle,
+                "params":{
+                    "x": attacker.x,
+                    "y": attacker.y,
+                    "radius": attacker.damageConfig.range,
+                },
             }
         )
 
@@ -64,9 +86,64 @@ export class DamageController {
 
             let victim = allEnemyObject[index]
 
-            Damage.damageCalc(attacker, victim)
+            let attackerBoked = Damage.schedulerTypeTable[attacker.damageConfig.scheduler](
+                attacker,
+                victim
+            )
+
+            Damage.damageCalc(attackerBoked, victim)
             
         }
+
+    }
+
+    boke(object){
+    
+        let boke = CloneObject.cloneSimple(object)
+
+        boke.original = object
+
+        return boke
+
+    }
+
+    linear(attacker, victim){
+
+    }
+
+    linearReverse(attacker, victim){
+
+        let attackerBoked = Damage.boke(attacker)
+        //let victimBoked = Damage.boke(victim)
+
+        let mult = new MathController().linearReverse(
+            AIUtils.getDistanceOfObjects(attacker, victim),
+            attacker.damageConfig.range,
+        )
+
+        mult += new MathController().linear(
+            attacker.width,
+            attacker.damageConfig.range
+        )
+
+        mult += new MathController().linear(
+            victim.width,
+            attacker.damageConfig.range
+        )
+
+        if(mult > 1){
+            mult = 1
+        }
+
+        attackerBoked.damage *= mult
+
+        return attackerBoked
+
+    }
+
+    uniform(attacker, victim){
+
+        return Damage.boke(attacker)
 
     }
 

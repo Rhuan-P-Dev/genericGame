@@ -1,6 +1,6 @@
 
 import { DamageController } from "../../damage/damageController.js"
-import { RadiusDamage } from "../../damage/damageTypes/radius.js"
+import { MissileDamage } from "../../damage/damageTypes/missile.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
@@ -13,10 +13,10 @@ export class MissileProjetile {
         new InheritController().inherit(
             this,
             [
+                MissileDamage,
                 BasicProjetile,
                 RotableObject,
                 MovableObject,
-                RadiusDamage,
             ]
         )
 
@@ -41,16 +41,16 @@ export class MissileProjetile {
 
 }
 
-function missileDeath(data){
+function missileDeath(params){
 
     new DamageController().radiusCalc(
-        data.object
+        params.object
     )
 
 }
 
-function removeMissileDeath(data){
+function removeMissileDeath(params){
 
-    data.object.onDeathFunctions.remove(missileDeath.name)
+    params.object.onDeathFunctions.remove(missileDeath.name)
 
 }

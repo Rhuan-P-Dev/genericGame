@@ -3,6 +3,7 @@ import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBe
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
 import { WeaponsController } from "../../weaponsController.js"
+import { EffectsWeapon } from "../weapon_extend/effectsWeapon.js"
 import { HomingWeapon } from "../weapon_extend/homingWeapon.js"
 import { Weapon } from "../weapon_extend/weapon.js"
 
@@ -25,7 +26,7 @@ export class M1 {
             [
                 Weapon,
                 FocusedTopDownBehavior,
-                HomingWeapon
+                HomingWeapon,
             ]
         )
 

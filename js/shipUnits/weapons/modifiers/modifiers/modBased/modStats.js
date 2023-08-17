@@ -21,7 +21,7 @@ export class ModStats extends Mod {
                 
             ],
 
-            "statsMult": 1.1,
+            "mult": 0.1,
         }
     ){
 

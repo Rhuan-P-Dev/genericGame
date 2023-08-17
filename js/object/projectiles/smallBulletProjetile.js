@@ -1,4 +1,5 @@
 
+import { EffectsController } from "../../effects/effectsController.js"
 import { BasicProjetile } from "./basicProjetile.js"
 
 export class SmallBulletProjetile extends BasicProjetile {

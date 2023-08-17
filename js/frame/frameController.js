@@ -5,7 +5,15 @@ class FrameOutList{
         next:{}
     }
 
-    add(func, framesOut, repeat = 1, overwrite = false, name = undefined){
+    add(
+        func,
+        framesOut = 60,
+        repeat = 1,
+        overwrite = false,
+        ID = undefined,
+        callBack = undefined
+    
+    ){
 
         let node = this.list.next
 
@@ -13,7 +21,7 @@ class FrameOutList{
             if(
                 !node.next
                 ||
-                node.overwrite && node.name == name
+                node.overwrite && node.ID == ID
             ){
                 
                 node.func = func
@@ -21,7 +29,8 @@ class FrameOutList{
                 node.tempFramesOut = framesOut
                 node.repeat = repeat
                 node.overwrite = overwrite
-                node.name = name
+                node.ID = ID
+                node.callBack = callBack
 
                 if(!node.next){
                     node.next = {}
@@ -33,8 +42,32 @@ class FrameOutList{
             }
         }
     }
-    
-    remove(node, tail){
+
+    remove(ID){
+
+        let node = this.list.next
+        let tail = this.list
+
+        while(1){
+            if(!node.next){return false}
+
+            if(node.ID == ID){
+
+                this.removeNode(node, tail)
+
+                return true
+
+            }
+
+            tail = tail.next
+            node = node.next
+
+
+        }
+
+    }
+
+    removeNode(node, tail){
 
         if(node.next.next){
             tail.next = node.next
@@ -54,7 +87,11 @@ class FrameOutList{
 
             if(node.repeat == 0){
 
-                this.remove(node, tail)
+                if(node.callBack){
+                    node.callBack()
+                }
+
+                this.removeNode(node, tail)
 
                 node = node.next
 
@@ -94,24 +131,29 @@ export class FrameController {
 
     }
 
-    add(func, frameOut, repeat, overwrite, name){
+    add(func, frameOut, repeat, overwrite, ID, callBack){
 
         FrameOutFunctions.add(
             func,
             frameOut,
             repeat,
             overwrite,
-            name
+            ID,
+            callBack
         )
 
+    }
+
+    remove(ID){
+        FrameOutFunctions.remove(ID)
     }
 
 }
 
 var Frame = new FrameController()
 
-export function setFrameOut(func, framesOut, repeat, overwrite, name){
+export function setFrameOut(func, framesOut, repeat, overwrite, ID, callBack){
 
-    Frame.add(func, framesOut, repeat, overwrite, name)
+    Frame.add(func, framesOut, repeat, overwrite, ID, callBack)
 
 }

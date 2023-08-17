@@ -5,12 +5,15 @@ import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { SpecialInfoController } from "./info/specialInfoController.js"
 import { setFrameOut } from "../../frame/frameController.js"
+import { EffectsController } from "../../effects/effectsController.js"
+import { OnLinkedList } from "../../object/basic/onInstructions.js"
 
 var GameState = ""
 var ObjectCreator = ""
 var MultiplyStats = ""
 var CloneObject = ""
 var Activate = ""
+var Effects = ""
 
 onInit(function(){
 
@@ -19,6 +22,7 @@ onInit(function(){
     MultiplyStats = new MultiplyStatsController()
     CloneObject = new CloneObjectController()
     Activate = new ActivateController()
+    Effects = new EffectsController()
 
 })
 
@@ -38,10 +42,13 @@ const stats = {
     ],
 
     "invertedStatus":[
+    ],
+
+    "invertedExponentialStatus": [
         "resistance"
     ],
 
-    "statsMult": undefined,
+    "mult": undefined,
 }
 
 export class SpecialController{
@@ -65,7 +72,7 @@ export class SpecialController{
 
         let weakClone = CloneObject.clone(object)
 
-        stats.statsMult = config.statsMult
+        stats.mult = config.mult
 
         MultiplyStats.multiply(weakClone, stats)
 
@@ -77,7 +84,7 @@ export class SpecialController{
 
     lvUp(object, activate, config){
 
-        stats.statsMult = config.statsMult
+        stats.mult = config.mult
 
         MultiplyStats.multiply(object, stats)
 
@@ -113,6 +120,11 @@ export class SpecialController{
         illusion.maxLife = 1
         illusion.defense = 0
         illusion.resistance = 1
+        illusion.damage = 0
+
+        //illusion.maxVel *= 2
+
+        illusion.lifeTime = undefined
 
         illusion.activates = {}
 
@@ -120,8 +132,21 @@ export class SpecialController{
 
         illusion.onDeathFunctions = new OnLinkedList()
         illusion.onHitFunctions = new OnLinkedList()
+        illusion.onDamageFunctions = new OnLinkedList()
 
-        GameState.addObject(illusion, true)
+        illusion.damageConfig.type = "illusion"
+
+        Effects.removeAll(illusion)
+
+        illusion.effects = {}
+
+        let AI = false
+
+        if(illusion.AI){
+            AI = true
+        }
+
+        GameState.addObject(illusion, AI)
 
     }
 

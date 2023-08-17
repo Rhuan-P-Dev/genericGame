@@ -24,7 +24,7 @@ export class Burst {
         this.func = new WeaponsModifiersController().burst
         this.quantity = 3
         this.spread = 0.05
-        this.interval = 4
+        this.interval = 8
 
     }
 

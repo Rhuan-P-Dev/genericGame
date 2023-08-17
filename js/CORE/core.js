@@ -97,15 +97,16 @@ onInit(function(){
 function browseInit(){
 
     ShipCreator.createShip("playerTeam", false, true)
-    ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
+
+    //ShipCreator.createShip("playerTeam", ["missile_v2","turret"]).color = "black"
+
+    //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam").color = "red"
 
-    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
+    ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam", ["dummy"])
 
@@ -139,6 +140,8 @@ function browseInit(){
 
     setInterval(() => {
 
+        //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "pink"
+
         //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
         //ShipCreator.createShip("enemyTeam", ["movable"])
         //ShipCreator.createShip("enemyTeam", ["mine"])
@@ -153,14 +156,15 @@ function browseInit(){
         //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
         //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
 
-    }, 100)
+    }, 1000)
 
     KeyBoard.addTriggers()
 
 }
 
 //
-//// DEPOIS DE COMIITAR EU DEVO CORRIGIR OS BUGS []
+//// DEPOIS DE COMIITAR EU DEVO CORRIGIR OS BUGS [X]
+//// ADICIONAR SUPORTE PARA ANIMASOES []
 //// E ESTRUTURAR MELHOR O PROJETO []
 //
 
@@ -173,25 +177,29 @@ function browseInit(){
 
 // uma arma que aao inver de sobre escrever novos projeteis essa arma criar mais projeteis facros e junta com os antigos
 
-// um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão
-
-// alem de modificados eu quero >effects< nos projetesi
-
 // um tipo de objeto especial que NÃO morre
 
 // algo que resusite!
 
 // uma mina. factory...
 
-// o modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
+/* > ADD <
+
+HUD - HP- ENERGY ETC []
+ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT  E OUTRAS COISAS []
+
+*/
+
+/* > RE <
+
+ILLSUIONS DEVEM SER VISTAS, NAO AFETADAS, TYPO O "GOJO" []
+TALVEZ ADICINAR "lifeTime" para illsuions? []
+
+*/
 
 /* > BUG <
 
-as armas NÃO estão sendo deletadas
-
-os effetios NÃO estão sendo deletados
-
-os effects NÃO estão sendo clonados
+modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 */
 
@@ -208,6 +216,11 @@ os effects NÃO estão sendo clonados
 // nave special: um nave que com opaser dos segundos fica mais forter! [/]
 // nave: que reduz enormemente e pelozidade dos objetos aoredor. pique gojo [/]
 // naves especialis tipo: um namo com energia infinita! [/]
+
+// uma nave special: player no spewna gera algo, toda vez que o player morre ele renaçe no algo
+// uma nave special: 'só existe uma ração' qunado morre tem % de chante de renacer, começa em: 0 e almenta a cada segundo
+// "depois que eu morrer outros virão..."
+// um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão
 
 function gameLoop(){
 

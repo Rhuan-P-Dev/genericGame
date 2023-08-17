@@ -1,5 +1,51 @@
+import { DamageController } from "../../damage/damageController.js"
+import { SingleDamage } from "../../damage/damageTypes/single.js"
+import { InheritController } from "../../generalUtils/inherit.js"
+import { ActivateInstructions } from "./activateInstructions.js"
+import { onInstructions } from "./onInstructions.js"
+
+var Damage = ""
+
+onInit(function(){
+
+    Damage = new DamageController()
+
+})
 
 export class Object {
+
+    constructor(){
+
+        new InheritController().inherit(
+            this,
+            [
+                ActivateInstructions,
+                onInstructions,
+                SingleDamage,
+            ]
+        )
+
+        this.onHitOb.add({
+            "func": "onHit",
+            "class": this
+        })
+
+        this.onHitOb.add({
+            "func": "damage",
+            "class": Damage
+        })
+
+        this.onDamageOb.add({
+            "func": "onDamage",
+            "class": this
+        })
+
+        this.onDeathOb.add({
+            "func": "onDeath",
+            "class": this
+        })
+        
+    }
 
     typeOfObject = "Object"
 
@@ -28,99 +74,10 @@ export class Object {
 
     priority = 0
 
-    activates = {}
+    effects = {}
 
-    addWeapon(weapon){
-
-        if(!weapon.auto){
-
-            this.rightRotateOb.add( () => {
-                weapon.rotateToRight()
-            })
-    
-            this.leftRotateOb.add( () => {
-                weapon.rotateToLeft()
-            })
-
-        }
-    }
-
-    addActivate(activate){
-
-        activate.owner = this
-        activate.team = this.team
-
-        if(activate.type == "weapon"){
-            this.addWeapon(activate)
-        }
-
-        this.activates[activate.ID] = activate
-        
-    }
-
-    activate(ID){
-        if(this.activates[ID]){
-            this.activates[ID].callBack(this, ID)
-        }
-    }
-
-    getActivates(){
-        return this.activates
-    }
-
-    onHitFunctions = new OnLinkedList()
-
-    onHit(object, target){
-
-        this.onHitFunctions.runAll(
-            {
-                object: object,
-                target: target,
-            }
-        )
-
-    }
-
-    onDeathFunctions = new OnLinkedList()
-
-    onDeath(object){
-
-        this.onDeathFunctions.runAll(
-            {
-                object: object,
-            }
-        )
-
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    onHitBuildFunctionsList = []
-
-    onHitBuild(){
-
-        console.log("onHitBuild...")
-        console.log(this)
-
-        return true
-
-        for (let index = 0; index < this.onHitBuildFunctionsList.length; index++) {
-
-            this.onHitFunctions.add("func", this.onHitBuildFunctionsList[index])
-
-        }
-
-    }
+    onHitOb = new Obeserver()
+    onDamageOb = new Obeserver()
+    onDeathOb = new Obeserver()
 
 }

@@ -50,14 +50,20 @@ export class PhysicsController {
             let distance = AIUtils.getDistanceOfObjects(object, currentObject)
             
             if(distance < object.width + currentObject.width){
+                
+                object.onHitOb.run({
+                    "object": object,
+                    "otherObject": currentObject,
+                })
 
-                object.onHit(object, currentObject)
+                currentObject.onHitOb.run({
+                    "object": currentObject,
+                    "otherObject": object,
+                })
 
-                currentObject.onHit(currentObject, object)
+                //Damage.damage(object, currentObject)
 
-                Damage.damage(object, currentObject)
-
-                Damage.damage(currentObject, object)
+                //Damage.damage(currentObject, object)
                     
             }
 

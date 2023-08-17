@@ -4,16 +4,26 @@ import { SmallBulletProjetile } from "../../object/projectiles/smallBulletProjet
 import { MissileProjetile } from "../../object/projectiles/missileProjetile.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { setFrameOut } from "../../frame/frameController.js"
+import { EffectsController } from "../../effects/effectsController.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 
 var ObjectCreator = ""
 
 var Activate = ""
+
+var Effects = ""
+
+var CloneObject = ""
 
 onInit(function(){
 
     ObjectCreator = new ObjectCreatorController()
 
     Activate = new ActivateController()
+
+    Effects = new EffectsController()
+
+    CloneObject = new CloneObjectController()
 
 })
 
@@ -33,6 +43,19 @@ export class WeaponsController{
         if(weapon.homing){
 
             object.searchPriority = weapon.searchPriority
+
+        }
+
+        if(weapon.effects){
+
+            for(let index in weapon.effects){
+
+                this.applyEffect(
+                    object,
+                    weapon.effects[index]
+                )
+
+            }
 
         }
 
@@ -116,6 +139,42 @@ export class WeaponsController{
 
         return missile
     
+    }
+
+    applyEffect(object, effect){
+
+        let config = effect[0]
+
+        let params = CloneObject.cloneSimple(effect[1])
+
+        let func = (config, params) => {
+            Effects.add(
+                config.name,
+                config.type,
+                params,
+                config,
+            )
+        }
+
+        if(config.apply){
+
+            object.onHitFunctions.add( (localParams) => {
+
+                params.object = localParams.otherObject
+                params.otherObject = localParams.object
+    
+                func(config, params)
+    
+            } )
+
+        }else{
+
+            params.object = object
+
+            func(config, params)
+
+        }
+
     }
 
 }

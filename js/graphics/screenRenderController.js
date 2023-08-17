@@ -9,28 +9,8 @@ onInit(function(){
 
 })
 
-class DrawRequestLinkedList{
+class DrawRequestLinkedList extends LinkedList{
 
-    list = {
-        next:{}
-    }
-
-    add(func, param){
-        let node = this.list.next
-        while(1){
-            if(!node.next){
-                
-                node.func = func
-                node.param = param
-                node.next = {}
-
-                return true
-            }else{
-                node = node.next
-            }
-        }
-    }
-    
     runAll(){
 
         let node = this.list.next
@@ -38,7 +18,7 @@ class DrawRequestLinkedList{
         while(1){
             if(!node.next){return}
 
-            node.func(node.param)
+            node.value.func(node.value.params)
 
             node = node.next
 
@@ -55,9 +35,9 @@ export class ScreenRenderController {
     mainCanvas = document.getElementById("mainCanvas")
     mainCanvasContext = mainCanvas.getContext("2d")
 
-    addDrawRequest(func, param){
+    addDrawRequest(params){
 
-        drawRequestQueue.add(func, param)
+        drawRequestQueue.add(params)
 
     }
 

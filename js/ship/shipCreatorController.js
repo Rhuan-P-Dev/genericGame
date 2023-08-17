@@ -1,4 +1,5 @@
 import { EffectsController } from "../effects/effectsController.js"
+import { FrameController } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { MultiplyStatsController } from "../generalUtils/multiplyStats.js"
 import { Ship } from "../object/ship.js"
@@ -36,26 +37,14 @@ export class ShipCreatorController{
             newShip = ObjectCreator.giveObjectAI(newShip, AI)
             haveAI = true
 
-            ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "special", "WeakClone")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+
             ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
-
-            new EffectsController().add(
-                "gojo",
-                "onHit",
-                {
-                    "object": newShip,
-                },
-            )
-
-            new EffectsController().add(
-                "gojo",
-                "effect",
-                {
-                    "object": newShip,
-                },
-                15,
-                -1
-            )
 
             //ObjectActivates.giveActivate(newShip, "weapon", "P1")
 
@@ -79,21 +68,28 @@ export class ShipCreatorController{
                     "vel",
                     "lifeTime",
                 ],
-            
+
                 "invertedStatus":[
+                ],
+            
+                "invertedExponentialStatus": [
                     "resistance"
                 ],
             
-                "statsMult": 1.7,
+                "mult": 0,
                 
             }
 
-            //new MultiplyStatsController().multiply(newShip, stats)
+            new MultiplyStatsController().multiply(newShip, stats)
+
+            console.log(
+                //newShip
+            )
 
             //newShip.x = 5
             //newShip.y = 250
 
-//            newShip.currentXVel = 1
+//          newShip.currentXVel = 1
 
             //newShip.maxLife = 1000000
             //newShip.life = 1000000
@@ -125,29 +121,81 @@ export class ShipCreatorController{
 
             newShip = ObjectCreator.makeObjectInPlayerControl(newShip)
 
-            ObjectActivates.giveActivate(newShip, "weapon", "SP1")
-            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            ObjectActivates.giveActivate(newShip, "weapon", "P1")
             ObjectActivates.giveActivate(newShip, "weapon", "M1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+
+            /*
 
             new EffectsController().add(
-                "clone",
-                "onDeath",
+                "breathe",
+                "effect",
                 {
                     "object": newShip,
-                    "statsMult" :0.5
-                },
+                }
             )
 
             new EffectsController().add(
-                "illusion",
-                "onHit",
+                "evolutron",
+                "effect",
                 {
                     "object": newShip,
-                },
+                }
             )
+
+            new EffectsController().add(
+                "second stage",
+                "effect",
+                {
+                    "object": newShip,
+                }
+            )
+
+            new EffectsController().add(
+                "illusion v1",
+                "effect",
+                {
+                    "object": newShip,
+                }
+            )
+
+            new EffectsController().add(
+                "slowdown area",
+                "effect",
+                {
+                    "object": newShip,
+                }
+            )
+
+            new EffectsController().add(
+                "untouchable",
+                "effect",
+                {
+                    "object": newShip,
+                }
+            )
+
+            new EffectsController().add(
+                "deflet area",
+                "effect",
+                {
+                    "object": newShip,
+                }
+            )
+
+            new EffectsController().add(
+                "help",
+                "effect",
+                {
+                    "object": newShip,
+                }
+            )
+
+            */
 
             //ObjectActivates.giveActivate(newShip, "factory", "SP1")
-            //ObjectActivates.giveActivate(newShip, "factory", "MSP1")
+            ObjectActivates.giveActivate(newShip, "factory", "MSP1")
             //ObjectActivates.giveActivate(newShip, "factory", "DF1")
 
             //ObjectActivates.giveActivate(newShip, "defense", "Regen")
@@ -158,118 +206,8 @@ export class ShipCreatorController{
             //ObjectActivates.giveActivate(newShip, "special", "Overclock")
             //ObjectActivates.giveActivate(newShip, "special", "LvUp")
 
-            //newShip.x = 150
-            //newShip.y = 250
-
-            //newShip.x = 450
-            //newShip.y = 250
-
-            //newShip.currentXVel = 1
-
-            //newShip.lifeRegen = -1
-
-            /*
-
-            new EffectsController().add(
-                "clone",
-                {
-                    "object": newShip,
-                },
-                60,
-                -1
-            )
-
-            new EffectsController().add(
-                "illusion",
-                {
-                    "object": newShip,
-                },
-                600,
-                -1
-            )
-
-            new EffectsController().add(
-                "infinity energy",
-                {
-                    "object": newShip
-                },
-                60,
-                -1
-            )
-
-            new EffectsController().add(
-                "second stage",
-                {
-                    "object": newShip,
-                },
-                600,
-                1
-            )
-
-            new EffectsController().add(
-                "evolutron",
-                {
-                    "object": newShip,
-                    "statsMult" :1.01
-                },
-                60,
-                -1
-            )
-
-            new EffectsController().add(
-                "bounty hunter",
-                {},
-                240,
-                1
-            )
-
-            new EffectsController().add(
-                "evolutron",
-                "effect",
-                {
-                    "object": newShip,
-                    "statsMult" :1.01
-                },
-            )
-
-            new EffectsController().add(
-                "gojo",
-                "onHit",
-                {
-                    "object": newShip,
-                },
-            )
-
-            newShip.onHitFunctions.add(
-                (data) => {
-
-                    data.object.life += 100
-
-                    //data.target.owner.owner.life = -1
-
-                }
-            )
-
-            new EffectsController().add(
-                "MR",
-                "onHit",
-                {
-                    "object": newShip,
-                    "statsMult" :1.01
-                },
-            )
-
-            */
-
-            new EffectsController().add(
-                "infinity energy",
-                "onHit",
-                {
-                    "object": newShip
-                },
-                60,
-                -1
-            )
+            newShip.x = 50
+            newShip.y = 110
 
         }
 

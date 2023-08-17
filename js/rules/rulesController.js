@@ -58,9 +58,11 @@ export class RulesController {
 
         if(object.life <= 0){
 
-            object.onDeath(object)
+            object.onDeath({
+                object
+            })
 
-            GameState.removeObject(object)
+            GameState.remove(object)
         }
 
         if(
@@ -69,9 +71,11 @@ export class RulesController {
             object.lifeTime <= 0
         ){
 
-            object.onDeath(object)
+            object.onDeath({
+                object
+            })
 
-            GameState.removeObject(object)
+            GameState.remove(object)
         }
 
 

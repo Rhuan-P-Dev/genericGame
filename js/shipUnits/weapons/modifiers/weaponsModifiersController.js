@@ -74,7 +74,7 @@ export class WeaponsModifiersController{
 
                 newOutput.push({
                     "object": tempProjectile,
-                    "config": cloneObject.cloneObject(output[index].config)
+                    "config": cloneObject.cloneAttribute(output[index].config)
                 })
 
                 newOutput[newOutput.length-1].config.interval = modifier.interval * indey
@@ -96,7 +96,7 @@ export class WeaponsModifiersController{
             for (let indey = 0; indey < modifier.quantity; indey++) {
 
                 let tempProjectile = cloneObject.clone(output[index].object)
-                let temConfig = cloneObject.cloneObject(output[index].config)
+                let temConfig = cloneObject.cloneAttribute(output[index].config)
 
                 WeaponsModifiers.spread([{
                     "object": tempProjectile,
@@ -126,7 +126,7 @@ export class WeaponsModifiersController{
 
         setFrameOut( () => {
 
-            modifier.stats.statsMult = modifier.value
+            modifier.stats.mult = modifier.value
 
             for (let index = 0; index < output.length; index++) {
 
@@ -183,7 +183,7 @@ export class WeaponsModifiersController{
 
         activate.hasModifier = true
 
-        activate.modifiers = new ModifiersLinkedList()
+        activate.modifiers = new ModifiersDoublyLinkedList()
 
     }
 
@@ -203,7 +203,7 @@ export class WeaponsModifiersController{
 
         modifier.activate = activate
 
-        activate.modifiers.add("modifier", modifier)
+        activate.modifiers.add(modifier)
 
         activate.cost *= modifier.costMult
 
@@ -219,18 +219,14 @@ export class WeaponsModifiersController{
 
 var WeaponsModifiers = new WeaponsModifiersController()
 
-export class ModifiersLinkedList{
+export class ModifiersDoublyLinkedList extends LinkedList{
 
-    list = {
-        next:{}
-    }
-
-    add(name, value){
+    add(value){
         let node = this.list.next
         while(1){
             if(!node.next){
                 
-                node[name] = value
+                node.value = value
                 node.next = {}
 
                 node.next.previous = node
@@ -242,36 +238,13 @@ export class ModifiersLinkedList{
         }
     }
     
-    remove(name){
-        let node = this.list.next
-        let tail = this.list
-        while(1){
-            if(!node.next){return false}
-
-            if(name == node[name]){
-
-                if(node.next.next){
-                    node[name] = node.next[name]
-                    node.next = node.next.next
-                }else{
-                    tail.next = {}
-                }
-
-                return true
-            }else{
-                tail = node
-                node = node.next
-            }
-        }
-    }
-
     runAll(node = this.list.next, outputObjects = []){
 
         if(outputObjects.length == 0){
 
             outputObjects.push({
-                "object": node.modifier.activate.baseFunc(
-                    node.modifier.activate,
+                "object": node.value.activate.baseFunc(
+                    node.value.activate,
                 ),
                 "config": {
                     "tempXSpread": 0,
@@ -285,10 +258,10 @@ export class ModifiersLinkedList{
 
         while(node.next){
 
-            outputObjects = node.modifier.func(
+            outputObjects = node.value.func(
                 outputObjects,
-                node.modifier,
-                node.modifier.activate.config,
+                node.value,
+                node.value.activate.config,
                 node,
             )
 
@@ -304,7 +277,7 @@ export class ModifiersLinkedList{
             node = node.previous
         }
 
-        Weapons.processObjects(node.modifier.activate, outputObjects)
+        Weapons.processObjects(node.value.activate, outputObjects)
         
     }
 

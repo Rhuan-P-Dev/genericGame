@@ -1,11 +1,16 @@
+import { SingleDamage } from "./single.js"
 
-export class RadiusDamage {
+export class RadiusDamage extends SingleDamage {
 
-    damageConfig = {
-        "type": "radius",
-        "range": 25,
-        "damage": "uniform",
-        // mais long menor dano ou mais long maior dano
+    constructor(){
+
+        super()
+
+        this.damageConfig.type = "radius"
+        this.damageConfig.range = 25
+        this.damageConfig.scheduler = "uniform"
+
+
     }
 
 }

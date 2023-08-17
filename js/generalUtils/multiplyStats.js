@@ -1,19 +1,73 @@
+import { MathController } from "./math.js"
+
+var Math = ""
+
+onInit(function(){
+
+    Math = new MathController()
+
+})
+
 
 export class MultiplyStatsController {
 
     multiply(object, stats){
 
         if(stats.stats){
-            this.mult(object, stats.stats, stats.statsMult)
+            this.mult(
+                object,
+                stats.stats,
+                stats.mult
+            )
         }
 
         if(stats.invertedStatus){
 
-            let invertedMult = this.invertMult(stats.statsMult)
-
-            this.mult(object, stats.invertedStatus, invertedMult)
+            this.mult(
+                object,
+                stats.invertedStatus,
+                Math.inverter(stats.mult)
+            )
 
         }
+
+        if(stats.exponentialStatus){
+
+            this.exponentialMultiply(
+                object,
+                stats,
+                "exponentialStatus"
+            )
+
+        }
+
+        if(stats.invertedExponentialStatus){
+
+            this.exponentialMultiply(
+                object,
+                stats,
+                "invertedExponentialStatus"
+            )
+
+        }
+
+    }
+
+    exponentialMultiply(object, stats, statusType){
+
+        let mult = parsePositive(stats.mult) / (stats.mult * 2)
+        let repeat = parsePositive(stats.mult) * 2
+
+        if(mult < 0){
+            mult = parsePositive(mult) + 1
+        }
+
+        this.exponential(
+            object,
+            stats[statusType],
+            mult,
+            repeat
+        )
 
     }
 
@@ -24,22 +78,28 @@ export class MultiplyStatsController {
             let stat = stats[index]
 
             if(object[stat]){
-                object[stat] *= mult
+                object[stat] += object[stat] * mult
             }
             
         }
 
     }
 
-    invertMult(mult){
+    exponential(object, stats, mult, repeat = 1){
 
-        if(mult < 1){
-            mult = (1 - mult) + 1
-        }else{
-            mult = 2 - mult
+        for (let index = 0; index < stats.length; index++) {
+
+            let stat = stats[index]
+
+            if(object[stat]){
+
+                for (let indey = 0; indey < repeat; indey++) {
+                    object[stat] *= mult ** 0.1
+                }
+                
+            }
+            
         }
-
-        return mult
 
     }
 

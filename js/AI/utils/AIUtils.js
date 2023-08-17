@@ -401,6 +401,8 @@ class CustomPriorityQueue {
 
     inverter(number){ // Math
 
+        console.log("OBSOLETE!")
+
         return number - number * 2
 
     }

@@ -1,8 +1,10 @@
 
 import { TopDownBehavior } from "../AI/behavior/topDownBehavior.js"
+import { EffectsController } from "../effects/effectsController.js"
 import { EnergizadObject } from "../object/basic/energizedObject.js"
 import { MovableObject } from "../object/basic/movableObject.js"
 import { Object } from "../object/basic/object.js"
+import { OnLinkedList } from "../object/basic/onInstructions.js"
 import { Rotable } from "../object/basic/rotable.js"
 import { RotableObject } from "../object/basic/rotableObject.js"
 import { Drone } from "../object/drone.js"
@@ -24,7 +26,11 @@ var Special = ""
 var Factory = ""
 var Defense = ""
 
+var Effects = ""
+
 var typeActivatesFucntions = {}
+
+console.log("EU ESPERO QUE ESSA ALT NÃO TENHA QUEBADO NADA! LINHA 141!")
 
 onInit(function(){
 
@@ -34,6 +40,8 @@ onInit(function(){
     Special = new SpecialController()
     Factory = new FactoryController()
     Defense = new DefenseController()
+
+    Effects = new EffectsController()
 
     typeActivatesFucntions = {
         "weapon": Weapons.getInfo,
@@ -60,25 +68,31 @@ const typeOfObjectsTable = {
 
 export class CloneObjectController {
 
-    cloneAttributeFunctions = {
+    cloneObjectFunctions = {
+        "onHitBuildFunctionsList": this.cloneOnHitBuildFunctionsList, //useless?
         "activates": this.cloneActivates,
-        "onHitFunctions": this.cloneOnHitFunctions,
-        "onHitBuildFunctionsList": this.cloneOnHitBuildFunctionsList,
-        "rightRotateOb": this.cloneObservers,
-        "leftRotateOb": this.cloneObservers,
         "AI": this.cloneAI,
         "searchPriority": this.cloneSearchPriority,
         "damageConfig": this.cloneDamageConfig,
-        "onDeathFunctions": this.aaa
+        "effects": this.cloneEffects,
+        "onHitFunctions": this.cloneOnFunctions,
+        "onDeathFunctions": this.cloneOnFunctions,
+        "onDamageFunctions": this.cloneOnFunctions,
+        "owner": this.shared,
+        "onHitOb": this.cloneObservers,
+        "onDeathOb": this.cloneObservers,
+        "onDamageOb": this.cloneObservers,
+        "rightRotateOb": this.cloneObservers,
+        "leftRotateOb": this.cloneObservers,
     }
 
     clone(object){
 
         let clonedObject = new typeOfObjectsTable[object.typeOfObject]()
 
-        this.cloneObject(object, clonedObject)
-
         this.cloneAttribute(object, clonedObject)
+
+        this.cloneObject(object, clonedObject)
 
         if(
             object.ID == "player" && object.color != "black"
@@ -89,18 +103,24 @@ export class CloneObjectController {
         return clonedObject
     }
 
-    cloneAttribute(object, clonedObject = {}){
+    cloneSimple(object, clonedObject = {}){
+
+        return this.cloneAttribute(object, clonedObject)
+
+    }
+
+    cloneObject(object, clonedObject = {}){
 
         for (let key in object) {
-            
+
             if(typeof(object[key]) == "object"){
 
-                this.cloneAttributeFunctions[key](
+                this.cloneObjectFunctions[key](
                     object,
                     clonedObject,
                     {
                         "keyType": key
-                    }, // <- useless for now
+                    },
                 )
 
             }
@@ -111,17 +131,49 @@ export class CloneObjectController {
 
     }
 
-    cloneObject(object, clonedObject = {}){
+    cloneAttribute(object, clonedObject = {}){
 
         for (let key in object) {
 
-            if(typeof(object[key]) == "object"){continue}
+            if(
+                typeof(object[key]) == "object"
+                ||
+                typeof(object[key]) == "function"
+            ){
+                continue
+            }
 
             clonedObject[key] = object[key]
 
         }
 
         return clonedObject
+    }
+
+    recursiveCloneAttribute(object, clonedObject = {}, overwrite = false){
+
+        let dummy = object
+
+        for (let key in object) {
+
+            if(!overwrite && clonedObject[key]){
+                this.recursiveCloneAttribute(dummy[key], clonedObject[key])
+                continue
+            }
+
+            if(
+                typeof(object[key]) == "object"
+            ){
+                clonedObject[key] = {}
+                this.recursiveCloneAttribute(dummy[key], clonedObject[key])
+            }else{
+                clonedObject[key] = object[key]
+            }
+
+        }
+
+        return clonedObject
+        
     }
 
     cloneActivates(object, clonedObject = {}){
@@ -140,36 +192,20 @@ export class CloneObjectController {
 
     }
 
-    cloneOnHitFunctions(object, clonedObject = {}){
+    cloneOnFunctions(object, clonedObject = {}, config){
         
-        clonedObject.onHitFunctions = new OnLinkedList()
+        clonedObject[config.keyType] = new OnLinkedList()
 
-        let onHitFunctionsArray = object.onHitFunctions.getAllInArray(name)
+        let onFunctionsArray = object[config.keyType].getAllInArray()
 
-        for (let index = 0; index < onHitFunctionsArray.length; index++) {
+        for (let index = 0; index < onFunctionsArray.length; index++) {
 
-            clonedObject.onHitFunctions.add(onHitFunctionsArray[index])
+            clonedObject[config.keyType].add(onFunctionsArray[index].value)
             
         }
 
         return clonedObject
 
-    }
-
-    aaa(object, clonedObject = {}){
-
-        clonedObject.onDeathFunctions = new OnLinkedList()
-
-        let onHitFunctionsArray = object.onDeathFunctions.getAllInArray(name)
-
-        for (let index = 0; index < onHitFunctionsArray.length; index++) {
-
-            clonedObject.onDeathFunctions.add(onHitFunctionsArray[index])
-            
-        }
-
-        return clonedObject
-        
     }
 
     cloneAI(object, clonedObject = {}){
@@ -187,7 +223,7 @@ export class CloneObjectController {
 
     cloneOnHitBuildFunctionsList(object, clonedObject = {}){
 
-        console.log("clone hit")
+        //console.log("clone hit")
 
         return // useless?
 
@@ -218,12 +254,12 @@ export class CloneObjectController {
         clonedObject.searchPriority = {}
         clonedObject.searchPriority.ifDontHave = {}
 
-        CloneObject.cloneObject(
+        CloneObject.cloneAttribute(
             object.searchPriority,
             clonedObject.searchPriority
         )
 
-        CloneObject.cloneObject(
+        CloneObject.cloneAttribute(
             object.searchPriority.ifDontHave,
             clonedObject.searchPriority.ifDontHave
         )
@@ -236,10 +272,73 @@ export class CloneObjectController {
 
         clonedObject.damageConfig = {}
 
-        CloneObject.cloneObject(
+        CloneObject.cloneAttribute(
             object.damageConfig,
             clonedObject.damageConfig
         )
+
+        return clonedObject
+
+    }
+
+    cloneEffects(object, clonedObject = {}, config){
+
+        clonedObject.effects = {} // new LinkedList()
+
+        let effectsArray = object.effects //.getAllInArray("effect")
+
+        for (let effect in effectsArray){
+
+            let effectParams = CloneObject.cloneAttribute(
+                effectsArray[effect]
+            )
+
+            effectParams.config = CloneObject.cloneAttribute(
+                effectsArray[effect].config
+            )
+
+            effectParams.params = CloneObject.cloneAttribute(
+                effectsArray[effect].params
+            )
+
+            effectParams.params.object = clonedObject
+
+            Effects.add(
+                effectParams.effectName,
+                effectParams.effectType,
+                effectParams.params,
+                effectParams.config,
+            )
+
+        }
+
+        return clonedObject
+
+    }
+
+    cloneArray(object, clonedObject = {}, config){
+
+        console.log("USELESS FUCKTION!!")
+
+        clonedObject[config.keyType] = new Array()
+
+        return clonedObject
+
+    }
+
+    cloneLinkedList(object, clonedObject = {}, config){
+
+        console.log("USELESS FUCKTION!!")
+
+        clonedObject[config.keyType] = new LinkedList()
+
+        return clonedObject
+
+    }
+
+    shared(object, clonedObject = {}, config){
+
+        clonedObject[config.keyType] = object[config.keyType]
 
         return clonedObject
 

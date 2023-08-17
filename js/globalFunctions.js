@@ -26,8 +26,6 @@ function alwaysPositive(number){
     }
 }
 
-
-
 function returnRandomObject(objects){
 
     let index = randomInteger(0, Object.keys(objects).length-1)

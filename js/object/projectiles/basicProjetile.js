@@ -15,7 +15,7 @@ export class BasicProjetile extends Object {
 
 }
 
-function selfDestruction(data){
-    data.object.life = -1
-    data.object.maxLife = -1
+function selfDestruction(params){
+    params.object.life = -1
+    params.object.maxLife = -1
 }

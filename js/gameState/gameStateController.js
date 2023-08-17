@@ -1,3 +1,12 @@
+import { EffectsController } from "../effects/effectsController.js"
+
+var Effects = ""
+
+onInit(function(){
+
+    Effects = new EffectsController()
+
+})
 
 const GAME = {}
 
@@ -28,7 +37,15 @@ export class GameStateController {
         return player
     }
 
-    addObject(object, AI = false, team = true, render = true, physics = true, rules = true, stats = true){
+    addObject(
+        object,
+        AI = false,
+        team = true,
+        render = true,
+        physics = true,
+        rules = true,
+        stats = true
+    ){
 
         GAME.allInOne[object.ID] = object
 
@@ -58,11 +75,42 @@ export class GameStateController {
 
     }
 
+    remove(object){
+
+        this.removeActivates(object)
+
+        this.removeObject(object)
+
+        this.removeEffects(object)
+
+    }
+
+    removeActivates(object){
+
+        for(let activate in object.activates){
+
+            if(object.activates[activate].auto){
+                this.removeObject(object.activates[activate])
+            }
+
+        }
+
+    }
+
     removeObject(object){
+
         for(let area in GAME){
             delete GAME[area][object.ID]
         }
+
         delete GAME.team[object.team][object.ID]
+
+    }
+
+    removeEffects(object){
+
+        Effects.removeAll(object)
+
     }
 
     getObject(ID){
