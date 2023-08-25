@@ -28,22 +28,25 @@ class DrawRequestLinkedList extends LinkedList{
 
 }
 
-var drawRequestQueue = new DrawRequestLinkedList()
+var DrawRequestQueue = new DrawRequestLinkedList()
 
 export class ScreenRenderController {
 
     mainCanvas = document.getElementById("mainCanvas")
     mainCanvasContext = mainCanvas.getContext("2d")
 
+    defaultColor = "black"
+    defaultLineWidth = 1
+
     addDrawRequest(params){
 
-        drawRequestQueue.add(params)
+        DrawRequestQueue.add(params)
 
     }
 
     runRequests(){
-        drawRequestQueue.runAll()
-        drawRequestQueue = new DrawRequestLinkedList()
+        DrawRequestQueue.runAll()
+        DrawRequestQueue = new DrawRequestLinkedList()
     }
 
     update(){
@@ -51,6 +54,8 @@ export class ScreenRenderController {
         ScreenRender.clean()
 
         ScreenRender.runRequests()
+
+        ScreenRender.defaultParams()
 
         let allObjectsRenderable = GameState.getAllObjectsRender()
 
@@ -62,10 +67,6 @@ export class ScreenRenderController {
 
         }
 
-    }
-
-    clean(){
-        ScreenRender.mainCanvasContext.clearRect(0,0,ScreenRender.mainCanvas.width,ScreenRender.mainCanvas.height)
     }
 
     renderTheFrontOfShip(object){
@@ -122,34 +123,92 @@ export class ScreenRenderController {
 
     }
 
-    drawCircle(config) {
+    drawCircle(params) {
 
-        ScreenRender.mainCanvasContext.beginPath();
+        ScreenRender.setStyleParams(params)
+
+        ScreenRender.mainCanvasContext.beginPath()
         ScreenRender.mainCanvasContext.arc(
-            config.x,
-            config.y,
-            config.radius,
+            params.x,
+            params.y,
+            params.radius,
             0,
-            Math.PI * 2);
-        ScreenRender.mainCanvasContext.stroke();
+            Math.PI * 2)
+        ScreenRender.mainCanvasContext.stroke()
 
     }
 
-    drawLine(config){
+    drawLine(params){
+
+        ScreenRender.setStyleParams(params)
 
         ScreenRender.mainCanvasContext.beginPath()
+
         ScreenRender.mainCanvasContext.moveTo(
-            config.start.x,
-            config.start.y
+            params.positions[0][0],
+            params.positions[0][1]
         )
-        ScreenRender.mainCanvasContext.lineTo(
-            config.goal.x,
-            config.goal.y
-        )
-        //ScreenRender.mainCanvasContext.strokeStyle = "red";
+
+        for (let index = 1; index < params.positions.length; index++) {
+    
+            ScreenRender.mainCanvasContext.lineTo(
+                params.positions[index][0],
+                params.positions[index][1]
+            )
+
+        }
+
         ScreenRender.mainCanvasContext.stroke()
         ScreenRender.mainCanvasContext.closePath()
 
+    }
+
+    fillArea(params){
+
+        ScreenRender.setStyleParams(params)
+
+        ScreenRender.mainCanvasContext.beginPath()
+        ScreenRender.mainCanvasContext.moveTo(
+            params.positions[0][0],
+            params.positions[0][1]
+        )
+
+        for (let index = 1; index < params.positions.length; index++) {
+    
+            ScreenRender.mainCanvasContext.lineTo(
+                params.positions[index][0],
+                params.positions[index][1]
+            )
+
+        }
+    
+        ScreenRender.mainCanvasContext.fill()
+
+    }
+
+    setStyleParams(params){
+
+        ScreenRender.mainCanvasContext.strokeStyle = params.color || ScreenRender.defaultColor
+        ScreenRender.mainCanvasContext.lineWidth = params.lineWidth || ScreenRender.defaultLineWidth
+        ScreenRender.mainCanvasContext.fillStyle = params.color || ScreenRender.defaultColor
+
+    }
+
+    defaultParams(){
+
+        ScreenRender.mainCanvasContext.strokeStyle = ScreenRender.defaultColor
+        ScreenRender.mainCanvasContext.fillStyle = ScreenRender.defaultColor
+        ScreenRender.mainCanvasContext.lineWidth = ScreenRender.defaultLineWidth
+
+    }
+
+    clean(){
+        ScreenRender.mainCanvasContext.clearRect(
+            0,
+            0,
+            ScreenRender.mainCanvas.width,
+            ScreenRender.mainCanvas.height
+        )
     }
 
 }

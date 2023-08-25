@@ -1,14 +1,17 @@
 import { DamageController } from "../../damage/damageController.js"
 import { SingleDamage } from "../../damage/damageTypes/single.js"
+import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { ActivateInstructions } from "./activateInstructions.js"
 import { onInstructions } from "./onInstructions.js"
 
+var GameState = ""
 var Damage = ""
 
 onInit(function(){
 
     Damage = new DamageController()
+    GameState = new GameStateController()
 
 })
 
@@ -25,26 +28,16 @@ export class Object {
             ]
         )
 
-        this.onHitOb.add({
-            "func": "onHit",
-            "class": this
-        })
-
-        this.onHitOb.add({
+        this.onHit.add({
             "func": "damage",
             "class": Damage
         })
 
-        this.onDamageOb.add({
-            "func": "onDamage",
-            "class": this
+        this.onDeath.add({
+            "func": "removeObType",
+            "class": GameState,
         })
 
-        this.onDeathOb.add({
-            "func": "onDeath",
-            "class": this
-        })
-        
     }
 
     typeOfObject = "Object"
@@ -75,9 +68,5 @@ export class Object {
     priority = 0
 
     effects = {}
-
-    onHitOb = new Obeserver()
-    onDamageOb = new Obeserver()
-    onDeathOb = new Obeserver()
 
 }

@@ -5,6 +5,8 @@ export class ActivateInstructions{
 
     addWeapon(weapon){
 
+        // isso é uma ganbiara
+
         if(!weapon.auto){
 
             this.rightRotateOb.add( () => {

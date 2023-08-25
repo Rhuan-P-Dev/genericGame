@@ -10,7 +10,7 @@ export class EffectsWeapon {
             },
         ],[
             {
-                "name": "in shock",
+                "name": "shock",
                 "type": "effect",
                 "apply": true,
             },

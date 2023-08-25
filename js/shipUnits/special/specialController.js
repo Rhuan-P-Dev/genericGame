@@ -6,7 +6,6 @@ import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { SpecialInfoController } from "./info/specialInfoController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
-import { OnLinkedList } from "../../object/basic/onInstructions.js"
 
 var GameState = ""
 var ObjectCreator = ""
@@ -116,13 +115,15 @@ export class SpecialController{
 
         let illusion = CloneObject.clone(object)
 
+        console.log(
+"AS ILLUSIONS ESTÃO BUGADAS, O TRIGGER DE MORTE ESTASENDO APAGADO!"
+            )
+
         illusion.life = 1
         illusion.maxLife = 1
         illusion.defense = 0
         illusion.resistance = 1
         illusion.damage = 0
-
-        //illusion.maxVel *= 2
 
         illusion.lifeTime = undefined
 
@@ -130,15 +131,13 @@ export class SpecialController{
 
         illusion.ID = randomUniqueID()
 
-        illusion.onDeathFunctions = new OnLinkedList()
-        illusion.onHitFunctions = new OnLinkedList()
-        illusion.onDamageFunctions = new OnLinkedList()
+        illusion.onDeath = new Obeserver() //<---------------------------
+        illusion.onHit = new Obeserver()
+        illusion.onDamage = new Obeserver()
 
         illusion.damageConfig.type = "illusion"
 
         Effects.removeAll(illusion)
-
-        illusion.effects = {}
 
         let AI = false
 

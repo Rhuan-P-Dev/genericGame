@@ -18,8 +18,8 @@ export class Growing {
         this.name = "growing"
         this.costMult = 5
         this.func = new WeaponsModifiersController().cumulative
-        this.value = 1
-        this.valueBase = 1
+        this.value = 0
+        this.valueBase = 0
         this.valueStep = 0.1
 
     }

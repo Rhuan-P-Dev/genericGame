@@ -3,8 +3,20 @@ import { FrameController } from "../../frame/frameController.js"
 import { MathController } from "../../generalUtils/math.js"
 import { ScreenRenderController } from "../../graphics/screenRenderController.js"
 import { ShipCreatorController } from "../../ship/shipCreatorController.js"
+import { ActivateController } from "../../shipUnits/forAllShipUnits/activateController.js"
 import { SpecialController } from "../../shipUnits/special/specialController.js"
 import { EffectsController } from "../effectsController.js"
+import { GameStateController } from "../../gameState/gameStateController.js"
+
+import { AnimationsController } from "../../graphics/animation/animationsController.js"
+
+
+// For 'reinforcements' effect
+import { MSP1 } from "../../shipUnits/factory/info/factory/MSP1.js"
+
+
+
+
 
 var Frame = ""
 var AIUtils = ""
@@ -13,6 +25,8 @@ var Special = ""
 var ShipCreator = ""
 var Math = ""
 var Effects = ""
+var Activate = ""
+var GameState = ""
 
 onInit(function(){
 
@@ -23,6 +37,8 @@ onInit(function(){
     ShipCreator = new ShipCreatorController()
     Math = new MathController()
     Effects = new EffectsController()
+    Activate = new ActivateController()
+    GameState = new GameStateController()
 
 })
 
@@ -50,7 +66,15 @@ export class GenericEffectsController {
 
         "reinforcements": (params) => {
 
-            ShipCreator.createShip(params.object.team, ["movable","turret"]).color = "purple"
+            let help = new params.objectClass() || params.custom.class
+
+            let newObject = help.func(
+                params.object,
+                undefined,
+                help.config || params.custom.config,
+            )
+
+            Activate.addObject(newObject)
 
         },
 
@@ -111,6 +135,13 @@ export class GenericEffectsController {
 
         },
 
+
+
+
+
+
+
+
         "thunder": (params) => {
 
             let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
@@ -123,7 +154,7 @@ export class GenericEffectsController {
                 }
             )
 
-            ScreenRender.addDrawRequest(
+            ScreenRender.addDrawRequest( // debug
                 {
                     "func": ScreenRender.drawCircle,
                     "params": {
@@ -148,21 +179,38 @@ export class GenericEffectsController {
                     {
                         "func": ScreenRender.drawLine,
                         "params": {
-                            "start": params.object,
-                            "goal": closestObject,
+                            "positions": [
+                                [
+                                    params.object.x,
+                                    params.object.y,
+                                ],[
+                                    params.closestObject.x,
+                                    params.closestObject.y,
+                                ]
+                            ],
+                            "color": params.color,
+                            "lineWidth": params.lineWidth,
                         }
                     }
 
                 )
 
                 Effects.add(
-                    "in shock",
+                    params.effectName,
                     "effect",
                     {
                         "object": closestObject,
-                        "range": params.range/params.div,
-                        "damage": params.damage/params.div,
-                        "div": params.div
+                        "range": params.range * params.mult,
+                        "damage": params.damage * params.mult,
+                        "mult": params.mult,
+
+                        "color": params.color,
+                        "lineWidth": params.lineWidth * params.mult,
+
+                        "frameOut": params.frameOut * params.mult,
+                        "effectName": params.effectName,
+                    },{
+                        "frameOut": params.frameOut * params.mult
                     }
                 )
 
@@ -170,144 +218,205 @@ export class GenericEffectsController {
 
         },
 
+
+
+
+        "dd": (params) => {
+
+            new AnimationsController().run("caveira")
+
+        },
+
     }
 
     effectsInfo = {
 
-        "breathe": {
+        "positive": {
 
-            "config": {
-                "func": this.effectsList["sum max energy"],
-                "frameOut": 60,
-                "repeat": -1,
+            "breathe": {
+
+                "config": {
+                    "func": this.effectsList["sum max energy"],
+                    "frameOut": 60,
+                    "repeat": -1,
+                },
+    
+                "params": {
+                    "mult": 0.01,
+                },
+    
+            },
+            "evolutron": {
+    
+                "config": {
+                    "func": this.effectsList["lv up"],
+                    "frameOut": 60,
+                    "repeat": -1,
+                },
+    
+                "params": {
+                    "mult": 0.01,
+                },
+    
+            },
+            "second stage": {
+    
+                "config": {
+                    "func": this.effectsList["lv up"],
+                    "frameOut": 3600,
+                    "repeat": 1,
+                },
+    
+                "params": {
+                    "mult": 2,
+                },
+    
+            },
+            "clone v0.1": {
+    
+                "config": {
+                    "func": this.effectsList["clone"],
+                    "frameOut": 300,
+                    "repeat": -1,
+                },
+    
+                "params": {
+                    "mult": -0.9,
+                },
+    
+            },
+            "illusion v1": {
+    
+                "config": {
+                    "func": this.effectsList["illusion"],
+                    "frameOut": 30,
+                    "repeat": 2,
+                },
+    
+                "params": {},
+    
+            },
+            "slowdown area": {
+    
+                "config": {
+                    "func": this.effectsList["slowdown"],
+                    "frameOut": 30,
+                    "repeat": -1,
+                    "overwrite": false,
+                },
+    
+                "params": {
+                    "range": 175,
+                    "mult": 1,
+                },
+    
+            },
+            "untouchable": {
+    
+                "config": {
+                    "func": this.effectsList["slowdown"],
+                    "frameOut": 5,
+                    "repeat": -1,
+                    "overwrite": false,
+                },
+    
+                "params": {
+                    "range": 50,
+                    "mult": 1,
+                },
+    
+            },
+            "deflet area": {
+    
+                "config": {
+                    "func": this.effectsList["slowdown"],
+                    "frameOut": 60,
+                    "repeat": -1,
+                },
+    
+                "params": {
+                    "range": 75,
+                    "mult": 3,
+                },
+    
+            },
+            "help": {
+    
+                "config": {
+                    "func": this.effectsList["reinforcements"],
+                    "frameOut": 60,
+                    "repeat": 4,
+                },
+    
+                "params": {
+                    "objectClass": MSP1,
+                    "custom": undefined,
+                },
+                
             },
 
-            "params": {
-                "mult": 0.01,
+            "d": {
+    
+                "config": {
+                    "func": this.effectsList["dd"],
+                    "frameOut": 60,
+                    "repeat": 1,
+                },
+    
+                "params": {
+                },
+                
             },
 
         },
-        "evolutron": {
 
-            "config": {
-                "func": this.effectsList["lv up"],
-                "frameOut": 60,
-                "repeat": -1,
+        "negative": {
+
+            "shock": {
+
+                "config": {
+                    "func": this.effectsList["thunder"],
+                    "frameOut": 20,
+                    "repeat": 1,
+                },
+    
+                "params": {
+                    "range": 300,
+                    "damage": 1,
+                    "mult": 0.5,
+
+                    "color": "yellow",
+                    "lineWidth": 4,
+    
+                    "effectName": "shock",
+                    "frameOut": 20
+                },
+    
             },
 
-            "params": {
-                "mult": 0.01,
-            },
+            "zeus": {
+    
+                "config": {
+                    "func": this.effectsList["thunder"],
+                    "frameOut": 5,
+                    "repeat": 1,
+                },
+    
+                "params": {
+                    "range": 50,
+                    "damage": 10,
+                    "mult": 1.1,
 
-        },
-        "second stage": {
-
-            "config": {
-                "func": this.effectsList["lv up"],
-                "frameOut": 3600,
-                "repeat": 1,
-            },
-
-            "params": {
-                "mult": 2,
-            },
-
-        },
-        "clone v0.1": {
-
-            "config": {
-                "func": this.effectsList["clone"],
-                "frameOut": 300,
-                "repeat": -1,
-            },
-
-            "params": {
-                "mult": -0.9,
-            },
-
-        },
-        "illusion v1": {
-
-            "config": {
-                "func": this.effectsList["illusion"],
-                "frameOut": 600,
-                "repeat": -1,
-            },
-
-            "params": {},
-
-        },
-        "slowdown area": {
-
-            "config": {
-                "func": this.effectsList["slowdown"],
-                "frameOut": 30,
-                "repeat": -1,
-                "overwrite": false,
-            },
-
-            "params": {
-                "range": 175,
-                "mult": 1,
+                    "color": "yellow",
+                    "lineWidth": 1,
+    
+                    "effectName": "zeus",
+                    "frameOut": 5
+                },
+    
             },
 
         },
-        "untouchable": {
-
-            "config": {
-                "func": this.effectsList["slowdown"],
-                "frameOut": 5,
-                "repeat": -1,
-                "overwrite": false,
-            },
-
-            "params": {
-                "range": 50,
-                "mult": 1,
-            },
-
-        },
-        "deflet area": {
-
-            "config": {
-                "func": this.effectsList["slowdown"],
-                "frameOut": 60,
-                "repeat": -1,
-            },
-
-            "params": {
-                "range": 75,
-                "mult": 3,
-            },
-
-        },
-        "in shock": {
-
-            "config": {
-                "func": this.effectsList["thunder"],
-                "frameOut": 10,
-                "repeat": 1,
-            },
-
-            "params": {
-                "range": 1500,
-                "damage": 100,
-                "div": 2,
-            },
-
-        },
-        "help": {
-
-            "config": {
-                "func": this.effectsList["reinforcements"],
-                "frameOut": 60,
-                "repeat": 1,
-            },
-
-            "params": {
-            },
-            
-        }
 
     }
 

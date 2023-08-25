@@ -1,29 +1,11 @@
 
 export class onInstructions {
 
-    onHitFunctions = new OnLinkedList()
+    onHit = new Obeserver()
 
-    onHit(params){
+    onDeath = new Obeserver()
 
-        this.onHitFunctions.runAll(params)
-
-    }
-
-    onDeathFunctions = new OnLinkedList()
-
-    onDeath(params){
-
-        this.onDeathFunctions.runAll(params)
-
-    }
-
-    onDamageFunctions = new OnLinkedList()
-
-    onDamage(params){
-
-        this.onDamageFunctions.runAll(params)
-
-    }
+    onDamage = new Obeserver()
 
 
 
@@ -60,7 +42,7 @@ export class onInstructions {
 
         for (let index = 0; index < this.onHitBuildFunctionsList.length; index++) {
 
-            this.onHitFunctions.add("func", this.onHitBuildFunctionsList[index])
+            this.onHit.add("func", this.onHitBuildFunctionsList[index])
 
         }
 

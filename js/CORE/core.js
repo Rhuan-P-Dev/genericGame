@@ -3,10 +3,10 @@ import { AIController } from "../AI/AIController.js"
 
 var AI = ""
 
-/* OBJECT CONTROLLER */
-import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
-
-var ObjectCreator = ""
+///* OBJECT CONTROLLER */
+//import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
+// delet?
+//var ObjectCreator = ""
 
 /* SHIP */
 import { ShipCreatorController } from "../ship/shipCreatorController.js"
@@ -33,15 +33,14 @@ import { PhysicsController } from "../physics/physicsController.js"
 
 var Physics = ""
 
-/* HUD */
-import { HUDController } from "../graphics/HUDController.js"
-
-var HUD = ""
-
 /* GRAPHICS */
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
+import { HUDController } from "../graphics/HUDController.js"
+import { StatusbarController } from "../graphics/statusbarController.js"
 
 var ScreenRender = ""
+var HUD = ""
+var Statusbar = ""
 
 /* FRAME */
 import { FrameController } from "../frame/frameController.js"
@@ -54,9 +53,9 @@ onInit(function(){
 
     AI = new AIController()
 
-    /* OBJECT CONTROLLER */
-
-    ObjectCreator = new ObjectCreatorController()
+    ///* OBJECT CONTROLLER */
+    // delet?
+    //ObjectCreator = new ObjectCreatorController()
 
     /* SHIP */
     ShipCreator = new ShipCreatorController()
@@ -77,13 +76,11 @@ onInit(function(){
 
     Physics = new PhysicsController()
 
-    /* HUD */
-
-    HUD = new HUDController()
-
     /* GRAPHICS */
 
     ScreenRender = new ScreenRenderController()
+    HUD = new HUDController()
+    Statusbar = new StatusbarController()
 
     /* FRAME */
 
@@ -91,6 +88,8 @@ onInit(function(){
 
     setTimeout(browseInit,1)
     setTimeout(gameLoop,1)
+
+    setTimeout(mediumGameLoop,1)
 
 })
 
@@ -102,11 +101,11 @@ function browseInit(){
 
     //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
 
-    //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "red"
+    ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam").color = "red"
 
-    ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam", ["dummy"])
 
@@ -140,7 +139,7 @@ function browseInit(){
 
     setInterval(() => {
 
-        //ShipCreator.createShip("enemyTeam", ["missile_v2","turret"]).color = "pink"
+        //ShipCreator.createShip("enemyTeam", ["movable","turret"]).color = "pink"
 
         //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
         //ShipCreator.createShip("enemyTeam", ["movable"])
@@ -156,7 +155,7 @@ function browseInit(){
         //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
         //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
 
-    }, 1000)
+    }, 12000)
 
     KeyBoard.addTriggers()
 
@@ -185,12 +184,25 @@ function browseInit(){
 
 /* > ADD <
 
-HUD - HP- ENERGY ETC []
-ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT  E OUTRAS COISAS []
+adicionar um novo modificador que randomiza atributos []
+
+ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS []
+
+
+
+
+UMA ARMA QUE VONCERTE OS ENEMYGOS? [/]
 
 */
 
 /* > RE <
+
+
+
+
+ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
+
+
 
 ILLSUIONS DEVEM SER VISTAS, NAO AFETADAS, TYPO O "GOJO" []
 TALVEZ ADICINAR "lifeTime" para illsuions? []
@@ -218,9 +230,12 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // naves especialis tipo: um namo com energia infinita! [/]
 
 // uma nave special: player no spewna gera algo, toda vez que o player morre ele renaçe no algo
-// uma nave special: 'só existe uma ração' qunado morre tem % de chante de renacer, começa em: 0 e almenta a cada segundo
-// "depois que eu morrer outros virão..."
-// um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão
+// uma nave special: 'só existe uma ração' qunado morre tem % de chante de renacer, começa em: 0 e almenta a cada segundo []
+// "depois que eu morrer outros virão..." []
+// um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão []
+
+// uma nave tipo 'gilgamesh', se a prioridade da nave enemiga for maior... se o HP estiver baixo... []
+// uma nave tipo "gojo joven" []
 
 function gameLoop(){
 
@@ -236,10 +251,31 @@ function gameLoop(){
 
     Rules.update()
 
-    HUD.update()
+    Statusbar.update()
 
     ScreenRender.update()
 
     window.requestAnimationFrame(gameLoop)
+
+}
+
+const mediumLoopConst = 10
+var mediumLoop = mediumLoopConst
+
+function mediumGameLoop(){
+
+    if(mediumLoop > 0){
+        mediumLoop -= 1
+    }else{
+
+        HUD.update()
+
+// "relative", "absolute"
+
+        mediumLoop = mediumLoopConst
+
+    }
+
+    window.requestAnimationFrame(mediumGameLoop)
 
 }

@@ -131,7 +131,7 @@ export class WeaponsModifiersController{
             for (let index = 0; index < output.length; index++) {
 
                 MultiplyStats.multiply(output[index].object, modifier.stats)
-                output[index].config.tempMultVel = modifier.value
+                output[index].config.tempMultVel += modifier.value
 
             }
 

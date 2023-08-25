@@ -51,14 +51,11 @@ export class DamageController {
 
         victim.life -= damage
 
-        victim.onDamage(
-            {
-                "otherObject": attacker,
-                "object": victim,
-                "calcDamage": damage,
-                "damage": attacker.damage
-            }
-        )
+        victim.onDamage.run({
+            "otherObject": attacker,
+            "object": victim,
+            "calcDamage": damage,
+        })
 
     }
 

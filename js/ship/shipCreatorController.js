@@ -37,7 +37,7 @@ export class ShipCreatorController{
             newShip = ObjectCreator.giveObjectAI(newShip, AI)
             haveAI = true
 
-            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "special", "WeakClone")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
@@ -48,7 +48,7 @@ export class ShipCreatorController{
 
             //ObjectActivates.giveActivate(newShip, "weapon", "P1")
 
-            //ObjectActivates.giveActivate(newShip, "weapon", "M1")
+            ObjectActivates.giveActivate(newShip, "weapon", "M1")
 
             //newShip.searchPriority = new FocusedTopDownBehavior().searchPriority
 
@@ -89,7 +89,7 @@ export class ShipCreatorController{
             //newShip.x = 5
             //newShip.y = 250
 
-//          newShip.currentXVel = 1
+            //newShip.currentXVel = 1
 
             //newShip.maxLife = 1000000
             //newShip.life = 1000000
@@ -98,7 +98,6 @@ export class ShipCreatorController{
             //newShip.height *= 5
 
             if(this.a){
-
 
                 //newShip.x = 450
                 //newShip.y = 250
@@ -121,87 +120,36 @@ export class ShipCreatorController{
 
             newShip = ObjectCreator.makeObjectInPlayerControl(newShip)
 
-            ObjectActivates.giveActivate(newShip, "weapon", "P1")
-            ObjectActivates.giveActivate(newShip, "weapon", "M1")
-            //ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
-            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
-
-            /*
-
-            new EffectsController().add(
-                "breathe",
-                "effect",
-                {
-                    "object": newShip,
-                }
-            )
-
-            new EffectsController().add(
-                "evolutron",
-                "effect",
-                {
-                    "object": newShip,
-                }
-            )
-
-            new EffectsController().add(
-                "second stage",
-                "effect",
-                {
-                    "object": newShip,
-                }
-            )
-
-            new EffectsController().add(
-                "illusion v1",
-                "effect",
-                {
-                    "object": newShip,
-                }
-            )
-
-            new EffectsController().add(
-                "slowdown area",
-                "effect",
-                {
-                    "object": newShip,
-                }
-            )
-
-            new EffectsController().add(
-                "untouchable",
-                "effect",
-                {
-                    "object": newShip,
-                }
-            )
-
             new EffectsController().add(
                 "deflet area",
                 "effect",
                 {
                     "object": newShip,
+                },{
+                    "frameOut": 3
                 }
             )
 
             new EffectsController().add(
-                "help",
+                "d",
                 "effect",
                 {
                     "object": newShip,
-                }
+                },
             )
 
-            */
+            //ObjectActivates.giveActivate(newShip, "weapon", "P1")
+            ObjectActivates.giveActivate(newShip, "weapon", "M1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
 
             //ObjectActivates.giveActivate(newShip, "factory", "SP1")
             ObjectActivates.giveActivate(newShip, "factory", "MSP1")
             //ObjectActivates.giveActivate(newShip, "factory", "DF1")
 
             //ObjectActivates.giveActivate(newShip, "defense", "Regen")
+            //ObjectActivates.giveActivate(newShip, "defense", "Regen")
 
-            //ObjectActivates.giveActivate(newShip, "factory", "SP1")
-            //ObjectActivates.giveActivate(newShip, "factory", "MSP1")
             //ObjectActivates.giveActivate(newShip, "special", "WeakClone")
             //ObjectActivates.giveActivate(newShip, "special", "Overclock")
             //ObjectActivates.giveActivate(newShip, "special", "LvUp")

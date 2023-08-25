@@ -75,15 +75,18 @@ export class CloneObjectController {
         "searchPriority": this.cloneSearchPriority,
         "damageConfig": this.cloneDamageConfig,
         "effects": this.cloneEffects,
-        "onHitFunctions": this.cloneOnFunctions,
-        "onDeathFunctions": this.cloneOnFunctions,
-        "onDamageFunctions": this.cloneOnFunctions,
+        //"onHit": this.cloneOnFunctions,
+        //"onDeath": this.cloneOnFunctions,
+        //"onDamage": this.cloneOnFunctions,
         "owner": this.shared,
-        "onHitOb": this.cloneObservers,
-        "onDeathOb": this.cloneObservers,
-        "onDamageOb": this.cloneObservers,
-        "rightRotateOb": this.cloneObservers,
-        "leftRotateOb": this.cloneObservers,
+        //"onHitOb": this.cloneObservers,
+        //"onDeathOb": this.cloneObservers,
+        //"onDamageOb": this.cloneObservers,
+        "rightRotateOb": () => {}, //this.cloneObservers,
+        "leftRotateOb": () => {}, //this.cloneObservers,
+        "onHit": this.cloneObservers,
+        "onDeath": this.cloneObservers,
+        "onDamage": this.cloneObservers,
     }
 
     clone(object){
@@ -156,19 +159,68 @@ export class CloneObjectController {
 
         for (let key in object) {
 
-            if(!overwrite && clonedObject[key]){
+            if(clonedObject[key]){
+
+                if(typeof(clonedObject[key]) == "object"){
+
+                    this.recursiveCloneAttribute(dummy[key], clonedObject[key])
+                    continue
+
+                }
+
+                if(overwrite){
+
+                    clonedObject[key] = object[key]
+
+                }
+
+            }else{
+
+                if(typeof(clonedObject[key]) == "object"){
+
+                    clonedObject[key] = {}
+                    this.recursiveCloneAttribute(dummy[key], clonedObject[key])
+
+                }else{
+                    
+                    clonedObject[key] = object[key]
+
+                }
+
+            }
+
+            /*
+
+            if(
+                !overwrite
+                &&
+                clonedObject[key]
+                &&
+                typeof(clonedObject[key]) == "object"
+            ){
                 this.recursiveCloneAttribute(dummy[key], clonedObject[key])
                 continue
             }
 
             if(
                 typeof(object[key]) == "object"
+                &&
+                !clonedObject[key]
             ){
                 clonedObject[key] = {}
                 this.recursiveCloneAttribute(dummy[key], clonedObject[key])
-            }else{
+                continue
+            }
+            
+            if(
+                overwrite
+                ||
+                !clonedObject[key]
+            ){
                 clonedObject[key] = object[key]
             }
+
+            */
 
         }
 
@@ -243,7 +295,28 @@ export class CloneObjectController {
 
     cloneObservers(object, clonedObject = {}, config){
 
-        // useless for now
+        clonedObject[config.keyType] = new Obeserver()
+
+        let obFucntions = object[config.keyType].getAllInArray()
+
+        for (let index in obFucntions) {
+
+            let value = obFucntions[index].value
+
+            if(typeof(value) == "function"){
+
+                clonedObject[config.keyType].add(value)
+
+            }else{
+
+                clonedObject[config.keyType].add({
+                    "func": value.func,
+                    "class": value.class
+                })
+                
+            }
+
+        }
 
         return clonedObject
 

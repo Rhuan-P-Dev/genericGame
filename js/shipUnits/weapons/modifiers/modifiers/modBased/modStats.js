@@ -9,8 +9,8 @@ export class ModStats extends Mod {
             "stats":[
                 "width",
                 "height",
-                "currentXVel", // delet it
-                "currentYVel", // delet it
+                "life",
+                "maxLife",
                 "damage",
                 "maxVel",
                 "vel",

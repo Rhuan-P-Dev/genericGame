@@ -9,7 +9,7 @@ export class BasicProjetile extends Object {
 
         this.typeOfObject = "basicProjetile"
 
-        this.onHitFunctions.add(selfDestruction)
+        this.onHit.add(selfDestruction)
 
     }
 

@@ -10,6 +10,7 @@ import { ActivateController } from "../shipUnits/forAllShipUnits/activateControl
 import { SpecialController } from "../shipUnits/special/specialController.js"
 import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
 import { GenericEffectsController } from "./generic/genericEffectsController.js"
+import { OtherEffectsController } from "./other/otherEffectsController.js"
 
 var Frame = ""
 var AIUtils = ""
@@ -17,8 +18,10 @@ var ScreenRender = ""
 var Special = ""
 var ShipCreator = ""
 var Math = ""
-var GenericEffects = ""
 var CloneObject = ""
+
+var GenericEffects = ""
+var OtherEffects = ""
 
 onInit(function(){
 
@@ -28,8 +31,10 @@ onInit(function(){
     Special = new SpecialController()
     ShipCreator = new ShipCreatorController()
     Math = new MathController()
-    GenericEffects = new GenericEffectsController()
     CloneObject = new CloneObjectController()
+
+    GenericEffects = new GenericEffectsController()
+    OtherEffects = new OtherEffectsController()
 
 })
 
@@ -39,48 +44,49 @@ export class EffectsController {
 
     builded = false
 
+    buildGeneric(){
+
+        let allGenericEffects = GenericEffects.getAll()
+
+        CloneObject.recursiveCloneAttribute(
+            allGenericEffects.positive,
+            this.effectsList
+        )
+
+        CloneObject.recursiveCloneAttribute(
+            allGenericEffects.negative,
+            this.effectsList
+        )
+
+    }
+
+    buildOther(){
+
+        let allOtherEffects = OtherEffects.getAll()
+
+        CloneObject.recursiveCloneAttribute(
+            allOtherEffects.positive,
+            this.effectsList
+        )
+
+        CloneObject.recursiveCloneAttribute(
+            allOtherEffects.negative,
+            this.effectsList
+        )
+
+    }
+
     build(){
 
         if(this.builded){return}
 
-        CloneObject.recursiveCloneAttribute(
-            GenericEffects.getAll(),
-            this.effectsList
-        )
+        this.buildGeneric()
+
+        this.buildOther()
 
         this.builded = true
 
     }
-
-    /*
-
-    effectsList = {
-
-        "revenger": (params) => {
-
-            let object = params.object
-
-            let missile = new WeaponsController().createMissile(object)
-
-            missile.damage = params.otherObject.damage
-
-            new InheritController().inherit(
-                missile,
-                [
-                    FocusedTopDownBehavior,
-                ]
-            )
-
-            new ActivateController().basicAjustObject(object, missile)
-
-            new ActivateController().addObject(missile)
-
-        },
-      
-
-    }
-
-    */
 
     typeTable = {
         "effect": this.addEffect,
@@ -123,8 +129,6 @@ export class EffectsController {
         params,
     ){
 
-        effectType += "Functions"
-
         params.object[effectType].add( (params) => {
             Effects.fix(params, effectName, "params")
             Effects.get(effectName).config.func(params)
@@ -140,32 +144,63 @@ export class EffectsController {
         ID = randomUniqueID(),
     ){
 
-        Effects.fixer(
-            {
-                config,
-                params,
-            },
-            effectName,
+        console.log(
+            //config
         )
+
+        console.log(
+            //params
+        )
+
+        console.log(
+            //effectName
+        )
+
+        //Effects.fixer(
+        //    {
+        //        config,
+        //        params,
+        //    },
+        //    effectName,
+        //)
+
+        let effect = Effects.get(effectName)
+
+        let finalConfig = effect.config
+        let finalParams = effect.params
+
+        for(let x in config){
+
+            finalConfig[x] = config[x]
+
+        }
+
+        for(let x in params){
+
+            finalParams[x] = params[x]
+
+        }
+
+
 
         Frame.add(
             () => {
-                Effects.get(effectName).config.func(params)
+                Effects.get(effectName).config.func(finalParams)
             },
-            config.frameOut,
-            config.repeat,
-            config.overwrite,
+            finalConfig.frameOut,
+            finalConfig.repeat,
+            finalConfig.overwrite,
             ID,
             () => {
-                Effects.remove(params.object, ID)
+                Effects.remove(finalParams.object, ID)
             }
         )
 
         params.object.effects[ID] = {
             effectName,
             effectType,
-            params,
-            config,
+            finalParams,
+            finalConfig,
             ID,
         }
         
@@ -181,6 +216,14 @@ export class EffectsController {
     fix(data, effectName, name){
 
         let effect = Effects.get(effectName)
+
+        for(let x in data){
+
+            effect
+
+        }
+        
+        return
 
         CloneObject.recursiveCloneAttribute(
             effect[name],
@@ -204,6 +247,8 @@ export class EffectsController {
             this.remove(object, effect)
 
         }
+
+        object.effects = {}
 
     }
 

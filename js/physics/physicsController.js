@@ -51,20 +51,16 @@ export class PhysicsController {
             
             if(distance < object.width + currentObject.width){
                 
-                object.onHitOb.run({
+                object.onHit.run({
                     "object": object,
                     "otherObject": currentObject,
                 })
 
-                currentObject.onHitOb.run({
-                    "object": currentObject,
-                    "otherObject": object,
-                })
+                //currentObject.onHit.run({
+                //    "object": currentObject,
+                //    "otherObject": object,
+                //})
 
-                //Damage.damage(object, currentObject)
-
-                //Damage.damage(currentObject, object)
-                    
             }
 
         }

@@ -75,6 +75,12 @@ export class GameStateController {
 
     }
 
+    removeObType(params){
+
+        this.remove(params.object)
+
+    }
+
     remove(object){
 
         this.removeActivates(object)
@@ -139,6 +145,16 @@ export class GameStateController {
 
     getAllObjectsStatus(){
         return GAME.stats
+    }
+
+    changeTeam(object, to, from){
+
+        delete GAME.team[to][object.ID]
+
+        GAME.team[from][object.ID] = object
+
+        object.team = from
+
     }
 
 }

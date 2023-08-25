@@ -158,7 +158,7 @@ export class WeaponsController{
 
         if(config.apply){
 
-            object.onHitFunctions.add( (localParams) => {
+            object.onHit.add( (localParams) => {
 
                 params.object = localParams.otherObject
                 params.otherObject = localParams.object

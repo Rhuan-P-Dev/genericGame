@@ -18,7 +18,10 @@ export class MissileProjetile {
                 RotableObject,
                 MovableObject,
             ]
+            
         )
+
+        this.onHit.remove("damage")
 
         this.typeOfObject = "MissileProjetile"
 
@@ -33,9 +36,7 @@ export class MissileProjetile {
         this.maxLife = 15
         this.life = 15
 
-        this.onDeathFunctions.add(missileDeath)
-
-        this.onHitFunctions.add(removeMissileDeath)
+        this.onDeath.add(missileDeath)
 
     }
 
@@ -46,11 +47,5 @@ function missileDeath(params){
     new DamageController().radiusCalc(
         params.object
     )
-
-}
-
-function removeMissileDeath(params){
-
-    params.object.onDeathFunctions.remove(missileDeath.name)
 
 }
