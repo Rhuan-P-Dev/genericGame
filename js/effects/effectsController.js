@@ -144,8 +144,13 @@ export class EffectsController {
         ID = randomUniqueID(),
     ){
 
-        params = Effects.fix(params, effectName, "params")
-        config = Effects.fix(config, effectName, "config")
+        Effects.fixer(
+            {
+                config,
+                params,
+            },
+            effectName,
+        )
 
         Frame.add(
             () => {
@@ -170,16 +175,10 @@ export class EffectsController {
         
     }
 
-    fixer(params, config, effectName){
+    fixer(data, effectName){
 
-        // delet?
-
-        console.log("ERRO!")
-
-        return false
-
-        params = this.fix(params, effectName, "params")
-        config = this.fix(config, effectName, "config")
+        this.fix(data.config, effectName, "config")
+        this.fix(data.params, effectName, "params")
 
     }
 
@@ -187,13 +186,10 @@ export class EffectsController {
 
         let effect = Effects.get(effectName)
 
-        for(let index in data){
-
-            effect[name][index] = data[index]
-
-        }
-
-        return effect[name]
+        CloneObject.recursiveCloneAttribute(
+            effect[name],
+            data,
+        )
 
     }
 
