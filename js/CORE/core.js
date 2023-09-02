@@ -155,7 +155,7 @@ function browseInit(){
         //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
         //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
 
-    }, 12000)
+    }, 1000)
 
     KeyBoard.addTriggers()
 

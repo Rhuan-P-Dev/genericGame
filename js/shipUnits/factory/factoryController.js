@@ -3,6 +3,7 @@ import { GameStateController } from "../../gameState/gameStateController.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
 import { FactoryInfoController } from "./info/factoryInfoController.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
+import { EffectsController } from "../../effects/effectsController.js"
 
 var GameState = ""
 var ObjectCreator = ""
@@ -53,6 +54,14 @@ export class FactoryController{
         ObjectCreator.giveObjectAI(newObject, config.AI)
 
         Factory.setActivates(newObject, config.apply)
+
+        new EffectsController().add(
+            "evolutron",
+            "effect",
+            {
+                "object": newObject,
+            },
+        )
 
         return newObject
 

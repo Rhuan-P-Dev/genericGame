@@ -109,6 +109,14 @@ export class ShipCreatorController{
     
             }
 
+            new EffectsController().add(
+                "evolutron",
+                "effect",
+                {
+                    "object": newShip,
+                },
+            )
+
             this.a = true
 
             //newShip.x = 50
@@ -121,17 +129,7 @@ export class ShipCreatorController{
             newShip = ObjectCreator.makeObjectInPlayerControl(newShip)
 
             new EffectsController().add(
-                "deflet area",
-                "effect",
-                {
-                    "object": newShip,
-                },{
-                    "frameOut": 3
-                }
-            )
-
-            new EffectsController().add(
-                "d",
+                "evolutron",
                 "effect",
                 {
                     "object": newShip,
@@ -156,6 +154,8 @@ export class ShipCreatorController{
 
             newShip.x = 50
             newShip.y = 110
+
+            newShip.lifeRegen = 0.08
 
         }
 

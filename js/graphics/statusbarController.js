@@ -81,9 +81,6 @@ export class StatusbarController {
             }
         )
 
-
-
-
         let VEL = {
             "start": {
                 "x": 25,

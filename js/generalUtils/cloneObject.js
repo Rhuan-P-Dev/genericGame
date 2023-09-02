@@ -252,7 +252,7 @@ export class CloneObjectController {
 
         for (let index = 0; index < onFunctionsArray.length; index++) {
 
-            clonedObject[config.keyType].add(onFunctionsArray[index].value)
+            clonedObject[config.keyType].add(onFunctionsArray[index])
             
         }
 
@@ -301,17 +301,17 @@ export class CloneObjectController {
 
         for (let index in obFucntions) {
 
-            let value = obFucntions[index].value
+            if(typeof(obFucntions[index]) == "function"){
 
-            if(typeof(value) == "function"){
-
-                clonedObject[config.keyType].add(value)
+                clonedObject[config.keyType].add(
+                    obFucntions[index]
+                )
 
             }else{
 
                 clonedObject[config.keyType].add({
-                    "func": value.func,
-                    "class": value.class
+                    "func": obFucntions[index].func,
+                    "class": obFucntions[index].class
                 })
                 
             }

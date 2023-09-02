@@ -130,7 +130,7 @@ export class EffectsController {
     ){
 
         params.object[effectType].add( (params) => {
-            Effects.fix(params, effectName, "params")
+            params = Effects.fix(params, effectName, "params")
             Effects.get(effectName).config.func(params)
         })
 
@@ -144,72 +144,42 @@ export class EffectsController {
         ID = randomUniqueID(),
     ){
 
-        console.log(
-            //config
-        )
-
-        console.log(
-            //params
-        )
-
-        console.log(
-            //effectName
-        )
-
-        //Effects.fixer(
-        //    {
-        //        config,
-        //        params,
-        //    },
-        //    effectName,
-        //)
-
-        let effect = Effects.get(effectName)
-
-        let finalConfig = effect.config
-        let finalParams = effect.params
-
-        for(let x in config){
-
-            finalConfig[x] = config[x]
-
-        }
-
-        for(let x in params){
-
-            finalParams[x] = params[x]
-
-        }
-
-
+        params = Effects.fix(params, effectName, "params")
+        config = Effects.fix(config, effectName, "config")
 
         Frame.add(
             () => {
-                Effects.get(effectName).config.func(finalParams)
+                Effects.get(effectName).config.func(params)
             },
-            finalConfig.frameOut,
-            finalConfig.repeat,
-            finalConfig.overwrite,
+            config.frameOut,
+            config.repeat,
+            config.overwrite,
             ID,
             () => {
-                Effects.remove(finalParams.object, ID)
+                Effects.remove(params.object, ID)
             }
         )
 
         params.object.effects[ID] = {
             effectName,
             effectType,
-            finalParams,
-            finalConfig,
+            params,
+            config,
             ID,
         }
         
     }
 
-    fixer(data, effectName){
+    fixer(params, config, effectName){
 
-        this.fix(data.config, effectName, "config")
-        this.fix(data.params, effectName, "params")
+        // delet?
+
+        console.log("ERRO!")
+
+        return false
+
+        params = this.fix(params, effectName, "params")
+        config = this.fix(config, effectName, "config")
 
     }
 
@@ -217,18 +187,13 @@ export class EffectsController {
 
         let effect = Effects.get(effectName)
 
-        for(let x in data){
+        for(let index in data){
 
-            effect
+            effect[name][index] = data[index]
 
         }
-        
-        return
 
-        CloneObject.recursiveCloneAttribute(
-            effect[name],
-            data,
-        )
+        return effect[name]
 
     }
 

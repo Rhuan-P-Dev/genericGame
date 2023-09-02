@@ -62,6 +62,17 @@ export class GenericEffectsController {
                 }
             )
 
+            new AnimationsController().run({
+                "name":"heal",
+                "type":"relative",
+                "offset": {
+                    "x": params.object.x + randomInteger(-0, 0),
+                    "y": params.object.y + randomInteger(-0, 0),
+                },
+                "frameRandomOffsetX": 0,
+                "frameRandomOffsetY": 0,
+            })
+
         },
 
         "reinforcements": (params) => {
@@ -122,7 +133,7 @@ export class GenericEffectsController {
 
                 let closestObject = closestObjects[index]
 
-                let mult = Math.linearReverse( 
+                let mult = Math.linearReverse(
 // ADICINAR UM SCHEDULER PARA O CALCULO!
                     AIUtils.getDistanceOfObjects(params.object, closestObject),
                     params.range,
@@ -223,7 +234,11 @@ export class GenericEffectsController {
 
         "dd": (params) => {
 
-            new AnimationsController().run("caveira")
+            new AnimationsController().run({
+                "name":"heal",
+                "type":"relative",
+                "offset": params.object
+            })
 
         },
 
@@ -359,8 +374,8 @@ export class GenericEffectsController {
     
                 "config": {
                     "func": this.effectsList["dd"],
-                    "frameOut": 60,
-                    "repeat": 1,
+                    "frameOut": 30,
+                    "repeat": -1,
                 },
     
                 "params": {

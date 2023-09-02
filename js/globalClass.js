@@ -50,7 +50,7 @@ class LinkedList{
         while(1){
             if(!node.next){return array}
 
-            array.push(node)
+            array.push(node.value)
 
             node = node.next
 
