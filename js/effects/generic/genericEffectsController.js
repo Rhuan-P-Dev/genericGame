@@ -234,11 +234,18 @@ export class GenericEffectsController {
 
         "dd": (params) => {
 
-            new AnimationsController().run({
-                "name":"heal",
-                "type":"relative",
-                "offset": params.object
-            })
+            ScreenRender.addDrawRequest(
+                {
+                    "func": ScreenRender.writeText,
+                    "params": {
+                        "text":"ASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                        "x": params.object.x,
+                        "y": params.object.y,
+                        "fontSize": 25,
+                        "color": "white"
+                    },
+                }
+            )
 
         },
 
@@ -357,16 +364,43 @@ export class GenericEffectsController {
             },
             "help": {
     
-                "config": {
-                    "func": this.effectsList["reinforcements"],
-                    "frameOut": 60,
-                    "repeat": 4,
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["reinforcements"],
+                        "frameOut": 5*60,
+                        "repeat": 4,
+                    },
+        
+                    "params": {
+                        "objectClass": MSP1,
+                        "custom": undefined,
+                    },
+
                 },
-    
-                "params": {
-                    "objectClass": MSP1,
-                    "custom": undefined,
-                },
+
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": ["countDown"],
+                        "func": this.effectsList["reinforcements"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "frameOut": 10*60,
+                        "countDownFucntion": ["deleteInstruction"],
+                        "countDown": 10
+                    },
+
+                    "params": {
+                        "objectClass": MSP1,
+                        "custom": undefined,
+                    }
+
+                }
                 
             },
 
@@ -374,7 +408,7 @@ export class GenericEffectsController {
     
                 "config": {
                     "func": this.effectsList["dd"],
-                    "frameOut": 30,
+                    "frameOut": 1,
                     "repeat": -1,
                 },
     

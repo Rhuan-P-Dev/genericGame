@@ -37,18 +37,18 @@ export class ShipCreatorController{
             newShip = ObjectCreator.giveObjectAI(newShip, AI)
             haveAI = true
 
-            ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "special", "WeakClone")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
 
+
+            ObjectActivates.giveActivate(newShip, "weapon", "M1")
             ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
 
             //ObjectActivates.giveActivate(newShip, "weapon", "P1")
-
-            ObjectActivates.giveActivate(newShip, "weapon", "M1")
 
             //newShip.searchPriority = new FocusedTopDownBehavior().searchPriority
 
@@ -109,14 +109,6 @@ export class ShipCreatorController{
     
             }
 
-            new EffectsController().add(
-                "evolutron",
-                "effect",
-                {
-                    "object": newShip,
-                },
-            )
-
             this.a = true
 
             //newShip.x = 50
@@ -128,16 +120,33 @@ export class ShipCreatorController{
 
             newShip = ObjectCreator.makeObjectInPlayerControl(newShip)
 
+            //new EffectsController().add(
+            //    "d",
+            //    "effect",
+            //    {
+            //        "object": newShip,
+            //    },
+            //)
+
             new EffectsController().add(
-                "evolutron",
-                "effect",
+                "help",
+                "onDamage",
                 {
                     "object": newShip,
                 },
             )
 
-            //ObjectActivates.giveActivate(newShip, "weapon", "P1")
-            ObjectActivates.giveActivate(newShip, "weapon", "M1")
+            new EffectsController().add(
+                "help",
+                "effect",
+                {
+                    "object": newShip,
+                },
+            )
+    
+
+            ObjectActivates.giveActivate(newShip, "weapon", "P1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "M1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
 
@@ -148,14 +157,12 @@ export class ShipCreatorController{
             //ObjectActivates.giveActivate(newShip, "defense", "Regen")
             //ObjectActivates.giveActivate(newShip, "defense", "Regen")
 
-            //ObjectActivates.giveActivate(newShip, "special", "WeakClone")
+            ObjectActivates.giveActivate(newShip, "special", "WeakClone")
             //ObjectActivates.giveActivate(newShip, "special", "Overclock")
             //ObjectActivates.giveActivate(newShip, "special", "LvUp")
 
             newShip.x = 50
             newShip.y = 110
-
-            newShip.lifeRegen = 0.08
 
         }
 

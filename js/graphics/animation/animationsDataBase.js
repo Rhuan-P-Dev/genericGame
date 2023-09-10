@@ -128,7 +128,7 @@ export class AnimationsDataBase {
 
                 "frameInterpolation": "linar",
 
-                "seconds": 0.16,
+                "seconds": 0.2,
                 "frameRate": 60, // hardcoded?
                 
                 "frames": [

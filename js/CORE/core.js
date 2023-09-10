@@ -3,11 +3,6 @@ import { AIController } from "../AI/AIController.js"
 
 var AI = ""
 
-///* OBJECT CONTROLLER */
-//import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
-// delet?
-//var ObjectCreator = ""
-
 /* SHIP */
 import { ShipCreatorController } from "../ship/shipCreatorController.js"
 
@@ -53,10 +48,6 @@ onInit(function(){
 
     AI = new AIController()
 
-    ///* OBJECT CONTROLLER */
-    // delet?
-    //ObjectCreator = new ObjectCreatorController()
-
     /* SHIP */
     ShipCreator = new ShipCreatorController()
 
@@ -101,7 +92,7 @@ function browseInit(){
 
     //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
 
-    ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
+    ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam").color = "red"
 
@@ -162,9 +153,7 @@ function browseInit(){
 }
 
 //
-//// DEPOIS DE COMIITAR EU DEVO CORRIGIR OS BUGS [X]
-//// ADICIONAR SUPORTE PARA ANIMASOES []
-//// E ESTRUTURAR MELHOR O PROJETO []
+//// E ESTRUTURAR MELHOR O PROJETO [?]
 //
 
 
@@ -237,6 +226,8 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // uma nave tipo 'gilgamesh', se a prioridade da nave enemiga for maior... se o HP estiver baixo... []
 // uma nave tipo "gojo joven" []
 
+// "peoes do rei" periodicamente converta algo []
+
 function gameLoop(){
 
     Frame.update()
@@ -269,8 +260,6 @@ function mediumGameLoop(){
     }else{
 
         HUD.update()
-
-// "relative", "absolute"
 
         mediumLoop = mediumLoopConst
 

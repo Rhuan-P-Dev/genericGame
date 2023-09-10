@@ -186,6 +186,22 @@ export class ScreenRenderController {
 
     }
 
+    writeText(params){
+
+        ScreenRender.setStyleParams(params)
+
+        ScreenRender.mainCanvasContext.font = (params.fontSize || 50) + "px Arial"
+
+        ScreenRender.mainCanvasContext.textAlign = params.align || "center"
+
+        ScreenRender.mainCanvasContext.fillText(
+            params.text,
+            params.x,
+            params.y
+        )
+
+    }
+
     setStyleParams(params){
 
         ScreenRender.mainCanvasContext.strokeStyle = params.color || ScreenRender.defaultColor

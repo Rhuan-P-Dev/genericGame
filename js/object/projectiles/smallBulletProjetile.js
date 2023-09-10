@@ -8,7 +8,7 @@ export class SmallBulletProjetile extends BasicProjetile {
 
         super()
 
-        this.typeOfObject = "SmallBulletProjetile"
+         
 
         this.priority -= 1
 

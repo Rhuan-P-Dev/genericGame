@@ -10,6 +10,8 @@ export class MissileProjetile {
 
     constructor(){
 
+         
+
         new InheritController().inherit(
             this,
             [
@@ -21,9 +23,7 @@ export class MissileProjetile {
             
         )
 
-        this.onHit.remove("damage")
-
-        this.typeOfObject = "MissileProjetile"
+        this.onHit.remove("last",10) // damage
 
         this.damage = 30
 
@@ -36,7 +36,7 @@ export class MissileProjetile {
         this.maxLife = 15
         this.life = 15
 
-        this.onDeath.add(missileDeath)
+        this.onDeath.add(missileDeath,"last",0)
 
     }
 

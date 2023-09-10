@@ -6,6 +6,8 @@ import { Rotable } from "./rotable.js"
 export class RotableObject {
 
     constructor(){
+
+         
         
         new InheritController().inherit(
             this,
@@ -14,8 +16,6 @@ export class RotableObject {
                 Object
             ]
         )
-
-        this.typeOfObject = "RotableObject"
 
         this.priority += 1
 

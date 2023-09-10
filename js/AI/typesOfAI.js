@@ -183,6 +183,7 @@ function turret(object){
         let weapon = allWeapons[weaponName]
 
         if(weapon.range && weapon.range > distance){
+
             AIUtils.aimToTarget(object, target)
             object.activate(weaponName)
         }else if(

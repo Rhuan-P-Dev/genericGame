@@ -60,7 +60,7 @@ class LinkedList{
 
 }
 
-class Obeserver extends LinkedList {
+class Observer extends LinkedList {
 
     removeNode(node, tail){
 
@@ -119,4 +119,48 @@ class Obeserver extends LinkedList {
 
     }
     
+}
+
+class PriorityObserver{
+
+    observers = []
+
+    add(value, priority = 0){
+
+        if(!this.observers[priority]){
+
+            this.observers[priority] = new Observer()
+
+        }
+
+        this.observers[priority].add(value)
+
+    }
+
+    remove(value, priority){
+
+        if(this.observers[priority]){
+
+            this.observers[priority].remove(value)
+
+        }
+
+    }
+
+    run(params){
+
+        for (let index = 0; index < this.observers.length; index++) {
+
+            if(this.observers[index]){
+                this.observers[index].run(params)
+            }
+            
+        }
+
+    }
+
+    getObserver(priority){
+        return this.observers[priority]
+    }
+
 }

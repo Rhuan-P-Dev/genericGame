@@ -7,6 +7,8 @@ import { RotableObject } from "./basic/rotableObject.js"
 export class Turret {
 
     constructor(){
+
+         
         
         new InheritController().inherit(
             this,
@@ -20,8 +22,6 @@ export class Turret {
         this.priority += 1
 
     }
-
-    typeOfObject = "Turret"
 
     life = 100
     maxLife = 100

@@ -131,9 +131,9 @@ export class SpecialController{
 
         illusion.ID = randomUniqueID()
 
-        illusion.onDeath = new Obeserver() //<---------------------------
-        illusion.onHit = new Obeserver()
-        illusion.onDamage = new Obeserver()
+        illusion.onDeath = new Observer() //<---------------------------
+        illusion.onHit = new Observer()
+        illusion.onDamage = new Observer()
 
         illusion.damageConfig.type = "illusion"
 

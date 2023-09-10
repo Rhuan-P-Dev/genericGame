@@ -56,11 +56,6 @@ export class PhysicsController {
                     "otherObject": currentObject,
                 })
 
-                //currentObject.onHit.run({
-                //    "object": currentObject,
-                //    "otherObject": object,
-                //})
-
             }
 
         }

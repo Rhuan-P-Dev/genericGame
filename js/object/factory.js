@@ -8,6 +8,8 @@ export class BaseObjectFactory{
 
     constructor(){
 
+         
+
         new InheritController().inherit(
             this,
             [
@@ -17,8 +19,6 @@ export class BaseObjectFactory{
         )
 
     }
-
-    typeOfObject = "BaseObjectFactory"
 
     priority = 4
     

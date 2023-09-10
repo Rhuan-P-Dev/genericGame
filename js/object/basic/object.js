@@ -31,16 +31,14 @@ export class Object {
         this.onHit.add({
             "func": "damage",
             "class": Damage
-        })
+        },"last",10)
 
         this.onDeath.add({
             "func": "removeObType",
             "class": GameState,
-        })
+        },"last",10)
 
     }
-
-    typeOfObject = "Object"
 
     team = "newTeam"
     ID = "newID"

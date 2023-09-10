@@ -9,8 +9,8 @@ export class Rotable {
     yStepMult = 0.05
     xyMultLimit = 1
 
-    rightRotateOb = new Obeserver()
-    leftRotateOb = new Obeserver()
+    rightRotateOb = new Observer()
+    leftRotateOb = new Observer()
 
     rotateToRight(){
 

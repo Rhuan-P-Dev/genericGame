@@ -10,7 +10,7 @@ export class EnergizadObject extends Object {
 
         super()
 
-        this.typeOfObject = "EnergizadObject"
+         
 
         this.priority += 1
         

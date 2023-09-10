@@ -55,14 +55,6 @@ export class FactoryController{
 
         Factory.setActivates(newObject, config.apply)
 
-        new EffectsController().add(
-            "evolutron",
-            "effect",
-            {
-                "object": newObject,
-            },
-        )
-
         return newObject
 
     }

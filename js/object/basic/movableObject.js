@@ -9,7 +9,7 @@ export class MovableObject extends Object {
 
         super()
 
-        this.typeOfObject = "MovableObject"
+         
 
         this.priority += 1
         

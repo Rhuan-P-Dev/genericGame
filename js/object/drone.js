@@ -8,6 +8,8 @@ export class Drone {
 
     constructor(){
 
+         
+
         new InheritController().inherit(
             this,
             [
@@ -24,8 +26,6 @@ export class Drone {
         this.maxVel /= 2
 
     }
-
-    typeOfObject = "Drone"
 
     life = 50
     maxLife = 50

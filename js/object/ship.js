@@ -8,6 +8,8 @@ export class Ship {
 
     constructor(){
 
+         
+
         new InheritController().inherit(
             this,
             [
@@ -19,8 +21,6 @@ export class Ship {
         )
 
     }
-
-    typeOfObject = "Ship"
 
     priority = 5
 

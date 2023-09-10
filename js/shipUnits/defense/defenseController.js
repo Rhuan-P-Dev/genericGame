@@ -23,13 +23,7 @@ export class DefenseController{
 
     useDefense(object, ID){
 
-        let result = Activate.useActivate(object, ID)
-
-        return
-
-        if(result.return){
-            //Activate.addObject(result.return)
-        }
+        Activate.useActivate(object, ID)
 
     }
 

@@ -5,6 +5,7 @@ import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { InheritController } from "../generalUtils/inherit.js"
 import { MathController } from "../generalUtils/math.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
+import { ComplexOnTypeFunctions } from "../object/basic/onInstructions.js"
 import { ShipCreatorController } from "../ship/shipCreatorController.js"
 import { ActivateController } from "../shipUnits/forAllShipUnits/activateController.js"
 import { SpecialController } from "../shipUnits/special/specialController.js"
@@ -127,12 +128,27 @@ export class EffectsController {
         effectName,
         effectType,
         params,
+        config
     ){
 
-        params.object[effectType].add( (params) => {
-            params = Effects.fix(params, effectName, "params")
-            Effects.get(effectName).config.func(params)
-        })
+        Effects.fix(config, effectName, "on", "config")
+
+        new ComplexOnTypeFunctions().apply(config)
+
+        let oldFunc = config.func
+
+        config.config = config
+
+        config.func = (params) => {
+            Effects.fix(params, effectName, "on", "params")
+            oldFunc(params)
+        }
+
+        params.object[effectType].add(
+            config,
+            config.stage,
+            config.priority
+        )
 
     }
 
@@ -150,11 +166,12 @@ export class EffectsController {
                 params,
             },
             effectName,
+            "effect"
         )
 
         Frame.add(
             () => {
-                Effects.get(effectName).config.func(params)
+                Effects.get(effectName).effect.config.func(params)
             },
             config.frameOut,
             config.repeat,
@@ -175,19 +192,19 @@ export class EffectsController {
         
     }
 
-    fixer(data, effectName){
+    fixer(data, effectName, type){
 
-        this.fix(data.config, effectName, "config")
-        this.fix(data.params, effectName, "params")
+        this.fix(data.config, effectName, type, "config")
+        this.fix(data.params, effectName, type, "params")
 
     }
 
-    fix(data, effectName, name){
+    fix(data, effectName, type, name){
 
         let effect = Effects.get(effectName)
 
         CloneObject.recursiveCloneAttribute(
-            effect[name],
+            effect[type][name],
             data,
         )
 
