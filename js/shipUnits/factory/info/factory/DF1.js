@@ -16,14 +16,14 @@ export class DF1 extends BasicActivate {
     name = "DF1"
     cost = 1
     type = "factory"
-    func = Factory.createFactoryObject
+    func = Factory.createObject
     reload = 10
     reloadTemp = 0
     reloadStep = 1
 
     config = {
         "objectClass": BaseObjectFactory,
-        "AI": ["turret"],
+        "AI": ["useActivates"],
         "apply": {
             "factory": ["MSP1"],
         },

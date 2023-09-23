@@ -1,3 +1,4 @@
+import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
 import { Turret } from "../../../../object/turrent.js"
 import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { FactoryController } from "../../factoryController.js"
@@ -15,17 +16,18 @@ export class SP1 extends BasicActivate {
     name = "SP1"
     cost = 20
     type = "factory"
-    func = Factory.createFactoryObject
+    func = Factory.createObject
     reload = 120
     reloadTemp = 0
     reloadStep = 1
 
     config = {
         "objectClass": Turret,
-        "AI": ["turret"],
+        "AI": ["rotableTurret","useActivates"],
         "apply": {
-            "weapon": ["auto_P1"],
+            "weapon": ["P1"],
         },
+        "behavior": new FocusedTopDownBehavior().searchPriority
     }
 
 }

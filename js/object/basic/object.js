@@ -28,8 +28,13 @@ export class Object {
             ]
         )
 
+        this.onDamage.add({
+            "func": "receiveDamage",
+            "class": Damage
+        },"last",10)
+
         this.onHit.add({
-            "func": "damage",
+            "func": "doDamage",
             "class": Damage
         },"last",10)
 

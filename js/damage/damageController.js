@@ -1,6 +1,6 @@
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
-import { MathController } from "../generalUtils/math.js"
+import { CustomMathController } from "../generalUtils/math.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
 
 var AIUtils = ""
@@ -20,7 +20,6 @@ export class DamageController {
     damageTypeTable = {
         "single": this.damageCalc,
         "radius": this.radiusCalc,
-        "illusion": () => {},
     }
 
     schedulerTypeTable = {
@@ -29,9 +28,21 @@ export class DamageController {
         "uniform": this.uniform
     }
 
-    damage(params){
+    receiveDamage(params){
 
-        if(!params.object.damageConfig){
+        if(params.calcDamage <= 0){
+
+            return
+
+        }
+
+        params.object.life -= params.calcDamage
+
+    }
+
+    doDamage(params){
+
+        if(!params.object.damageConfig){ // delet it
             this.damageCalc(params.object, params.victim)
             return
         }
@@ -46,14 +57,24 @@ export class DamageController {
     damageCalc(attacker, victim){
 
         let damage = (attacker.damage * victim.resistance) - victim.defense
+        let bokedDamage = attacker.damage
 
-        if(damage <= 0){return}
+        //if(damage <= 0){return}
 
-        victim.life -= damage
+        if(damage <= 0){
+
+            //damage = 0
+
+        }
+
+        if(attacker.original){
+            attacker = attacker.original
+        }
 
         victim.onDamage.run({
             "otherObject": attacker,
             "object": victim,
+            "damage": bokedDamage,
             "calcDamage": damage,
         })
 
@@ -113,17 +134,17 @@ export class DamageController {
         let attackerBoked = Damage.boke(attacker)
         //let victimBoked = Damage.boke(victim)
 
-        let mult = new MathController().linearReverse(
+        let mult = new CustomMathController().linearReverse(
             AIUtils.getDistanceOfObjects(attacker, victim),
             attacker.damageConfig.range,
         )
 
-        mult += new MathController().linear(
+        mult += new CustomMathController().linear(
             attacker.width,
             attacker.damageConfig.range
         )
 
-        mult += new MathController().linear(
+        mult += new CustomMathController().linear(
             victim.width,
             attacker.damageConfig.range
         )

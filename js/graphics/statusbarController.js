@@ -81,6 +81,10 @@ export class StatusbarController {
             }
         )
 
+
+
+
+        
         let VEL = {
             "start": {
                 "x": 25,
@@ -150,7 +154,7 @@ export class StatusbarController {
                             object.x - params.start.x,
                             object.y - params.start.y,
                         ],[
-                            (object.x - params.end.x) + ( (params.start.x*2) * params.formula ),
+                            (object.x - params.end.x) + alwaysPositive( (params.start.x*2) * params.formula ),
                             object.y - params.end.y,
                         ]
                     ],

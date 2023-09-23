@@ -3,7 +3,7 @@ import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { FrameController, setFrameOut } from "../frame/frameController.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { InheritController } from "../generalUtils/inherit.js"
-import { MathController } from "../generalUtils/math.js"
+import { CustomMathController } from "../generalUtils/math.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
 import { ComplexOnTypeFunctions } from "../object/basic/onInstructions.js"
 import { ShipCreatorController } from "../ship/shipCreatorController.js"
@@ -18,7 +18,7 @@ var AIUtils = ""
 var ScreenRender = ""
 var Special = ""
 var ShipCreator = ""
-var Math = ""
+var CustomMath = ""
 var CloneObject = ""
 
 var GenericEffects = ""
@@ -31,7 +31,7 @@ onInit(function(){
     ScreenRender = new ScreenRenderController()
     Special = new SpecialController()
     ShipCreator = new ShipCreatorController()
-    Math = new MathController()
+    CustomMath = new CustomMathController()
     CloneObject = new CloneObjectController()
 
     GenericEffects = new GenericEffectsController()
@@ -106,6 +106,19 @@ export class EffectsController {
         return this.effectsList[effectName]
     }
 
+    checkEffect(effectName, effectType,){
+
+        if(effectType != "effect"){
+            effectType = "on"
+        }
+
+        if(this.get(effectName)[effectType]){
+            return true
+        }else{
+            return false
+        }
+    }
+
     add(
         effectName,
         effectType,
@@ -113,6 +126,8 @@ export class EffectsController {
         config = {},
         ID = randomUniqueID()
     ){
+
+        if(!this.checkEffect(effectName, effectType)){return false}
 
         this.typeTable[effectType](
             effectName,
@@ -146,8 +161,8 @@ export class EffectsController {
 
         params.object[effectType].add(
             config,
-            config.stage,
-            config.priority
+            config.stage || "first",
+            config.priority || 0
         )
 
     }

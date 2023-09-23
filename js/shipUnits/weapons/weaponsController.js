@@ -6,24 +6,23 @@ import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
+import { VectorController } from "../../generalUtils/vector.js"
 
 var ObjectCreator = ""
-
 var Activate = ""
-
 var Effects = ""
-
 var CloneObject = ""
+var Vector = ""
+var WeaponsInfo = ""
 
 onInit(function(){
 
     ObjectCreator = new ObjectCreatorController()
-
     Activate = new ActivateController()
-
     Effects = new EffectsController()
-
     CloneObject = new CloneObjectController()
+    Vector = new VectorController()
+    WeaponsInfo = new WeaponsInfoController()
 
 })
 
@@ -35,8 +34,23 @@ export class WeaponsController{
 
         object.lifeTime = weapon.lifeTime
 
-        object.currentXVel = ( weapon.xMult - config.tempXSpread ) * ( weapon.config.multVel * config.tempMultVel )
-        object.currentYVel = ( weapon.yMult - config.tempYSpread ) * ( weapon.config.multVel * config.tempMultVel )
+        /*
+
+        let coseno_X = Vector.triangleFactory(weapon.xMult, weapon.yMult).coseno
+        let seno_Y = Vector.triangleFactory(weapon.xMult, weapon.yMult).seno
+
+        object.currentXVel = ( coseno_X - config.tempXSpread ) * ( weapon.config.multVel * config.tempMultVel )
+        object.currentYVel = ( seno_Y - config.tempYSpread ) * ( weapon.config.multVel * config.tempMultVel )
+
+        */
+
+        let triangle = Vector.triangleFactory(weapon.xMult - config.tempXSpread, weapon.yMult- config.tempYSpread)
+
+        let coseno_X = triangle.coseno // - "DISTORSION"
+        let seno_Y = triangle.seno // - "DISTORSION"
+
+        object.currentXVel = ( coseno_X ) * ( weapon.config.multVel + config.tempMultVel )
+        object.currentYVel = ( seno_Y ) * ( weapon.config.multVel + config.tempMultVel )
 
         object.damage *= weapon.config.damageMult
 
@@ -48,14 +62,10 @@ export class WeaponsController{
 
         if(weapon.effects){
 
-            for(let index in weapon.effects){
-
-                this.applyEffect(
-                    object,
-                    weapon.effects[index]
-                )
-
-            }
+            this.applyEffects(
+                object,
+                weapon.effects
+            )
 
         }
 
@@ -64,11 +74,13 @@ export class WeaponsController{
     }
 
     getAll(){
-        return new WeaponsInfoController(true)
+        return WeaponsInfo.getAll()
     }
 
     getInfo(weaponName){
-        return new WeaponsInfoController(true)[weaponName]
+
+        return WeaponsInfo.build(weaponName)
+
     }
 
     useWeapon(object, ID){
@@ -135,43 +147,60 @@ export class WeaponsController{
         missile.xMult = object.xMult
         missile.yMult = object.yMult
 
-        ObjectCreator.giveObjectAI(missile, ["missile_v2"])
+        missile.updateCircleStats(missile)
+
+        ObjectCreator.giveObjectAI(missile, ["missileV1"])
 
         return missile
     
     }
 
-    applyEffect(object, effect){
+    applyEffects(object, effects){
 
-        let config = effect[0]
+        for (let index = 0; index < effects.length; index++) {
 
-        let params = CloneObject.cloneSimple(effect[1])
+            let currentEffect = effects[index]
 
-        let func = (config, params) => {
+            let params = CloneObject.recursiveCloneAttribute(currentEffect.params)
+            let config = CloneObject.recursiveCloneAttribute(currentEffect.config)
+
+            params.object = object
+
+            this.applyEffect(params, config)
+            
+        }
+
+    }
+
+    applyEffect(params, config){
+
+        if(config.apply){
+
+            Effects.add(
+                "apply",
+                config.applyType,
+                {
+                    "object": params.object,
+                },{
+                    "name": config.name,
+                    "type": config.type,
+
+                    "effectParams": params,
+
+                    "suffixFunc": ["deleteInstruction"],
+
+                },
+                config
+            )
+
+        }else{
+
             Effects.add(
                 config.name,
                 config.type,
                 params,
                 config,
             )
-        }
-
-        if(config.apply){
-
-            object.onHit.add( (localParams) => {
-
-                params.object = localParams.otherObject
-                params.otherObject = localParams.object
-    
-                func(config, params)
-    
-            } )
-
-        }else{
-
-            params.object = object
-
-            func(config, params)
 
         }
 

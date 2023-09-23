@@ -1,6 +1,6 @@
 import { AIUtilsController } from "../../AI/utils/AIUtils.js"
 import { FrameController } from "../../frame/frameController.js"
-import { MathController } from "../../generalUtils/math.js"
+import { CustomMathController } from "../../generalUtils/math.js"
 import { ScreenRenderController } from "../../graphics/screenRenderController.js"
 import { ShipCreatorController } from "../../ship/shipCreatorController.js"
 import { ActivateController } from "../../shipUnits/forAllShipUnits/activateController.js"
@@ -23,7 +23,7 @@ var AIUtils = ""
 var ScreenRender = ""
 var Special = ""
 var ShipCreator = ""
-var Math = ""
+var CustomMath = ""
 var Effects = ""
 var Activate = ""
 var GameState = ""
@@ -35,7 +35,7 @@ onInit(function(){
     ScreenRender = new ScreenRenderController()
     Special = new SpecialController()
     ShipCreator = new ShipCreatorController()
-    Math = new MathController()
+    CustomMath = new CustomMathController()
     Effects = new EffectsController()
     Activate = new ActivateController()
     GameState = new GameStateController()
@@ -61,6 +61,8 @@ export class GenericEffectsController {
                     "mult": params.mult
                 }
             )
+
+            return
 
             new AnimationsController().run({
                 "name":"heal",
@@ -133,7 +135,7 @@ export class GenericEffectsController {
 
                 let closestObject = closestObjects[index]
 
-                let mult = Math.linearReverse(
+                let mult = CustomMath.linearReverse(
 // ADICINAR UM SCHEDULER PARA O CALCULO!
                     AIUtils.getDistanceOfObjects(params.object, closestObject),
                     params.range,
@@ -182,7 +184,7 @@ export class GenericEffectsController {
                 "closest"
             )
 
-            params.object.life -= params.damage
+            params.object.life -= params.thunderDamage
 
             if(closestObject){
 
@@ -195,8 +197,8 @@ export class GenericEffectsController {
                                     params.object.x,
                                     params.object.y,
                                 ],[
-                                    params.closestObject.x,
-                                    params.closestObject.y,
+                                    closestObject.x,
+                                    closestObject.y,
                                 ]
                             ],
                             "color": params.color,
@@ -212,7 +214,7 @@ export class GenericEffectsController {
                     {
                         "object": closestObject,
                         "range": params.range * params.mult,
-                        "damage": params.damage * params.mult,
+                        "thunderDamage": params.thunderDamage * params.mult,
                         "mult": params.mult,
 
                         "color": params.color,
@@ -257,108 +259,376 @@ export class GenericEffectsController {
 
             "breathe": {
 
-                "config": {
-                    "func": this.effectsList["sum max energy"],
-                    "frameOut": 60,
-                    "repeat": -1,
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["sum max energy"],
+                        "frameOut": 60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                    },
+
                 },
-    
-                "params": {
-                    "mult": 0.01,
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["sum max energy"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 10,
+                        },
+
+                        "stage": "first",
+                        "priority": 0,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                    },
+
                 },
     
             },
             "evolutron": {
-    
-                "config": {
-                    "func": this.effectsList["lv up"],
-                    "frameOut": 60,
-                    "repeat": -1,
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["lv up"],
+                        "frameOut": 60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                    },
+
                 },
-    
-                "params": {
-                    "mult": 0.01,
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["lv up"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 10,
+                        },
+
+                        "stage": "first",
+                        "priority": 0,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                    },
+
                 },
     
             },
             "second stage": {
     
-                "config": {
-                    "func": this.effectsList["lv up"],
-                    "frameOut": 3600,
-                    "repeat": 1,
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["lv up"],
+                        "frameOut": 1*60*60,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "mult": 2,
+                    },
+
                 },
-    
-                "params": {
-                    "mult": 2,
+
+                "on": {
+
+                    "config": {
+
+                        "prefixFunc": ["setAttributes"],
+                        "func": this.effectsList["lv up"],
+                        "suffixFunc": ["stopStages","deleteInstruction"],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                        "setAttributes": {
+                            "attributes": {
+                                "life": 25
+                            }
+                        },
+
+                        "stopStages": {
+                            "stages": ["last"],
+                        }
+
+                    },
+
+                    "params": {
+                        "mult": 2,
+                    },
+
                 },
     
             },
-            "clone v0.1": {
+            "clone v1": {
+
+                "effect": {
     
-                "config": {
-                    "func": this.effectsList["clone"],
-                    "frameOut": 300,
-                    "repeat": -1,
+                    "config": {
+                        "func": this.effectsList["clone"],
+                        "frameOut": 1*60*60,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "mult": 0,
+                    },
+
                 },
-    
-                "params": {
-                    "mult": -0.9,
+
+                "on": {
+
+                    "config": {
+
+                        "prefixFunc": ["countDown"],
+                        "func": this.effectsList["clone"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                        "timeout":{
+                            "frameOut": 30*60,
+                        },
+
+                        "countDown": {
+                            "function": ["deleteInstruction"],
+                            "count": 2
+                        }
+
+                    },
+
+                    "params": {
+                        "mult": 0,
+                    },
+
                 },
     
             },
+            "clone v0.5": {
+
+                "effect": {
+    
+                    "config": {
+                        "func": this.effectsList["clone"],
+                        "frameOut": 1*60*60,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "mult": -0.5,
+                    },
+
+                },
+
+                "on": {
+
+                    "config": {
+
+                        "prefixFunc": ["countDown"],
+                        "func": this.effectsList["clone"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                        "timeout":{
+                            "frameOut": 30*60,
+                        },
+
+                        "countDown": {
+                            "function": ["deleteInstruction"],
+                            "count": 2
+                        }
+
+                    },
+
+                    "params": {
+                        "mult": -0.5,
+                    },
+
+                },
+    
+            }, // delet?
             "illusion v1": {
     
-                "config": {
-                    "func": this.effectsList["illusion"],
-                    "frameOut": 30,
-                    "repeat": 2,
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["illusion"],
+                        "frameOut": 30,
+                        "repeat": 2,
+                    },
+        
+                    "params": {},
+
                 },
-    
-                "params": {},
+
+                "on": {
+
+                    "config": {
+
+                        "prefixFunc": ["countDown"],
+                        "func": this.effectsList["illusion"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                        "timeout":{
+                            "frameOut": 5*60,
+                        },
+
+                        "countDown": {
+                            "function": ["deleteInstruction"],
+                            "count": 3
+                        }
+
+                    },
+
+                    "params": {},
+                
+                }
     
             },
             "slowdown area": {
-    
-                "config": {
-                    "func": this.effectsList["slowdown"],
-                    "frameOut": 30,
-                    "repeat": -1,
-                    "overwrite": false,
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["slowdown"],
+                        "frameOut": 30,
+                        "repeat": -1,
+                        "overwrite": false,
+                    },
+        
+                    "params": {
+                        "range": 175,
+                        "mult": 1,
+                    },
+
                 },
-    
-                "params": {
-                    "range": 175,
-                    "mult": 1,
-                },
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["slowdown"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                        "timeout":{
+                            "frameOut": 15,
+                        },
+
+                    },
+
+                    "params": {
+                        "range": 175,
+                        "mult": 1,
+                    },
+
+                }
     
             },
             "untouchable": {
-    
-                "config": {
-                    "func": this.effectsList["slowdown"],
-                    "frameOut": 5,
-                    "repeat": -1,
-                    "overwrite": false,
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["slowdown"],
+                        "frameOut": 5,
+                        "repeat": -1,
+                        "overwrite": false,
+                    },
+        
+                    "params": {
+                        "range": 50,
+                        "mult": 1,
+                    },
+
                 },
-    
-                "params": {
-                    "range": 50,
-                    "mult": 1,
-                },
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["slowdown"],
+                        "suffixFunc": [],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                    },
+
+                    "params": {
+                        "range": 50,
+                        "mult": 1,
+                    },
+
+                }
     
             },
             "deflet area": {
     
-                "config": {
-                    "func": this.effectsList["slowdown"],
-                    "frameOut": 60,
-                    "repeat": -1,
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["slowdown"],
+                        "frameOut": 60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "range": 75,
+                        "mult": 3,
+                    },
+
                 },
-    
-                "params": {
-                    "range": 75,
-                    "mult": 3,
+
+                "on": {
+                    
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["slowdown"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                        "timeout":{
+                            "frameOut": 30,
+                        },
+
+                    },
+        
+                    "params": {
+                        "range": 75,
+                        "mult": 3,
+                    },
+
                 },
     
             },
@@ -390,9 +660,14 @@ export class GenericEffectsController {
                         "stage": "first",
                         "priority": 0,
 
-                        "frameOut": 10*60,
-                        "countDownFucntion": ["deleteInstruction"],
-                        "countDown": 10
+                        "timeout":{
+                            "frameOut": 10*60,
+                        },
+
+                        "countDown": {
+                            "function": ["deleteInstruction"],
+                            "count": 10
+                        }
                     },
 
                     "params": {
@@ -423,45 +698,97 @@ export class GenericEffectsController {
 
             "shock": {
 
-                "config": {
-                    "func": this.effectsList["thunder"],
-                    "frameOut": 20,
-                    "repeat": 1,
-                },
-    
-                "params": {
-                    "range": 300,
-                    "damage": 1,
-                    "mult": 0.5,
+                "effect": {
 
-                    "color": "yellow",
-                    "lineWidth": 4,
+                    "config": {
+                        "func": this.effectsList["thunder"],
+                        "frameOut": 20,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "range": 300,
+                        "thunderDamage": 100,
+                        "mult": 0.5,
     
-                    "effectName": "shock",
-                    "frameOut": 20
+                        "color": "yellow",
+                        "lineWidth": 4,
+        
+                        "effectName": "shock",
+                        "frameOut": 20
+                    },
+
+                },
+
+                "on": {
+
+                    "config": {
+
+                        "func": this.effectsList["thunder"],
+
+                    },
+
+                    "params": {
+                        "range": 300,
+                        "thunderDamage": 100,
+                        "mult": 0.5,
+    
+                        "color": "yellow",
+                        "lineWidth": 4,
+        
+                        "effectName": "shock",
+                        "frameOut": 20
+                    },
+
+
                 },
     
             },
 
             "zeus": {
-    
-                "config": {
-                    "func": this.effectsList["thunder"],
-                    "frameOut": 5,
-                    "repeat": 1,
-                },
-    
-                "params": {
-                    "range": 50,
-                    "damage": 10,
-                    "mult": 1.1,
 
-                    "color": "yellow",
-                    "lineWidth": 1,
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["thunder"],
+                        "frameOut": 5,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "range": 50,
+                        "thunderDamage": 10,
+                        "mult": 1.1,
     
-                    "effectName": "zeus",
-                    "frameOut": 5
+                        "color": "yellow",
+                        "lineWidth": 1,
+        
+                        "effectName": "zeus",
+                        "frameOut": 5
+                    },
+
                 },
+
+                "on": {
+                    "config": {
+
+                        "func": this.effectsList["thunder"],
+
+                    },
+
+                    "params": {
+                        "range": 50,
+                        "thunderDamage": 10,
+                        "mult": 1.1,
+    
+                        "color": "yellow",
+                        "lineWidth": 1,
+        
+                        "effectName": "zeus",
+                        "frameOut": 5
+                    },
+
+                }
     
             },
 

@@ -1,10 +1,10 @@
-import { MathController } from "./math.js"
+import { CustomMathController } from "./math.js"
 
-var Math = ""
+var CustomMath = ""
 
 onInit(function(){
 
-    Math = new MathController()
+    CustomMath = new CustomMathController()
 
 })
 
@@ -26,7 +26,7 @@ export class MultiplyStatsController {
             this.mult(
                 object,
                 stats.invertedStatus,
-                Math.inverter(stats.mult)
+                CustomMath.inverter(stats.mult)
             )
 
         }
@@ -55,18 +55,14 @@ export class MultiplyStatsController {
 
     exponentialMultiply(object, stats, statusType){
 
-        let mult = parsePositive(stats.mult) / (stats.mult * 2)
-        let repeat = parsePositive(stats.mult) * 2
+        // the "evolutron" and the "segunda etapa" dão resutados diferentes mesmo que era para ser igual, a "segunda etapa" é melhor
 
-        if(mult < 0){
-            mult = parsePositive(mult) + 1
-        }
+        // 0.81 vs 0.87
 
         this.exponential(
             object,
             stats[statusType],
-            mult,
-            repeat
+            CustomMath.inverter(stats.mult),
         )
 
     }
@@ -85,7 +81,9 @@ export class MultiplyStatsController {
 
     }
 
-    exponential(object, stats, mult, repeat = 1){
+    exponential(object, stats, mult){
+
+        let penalty = 10
 
         for (let index = 0; index < stats.length; index++) {
 
@@ -93,10 +91,11 @@ export class MultiplyStatsController {
 
             if(object[stat]){
 
-                for (let indey = 0; indey < repeat; indey++) {
-                    object[stat] *= mult ** 0.1
-                }
-                
+                object[stat] = CustomMath.diminishingReturns(
+                    object[stat],
+                    mult / penalty
+                )
+
             }
             
         }

@@ -12,6 +12,8 @@ export class RulesController {
 
     mainCanvas = document.getElementById("mainCanvas")
 
+    maxVel = 200
+
     update(){
 
         let allObjectsRules = GameState.getAllObjectsRules()
@@ -19,14 +21,31 @@ export class RulesController {
         for(let objectName in allObjectsRules){
             let object = allObjectsRules[objectName]
 
-            Rules.screenRules(object)
-            Rules.statsRules(object)
-            Rules.activatesRules(object)
+            Rules.screen(object)
+            Rules.stats(object)
+            Rules.activates(object)
+            Rules.physics(object)
 
         }
     }
 
-    screenRules(object){
+    physics(object){
+
+        if(object.currentXVel > this.maxVel){
+            object.currentXVel = this.maxVel
+        }else if(object.currentXVel < -this.maxVel){
+            object.currentXVel = -this.maxVel
+        }
+
+        if(object.currentYVel > this.maxVel){
+            object.currentYVel = this.maxVel
+        }else if(object.currentYVel < -this.maxVel){
+            object.currentYVel = -this.maxVel
+        }
+
+    }
+
+    screen(object){
 
         if(object.x < 0){
             object.x = Rules.mainCanvas.offsetWidth - object.width
@@ -46,7 +65,7 @@ export class RulesController {
 
     }
 
-    statsRules(object){
+    stats(object){
 
         if(object.life > object.maxLife){
             object.life = object.maxLife
@@ -79,7 +98,7 @@ export class RulesController {
 
     }
 
-    activatesRules(object){
+    activates(object){
 
         for(let activateName in object.activates){
             let activate = object.activates[activateName]

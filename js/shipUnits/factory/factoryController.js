@@ -45,7 +45,7 @@ export class FactoryController{
 
     }
 
-    createFactoryObject(object, activate, config){
+    createObject(object, activate, config){
 
         let newObject = new config.objectClass()
 
@@ -55,7 +55,15 @@ export class FactoryController{
 
         Factory.setActivates(newObject, config.apply)
 
+        Factory.setBehavior(object, config)
+
         return newObject
+
+    }
+
+    setBehavior(object, config){
+
+        object.searchPriority = config.behavior
 
     }
 

@@ -19,48 +19,6 @@ export class onInstructions {
 
 }
 
-export class OnLinkedList extends LinkedList{
-
-    remove(name){
-        let node = this.list.next
-        let tail = this.list
-
-        while(1){
-            if(!node.next){return false}
-
-            if(name == node.value.name){
-
-                if(node.next.next){
-                    tail.next = node.next
-                }else{
-                    tail.next = {}
-                }
-
-                return true
-            }else{
-                tail = node
-                node = node.next
-            }
-        }
-    }
-
-    runAll(params){
-
-        let node = this.list.next
-
-        while(1){
-            if(!node.next){return}
-
-            node.value(params)
-
-            node = node.next
-
-        }
-
-    }
-
-}
-
 export class PositionalList{
 
     list = {}
@@ -78,10 +36,11 @@ export class PositionalList{
             }else{
 
                 console.warn(
-                    "The index ["+index+"] are ocuped moving: ["+index+"] > ["+(index+1)+"]"
+                    "The index ["+index+"] are occupied moving: ["+index+"] > ["+(parseInt(index)+1)+"]"
                 )
 
                 index += 1
+                
             }
 
         }
@@ -104,7 +63,7 @@ export class PositionalList{
 
     compatibilityPath(params, index, globalConfig, tempConfig){
 
-        params.param = params
+        params.params = params
         params.config = this.get(index).config
         params.globalConfig = globalConfig
         params.tempConfig = tempConfig
@@ -238,7 +197,7 @@ export class ComplexOnType{
 
                 if(!globalConfig.runStage[stage]){continue}
 
-                let newParams = this.stages[stage].run(
+                this.stages[stage].run(
                     params,
                     listIndex,
                     globalConfig,
@@ -268,7 +227,7 @@ export class ComplexOnTypeFunctions{
     listOfApply = [
         "prefixFunc",
         "suffixFunc",
-        "countDownFucntion",
+        "countDownFunction",
     ]
 
     apply(params){
@@ -284,11 +243,8 @@ export class ComplexOnTypeFunctions{
                 params[this.listOfApply[index]] = this.build(
                     params[this.listOfApply[index]]
                 )
-            }else{
-
-                console.log(
-                    this.listOfApply[index]
-                )
+                
+            }else if(params[this.listOfApply[index]]){
 
                 params[this.listOfApply[index]] = new PriorityObserver()
 
@@ -298,16 +254,16 @@ export class ComplexOnTypeFunctions{
 
     }
 
-    build(arrayOfFucntions){
+    build(arrayOfFunctions){
 
         let newPOB = new PriorityObserver()
 
-        for (let index = 0; index < arrayOfFucntions.length; index++) {
+        for (let index = 0; index < arrayOfFunctions.length; index++) {
 
-            if(this[arrayOfFucntions[index]]){
+            if(this[arrayOfFunctions[index]]){
 
                 newPOB.add(
-                    this[arrayOfFucntions[index]],
+                    this[arrayOfFunctions[index]],
                     index
                 )
 
@@ -315,7 +271,7 @@ export class ComplexOnTypeFunctions{
 
                 console.error("The loader have:",this.__proto__)
                 throw new Error(
-                    "The function ["+arrayOfFucntions[index]+"] don't exist."
+                    "The function ["+arrayOfFunctions[index]+"] don't exist."
                 )
 
             }
@@ -338,14 +294,17 @@ export class ComplexOnTypeFunctions{
             metaParams.tempConfig.listIndex
         )
 
+        let fixedTempConfig = CloneObject.recursiveCloneAttribute(metaParams.tempConfig)
+
         setFrameOut(
             () => {
+
                 metaParams.globalConfig.complexOnType.add(
                     newParams,
-                    metaParams.tempConfig.stage,
-                    metaParams.tempConfig.listIndex
+                    fixedTempConfig.stage,
+                    fixedTempConfig.listIndex
                 )
-            }, metaParams.config.frameOut
+            }, metaParams.config.timeout.frameOut
 
         )
 
@@ -353,11 +312,11 @@ export class ComplexOnTypeFunctions{
 
     countDown(metaParams){
 
-        metaParams.config.countDown -= 1
+        metaParams.config.countDown.count -= 1
 
-        if(metaParams.config.countDown < 0){
+        if(metaParams.config.countDown.count < 0){
 
-            metaParams.config.countDownFucntion.run(metaParams)
+            metaParams.config.countDown.function.run(metaParams)
 
         }
 
@@ -372,83 +331,28 @@ export class ComplexOnTypeFunctions{
 
     }
 
+    stopStages(metaParams){
 
+        for (let stage in metaParams.config.stopStages.stages) {
 
+            metaParams.globalConfig.runStage[
+                metaParams.config.stopStages.stages[stage]
+            ] = false
 
-
-}
-
-onInit(function(){
-
-    return
-
-    let game = new ComplexOnType()
-
-    let params = {
-        "prefixFunc": new PriorityObserver(),
-
-        "func": (metaParams) => {
-            console.log(
-                //metaParams.config
-            )
-        },
-
-        "suffixFunc": new PriorityObserver(),
-
-        "config": {
-            "a":"1"
         }
 
     }
 
-params.prefixFunc.add( (params) => {
+    setAttributes(metaParams){
 
-    //params.globalConfig.runStage.last = false
+        for (let attribute in metaParams.config.setAttributes.attributes) {
 
-},
-0)
+            metaParams.params.object[
+                attribute
+            ] = metaParams.config.setAttributes.attributes[attribute]
 
-params.suffixFunc.add((metaParams) => {
+        }
 
-    metaParams.globalConfig.deleteList.push(metaParams.tempConfig.listIndex)
+    }
 
-    metaParams.config.a += " - 5"
-},
-0)
-
-params.suffixFunc.add((metaParams) => {
-    metaParams.config.a += " - 999"
-},
-5)
-
-params.suffixFunc.add((metaParams) => {
-    metaParams.config.a += " - 76"
-},
-2)
-
-
-
-//game.add(params, "first", 0)
-//game.add(params, "first", 0)
-//game.add(params, "first", 0)
-//game.add(params, "first", 0)
-//game.add(params, "last", 0)
-
-//game.run({})
-//
-//game.run({})
-//
-//game.run({})
-//
-//game.run({})
-
-console.log(
-    //game
-)
-
-
-
-
-
-
-})
+}

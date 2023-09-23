@@ -16,7 +16,7 @@ var KeyBoard = ""
 /* STATS */
 import { StatsController } from "../stats/statsController.js"
 
-var stats = ""
+var Stats = ""
 
 /* RULES */
 import { RulesController } from "../rules/rulesController.js"
@@ -57,7 +57,7 @@ onInit(function(){
 
     /* STATS */
 
-    stats = new StatsController()
+    Stats = new StatsController()
 
     /* RULES */
 
@@ -86,17 +86,19 @@ onInit(function(){
 
 function browseInit(){
 
-    ShipCreator.createShip("playerTeam", false, true)
+    ShipCreator.createShip("playerTeam", ["missileV1", "useActivates"], true)
 
-    //ShipCreator.createShip("playerTeam", ["missile_v2","turret"]).color = "black"
+    //ShipCreator.createShip("playerTeam", ["missileV1","useActivates"]).color = "black"
 
-    //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
 
-    ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+    ShipCreator.createShip("enemyTeam", ["rotableTurret","useActivates"]).color = "purple"
+
+    //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam").color = "red"
 
-    //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
 
     //ShipCreator.createShip("enemyTeam", ["dummy"])
 
@@ -108,86 +110,97 @@ function browseInit(){
 
     //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
 
-    //ShipCreator.createShip("playerTeam", ["turret"]).color = "blue"
-    //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
+    //ShipCreator.createShip("playerTeam", ["useActivates"]).color = "blue"
+    //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
     //ShipCreator.createShip("neutralTeam", ["robo"]).color = "red"
     //ShipCreator.createShip("enemyTeam", ["dummy"])
     //ShipCreator.createShip("enemyTeam", ["robo"])
-    //ShipCreator.createShip("enemyTeam", ["raio", "dummy", "missile"])
+    //ShipCreator.createShip("enemyTeam", ["raio", "dummy", "missileV1"])
     //ShipCreator.createShip("enemyTeam", ["movable"]).color = "red"
     //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
 
-    //ShipCreator.createShip("playerTeam", ["movable", "turret"]).color = "blue"
+    //ShipCreator.createShip("playerTeam", ["movable", "useActivates"]).color = "blue"
     //ShipCreator.createShip("enemyTeam", ["movable_v2", "turret_v2"]).color = "red"
-    //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
+    //ShipCreator.createShip("neutralTeam", ["movable", "useActivates"]).color = "black"
 
     //ShipCreator.createShip("enemyTeam", ["movable"]).color = "pink"
 
 
-    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
 
     setInterval(() => {
 
-        //ShipCreator.createShip("enemyTeam", ["movable","turret"]).color = "pink"
+        //ShipCreator.createShip("enemyTeam", ["missileV1","useActivates"]).color = "purple"
+
+        //ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "pink"
 
         //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
         //ShipCreator.createShip("enemyTeam", ["movable"])
         //ShipCreator.createShip("enemyTeam", ["mine"])
-        //ShipCreator.createShip("enemyTeam", ["missile"])
+        //ShipCreator.createShip("enemyTeam", ["missileV1"])
         //ShipCreator.createShip("enemyTeam", ["raio", "dummy"])
 
-        //ShipCreator.createShip("playerTeam", ["turret"]).color = "blue"
-        //ShipCreator.createShip("enemyTeam", ["turret"]).color = "red"
-        //ShipCreator.createShip("neutralTeam", ["turret"]).color = "black"
+        //ShipCreator.createShip("playerTeam", ["useActivates"]).color = "blue"
+        //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
+        //ShipCreator.createShip("neutralTeam", ["useActivates"]).color = "black"
 
-        //ShipCreator.createShip("playerTeam", ["movable", "turret"]).color = "blue"
-        //ShipCreator.createShip("enemyTeam", ["movable", "turret"]).color = "red"
-        //ShipCreator.createShip("neutralTeam", ["movable", "turret"]).color = "black"
+        //ShipCreator.createShip("playerTeam", ["movable", "useActivates"]).color = "blue"
+        //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
+        //ShipCreator.createShip("neutralTeam", ["movable", "useActivates"]).color = "black"
 
-    }, 1000)
+    }, 10000)
 
     KeyBoard.addTriggers()
 
 }
 
+
+
+
+// CHEGA! DE PROGRAMAÇÃO!!!! HOARA DA MATEMATICA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! []
+
+// no event, caso voce vá para sima e depois para a direita o "efetio" de ir para sime é anulado! [/]
+
+
+
+
+
+
+
+
+
 //
 //// E ESTRUTURAR MELHOR O PROJETO [?]
 //
 
-
-// adicionar um mecanismo que o objeto de atensao adicional para outro objeto
-
-// adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada!
-
-// fazer varios projeteis com "metade" da força. o nome poderiaser replicator???
-
-// uma arma que aao inver de sobre escrever novos projeteis essa arma criar mais projeteis facros e junta com os antigos
-
-// um tipo de objeto especial que NÃO morre
-
-// algo que resusite!
-
-// uma mina. factory...
-
 /* > ADD <
+
+um tipo de objeto especial que NÃO morre []
+
+algo que resusite! []
+
+uma arma mina / factory... []
+
+uma arma que aao inver de sobre escrever novos projeteis essa arma criar mais projeteis facros e junta com os antigos []
+
+fazer varios projeteis com "metade" da força. o nome poderiaser replicator??? []
 
 adicionar um novo modificador que randomiza atributos []
 
 ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS []
 
-
-
-
 UMA ARMA QUE VONCERTE OS ENEMYGOS? [/]
+
+adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada! []
 
 */
 
 /* > RE <
 
 
-
+adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
 
 ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
 
@@ -199,6 +212,8 @@ TALVEZ ADICINAR "lifeTime" para illsuions? []
 */
 
 /* > BUG <
+
+as armas NÃo estão sendo clonas corretamente, caso o clone faça um clone , o clone do clone fica bugado
 
 modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
@@ -218,8 +233,11 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // nave: que reduz enormemente e pelozidade dos objetos aoredor. pique gojo [/]
 // naves especialis tipo: um namo com energia infinita! [/]
 
-// uma nave special: player no spewna gera algo, toda vez que o player morre ele renaçe no algo
+// uma nave special: player no spewna gera algo, toda vez que o player morre ele renaçe no algo []
+
 // uma nave special: 'só existe uma ração' qunado morre tem % de chante de renacer, começa em: 0 e almenta a cada segundo []
+// um efeito com % de ativar []
+
 // "depois que eu morrer outros virão..." []
 // um tipo especial de "nave?" que tem varias facetas em qunato um estiver viva todas vivem? / renasão []
 
@@ -228,13 +246,34 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 // "peoes do rei" periodicamente converta algo []
 
+// um nave que "sempre" volta?????? [?]
+
+// parar o tempo? []
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function gameLoop(){
 
     Frame.update()
 
     KeyBoard.runCommands()
 
-    stats.update()
+    Stats.update()
 
     Physics.update()
 

@@ -6,6 +6,8 @@ import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { SpecialInfoController } from "./info/specialInfoController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
+import { ComplexOnType } from "../../object/basic/onInstructions.js"
+import { DamageController } from "../../damage/damageController.js"
 
 var GameState = ""
 var ObjectCreator = ""
@@ -13,6 +15,7 @@ var MultiplyStats = ""
 var CloneObject = ""
 var Activate = ""
 var Effects = ""
+var Damage = ""
 
 onInit(function(){
 
@@ -22,6 +25,7 @@ onInit(function(){
     CloneObject = new CloneObjectController()
     Activate = new ActivateController()
     Effects = new EffectsController()
+    Damage = new DamageController()
 
 })
 
@@ -69,6 +73,10 @@ export class SpecialController{
 
     weakClone(object, activate, config){
 
+        console.log(
+            "O MODO QUE OS CLONES SÃO FEITOS E MEU 'ME' PODE DAR CONFLITOS COM O 'CLONE V1' ETC!"
+        )
+
         let weakClone = CloneObject.clone(object)
 
         stats.mult = config.mult
@@ -115,10 +123,6 @@ export class SpecialController{
 
         let illusion = CloneObject.clone(object)
 
-        console.log(
-"AS ILLUSIONS ESTÃO BUGADAS, O TRIGGER DE MORTE ESTASENDO APAGADO!"
-            )
-
         illusion.life = 1
         illusion.maxLife = 1
         illusion.defense = 0
@@ -131,11 +135,19 @@ export class SpecialController{
 
         illusion.ID = randomUniqueID()
 
-        illusion.onDeath = new Observer() //<---------------------------
-        illusion.onHit = new Observer()
-        illusion.onDamage = new Observer()
+        illusion.onDeath = new ComplexOnType()
+        illusion.onHit = new ComplexOnType()
+        illusion.onDamage = new ComplexOnType()
 
-        illusion.damageConfig.type = "illusion"
+        illusion.onDeath.add({
+            "func": "removeObType",
+            "class": GameState,
+        },"last",10)
+
+        illusion.onDamage.add({
+            "func": "receiveDamage",
+            "class": Damage
+        },"last",10)
 
         Effects.removeAll(illusion)
 

@@ -1,11 +1,17 @@
 
 import { GameStateController } from "../../gameState/gameStateController.js"
+import { CustomMathController } from "../../generalUtils/math.js"
+import { VectorController } from "../../generalUtils/vector.js"
 
 var GameState = ""
+var CustomMath = ""
+var Vector = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
+    CustomMath = new CustomMathController()
+    Vector = new VectorController()
 
 })
 
@@ -45,35 +51,105 @@ export class AIUtilsController {
 
     getDistanceOfObjects(object, goal){
 
-        return Math.sqrt(
-            ( ( object.x - goal.x ) ** 2 )
-            +
-            ( ( object.y - goal.y ) ** 2 )
+        return Vector.getTriangleSize(object, goal)
+
+    }
+
+    getFutureOf(object, frames){
+
+        return {
+            "x": object.x + (object.currentXVel * frames ),
+            "y": object.y + (object.currentYVel * frames ),
+        }
+
+    }
+
+    isPointed(object, target, precision = 0.9999){
+
+        let frontOfObject = {
+            "x": object.x + object.xMult,
+            "y": object.y + object.yMult,
+        }
+
+        let frontOfObjectVectorNormalize = Vector.vectorNormalize(frontOfObject, object)
+
+        let toTargetVectorNormalize = Vector.vectorNormalize(
+            target,
+            object
         )
 
-    }
+        let product = Vector.scalarProduct(
+            frontOfObjectVectorNormalize, toTargetVectorNormalize
+        )
 
-    getDistanceOfObjects_x(object, goal){
-
-        return Math.sqrt( ( object.x - goal.x ) ** 2 )
-
-    }
-
-    getDistanceOfObjects_y(object, goal){
-
-        return Math.sqrt( ( object.y - goal.y ) ** 2 )
+        if(product > precision){
+            return true
+        }else{
+            return false
+        }
 
     }
 
-    aimToTarget(object, target){
+    pointToTarget(object, target){
 
-        let distance = AIUtils.getDistanceOfObjects(object, target)
-
-        let distanceY = target.y - object.y
-        let distanceX = target.x - object.x
+        let direction = Vector.vectorNormalize(object, target)
     
-        object.xMult = distanceX / distance
-        object.yMult = distanceY / distance
+        object.xMult = direction.x
+        object.yMult = direction.y
+
+    }
+
+    aimToTarget(object, target, objectCalcs = object){
+        
+        if(this.isPointed(object, target)){return} // delet?
+
+        let toTargetVectorNormalize = Vector.vectorNormalize(
+            target,
+            objectCalcs
+        )
+
+        // fix rotate
+        object.fixRotateRight()
+
+        // rotateToRight
+        let tempXMult = object.xMult - object.xStepMult
+        let tempYMult = object.yMult - object.yStepMult
+
+        
+
+        let right = {
+            "x": objectCalcs.x + tempXMult,
+            "y": objectCalcs.y + tempYMult,
+        }
+
+        // fix rotate
+        object.fixRotateLeft()
+
+        // rotateToLeft
+        tempXMult = object.xMult + object.xStepMult
+        tempYMult = object.yMult + object.yStepMult
+
+        let left = {
+            "x": objectCalcs.x + tempXMult,
+            "y": objectCalcs.y + tempYMult,
+        }
+
+        let toRight = Vector.vectorNormalize(right, objectCalcs)
+        let toLeft = Vector.vectorNormalize(left, objectCalcs)
+
+        let rightProduct = Vector.scalarProduct(
+            toTargetVectorNormalize, toRight
+        )
+
+        let leftProduct = Vector.scalarProduct(
+            toTargetVectorNormalize, toLeft
+        )
+
+        if(rightProduct > leftProduct){
+            object.rotateToRight()
+        }else{
+            object.rotateToLeft()
+        }
 
     }
 

@@ -8,8 +8,6 @@ export class Turret {
 
     constructor(){
 
-         
-        
         new InheritController().inherit(
             this,
             [

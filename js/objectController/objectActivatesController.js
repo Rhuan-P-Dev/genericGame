@@ -89,7 +89,6 @@ export class ObjectActivatesController{
 
     }
 
-
     defineLoader(typeOfLoader){
 
         if(typeOfLoader == "random"){

@@ -1,12 +1,39 @@
 
+import { VectorController } from "../../generalUtils/vector.js"
+
+var Vector = ""
+
+onInit(function(){
+
+    Vector = new VectorController()
+
+})
+
 export class Rotable {
 
+    constructor(){
+
+        this.rightRotateOb.add({
+            "func": "updateCircleStats",
+            "class": this
+        })
+
+        this.leftRotateOb.add({
+            "func": "updateCircleStats",
+            "class": this
+        })
+
+    }
+
     frontLineMult = 7
+    
     xMult = 0
     yMult = 1
-    stepMult = 0.05
-    xStepMult = 0.05
-    yStepMult = 0.05
+
+    stepMult = Math.PI /  (1.5 * 60)
+    xStepMult = Math.PI / (1.5 * 60)
+    yStepMult = Math.PI / (1.5 * 60)
+
     xyMultLimit = 1
 
     rightRotateOb = new Observer()
@@ -19,7 +46,7 @@ export class Rotable {
         this.xMult -= this.xStepMult
         this.yMult -= this.yStepMult
 
-        this.rightRotateOb.run()
+        this.rightRotateOb.run(this)
 
     }
 
@@ -30,7 +57,7 @@ export class Rotable {
         this.xMult += this.xStepMult
         this.yMult += this.yStepMult
 
-        this.leftRotateOb.run()
+        this.leftRotateOb.run(this)
 
     }
 
@@ -62,6 +89,19 @@ export class Rotable {
         }else if(this.yMult >= this.xyMultLimit){
             this.yStepMult = -this.stepMult
         }
+    }
+
+    coseno = 0
+    seno = 1
+
+    updateCircleStats(rotable){
+
+        let triangle = Vector.triangleFactory(rotable.xMult, rotable.yMult)
+
+        rotable.coseno = triangle.coseno
+        rotable.seno = triangle.seno
+
+
     }
 
 }

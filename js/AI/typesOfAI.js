@@ -3,12 +3,14 @@ import { AIUtilsController } from "./utils/AIUtils.js"
 import { SpecialController } from "../shipUnits/special/specialController.js"
 import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
 import { DamageController } from "../damage/damageController.js"
+import { VectorController } from "../generalUtils/vector.js"
 
 var GameState = ""
 var AIUtils = ""
 var Special = ""
 var Weapons = ""
 var Damage = ""
+var Vector = ""
 
 onInit(function(){
 
@@ -17,18 +19,25 @@ onInit(function(){
     Special = new SpecialController()
     Weapons = new WeaponsController()
     Damage = new DamageController()
+    Vector = new VectorController()
 
 })
 
 export class TypeOfAI {
 
     AItypes = {
-        "missile": missile,
+        "missileV1": missileV1,
+        "missileV2": missileV2,
+        "missileV3": missileV3,
+
         "movable": movable,
-        "dummy": dummy,
-        "missile_v2": missile_v2,
-        "turret": turret,
+
+        "rotableTurret": rotableTurret,
+        "useActivates": useActivates,
+
         "ship_turret": ship_turret,
+
+        "dummy": dummy,
     }
 
     getAllTypeOfAI(){
@@ -37,48 +46,50 @@ export class TypeOfAI {
 
 }
 
-function missile(object){
+function missileV1(object){
 
-    let target = AIUtils.getClosestObjectOfTeams(object)
+    let target = AIUtils.getStepPriorityObjectOfTeams(object)
 
     object.advanceShip()
 
     if(!target){return}
 
-    let tar_ob_difer_x = object.x - target.x
-    let tar_ob_difer_y = object.y - target.y 
+    AIUtils.aimToTarget(
+        object,
+        target,
+        object,
+    )
 
-    object.fixRotateRight()
+}
 
-    let tempXMult = object.xMult
-    let tempYMult = object.yMult
+function missileV2(object){
 
-    tempXMult -= object.xStepMult
-    tempYMult -= object.yStepMult
+    let target = AIUtils.getStepPriorityObjectOfTeams(object)
 
-    let direita_x = (tar_ob_difer_x * tempXMult)
-    let direita_y = (tar_ob_difer_y * tempYMult)
-    
-    let direita_xy = direita_x + direita_y
+    object.advanceShip()
 
-    object.fixRotateLeft()
+    if(!target){return}
 
-    tempXMult = object.xMult
-    tempYMult = object.yMult
+    AIUtils.aimToTarget( // need overhal
+        object,
+        AIUtils.getFutureOf(target, 20),
+    )
 
-    tempXMult += object.xStepMult
-    tempYMult += object.yStepMult
+}
 
-    let esquerda_x = (tar_ob_difer_x * tempXMult)
-    let esquerda_y = (tar_ob_difer_y * tempYMult)
+function missileV3(object){
 
-    let esquerda_xy = esquerda_x + esquerda_y
+    let target = AIUtils.getStepPriorityObjectOfTeams(object)
 
-    if(esquerda_xy > direita_xy){
-        object.rotateToRight()
-    }else{
-        object.rotateToLeft()
-    }
+    object.advanceShip()
+
+    if(!target){return}
+
+    AIUtils.aimToTarget( // need overhal
+        object,
+        AIUtils.getFutureOf(target, 20),
+        AIUtils.getFutureOf(object, 20)
+    )
 
 }
 
@@ -90,131 +101,61 @@ function movable(object){
 
     if(!target){return}
 
-    let tar_ob_difer_x = object.x - target.x
-    let tar_ob_difer_y = object.y - target.y 
-
-    let XY = AIUtils.getDistanceOfObjects(object, target)
-
-    object.fixRotateRight()
-
-    let tempXMult = object.xMult
-    let tempYMult = object.yMult
-
-    tempXMult -= object.xStepMult
-    tempYMult -= object.yStepMult
-
-    let direita_x = (tar_ob_difer_x * tempXMult)
-    let direita_y = (tar_ob_difer_y * tempYMult)
+    let distance = AIUtils.getDistanceOfObjects(object, target)
     
-    let direita_xy = direita_x + direita_y
-
-    object.fixRotateLeft()
-
-    tempXMult = object.xMult
-    tempYMult = object.yMult
-
-    tempXMult += object.xStepMult
-    tempYMult += object.yStepMult
-
-    let esquerda_x = (tar_ob_difer_x * tempXMult)
-    let esquerda_y = (tar_ob_difer_y * tempYMult)
-
-    let esquerda_xy = esquerda_x + esquerda_y
-
-    if(XY > 150){
-        if(esquerda_xy > direita_xy){
-            object.rotateToRight()
-        }else{
-            object.rotateToLeft()
-        }
+    if(distance > 150){
+        AIUtils.aimToTarget(object, target)
     }else{
-        if(esquerda_xy < direita_xy){
-            object.rotateToRight()
-        }else{
-            object.rotateToLeft()
-        }
+        AIUtils.aimToTarget(object, object, target)
     }
+    
+}
+
+function rotableTurret(object){
+
+    let target = AIUtils.getStepPriorityObjectOfTeams(object)
+
+    if(!target){return}
+
+    AIUtils.aimToTarget(
+        object,
+        target
+    )
+
 }
 
 function dummy(object){
 
-    return
-
-    let target = AIUtils.getStepPriorityObjectOfTeams(object)
-
-    console.log(target)
-
-
-
-    return
-
-    //let distance = AIUtils.getDistanceOfObjects(object, target)
-
-    if(distance < 200){
-      //  object.rotateToLeft()
-    }
-
-}
-
-function missile_v2(object){
-
-    let target = AIUtils.getStepPriorityObjectOfTeams(object)
-
-    object.advanceShip()
+    let target = AIUtils.getClosestObjectOfTeams(object)
 
     if(!target){return}
-
-    AIUtils.aimToTarget(object, target)
-
-}
-
-function turret(object){
-
-    let target = AIUtils.getStepPriorityObjectOfTeams(object)
-
-    if(!target){return}
-
-    let allWeapons = object.getActivates()
 
     let distance = AIUtils.getDistanceOfObjects(object, target)
 
-    for(let weaponName in allWeapons){
-
-        let weapon = allWeapons[weaponName]
-
-        if(weapon.range && weapon.range > distance){
-
-            AIUtils.aimToTarget(object, target)
-            object.activate(weaponName)
-        }else if(
-            !weapon.range
-            &&
-            weapon.owner.energy / weapon.owner.maxEnergy > 0.8
-        ){
-            object.activate(weaponName)
-        }
-
-
+    if(distance < 200){
+        object.rotateToLeft()
     }
 
 }
 
 function ship_turret(object){
 
-    if(!object.owner){return}
-
-    object.x = object.owner.x + 0
-    object.y = object.owner.y + 0
+    // wrong!
+    object.x = object.owner.x //+ object.offsetX
+    object.y = object.owner.y //+ object.offsetY
 
     let target = AIUtils.getClosestObjectOfTeams(object)
 
     if(!target){return}
 
+    AIUtils.aimToTarget(
+        object,
+        target
+    )
+
     let distance = AIUtils.getDistanceOfObjects(object.owner, target)
 
     if(object.range > distance){
-
-        AIUtils.aimToTarget(object, target)
 
         object.owner.activate(object.ID)
 
@@ -222,40 +163,52 @@ function ship_turret(object){
 
 }
 
-/*
-
-
-function toRadians(graus){
-    return ( Math.PI * graus ) / 180
+const typesOfActivates = {
+    "weapon": useWeapon,
+    "factory": useSupport
 }
 
-function toGraus(rad){
-    return 180 / ( Math.PI / rad )
+function useWeapon(params){
+
+    let target = AIUtils.getStepPriorityObjectOfTeams(params.object)
+
+    if(!target){return}
+
+    let distance = AIUtils.getDistanceOfObjects(params.object, target)
+
+    if(
+        params.activate.range > distance
+        &&
+        AIUtils.isPointed(params.object, target, 0.999)
+    ){
+        params.object.activate(params.activate.ID)
+    }
+
 }
 
-function raiz(value){
-    return Math.sqrt(value)
+function useSupport(params){
+
+    if(
+        params.activate.owner.energy / params.activate.owner.maxEnergy > 0.8
+    ){
+        params.object.activate(params.activate.ID)
+    }
+
 }
 
+function useActivates(object){
 
-const PI = Math.PI
+    let allActivates = object.getActivates()
 
-let cateto_oposto = 1
-let cateto_adj = 1
-let hip = raiz(cateto_adj**2 + cateto_oposto**2)
+    for(let ID in allActivates){
 
-let seno = cateto_oposto / hip
-let coseno = cateto_adj / hip
-let tangent = cateto_oposto / cateto_adj
+        let activate = allActivates[ID]
 
-//console.log(seno)
-//console.log(coseno)
-//console.log(tangent)
+        typesOfActivates[activate.type]({
+            object,
+            activate,
+        })
 
-console.log(PI)
+    }
 
-console.log(
-    toGraus(PI)
-)
-
-*/
+}

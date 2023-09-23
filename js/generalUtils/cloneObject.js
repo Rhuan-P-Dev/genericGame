@@ -1,18 +1,7 @@
 
 import { TopDownBehavior } from "../AI/behavior/topDownBehavior.js"
 import { EffectsController } from "../effects/effectsController.js"
-import { EnergizadObject } from "../object/basic/energizedObject.js"
-import { MovableObject } from "../object/basic/movableObject.js"
-import { Object } from "../object/basic/object.js"
-import { ComplexOnType, OnLinkedList } from "../object/basic/onInstructions.js"
-import { Rotable } from "../object/basic/rotable.js"
-import { RotableObject } from "../object/basic/rotableObject.js"
-import { Drone } from "../object/drone.js"
-import { BaseObjectFactory } from "../object/factory.js"
-import { MissileProjetile } from "../object/projectiles/missileProjetile.js"
-import { SmallBulletProjetile } from "../object/projectiles/smallBulletProjetile.js"
-import { Ship } from "../object/ship.js"
-import { Turret } from "../object/turrent.js"
+import { ComplexOnType } from "../object/basic/onInstructions.js"
 import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
 import { DefenseController } from "../shipUnits/defense/defenseController.js"
 import { FactoryController } from "../shipUnits/factory/factoryController.js"
@@ -73,12 +62,6 @@ export class CloneObjectController {
         this.cloneAttribute(object, clonedObject)
 
         this.cloneObject(object, clonedObject)
-
-        if(
-            object.ID == "player" && object.color != "black"
-        ){
-            this.cloneAI(object, clonedObject)
-        } // DELETE THIS!
 
         return clonedObject
     }
@@ -153,9 +136,21 @@ export class CloneObjectController {
 
             }else{
 
-                if(typeof(clonedObject[key]) == "object"){
+                if(object[key] == undefined){
+                    clonedObject[key] = object[key]
+                    continue
+                }
 
-                    clonedObject[key] = {}
+                if(
+                    typeof(object[key]) == "object"
+                    &&
+                    object[key].constructor.name == "Array"
+                    ||
+                    object[key].constructor.name == "Object"
+                ){
+
+                    clonedObject[key] = new object[key].constructor
+
                     this.recursiveCloneAttribute(dummy[key], clonedObject[key])
 
                 }else{
@@ -188,28 +183,13 @@ export class CloneObjectController {
 
     }
 
-    cloneOnFunctions(object, clonedObject = {}, config){
-        
-        clonedObject[config.keyType] = new OnLinkedList()
-
-        let onFunctionsArray = object[config.keyType].getAllInArray()
-
-        for (let index = 0; index < onFunctionsArray.length; index++) {
-
-            clonedObject[config.keyType].add(onFunctionsArray[index])
-            
-        }
-
-        return clonedObject
-
-    }
-
     cloneAI(object, clonedObject = {}){
 
         if(object.AI){
             ObjectCreator.giveObjectAI(clonedObject, object.AI.returnAll(), true)
         }else{
-            ObjectCreator.giveObjectAI(clonedObject, ["movable", "turret"], true)
+            console.log("eu devo deletar isso?")
+            ObjectCreator.giveObjectAI(clonedObject, ["movable", "useActivates"], true)
         }
 
         return clonedObject

@@ -71,8 +71,6 @@ export class ScreenRenderController {
 
     renderTheFrontOfShip(object){
 
-        let X = 730
-
         ScreenRender.mainCanvasContext.beginPath()
         ScreenRender.mainCanvasContext.moveTo(object.x, object.y)
         ScreenRender.mainCanvasContext.lineTo(
@@ -80,31 +78,6 @@ export class ScreenRenderController {
             ,
             object.y + ( ( object.height/2 ) * object.yMult ) * object.frontLineMult
         )
-        ScreenRender.mainCanvasContext.closePath()
-        ScreenRender.mainCanvasContext.stroke()
-
-        return
-
-        if(object.ID != "player"){return}
-
-        ScreenRender.mainCanvasContext.beginPath();
-        ScreenRender.mainCanvasContext.arc(object.x, object.y, 100, 0, Math.PI * 2);
-        ScreenRender.mainCanvasContext.stroke();
-
-        return
-
-        object.x = 20
-        object.y = 20
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(object.x, object.y)
-        ScreenRender.mainCanvasContext.lineTo(object.x+X, object.y)
-        ScreenRender.mainCanvasContext.closePath()
-        ScreenRender.mainCanvasContext.stroke()
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(object.x, object.y)
-        ScreenRender.mainCanvasContext.lineTo(object.x, object.y+X)
         ScreenRender.mainCanvasContext.closePath()
         ScreenRender.mainCanvasContext.stroke()
 

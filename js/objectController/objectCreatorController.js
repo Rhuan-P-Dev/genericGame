@@ -13,7 +13,7 @@ onInit(function(){
 
 })
 
-export class ObjectCreatorController{
+export class ObjectCreatorController{ // rename
 
     giveObjectAI(object, AI, recreateAIList = false){
         if(!object.AI || recreateAIList){

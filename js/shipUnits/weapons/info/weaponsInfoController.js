@@ -24,6 +24,17 @@ onInit(function(){
 
 export class WeaponsInfoController{
 
+    weapons = {
+        "P1": P1,
+        "auto_P1": Auto_P1,
+        "M1": M1,
+        "SP1": SP1,
+        "auto_SP1": Auto_SP1,
+    }
+
+
+    /*
+
     constructor(build = false){
 
         let weapons = {
@@ -34,7 +45,7 @@ export class WeaponsInfoController{
             "auto_SP1": new Auto_SP1(),
         }
 
-        if(build){
+        if(build){ // isso esta bugado quando a classe é instanciada adiciona as torres automaticas
 
             for (let key in weapons) {
 
@@ -45,6 +56,11 @@ export class WeaponsInfoController{
                 weapon.callBack = Weapons.useWeapon
 
                 if(weapon.auto){
+
+                    console.log(
+                        weapon
+                    )
+
                     ObjectCreator.giveObjectAI(weapon, ["ship_turret"])
                     GameState.addObject(weapon, true, false, false, false, false, false)
                 }
@@ -60,6 +76,47 @@ export class WeaponsInfoController{
         }
 
         return weapons
+
+    }
+
+    */
+
+    getAll(){
+
+        return this.weapons
+
+    }
+
+    get(weaponName){
+
+        return this.weapons[weaponName]
+
+    }
+
+    build(weaponName){
+
+        if(!this.weapons[weaponName]){return undefined}
+
+        let weapon = new this.weapons[weaponName]()
+
+        weapon.ID = randomUniqueID()
+
+        weapon.callBack = Weapons.useWeapon
+
+        if(weapon.auto){
+
+            ObjectCreator.giveObjectAI(weapon, ["ship_turret"])
+            GameState.addObject(weapon, true, false, false, false, false, false)
+
+        }
+
+        if(weapon.build){
+            weapon.build()
+        }
+
+        weapon.calcStats()
+
+        return weapon
 
     }
 

@@ -1,6 +1,6 @@
 import { AIUtilsController } from "../../AI/utils/AIUtils.js"
 import { FrameController } from "../../frame/frameController.js"
-import { MathController } from "../../generalUtils/math.js"
+import { CustomMathController } from "../../generalUtils/math.js"
 import { ScreenRenderController } from "../../graphics/screenRenderController.js"
 import { ShipCreatorController } from "../../ship/shipCreatorController.js"
 import { ActivateController } from "../../shipUnits/forAllShipUnits/activateController.js"
@@ -19,7 +19,7 @@ var AIUtils = ""
 var ScreenRender = ""
 var Special = ""
 var ShipCreator = ""
-var Math = ""
+var CustomMath = ""
 var Effects = ""
 var Activate = ""
 var GameState = ""
@@ -27,13 +27,13 @@ var Weapons = ""
 
 onInit(function(){
 
-    //Frame = new FrameController()
-    //AIUtils = new AIUtilsController()
-    //ScreenRender = new ScreenRenderController()
-    //Special = new SpecialController()
-    //ShipCreator = new ShipCreatorController()
-    //Math = new MathController()
-    //Effects = new EffectsController()
+    Frame = new FrameController()
+    AIUtils = new AIUtilsController()
+    ScreenRender = new ScreenRenderController()
+    Special = new SpecialController()
+    ShipCreator = new ShipCreatorController()
+    CustomMath = new CustomMathController()
+    Effects = new EffectsController()
     Activate = new ActivateController()
     GameState = new GameStateController()
     Weapons = new WeaponsController()
@@ -75,6 +75,18 @@ export class OtherEffectsController {
 
         },
 
+        "appplyOnOther": (params) => {
+
+            params.config.effectParams.object = params.otherObject
+
+            Effects.add(
+                params.config.name,
+                params.config.type,
+                params.config.effectParams,
+            )
+
+        },
+
     }
 
     effectsInfo = {
@@ -83,13 +95,36 @@ export class OtherEffectsController {
 
             "converter": {
 
-                "config": {
-                    "func": this.effectsList["convert"],
+                "on": {
+
+                    "config": {
+                        "func": this.effectsList["convert"],
+                    },
+        
+                    "params": {},
+
                 },
     
-                "params": {
-                },
-    
+            },
+
+            "apply":{
+
+                "on": {
+
+                    "config": {
+                        "func": this.effectsList["appplyOnOther"]
+                    },
+
+                    "params": {
+
+                        "name": "null",
+                        "type": "null",
+                        "effectParams": {}
+
+                    }
+
+                }
+
             },
 
             "reflet damage": {

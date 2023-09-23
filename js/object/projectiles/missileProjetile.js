@@ -10,8 +10,6 @@ export class MissileProjetile {
 
     constructor(){
 
-         
-
         new InheritController().inherit(
             this,
             [
