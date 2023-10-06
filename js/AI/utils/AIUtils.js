@@ -1,17 +1,20 @@
 
 import { GameStateController } from "../../gameState/gameStateController.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { CustomMathController } from "../../generalUtils/math.js"
 import { VectorController } from "../../generalUtils/vector.js"
 
 var GameState = ""
 var CustomMath = ""
 var Vector = ""
+var CloneObject = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     CustomMath = new CustomMathController()
     Vector = new VectorController()
+    CloneObject = new CloneObjectController()
 
 })
 
@@ -39,13 +42,9 @@ export class AIUtilsController {
 
         let difference = parsePositive(
             goal.priority - object.searchPriority.targetPriority
-        ) ** targetObsession + 1
+        ) ** targetObsession
 
-        return Math.sqrt(
-            ( ( object.x - goal.x ) ** 2 )
-            +
-            ( ( object.y - goal.y ) ** 2 )
-        ) * difference
+        return Vector.getTriangleSize(goal, object) * difference
 
     }
 
@@ -55,20 +54,20 @@ export class AIUtilsController {
 
     }
 
-    getFutureOf(object, frames){
+    getFutureOf(object, frames = 1){
 
         return {
-            "x": object.x + (object.currentXVel * frames ),
-            "y": object.y + (object.currentYVel * frames ),
+            "x": (object.x + object.cosine) + (object.currentXVel * frames ),
+            "y": (object.y + object.sine) + (object.currentYVel * frames ),
         }
 
     }
 
-    isPointed(object, target, precision = 0.9999){
+    getPointed(object, target){
 
         let frontOfObject = {
-            "x": object.x + object.xMult,
-            "y": object.y + object.yMult,
+            "x": object.x + object.cosine,
+            "y": object.y + object.sine,
         }
 
         let frontOfObjectVectorNormalize = Vector.vectorNormalize(frontOfObject, object)
@@ -81,6 +80,14 @@ export class AIUtilsController {
         let product = Vector.scalarProduct(
             frontOfObjectVectorNormalize, toTargetVectorNormalize
         )
+
+        return product
+
+    }
+
+    isPointed(object, target, precision = 0.9999){
+
+        let product = this.getPointed(object, target)
 
         if(product > precision){
             return true
@@ -100,49 +107,42 @@ export class AIUtilsController {
     }
 
     aimToTarget(object, target, objectCalcs = object){
-        
-        if(this.isPointed(object, target)){return} // delet?
+
+        if(this.isPointed(object, target)){return}
 
         let toTargetVectorNormalize = Vector.vectorNormalize(
             target,
             objectCalcs
         )
 
-        // fix rotate
-        object.fixRotateRight()
+        let hypotheticalObject = CloneObject.cloneEngine(
+            object
+        )
 
-        // rotateToRight
-        let tempXMult = object.xMult - object.xStepMult
-        let tempYMult = object.yMult - object.yStepMult
-
-        
+        hypotheticalObject.rotateToRight()
 
         let right = {
-            "x": objectCalcs.x + tempXMult,
-            "y": objectCalcs.y + tempYMult,
+            "x": objectCalcs.x + hypotheticalObject.cosine,
+            "y": objectCalcs.y + hypotheticalObject.sine,
         }
 
-        // fix rotate
-        object.fixRotateLeft()
+        hypotheticalObject.rotateToLeft() // to cancel the previous rotate
 
-        // rotateToLeft
-        tempXMult = object.xMult + object.xStepMult
-        tempYMult = object.yMult + object.yStepMult
+        hypotheticalObject.rotateToLeft()
 
         let left = {
-            "x": objectCalcs.x + tempXMult,
-            "y": objectCalcs.y + tempYMult,
+            "x": objectCalcs.x + hypotheticalObject.cosine,
+            "y": objectCalcs.y + hypotheticalObject.sine,
         }
 
-        let toRight = Vector.vectorNormalize(right, objectCalcs)
-        let toLeft = Vector.vectorNormalize(left, objectCalcs)
-
         let rightProduct = Vector.scalarProduct(
-            toTargetVectorNormalize, toRight
+            toTargetVectorNormalize,
+            Vector.vectorNormalize(right, objectCalcs)
         )
 
         let leftProduct = Vector.scalarProduct(
-            toTargetVectorNormalize, toLeft
+            toTargetVectorNormalize,
+            Vector.vectorNormalize(left, objectCalcs)
         )
 
         if(rightProduct > leftProduct){

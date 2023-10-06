@@ -23,8 +23,8 @@ export class VectorController {
             )
         }
 
-        let seno = catetoOposto / hipotenusa
-        let coseno = catetoAdjacente / hipotenusa
+        let sine = catetoOposto / hipotenusa
+        let cosine = catetoAdjacente / hipotenusa
         let tangente = catetoOposto / catetoAdjacente
 
         if(log){
@@ -33,15 +33,15 @@ export class VectorController {
             console.log("cateto oposto: " + catetoOposto)
             console.log("hipotenusa: " + hipotenusa)
             
-            console.log("seno (alfa?): " + seno)
-            console.log("coseno (alfa?): " + coseno)
-            console.log("tangente (alfa?): " + tangente) // = seno / coseno
+            console.log("sine (alfa?): " + sine)
+            console.log("cosine (alfa?): " + cosine)
+            console.log("tangente (alfa?): " + tangente) // = sine / cosine
 
         }
 
         //console.log("INUTIL?")
 
-        //let secante = hipotenusa / coseno
+        //let secante = hipotenusa / cosine
 
         //console.log("secante: " + secante)
 
@@ -49,8 +49,8 @@ export class VectorController {
             catetoAdjacente,
             catetoOposto,
             hipotenusa,
-            seno,
-            coseno,
+            sine,
+            cosine,
             tangente
         }
 
@@ -61,11 +61,11 @@ export class VectorController {
     }
 
     toRadians(degrees){
-        return ( Math.PI * degrees ) / 180
+        return ( Math.PI / 180) * degrees
     }
-    
+      
     toDegrees(radian){
-        return 180 / ( Math.PI / radian )
+        return ( radian * 180 ) / Math.PI
     }
 
     getTriangleSize(end, start){
@@ -81,11 +81,28 @@ export class VectorController {
     vectorNormalize(end, start){
 
         let size = this.getTriangleSize(end, start)
-        
-        return {
+
+        let result = {
             "x": (end.x - start.x) / size,
             "y": (end.y - start.y) / size,
         }
+
+        if(result.x.toString() == "NaN"){
+
+            console.warn(
+                "deu erro na normalização! zerado..."
+            )
+
+            result.x = 0
+            result.y = 0
+
+            //throw new Error(
+            //    "DEU ERRO"
+            //)
+
+        }
+
+        return result
     
     }
 
@@ -101,84 +118,3 @@ export class VectorController {
     }
 
 }
-
-//let matematica = new CustomMathController()
-
-/*
-
-let ini = {
-    "x": 0,
-    "y": 0
-}
-
-let fim = {
-    "x": 20,
-    "y": 0
-}
-
-console.log(
-    mm.getTriangleSize(fim, ini)
-)
-
-let normalizeTri = mm.vetorNormalize(fim, ini)
-
-console.log(
-    normalizeTri
-)
-
-console.log(
-    mm.getTriangleSize(normalizeTri, ini)
-)
-
-let mira = {
-    "x": 10,
-    "y": 0
-}
-
-let mira_norma = mm.vetorNormalize(mira, ini)
-
-let toEnemy = mm.vetorNormalize(fim, ini)
-
-console.log(
-    mira_norma, toEnemy
-)
-
-console.log(
-    mm.scalarProduct(mira_norma, toEnemy)
-)
-
-console.log(
-    mm.scalarProduct(toEnemy, mira_norma)
-)
-
-
-//matematica.getTriangleSize()
-
-function raiz(value){
-    return Math.sqrt(value)
-}
-
-
-//const PI = Math.PI
-
-let cateto_oposto = 0.5
-
-let hipotenusa = "?"
-
-let cateto_adj = 0.5
-
-triangleFactory(cateto_adj, cateto_oposto)
-
-let hip = raiz(cateto_adj**2 + cateto_oposto**2)
-
-let seno = cateto_oposto / hip
-let coseno = cateto_adj / hip
-let tangent = cateto_oposto / cateto_adj
-
-//console.log(seno)
-//console.log(coseno)
-//console.log(tangent)
-
-//console.log(PI)
-
-*/

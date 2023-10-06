@@ -34,23 +34,13 @@ export class WeaponsController{
 
         object.lifeTime = weapon.lifeTime
 
-        /*
-
-        let coseno_X = Vector.triangleFactory(weapon.xMult, weapon.yMult).coseno
-        let seno_Y = Vector.triangleFactory(weapon.xMult, weapon.yMult).seno
-
-        object.currentXVel = ( coseno_X - config.tempXSpread ) * ( weapon.config.multVel * config.tempMultVel )
-        object.currentYVel = ( seno_Y - config.tempYSpread ) * ( weapon.config.multVel * config.tempMultVel )
-
-        */
-
         let triangle = Vector.triangleFactory(weapon.xMult - config.tempXSpread, weapon.yMult- config.tempYSpread)
 
-        let coseno_X = triangle.coseno // - "DISTORSION"
-        let seno_Y = triangle.seno // - "DISTORSION"
+        let cosine_X = triangle.cosine // - "DISTORSION"
+        let sine_Y = triangle.sine // - "DISTORSION"
 
-        object.currentXVel = ( coseno_X ) * ( weapon.config.multVel + config.tempMultVel )
-        object.currentYVel = ( seno_Y ) * ( weapon.config.multVel + config.tempMultVel )
+        object.currentXVel = ( cosine_X ) * ( weapon.config.multVel + config.tempMultVel )
+        object.currentYVel = ( sine_Y ) * ( weapon.config.multVel + config.tempMultVel )
 
         object.damage *= weapon.config.damageMult
 
@@ -161,45 +151,45 @@ export class WeaponsController{
 
             let currentEffect = effects[index]
 
-            let params = CloneObject.recursiveCloneAttribute(currentEffect.params)
-            let config = CloneObject.recursiveCloneAttribute(currentEffect.config)
+            let global = CloneObject.recursiveCloneAttribute(currentEffect)
 
-            params.object = object
+            let apply = global.apply
 
-            this.applyEffect(params, config)
+            let effect = global.effect
+
+            effect.params.object = object
+
+            this.applyEffect(
+                effect,
+                apply
+            )
             
         }
 
     }
 
-    applyEffect(params, config){
+    applyEffect(
+        effect,
+        apply
+    ){
 
-        if(config.apply){
+        if(apply.apply){
 
-            Effects.add(
-                "apply",
-                config.applyType,
-                {
-                    "object": params.object,
-                },{
-                    "name": config.name,
-                    "type": config.type,
-
-                    "effectParams": params,
-
-                    "suffixFunc": ["deleteInstruction"],
-
-                },
-                config
+            Effects.apply(
+                apply.applyType,
+                effect.config.name,
+                effect.config.type,
+                effect.params,
+                effect.config,
             )
 
         }else{
 
             Effects.add(
-                config.name,
-                config.type,
-                params,
-                config,
+                effect.name,
+                effect.type,
+                effect.params,
+                effect.config,
             )
 
         }

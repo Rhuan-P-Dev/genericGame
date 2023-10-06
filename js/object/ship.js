@@ -8,8 +8,6 @@ export class Ship {
 
     constructor(){
 
-         
-
         new InheritController().inherit(
             this,
             [

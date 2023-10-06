@@ -21,7 +21,7 @@ export class LvUp extends BasicActivate {
     reloadStep = 1
 
     config = {
-        "mult": 1.1
+        "mult": 0.1
     }
 
 }

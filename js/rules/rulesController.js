@@ -23,7 +23,7 @@ export class RulesController {
 
             Rules.screen(object)
             Rules.stats(object)
-            Rules.activates(object)
+            //Rules.activates(object)
             Rules.physics(object)
 
         }
@@ -99,6 +99,8 @@ export class RulesController {
     }
 
     activates(object){
+
+        return
 
         for(let activateName in object.activates){
             let activate = object.activates[activateName]

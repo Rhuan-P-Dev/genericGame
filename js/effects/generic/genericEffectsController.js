@@ -1,5 +1,5 @@
 import { AIUtilsController } from "../../AI/utils/AIUtils.js"
-import { FrameController } from "../../frame/frameController.js"
+import { FrameController, setFrameOut } from "../../frame/frameController.js"
 import { CustomMathController } from "../../generalUtils/math.js"
 import { ScreenRenderController } from "../../graphics/screenRenderController.js"
 import { ShipCreatorController } from "../../ship/shipCreatorController.js"
@@ -53,6 +53,14 @@ export class GenericEffectsController {
         },
 
         "lv up": (params) => {
+
+                setFrameOut(
+
+                    () => {
+                        params.object.rotateToRight()
+                    }, 1, (360 / 2) * 1
+
+                )
 
             Special.lvUp(
                 params.object,
@@ -411,7 +419,7 @@ export class GenericEffectsController {
                         },
 
                         "countDown": {
-                            "function": ["deleteInstruction"],
+                            "countDownFunction": ["deleteInstruction"],
                             "count": 2
                         }
 
@@ -456,7 +464,7 @@ export class GenericEffectsController {
                         },
 
                         "countDown": {
-                            "function": ["deleteInstruction"],
+                            "countDownFunction": ["deleteInstruction"],
                             "count": 2
                         }
 

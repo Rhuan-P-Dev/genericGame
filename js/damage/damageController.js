@@ -59,14 +59,6 @@ export class DamageController {
         let damage = (attacker.damage * victim.resistance) - victim.defense
         let bokedDamage = attacker.damage
 
-        //if(damage <= 0){return}
-
-        if(damage <= 0){
-
-            //damage = 0
-
-        }
-
         if(attacker.original){
             attacker = attacker.original
         }

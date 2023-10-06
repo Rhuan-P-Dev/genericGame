@@ -1,11 +1,14 @@
 
 import { GameStateController } from "../gameState/gameStateController.js"
+import { VectorController } from "../generalUtils/vector.js"
 
 var GameState = ""
+var Vector = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
+    Vector = new VectorController()
 
 })
 
@@ -50,7 +53,7 @@ export class ScreenRenderController {
     }
 
     update(){
-        
+
         ScreenRender.clean()
 
         ScreenRender.runRequests()
@@ -60,26 +63,62 @@ export class ScreenRenderController {
         let allObjectsRenderable = GameState.getAllObjectsRender()
 
         for(let objectName in allObjectsRenderable){
+
             let object = allObjectsRenderable[objectName]
 
+            ScreenRender.rotateObject(object)
+
+            //ScreenRender.mainCanvasContext.scale(0.33,0.33)
+
             ScreenRender.renderTheFrontOfShip(object)
+            
             ScreenRender.renderComplexFormat(object)
+
+            ScreenRender.resetCanvas()
 
         }
 
     }
 
+    rotateObject(object){
+
+        ScreenRender.mainCanvasContext.translate(object.x, object.y)
+
+        ScreenRender.mainCanvasContext.rotate(
+            object.radian
+        )
+
+    }
+
+    resetCanvas(){
+        ScreenRender.mainCanvasContext.setTransform(1, 0, 0, 1, 0, 0)
+    }
+
     renderTheFrontOfShip(object){
 
+        //ugly
+        if(typeof(object.xMult) == "undefined"){return}
+
         ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(object.x, object.y)
+        ScreenRender.mainCanvasContext.moveTo(0, 0)
         ScreenRender.mainCanvasContext.lineTo(
-            object.x + ( ( object.width/2 ) * object.xMult ) * object.frontLineMult
-            ,
-            object.y + ( ( object.height/2 ) * object.yMult ) * object.frontLineMult
+            0, (object.width + object.height) * 2
         )
         ScreenRender.mainCanvasContext.closePath()
         ScreenRender.mainCanvasContext.stroke()
+
+        return
+
+        ScreenRender.mainCanvasContext.beginPath()
+        ScreenRender.mainCanvasContext.moveTo(0, 0)
+        ScreenRender.mainCanvasContext.lineTo(
+            0 + ( ( object.width/2 ) * object.cosine ) * 10
+            ,
+            0 + ( ( object.height/2 ) * object.sine ) * 10
+        )
+        ScreenRender.mainCanvasContext.closePath()
+        ScreenRender.mainCanvasContext.stroke()
+
 
     }
 
@@ -88,10 +127,10 @@ export class ScreenRenderController {
         ScreenRender.mainCanvasContext.fillStyle = object.color
 
         ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(object.x - object.width, object.y - object.height)
-        ScreenRender.mainCanvasContext.lineTo(object.x + object.width, object.y - object.height)
-        ScreenRender.mainCanvasContext.lineTo(object.x + object.width, object.y + object.height)
-        ScreenRender.mainCanvasContext.lineTo(object.x - object.width, object.y + object.height)
+        ScreenRender.mainCanvasContext.moveTo(0 - object.width, 0 - object.height)
+        ScreenRender.mainCanvasContext.lineTo(0 + object.width, 0 - object.height)
+        ScreenRender.mainCanvasContext.lineTo(0 + object.width, 0 + object.height)
+        ScreenRender.mainCanvasContext.lineTo(0 - object.width, 0 + object.height)
         ScreenRender.mainCanvasContext.fill()
 
     }

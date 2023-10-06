@@ -32,7 +32,6 @@ export class WeaponsInfoController{
         "auto_SP1": Auto_SP1,
     }
 
-
     /*
 
     constructor(build = false){

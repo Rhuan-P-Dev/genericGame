@@ -2,6 +2,7 @@
 import { TopDownBehavior } from "../AI/behavior/topDownBehavior.js"
 import { EffectsController } from "../effects/effectsController.js"
 import { ComplexOnType } from "../object/basic/onInstructions.js"
+import { Rotable } from "../object/basic/rotable.js"
 import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
 import { DefenseController } from "../shipUnits/defense/defenseController.js"
 import { FactoryController } from "../shipUnits/factory/factoryController.js"
@@ -297,6 +298,36 @@ export class CloneObjectController {
         clonedObject[config.keyType] = object[config.keyType]
 
         return clonedObject
+
+    }
+
+    cloneEngineList = [
+        "xMult",
+        "yMult",
+        "cosine",
+        "sine",
+    ]
+
+    cloneEngine(object){
+
+        let newObject = new Rotable()
+
+        for (let index = 0; index < this.cloneEngineList.length; index++) {
+            
+            let status = this.cloneEngineList[index]
+
+            if(typeof(object[status]) != "undefined"){
+
+                newObject[status] = object[status]
+
+            }else{
+
+                return false
+            }
+            
+        }
+
+        return newObject
 
     }
 

@@ -119,6 +119,53 @@ export class EffectsController {
         }
     }
 
+    apply(
+        applyType,
+        effectName,
+        effectType,
+        params,
+        config = {},
+        ID = randomUniqueID()
+    ){
+
+        CloneObject.recursiveCloneAttribute(
+            {
+                "prefixFunc": [],
+                "suffixFunc": ["deleteInstruction"],
+        
+                "stage": "middle",
+                "priority": 5,
+        
+            },
+            config,
+        )
+
+        config.func = (localParams) => {
+
+            params.object = localParams.otherObject
+
+            Effects.fix(params, effectName, "on", "params")
+
+            Effects.add(
+                effectName,
+                effectType,
+                params,
+                config,
+                ID,
+            )
+            
+        }
+
+        new ComplexOnTypeFunctions().apply(config)
+
+        params.object[applyType].add(
+            config,
+            config.stage || "first",
+            config.priority || 0
+        )
+
+    }
+
     add(
         effectName,
         effectType,
@@ -155,8 +202,11 @@ export class EffectsController {
         config.config = config
 
         config.func = (params) => {
+
             Effects.fix(params, effectName, "on", "params")
+
             oldFunc(params)
+
         }
 
         params.object[effectType].add(

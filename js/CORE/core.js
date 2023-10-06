@@ -125,7 +125,6 @@ function browseInit(){
 
     //ShipCreator.createShip("enemyTeam", ["movable"]).color = "pink"
 
-
     //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
     //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
     //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
@@ -156,26 +155,18 @@ function browseInit(){
 
 }
 
-
-
-
-// CHEGA! DE PROGRAMAÇÃO!!!! HOARA DA MATEMATICA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! []
-
-// no event, caso voce vá para sima e depois para a direita o "efetio" de ir para sime é anulado! [/]
-
-
-
-
-
-
-
-
-
 //
 //// E ESTRUTURAR MELHOR O PROJETO [?]
 //
 
+
+// refazer as animations para suporta rotação dos objetos [?]
+
+// refazer o mode que a rotação functiona [?]
+
 /* > ADD <
+
+fazer aos projeteis terem o 'momuntu' do objeto original []
 
 um tipo de objeto especial que NÃO morre []
 

@@ -75,18 +75,6 @@ export class OtherEffectsController {
 
         },
 
-        "appplyOnOther": (params) => {
-
-            params.config.effectParams.object = params.otherObject
-
-            Effects.add(
-                params.config.name,
-                params.config.type,
-                params.config.effectParams,
-            )
-
-        },
-
     }
 
     effectsInfo = {
@@ -105,26 +93,6 @@ export class OtherEffectsController {
 
                 },
     
-            },
-
-            "apply":{
-
-                "on": {
-
-                    "config": {
-                        "func": this.effectsList["appplyOnOther"]
-                    },
-
-                    "params": {
-
-                        "name": "null",
-                        "type": "null",
-                        "effectParams": {}
-
-                    }
-
-                }
-
             },
 
             "reflet damage": {

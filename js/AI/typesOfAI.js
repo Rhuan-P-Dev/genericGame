@@ -165,7 +165,8 @@ function ship_turret(object){
 
 const typesOfActivates = {
     "weapon": useWeapon,
-    "factory": useSupport
+    "factory": useSupport,
+    "special": useSupport
 }
 
 function useWeapon(params){

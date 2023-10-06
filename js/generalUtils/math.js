@@ -38,26 +38,3 @@ export class CustomMathController {
     }
 
 }
-
-
-let mm = new CustomMathController()
-
-let seno = 0.9
-
-let factor = 2
-
-let maxvel = 3
-
-
-
-
-
-
-let result = mm.diminishingReturns(
-    seno,
-    factor
-)
-
-console.log(
-    //(parseInt((maxvel * seno) * 100)) / 100,(parseInt((result * maxvel) * 100)) / 100
-)

@@ -3,54 +3,36 @@ export class EffectsWeapon {
 
     effects = [
         {
-            "config": {
-                "name": "zeus",
-                "type": "effect",
 
-                "frameOut": 10,
+            "apply": {
 
                 "apply": true,
                 "applyType": "onHit",
 
             },
 
-            "params": {
-                "range": 500
-            }
+            "effect": {
+
+                "config": {
+
+                    "name": "shock",
+                    "type": "effect",
+
+                    "frameOut": 1,
+                    "repeat": -1,
+
+                },
+
+                "params": {
+                    "range": 10,
+                    "thunderDamage": 1,
+                    "frameOut": 110,
+                    "repeat": -1,
+                }
+
+            },
 
         }
     ]
-
-    /*
-
-    effects = [
-        {
-            "name": "untouchable",
-            "type": "effect",
-            "apply": false,
-
-            "params": {
-                "range": 500
-            }
-
-        },{
-            "name": "shock",
-            "type": "effect",
-            "apply": true,
-
-            "params": {}
-
-        },{
-            "name": "converter",
-            "type": "on",
-            "apply": false,
-
-            "params": {}
-
-        },
-        
-    ]
-
-    */
 
 }

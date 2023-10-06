@@ -230,23 +230,33 @@ export class ComplexOnTypeFunctions{
         "countDownFunction",
     ]
 
+    path = {
+        "countDownFunction":"countDown",
+    }
+
     apply(params){
 
         for (let index = 0; index < this.listOfApply.length; index++) {
-            
+
+            let newParams = params[
+                this.path[this.listOfApply[index]]
+            ]
+
+            if(!newParams){newParams = params}
+
             if(
-                typeof(params[this.listOfApply[index]]) == "object"
+                typeof(newParams[this.listOfApply[index]]) == "object"
                 &&
-                params[this.listOfApply[index]][0]
+                newParams[this.listOfApply[index]][0]
             ){
 
-                params[this.listOfApply[index]] = this.build(
-                    params[this.listOfApply[index]]
+                newParams[this.listOfApply[index]] = this.build(
+                    newParams[this.listOfApply[index]]
                 )
                 
-            }else if(params[this.listOfApply[index]]){
+            }else if(newParams[this.listOfApply[index]]){
 
-                params[this.listOfApply[index]] = new PriorityObserver()
+                newParams[this.listOfApply[index]] = new PriorityObserver()
 
             }
             
@@ -316,7 +326,7 @@ export class ComplexOnTypeFunctions{
 
         if(metaParams.config.countDown.count < 0){
 
-            metaParams.config.countDown.function.run(metaParams)
+            metaParams.config.countDown.countDownFunction.run(metaParams)
 
         }
 

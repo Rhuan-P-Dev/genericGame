@@ -26,7 +26,6 @@ export class MSP1 extends BasicActivate {
         "AI": ["movable","useActivates"],
         "apply": {
             "weapon": ["P1"],
-            "factory": ["SP1"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority
     }

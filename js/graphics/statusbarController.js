@@ -95,7 +95,7 @@ export class StatusbarController {
                 "y": -object.height * 3,
             },
             "formula": (
-                (parsePositive(object.currentXVel) + parsePositive(object.currentYVel)) / (object.maxVel*2)
+                (parsePositive(object.currentXVel) + parsePositive(object.currentYVel)) / object.maxVel
             ),
             "lineWidth": 2,
             "color": "blue"
