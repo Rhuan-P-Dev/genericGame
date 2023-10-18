@@ -54,14 +54,6 @@ export class GenericEffectsController {
 
         "lv up": (params) => {
 
-                setFrameOut(
-
-                    () => {
-                        params.object.rotateToRight()
-                    }, 1, (360 / 2) * 1
-
-                )
-
             Special.lvUp(
                 params.object,
                 undefined,
@@ -69,8 +61,6 @@ export class GenericEffectsController {
                     "mult": params.mult
                 }
             )
-
-            return
 
             new AnimationsController().run({
                 "name":"heal",

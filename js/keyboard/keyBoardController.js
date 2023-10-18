@@ -1,3 +1,13 @@
+import { GameStateController } from "../gameState/gameStateController.js"
+
+var GameState = ""
+
+onInit(function(){
+
+    GameState = new GameStateController()
+
+})
+
 var keyBoardFunctions = {}
 
 var keyBoardFunctionsBoolean = {}
@@ -19,9 +29,7 @@ export class KeyBoardController {
 
     HTML = document.querySelector("html")
 
-    player = undefined
-
-    addObjectInPlayerControl(object){
+    makeObjectInPlayerControl(object){
 
         player = object
 
@@ -36,6 +44,10 @@ export class KeyBoardController {
             "ArrowLeft": false,
             "ArrowRight": false,
         }
+
+        GameState.setPlayer(object)
+
+        return object
 
     }
 

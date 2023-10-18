@@ -1,50 +1,46 @@
 
-import { GameStateController } from "../../../gameState/gameStateController.js"
-import { ObjectCreatorController } from "../../../objectController/objectCreatorController.js"
-import { SpecialController } from "../specialController.js"
 import { LvUp } from "./specials/lvUp.js"
 import { Overclock } from "./specials/overclock.js"
 import { WeakClone } from "./specials/weakClone.js"
+import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
 
-var GameState = ""
-var ObjectCreator = ""
-
-var Special = ""
+var ActivateInfo = ""
 
 onInit(function(){
 
-    Special = new SpecialController()
-
-    GameState = new GameStateController()
-    ObjectCreator = new ObjectCreatorController()
+    ActivateInfo = new ActivateInfoController()
 
 })
 
 export class SpecialInfoController{
 
-    constructor(build = false){
+    specials = {
+        "WeakClone": WeakClone,
+        "Overclock": Overclock,
+        "LvUp": LvUp,
+    }
 
-        let specials = {
-            "WeakClone": new WeakClone(),
-            "Overclock": new Overclock(),
-            "LvUp": new LvUp(),
-        }
+    getAll(){
 
-        if(build){
+        return this.specials
 
-            for (let key in specials) {
+    }
 
-                let special = specials[key]
+    get(specialName){
 
-                special.ID = randomUniqueID()
+        return this.specials[specialName]
 
-                special.callBack = Special.useSpecial
+    }
 
-            }
+    build(specialName){
 
-        }
+        let special = this.specials[specialName]
 
-        return specials
+        if(!special){return undefined}
+
+        special = ActivateInfo.preBuild(new special())
+
+        return special
 
     }
 

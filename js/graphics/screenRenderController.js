@@ -97,7 +97,7 @@ export class ScreenRenderController {
     renderTheFrontOfShip(object){
 
         //ugly
-        if(typeof(object.xMult) == "undefined"){return}
+        if(!object.angle){return}
 
         ScreenRender.mainCanvasContext.beginPath()
         ScreenRender.mainCanvasContext.moveTo(0, 0)

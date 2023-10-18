@@ -30,6 +30,19 @@ export class AIController {
         }
     }
 
+    giveAI(object, AI, recreateAIList = false){
+        
+        if(!object.AI || recreateAIList){
+            object.AI = new AILinkedList()
+        }
+
+        AI.forEach(AIType => {
+            object.AI.add(AIType)
+        })
+        
+        return object
+    }
+
 }
 
 var AI = new AIController()

@@ -7,8 +7,6 @@ export class BaseObjectFactory{
 
     constructor(){
 
-         
-
         new InheritController().inherit(
             this,
             [

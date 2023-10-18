@@ -18,6 +18,8 @@ export class Ship {
             ]
         )
 
+        this.angle *= 2
+
     }
 
     priority = 5

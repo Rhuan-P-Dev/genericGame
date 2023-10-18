@@ -1,36 +1,23 @@
 import { GameStateController } from "../gameState/gameStateController.js"
 import { KeyBoardController } from "../keyboard/keyBoardController.js"
-import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
+import { ActivateInfoController } from "../shipUnits/forAllShipUnits/activateInfoController.js"
 import { WeaponsModifiersController } from "../shipUnits/weapons/modifiers/weaponsModifiersController.js"
-import { ObjectCreatorController } from "./objectCreatorController.js"
-import { SpecialController } from "../shipUnits/special/specialController.js"
-import { FactoryController } from "../shipUnits/factory/factoryController.js"
-import { DefenseController } from "../shipUnits/defense/defenseController.js"
 
 var GameState = ""
 var KeyBoard = ""
-var ObjectCreator = ""
-
 var WeaponsModifiers = ""
+var ActivateInfo = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     KeyBoard = new KeyBoardController()
-    ObjectCreator = new ObjectCreatorController()
-
     WeaponsModifiers = new WeaponsModifiersController()
+    ActivateInfo = new ActivateInfoController()
 
 })
 
 export class ObjectActivatesController{
-
-    loaders = {
-        "weapon": new WeaponsController(),
-        "special": new SpecialController(),
-        "factory": new FactoryController(),
-        "defense": new DefenseController()
-    }
 
     giveActivate(object, typeOfLoader = "random", activateName = "random"){
 
@@ -55,7 +42,7 @@ export class ObjectActivatesController{
             object.addActivate(activate)
             
         }else{
-            console.error("The loader have:",this.returnLoader(typeOfLoader).getAll())
+            console.error("The loader have:",ActivateInfo.getLoarders()[typeOfLoader])
             throw new Error(
                 "The loader: [" + typeOfLoader + "] don't have: [" + activateName + "]"
             )
@@ -65,47 +52,32 @@ export class ObjectActivatesController{
     
     returnRandomActivate(typeOfLoader = "random"){
 
-        let loader = this.defineLoader(typeOfLoader)
+        let loaderName = this.defineTypeOfLoarderName(typeOfLoader)
 
-        let allActivates = loader.getAll()
+        let allActivates = ActivateInfo.getAll()[loaderName]
 
         let activateName = returnRandomObject(allActivates)
 
-        return loader.getInfo(activateName)
+        return ActivateInfo.build(loaderName, activateName)
 
     }
 
     returnActivate(typeOfLoader, activateName){
 
-        var loader = this.defineLoader(typeOfLoader)
-
-        return loader.getInfo(activateName)
-
-    }
-
-    returnLoader(typeOfLoader){
-
-        return this.loaders[typeOfLoader]
+        return ActivateInfo.build(
+            this.defineTypeOfLoarderName(typeOfLoader),
+            activateName
+        )
 
     }
 
-    defineLoader(typeOfLoader){
+    defineTypeOfLoarderName(typeOfLoader){
 
         if(typeOfLoader == "random"){
-            var loader = this.returnRandomLoader()
-        }else{
-            var loader = this.returnLoader(typeOfLoader)
+            typeOfLoader = returnRandomObject(ActivateInfo.getLoarders())
         }
 
-        return loader
-
-    }
-    
-    returnRandomLoader(){
-
-        return this.loaders[returnRandomObject(
-            this.loaders
-        )]
+        return typeOfLoader
 
     }
 

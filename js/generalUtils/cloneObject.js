@@ -1,42 +1,19 @@
 
-import { TopDownBehavior } from "../AI/behavior/topDownBehavior.js"
+import { AIController } from "../AI/AIController.js"
 import { EffectsController } from "../effects/effectsController.js"
 import { ComplexOnType } from "../object/basic/onInstructions.js"
 import { Rotable } from "../object/basic/rotable.js"
-import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
-import { DefenseController } from "../shipUnits/defense/defenseController.js"
-import { FactoryController } from "../shipUnits/factory/factoryController.js"
-import { SpecialController } from "../shipUnits/special/specialController.js"
-import { WeaponsController } from "../shipUnits/weapons/weaponsController.js"
-
-var ObjectCreator = ""
-
-var Weapons = ""
-var Special = ""
-var Factory = ""
-var Defense = ""
+import { ActivateInfoController } from "../shipUnits/forAllShipUnits/activateInfoController.js"
 
 var Effects = ""
-
-var typeActivatesFunctions = {}
+var AIC = ""
+var ActivateInfo = ""
 
 onInit(function(){
 
-    ObjectCreator = new ObjectCreatorController()
-
-    Weapons = new WeaponsController()
-    Special = new SpecialController()
-    Factory = new FactoryController()
-    Defense = new DefenseController()
-
     Effects = new EffectsController()
-
-    typeActivatesFunctions = {
-        "weapon": Weapons.getInfo,
-        "special": Special.getInfo,
-        "factory": Factory.getInfo,
-        "defense": Defense.getInfo
-    }
+    AIC = new AIController()
+    ActivateInfo = new ActivateInfoController()
 
 })
 
@@ -51,6 +28,7 @@ export class CloneObjectController {
         "owner": this.shared,
         "rightRotateOb": () => {},
         "leftRotateOb": () => {},
+        "modifierStatusOb": () => {},
         "onHit": this.cloneComplexOnType,
         "onDeath": this.cloneComplexOnType,
         "onDamage": this.cloneComplexOnType,
@@ -175,7 +153,7 @@ export class CloneObjectController {
             let activate = object.activates[key]
 
             clonedObject.addActivate(
-                typeActivatesFunctions[activate.type](activate.name)
+                ActivateInfo.build(activate.type, activate.name)
             )
 
         }
@@ -187,10 +165,10 @@ export class CloneObjectController {
     cloneAI(object, clonedObject = {}){
 
         if(object.AI){
-            ObjectCreator.giveObjectAI(clonedObject, object.AI.returnAll(), true)
+            AIC.giveAI(clonedObject, object.AI.returnAll(), true)
         }else{
             console.log("eu devo deletar isso?")
-            ObjectCreator.giveObjectAI(clonedObject, ["movable", "useActivates"], true)
+            AIC.giveAI(clonedObject, ["movable", "useActivates"], true)
         }
 
         return clonedObject

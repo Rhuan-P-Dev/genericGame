@@ -1,4 +1,3 @@
-import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
@@ -10,7 +9,6 @@ import { ComplexOnType } from "../../object/basic/onInstructions.js"
 import { DamageController } from "../../damage/damageController.js"
 
 var GameState = ""
-var ObjectCreator = ""
 var MultiplyStats = ""
 var CloneObject = ""
 var Activate = ""
@@ -20,7 +18,6 @@ var Damage = ""
 onInit(function(){
 
     GameState = new GameStateController()
-    ObjectCreator = new ObjectCreatorController()
     MultiplyStats = new MultiplyStatsController()
     CloneObject = new CloneObjectController()
     Activate = new ActivateController()
@@ -60,15 +57,6 @@ export class SpecialController{
 
         Activate.useActivate(object, ID)
 
-    }
-
-    getAll(){
-        return new SpecialInfoController()
-    }
-
-    getInfo(specialName){
-
-        return new SpecialInfoController(true)[specialName]
     }
 
     weakClone(object, activate, config){

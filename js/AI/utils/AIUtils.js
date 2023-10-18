@@ -225,7 +225,7 @@ export class AIUtilsController {
 
     }
 
-    returnArrayWithAlllObjectsOfTeams(
+    returnArrayWithAlllObjectsOfTeams( // create a cache, think! same params of request use cache!
         object,
         config = {
             "includeSameTeam": false,

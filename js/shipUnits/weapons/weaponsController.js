@@ -1,4 +1,3 @@
-import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { WeaponsInfoController } from "./info/weaponsInfoController.js"
 import { SmallBulletProjetile } from "../../object/projectiles/smallBulletProjetile.js"
 import { MissileProjetile } from "../../object/projectiles/missileProjetile.js"
@@ -7,22 +6,23 @@ import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { VectorController } from "../../generalUtils/vector.js"
+import { AIController } from "../../AI/AIController.js"
 
-var ObjectCreator = ""
 var Activate = ""
 var Effects = ""
 var CloneObject = ""
 var Vector = ""
 var WeaponsInfo = ""
+var AIC = ""
 
 onInit(function(){
 
-    ObjectCreator = new ObjectCreatorController()
     Activate = new ActivateController()
     Effects = new EffectsController()
     CloneObject = new CloneObjectController()
     Vector = new VectorController()
     WeaponsInfo = new WeaponsInfoController()
+    AIC = new AIController()
 
 })
 
@@ -30,25 +30,38 @@ export class WeaponsController{
 
     ajustObject(weapon, object, config){
 
+
         Activate.basicAjustObject(weapon.owner, object)
 
+        object.x += weapon.xOffset
+        object.y += weapon.yOffset
+
         object.lifeTime = weapon.lifeTime
+
+
 
         let triangle = Vector.triangleFactory(weapon.xMult - config.tempXSpread, weapon.yMult- config.tempYSpread)
 
         let cosine_X = triangle.cosine // - "DISTORSION"
         let sine_Y = triangle.sine // - "DISTORSION"
 
-        object.currentXVel = ( cosine_X ) * ( weapon.config.multVel + config.tempMultVel )
-        object.currentYVel = ( sine_Y ) * ( weapon.config.multVel + config.tempMultVel )
+        object.currentXVel += cosine_X * ( weapon.config.multVel + config.tempMultVel )
+        object.currentYVel += sine_Y * ( weapon.config.multVel + config.tempMultVel )
+
+
+
 
         object.damage *= weapon.config.damageMult
+
+
 
         if(weapon.homing){
 
             object.searchPriority = weapon.searchPriority
 
         }
+
+
 
         if(weapon.effects){
 
@@ -59,17 +72,10 @@ export class WeaponsController{
 
         }
 
+
+
+
         object.owner = weapon
-
-    }
-
-    getAll(){
-        return WeaponsInfo.getAll()
-    }
-
-    getInfo(weaponName){
-
-        return WeaponsInfo.build(weaponName)
 
     }
 
@@ -139,7 +145,7 @@ export class WeaponsController{
 
         missile.updateCircleStats(missile)
 
-        ObjectCreator.giveObjectAI(missile, ["missileV1"])
+        AIC.giveAI(missile, ["missileV1"])
 
         return missile
     

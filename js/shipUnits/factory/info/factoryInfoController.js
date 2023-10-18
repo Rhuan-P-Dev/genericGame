@@ -1,50 +1,48 @@
 
-import { GameStateController } from "../../../gameState/gameStateController.js"
-import { ObjectCreatorController } from "../../../objectController/objectCreatorController.js"
-import { FactoryController } from "../factoryController.js"
 import { MSP1 } from "./factory/MSP1.js"
 import { SP1 } from "./factory/SP1.js"
 import { DF1 } from "./factory/DF1.js"
 
-var GameState = ""
-var ObjectCreator = ""
+import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
 
-var Factory = ""
+var ActivateInfo = ""
 
 onInit(function(){
 
-    Factory = new FactoryController()
-
-    GameState = new GameStateController()
-    ObjectCreator = new ObjectCreatorController()
+    ActivateInfo = new ActivateInfoController()
 
 })
 
+
 export class FactoryInfoController{
 
-    constructor(build = false){
+    factorys = {
+        "SP1": SP1,
+        "MSP1": MSP1,
+        "DF1": DF1,
+    }
 
-        let factorys = {
-            "SP1": new SP1(),
-            "MSP1": new MSP1(),
-            "DF1": new DF1(),
-        }
+    getAll(){
 
-        if(build){
+        return this.factorys
 
-            for (let key in factorys) {
+    }
 
-                let factory = factorys[key]
+    get(factoryName){
 
-                factory.ID = randomUniqueID()
+        return this.factorys[factoryName]
 
-                factory.callBack = Factory.useFactory
+    }
 
-            }
+    build(factoryName){
 
-        }
+        let factory = this.factorys[factoryName]
 
-        return factorys
+        if(!factory){return undefined}
+
+        factory = ActivateInfo.preBuild(new factory())
+
+        return factory
 
     }
 

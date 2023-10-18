@@ -14,10 +14,10 @@ onInit(function(){
 export class DF1 extends BasicActivate {
 
     name = "DF1"
-    cost = 1
+    cost = 200
     type = "factory"
     func = Factory.createObject
-    reload = 10
+    reload = 20*60
     reloadTemp = 0
     reloadStep = 1
 

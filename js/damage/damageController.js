@@ -43,6 +43,9 @@ export class DamageController {
     doDamage(params){
 
         if(!params.object.damageConfig){ // delet it
+
+            throw "ERRO!!!!!!!!!!!!!!"
+
             this.damageCalc(params.object, params.victim)
             return
         }

@@ -86,13 +86,13 @@ onInit(function(){
 
 function browseInit(){
 
-    ShipCreator.createShip("playerTeam", ["missileV1", "useActivates"], true)
+    ShipCreator.createShip("playerTeam", ["missileV1", "useActivates"], true).color = "green"
 
     //ShipCreator.createShip("playerTeam", ["missileV1","useActivates"]).color = "black"
 
     //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
 
-    ShipCreator.createShip("enemyTeam", ["rotableTurret","useActivates"]).color = "purple"
+    ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "purple"
 
     //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
 
@@ -131,6 +131,10 @@ function browseInit(){
 
     setInterval(() => {
 
+        ShipCreator.createShip("playerTeam", ["movable","useActivates"]).color = "lightgreen"
+
+        ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "purple"
+
         //ShipCreator.createShip("enemyTeam", ["missileV1","useActivates"]).color = "purple"
 
         //ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "pink"
@@ -149,28 +153,20 @@ function browseInit(){
         //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
         //ShipCreator.createShip("neutralTeam", ["movable", "useActivates"]).color = "black"
 
+        //ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "purple"
+
     }, 10000)
 
     KeyBoard.addTriggers()
 
 }
 
+
 //
 //// E ESTRUTURAR MELHOR O PROJETO [?]
 //
 
-
-// refazer as animations para suporta rotação dos objetos [?]
-
-// refazer o mode que a rotação functiona [?]
-
 /* > ADD <
-
-fazer aos projeteis terem o 'momuntu' do objeto original []
-
-um tipo de objeto especial que NÃO morre []
-
-algo que resusite! []
 
 uma arma mina / factory... []
 
@@ -182,33 +178,39 @@ adicionar um novo modificador que randomiza atributos []
 
 ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS []
 
-UMA ARMA QUE VONCERTE OS ENEMYGOS? [/]
-
-adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada! []
-
 */
 
 /* > RE <
 
+fazer um rezize geral! []
+
+returnArrayWithAlllObjectsOfTeams( // create a cache, think! same params of request use cache! []
+
+reajustar o modo que as armar / modificadores funconão []
 
 adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
 
 ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
 
-
-
-ILLSUIONS DEVEM SER VISTAS, NAO AFETADAS, TYPO O "GOJO" []
 TALVEZ ADICINAR "lifeTime" para illsuions? []
 
 */
 
 /* > BUG <
 
-as armas NÃo estão sendo clonas corretamente, caso o clone faça um clone , o clone do clone fica bugado
+arrumar o bug dos vetores normalizar []
 
 modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 */
+
+//um tipo de objeto especial que NÃO morre []
+
+//algo que resusite! []
+
+//UMA ARMA QUE VONCERTE OS ENEMYGOS? [/]
+
+//adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada! []
 
 // fazer uma nave especial que caça outras naves e recebe recompensas
 // buff para o nave caçada: + dano, etc

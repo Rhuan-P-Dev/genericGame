@@ -141,8 +141,8 @@ function dummy(object){
 function ship_turret(object){
 
     // wrong!
-    object.x = object.owner.x //+ object.offsetX
-    object.y = object.owner.y //+ object.offsetY
+    object.x = object.owner.x + object.xOffset
+    object.y = object.owner.y + object.yOffset
 
     let target = AIUtils.getClosestObjectOfTeams(object)
 
@@ -153,7 +153,7 @@ function ship_turret(object){
         target
     )
 
-    let distance = AIUtils.getDistanceOfObjects(object.owner, target)
+    let distance = AIUtils.getDistanceOfObjects(object, target)
 
     if(object.range > distance){
 
@@ -166,7 +166,8 @@ function ship_turret(object){
 const typesOfActivates = {
     "weapon": useWeapon,
     "factory": useSupport,
-    "special": useSupport
+    "special": useSupport,
+    "defense": useSupport,
 }
 
 function useWeapon(params){

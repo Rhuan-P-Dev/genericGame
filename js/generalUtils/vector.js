@@ -89,9 +89,9 @@ export class VectorController {
 
         if(result.x.toString() == "NaN"){
 
-            console.warn(
-                "deu erro na normalização! zerado..."
-            )
+            //console.warn(
+            //    "deu erro na normalização! zerado..."
+            //)
 
             result.x = 0
             result.y = 0
@@ -115,6 +115,30 @@ export class VectorController {
 
         return (p1.x * p2.x) + (p1.y * p2.y)
     
+    }
+
+    getAngle(y, x){
+        return Math.atan2(y, x)
+    }
+
+    setAngle(angle){
+        return {
+            "x": Math.cos(angle),
+            "y": Math.sin(angle),
+        }
+    }
+
+    rotate(object, theta){
+
+        let sinTheta = Math.sin(theta)
+        let cosTheta = Math.cos(theta)
+
+        let newXMult = object.xMult * cosTheta + object.yMult * sinTheta
+        let newYMult = -object.xMult * sinTheta + object.yMult * cosTheta
+
+        object.xMult = newXMult
+        object.yMult = newYMult
+
     }
 
 }

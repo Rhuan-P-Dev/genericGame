@@ -1,21 +1,24 @@
+import { AIController } from "../AI/AIController.js"
 import { EffectsController } from "../effects/effectsController.js"
 import { FrameController } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { MultiplyStatsController } from "../generalUtils/multiplyStats.js"
+import { KeyBoardController } from "../keyboard/keyBoardController.js"
 import { Ship } from "../object/ship.js"
 import { ObjectActivatesController } from "../objectController/objectActivatesController.js"
-import { ObjectCreatorController } from "../objectController/objectCreatorController.js"
 import { SpecialController } from "../shipUnits/special/specialController.js"
 
 var GameState = ""
-var ObjectCreator = ""
 var ObjectActivates = ""
+var AIC = ""
+var KeyBoard = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
-    ObjectCreator = new ObjectCreatorController()
     ObjectActivates = new ObjectActivatesController()
+    AIC = new AIController()
+    KeyBoard = new KeyBoardController()
 
 })
 
@@ -34,7 +37,7 @@ export class ShipCreatorController{
         let haveAI = false
 
         if(AI && !isPlayer){
-            newShip = ObjectCreator.giveObjectAI(newShip, AI)
+            newShip = AIC.giveAI(newShip, AI)
             haveAI = true
 
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
@@ -42,11 +45,21 @@ export class ShipCreatorController{
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
             //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
-            //ObjectActivates.giveActivate(newShip, "weapon", "auto_SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon", "M1")
+
+            ObjectActivates.giveActivate(newShip, "weapon")
+
+            ObjectActivates.giveActivate(newShip)
+
+            ObjectActivates.giveActivate(newShip)
 
             //ObjectActivates.giveActivate(newShip, "weapon", "M1")
 
-            ObjectActivates.giveActivate(newShip, "weapon", "SP1")
+            //ObjectActivates.giveActivate(newShip, "weapon")
+
+            //ObjectActivates.giveActivate(newShip, "special", "Overclock")
+
+            //ObjectActivates.giveActivate(newShip)
 
             //ObjectActivates.giveActivate(newShip, "weapon")
             //ObjectActivates.giveActivate(newShip, "weapon")
@@ -94,8 +107,8 @@ export class ShipCreatorController{
 
             //newShip.currentXVel = 1
 
-            newShip.maxLife = 1000
-            newShip.life = 1000
+            //newShip.maxLife = 1000
+            //newShip.life = 1000
 
             //newShip.width *= 5
             //newShip.height *= 5
@@ -114,23 +127,21 @@ export class ShipCreatorController{
 
             this.a = true
 
-            newShip.x = 500
-            newShip.y = 50
+            //newShip.x = 500
+            //newShip.y = 50
 
         }
 
         if(isPlayer){
 
-            newShip = ObjectCreator.makeObjectInPlayerControl(newShip)
+            newShip = KeyBoard.makeObjectInPlayerControl(newShip)
 
             new EffectsController().add(
-                "evolutron",
+                "untouchable",
                 "effect",
                 {
                     "object": newShip,
-                },{
-                    "repeat": 1
-                }
+                },
             )
 
             //new EffectsController().add(
@@ -177,12 +188,23 @@ export class ShipCreatorController{
             //    }
             //)
 
-
             ObjectActivates.giveActivate(newShip, "weapon", "P1")
+
+            ObjectActivates.giveActivate(newShip, "weapon", "M1")
+
+            ObjectActivates.giveActivate(newShip, "weapon", "auto_P1")
 
             ObjectActivates.giveActivate(newShip, "factory", "MSP1")
 
-            ObjectActivates.giveActivate(newShip, "factory", "DF1")
+            ObjectActivates.giveActivate(newShip, "factory", "SP1")
+
+            ObjectActivates.giveActivate(newShip, "special", "WeakClone")
+
+            ObjectActivates.giveActivate(newShip, "special", "LvUp")
+
+            //newShip.energyRegen = 101
+
+            //ObjectActivates.giveActivate(newShip, "factory", "DF1")
 
             //ObjectActivates.giveActivate(newShip, "weapon", "M1")
 
@@ -205,6 +227,8 @@ export class ShipCreatorController{
             newShip.onDeath.add(
                 (p) => {
 
+                    return
+
                     p.object.maxLife*=1.1
 
                     p.object.life = p.object.maxLife
@@ -219,7 +243,7 @@ export class ShipCreatorController{
 
             //newShip.energyRegen *= 200
 
-            newShip = ObjectCreator.giveObjectAI(newShip, AI)
+            newShip = AIC.giveAI(newShip, AI)
 
             haveAI = false
 

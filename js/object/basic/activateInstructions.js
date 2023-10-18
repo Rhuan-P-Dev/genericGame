@@ -1,23 +1,32 @@
 
+import { VectorController } from "../../generalUtils/vector.js"
+
+var Vector = ""
+
+onInit(function(){
+
+    Vector = new VectorController()
+
+})
+
 export class ActivateInstructions{
 
     activates = {}
 
     addWeapon(weapon){
 
-        // isso é uma ganbiara!
-
-        if(!weapon.auto){
-
-            this.rightRotateOb.add( () => {
-                weapon.rotateToRight()
-            })
+        weapon.setAngle(
+            this.getAngle() + -Vector.toRadians(weapon.buildAngle)
+        )
+        
+        this.rightRotateOb.add( () => {
+            weapon.rotateToRight(this.angle)
+        })
     
-            this.leftRotateOb.add( () => {
-                weapon.rotateToLeft()
-            })
+        this.leftRotateOb.add( () => {
+            weapon.rotateToLeft(this.angle)
+        })
 
-        }
     }
 
     addActivate(activate){

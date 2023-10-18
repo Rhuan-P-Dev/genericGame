@@ -1,23 +1,20 @@
-import { ObjectCreatorController } from "../../objectController/objectCreatorController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
 import { FactoryInfoController } from "./info/factoryInfoController.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
-import { EffectsController } from "../../effects/effectsController.js"
+import { AIController } from "../../AI/AIController.js"
 
 var GameState = ""
-var ObjectCreator = ""
 var ObjectActivates = ""
-
 var Activate = ""
+var AIC = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
-    ObjectCreator = new ObjectCreatorController()
     ObjectActivates = new ObjectActivatesController()
-
     Activate = new ActivateController()
+    AIC = new AIController()
 
 })
 
@@ -33,25 +30,13 @@ export class FactoryController{
 
     }
 
-    getAll(){
-
-        return new FactoryInfoController()
-
-    }
-
-    getInfo(factoryName){
-
-        return new FactoryInfoController(true)[factoryName]
-
-    }
-
     createObject(object, activate, config){
 
         let newObject = new config.objectClass()
 
         Activate.basicAjustObject(object, newObject)
 
-        ObjectCreator.giveObjectAI(newObject, config.AI)
+        AIC.giveAI(newObject, config.AI)
 
         Factory.setActivates(newObject, config.apply)
 

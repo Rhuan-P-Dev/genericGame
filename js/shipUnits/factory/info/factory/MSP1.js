@@ -14,10 +14,10 @@ onInit(function(){
 export class MSP1 extends BasicActivate {
 
     name = "MSP1"
-    cost = 20
+    cost = 50
     type = "factory"
     func = Factory.createObject
-    reload = 60
+    reload = 10*60
     reloadTemp = 0
     reloadStep = 1
 

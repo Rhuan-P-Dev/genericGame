@@ -45,6 +45,21 @@ export class ActivateController{
         object.x = master.x
         object.y = master.y
 
+        object.currentXVel = master.currentXVel
+        object.currentYVel = master.currentYVel
+
+        if(
+            master.angle
+            &&
+            object.angle
+        ){
+
+            object.setAngle(
+                master.getAngle()
+            )
+
+        }
+
     }
 
     addObject(object){

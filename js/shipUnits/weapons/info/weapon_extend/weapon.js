@@ -20,10 +20,16 @@ export class Weapon{
 
     type = "weapon"
 
+    xOffset = 0//randomInteger(-200,200)
+    yOffset = 0//randomInteger(-200,200)
+
+
+    buildAngle = 0
+
     range = 180
-    xMult = 0
-    yMult = 1
+
     hasModifier = false
+
     config = {
         multVel: 3,
         damageMult: 1,

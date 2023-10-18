@@ -16,7 +16,7 @@ export class LvUp extends BasicActivate {
     cost = 50
     type = "special"
     func = Special.lvUp
-    reload = 60
+    reload = 60*10
     reloadTemp = 0
     reloadStep = 1
 
