@@ -198,8 +198,6 @@ TALVEZ ADICINAR "lifeTime" para illsuions? []
 
 /* > BUG <
 
-arrumar o bug dos vetores normalizar []
-
 modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 */

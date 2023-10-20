@@ -106,9 +106,7 @@ export class AIUtilsController {
 
     }
 
-    aimToTarget(object, target, objectCalcs = object){
-
-        if(this.isPointed(object, target)){return}
+    returnLeftRightProduct(object, target, objectCalcs = object){
 
         let toTargetVectorNormalize = Vector.vectorNormalize(
             target,
@@ -126,7 +124,7 @@ export class AIUtilsController {
             "y": objectCalcs.y + hypotheticalObject.sine,
         }
 
-        hypotheticalObject.rotateToLeft() // to cancel the previous rotate
+        hypotheticalObject.rotateToLeft() // to cancel the previous rotation
 
         hypotheticalObject.rotateToLeft()
 
@@ -144,6 +142,40 @@ export class AIUtilsController {
             toTargetVectorNormalize,
             Vector.vectorNormalize(left, objectCalcs)
         )
+
+        return {
+            leftProduct,
+            rightProduct
+        }
+    }
+
+    aimAwayTarget(object, target, objectCalcs = object){
+
+        if(this.isPointed(object, target)){return}
+
+        let products = this.returnLeftRightProduct(object, target, objectCalcs)
+
+        let leftProduct = products.leftProduct
+
+        let rightProduct = products.rightProduct
+
+        if(rightProduct < leftProduct){
+            object.rotateToRight()
+        }else{
+            object.rotateToLeft()
+        }
+
+    }
+
+    aimToTarget(object, target, objectCalcs = object){
+
+        if(this.isPointed(object, target)){return}
+
+        let products = this.returnLeftRightProduct(object, target, objectCalcs)
+
+        let leftProduct = products.leftProduct
+
+        let rightProduct = products.rightProduct
 
         if(rightProduct > leftProduct){
             object.rotateToRight()

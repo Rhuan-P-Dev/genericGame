@@ -87,21 +87,6 @@ export class VectorController {
             "y": (end.y - start.y) / size,
         }
 
-        if(result.x.toString() == "NaN"){
-
-            //console.warn(
-            //    "deu erro na normalização! zerado..."
-            //)
-
-            result.x = 0
-            result.y = 0
-
-            //throw new Error(
-            //    "DEU ERRO"
-            //)
-
-        }
-
         return result
     
     }

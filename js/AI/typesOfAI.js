@@ -102,11 +102,11 @@ function movable(object){
     if(!target){return}
 
     let distance = AIUtils.getDistanceOfObjects(object, target)
-    
+
     if(distance > 150){
         AIUtils.aimToTarget(object, target)
     }else{
-        AIUtils.aimToTarget(object, object, target)
+        AIUtils.aimAwayTarget(object, target)
     }
     
 }
