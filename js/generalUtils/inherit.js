@@ -11,6 +11,10 @@ export class InheritController {
 
             this.propertieClone(object, currentClass)
 
+            if(currentClass.buildClass){
+                currentClass.buildClass(object)
+            }
+
         }
 
     }
