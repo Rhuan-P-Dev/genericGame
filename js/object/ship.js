@@ -18,7 +18,7 @@ export class Ship {
             ]
         )
 
-        this.angle *= 2
+        this.rotationVel *= 2
 
     }
 

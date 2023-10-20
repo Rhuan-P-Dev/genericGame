@@ -18,13 +18,13 @@ export class ActivateInstructions{
         weapon.setAngle(
             this.getAngle() + -Vector.toRadians(weapon.buildAngle)
         )
-        
-        this.rightRotateOb.add( () => {
-            weapon.rotateToRight(this.angle)
+
+        this.rightRotateOb.add( (vel) => {
+            weapon.rotateToRight(vel)
         })
     
-        this.leftRotateOb.add( () => {
-            weapon.rotateToLeft(this.angle)
+        this.leftRotateOb.add( (vel) => {
+            weapon.rotateToLeft(vel)
         })
 
     }

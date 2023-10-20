@@ -1,41 +1,63 @@
 
+import { setFrameOut } from "../../frame/frameController.js"
+import { CustomMathController } from "../../generalUtils/math.js"
 import { VectorController } from "../../generalUtils/vector.js"
 
 var Vector = ""
+var CustomMath = ""
 
 onInit(function(){
 
     Vector = new VectorController()
+    CustomMath = new CustomMathController()
 
 })
 
 export class Rotable {
 
-    constructor(){
+    buildClass(updateThis = this){
 
-        this.modifierStatusOb.add({
+        updateThis.modifierStatusOb.add({
             "func": "updateCircleStats",
-            "class": this
+            "class": updateThis
         })
 
-        this.modifierStatusOb.add({
+        updateThis.modifierStatusOb.add({
             "func": "updateRadian",
-            "class": this
+            "class": updateThis
         })
+
+        updateThis.rotateOb.add({
+            "func": "rotationReset",
+            "class": updateThis
+        })
+
+        return updateThis
 
     }
+
+    rotateOb = new Observer()
+    rightRotateOb = new Observer()
+    leftRotateOb = new Observer()
+    
+    modifierStatusOb = new Observer()
     
     xMult = 1
     yMult = 0
 
-    rightRotateOb = new Observer()
-    leftRotateOb = new Observer()
+    cosine = 1
+    sine = 0
 
-    modifierStatusOb = new Observer()
+    radian = -Math.PI/2
 
-    radian = -1.57
+    resetVel = Vector.toRadians(1) / 10
+    rotationVel = Vector.toRadians(2)
+    currentRotationVel = this.resetVel
+    rotationMult = 2
 
-    angle = Vector.toRadians(2)
+    getPercentageOfCurrentRotationVel(percentage){
+        return this.currentRotationVel * (percentage / 100)
+    }
 
     setAngle(angle){
 
@@ -68,48 +90,76 @@ export class Rotable {
         console.log(this.radian)
         console.log(this.cosine)
         console.log(this.sine)
+        console.log(this.rotationVel)
+        console.log(this.currentRotationVel)
 
         console.log("-------------------------")
 
     }
 
-    rotateToRight(angle = this.angle){
+    rotateToRight(vel = null){
 
-        Vector.rotate(this, -angle)
+        // The value: this.currentRotationVel = X
 
-        this.rightRotateOb.run(this)
+        Vector.rotate(this, -vel || -this.currentRotationVel)
+        
+        this.rightRotateOb.run(vel || this.currentRotationVel)
 
-        this.modifierStatusOb.run(this)
+        this.modifierStatusOb.run(vel || this.currentRotationVel)
 
-    }
+        this.rotateOb.run(vel || this.currentRotationVel) // <- rotationReset <---- It's because of HIM!
 
-    rotateToLeft(angle = this.angle){
-
-        Vector.rotate(this, angle)
-
-        this.leftRotateOb.run(this)
-
-        this.modifierStatusOb.run(this)
+        // The value: this.currentRotationVel = X2
 
     }
 
-    cosine = 1
-    sine = 0
+    rotateToLeft(vel = null){
 
-    updateCircleStats(rotable = this){
+        Vector.rotate(this, vel || this.currentRotationVel)
 
-        let triangle = Vector.triangleFactory(rotable.xMult, rotable.yMult)
+        this.leftRotateOb.run(vel || this.currentRotationVel)
 
-        rotable.cosine = triangle.cosine
-        rotable.sine = triangle.sine
+        this.modifierStatusOb.run(vel || this.currentRotationVel)
+
+        this.rotateOb.run(vel || this.currentRotationVel)
 
     }
 
-    updateRadian(rotable = this){
+    updateCircleStats(){
 
-        rotable.radian = -Vector.getAngle(
-            rotable.xMult,
-            rotable.yMult
+        let triangle = Vector.triangleFactory(this.xMult, this.yMult)
+
+        this.cosine = triangle.cosine
+        this.sine = triangle.sine
+
+    }
+
+    updateRadian(){
+
+        this.radian = -Vector.getAngle(
+            this.xMult,
+            this.yMult
+        )
+
+    }
+
+    rotationReset(){
+
+        if(
+            this.currentRotationVel * this.rotationMult <= this.rotationVel
+        ){
+            this.currentRotationVel *= this.rotationMult
+
+        }else if(
+            this.currentRotationVel < this.rotationVel
+        ){
+            this.currentRotationVel += this.rotationVel - this.currentRotationVel
+        }
+
+        setFrameOut(
+            () => {
+                this.currentRotationVel = this.resetVel
+            },2,1, true, this.ID + "+rotationReset"
         )
 
     }

@@ -29,6 +29,7 @@ export class CloneObjectController {
         "rightRotateOb": () => {},
         "leftRotateOb": () => {},
         "modifierStatusOb": () => {},
+        "rotateOb": () => {},
         "onHit": this.cloneComplexOnType,
         "onDeath": this.cloneComplexOnType,
         "onDamage": this.cloneComplexOnType,
@@ -165,7 +166,7 @@ export class CloneObjectController {
     cloneAI(object, clonedObject = {}){
 
         if(object.AI){
-            AIC.giveAI(clonedObject, object.AI.returnAll(), true)
+        AIC.giveAI(clonedObject, object.AI.returnAll(), true)
         }else{
             console.log("eu devo deletar isso?")
             AIC.giveAI(clonedObject, ["movable", "useActivates"], true)
@@ -284,11 +285,15 @@ export class CloneObjectController {
         "yMult",
         "cosine",
         "sine",
+        "resetVel",
+        "rotationVel",
+        "currentRotationVel",
+        "rotationMult",
     ]
 
     cloneEngine(object){
 
-        let newObject = new Rotable()
+        let newObject = new Rotable().buildClass()
 
         for (let index = 0; index < this.cloneEngineList.length; index++) {
             

@@ -49,9 +49,9 @@ export class ActivateController{
         object.currentYVel = master.currentYVel
 
         if(
-            master.angle
+            master.radian
             &&
-            object.angle
+            object.radian
         ){
 
             object.setAngle(
