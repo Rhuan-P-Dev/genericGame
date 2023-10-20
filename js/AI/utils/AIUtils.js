@@ -106,7 +106,9 @@ export class AIUtilsController {
 
     }
 
-    returnLeftRightProduct(object, target, objectCalcs = object){
+    returnProduct(direction, object, target, objectCalcs = object, velPercentage = 100){
+
+        let rotateFuncName = "rotateTo" + direction
 
         let toTargetVectorNormalize = Vector.vectorNormalize(
             target,
@@ -117,35 +119,41 @@ export class AIUtilsController {
             object
         )
 
-        hypotheticalObject.rotateToRight()
+        let rotationVel = hypotheticalObject.getPercentageOfCurrentRotationVel(
+            velPercentage
+        )
 
-        let right = {
+        hypotheticalObject[rotateFuncName](rotationVel)
+
+        let directionObject = {
             "x": objectCalcs.x + hypotheticalObject.cosine,
             "y": objectCalcs.y + hypotheticalObject.sine,
         }
 
-        hypotheticalObject.rotateToLeft() // to cancel the previous rotation
-
-        hypotheticalObject.rotateToLeft()
-
-        let left = {
-            "x": objectCalcs.x + hypotheticalObject.cosine,
-            "y": objectCalcs.y + hypotheticalObject.sine,
-        }
-
-        let rightProduct = Vector.scalarProduct(
+        return Vector.scalarProduct(
             toTargetVectorNormalize,
-            Vector.vectorNormalize(right, objectCalcs)
+            Vector.vectorNormalize(directionObject, objectCalcs)
         )
 
-        let leftProduct = Vector.scalarProduct(
-            toTargetVectorNormalize,
-            Vector.vectorNormalize(left, objectCalcs)
-        )
+    }
+
+    returnRightProduct(object, target, objectCalcs = object, velPercentage = 100){
+
+        return this.returnProduct("Right", object, target, objectCalcs, velPercentage)
+
+    }
+
+    returnLeftProduct(object, target, objectCalcs = object, velPercentage = 100){
+
+        return this.returnProduct("Left", object, target, objectCalcs, velPercentage)
+
+    }
+
+    returnLeftRightProduct(object, target, objectCalcs = object, velPercentage = 100){
 
         return {
-            leftProduct,
-            rightProduct
+            "rightProduct": this.returnRightProduct(object, target, objectCalcs, velPercentage),
+            "leftProduct": this.returnLeftProduct(object, target, objectCalcs, velPercentage),
         }
     }
 
@@ -155,11 +163,7 @@ export class AIUtilsController {
 
         let products = this.returnLeftRightProduct(object, target, objectCalcs)
 
-        let leftProduct = products.leftProduct
-
-        let rightProduct = products.rightProduct
-
-        if(rightProduct < leftProduct){
+        if(products.rightProduct < products.leftProduct){
             object.rotateToRight()
         }else{
             object.rotateToLeft()
@@ -173,14 +177,78 @@ export class AIUtilsController {
 
         let products = this.returnLeftRightProduct(object, target, objectCalcs)
 
-        let leftProduct = products.leftProduct
-
-        let rightProduct = products.rightProduct
-
-        if(rightProduct > leftProduct){
+        if(products.rightProduct > products.leftProduct){
             object.rotateToRight()
         }else{
             object.rotateToLeft()
+        }
+
+    }
+
+    preciseAimToTarget(object, target, objectCalcs = object){
+
+        let products50 = this.returnLeftRightProduct(object, target, objectCalcs, 50)
+
+        if(products50.rightProduct > products50.leftProduct){
+
+            let products100 = this.returnLeftRightProduct(object, target, objectCalcs, 100)
+
+            if(products100.rightProduct > products50.rightProduct){
+
+                object.rotateToRight()
+
+            }else{
+
+                let products1 = this.returnLeftRightProduct(object, target, objectCalcs, 1)
+
+                if(products1.rightProduct > products50.rightProduct){
+
+                    object.rotateToRight(
+                        object.getPercentageOfCurrentRotationVel(
+                            1
+                        )
+                    )
+
+                }else{
+                    object.rotateToRight(
+                        object.getPercentageOfCurrentRotationVel(
+                            50
+                        )
+                    )
+                }
+
+            }
+
+        }else{
+
+            let products100 = this.returnLeftRightProduct(object, target, objectCalcs, 100)
+
+            if(products100.leftProduct > products50.leftProduct){
+
+                object.rotateToLeft()
+
+            }else{
+
+                let products1 = this.returnLeftRightProduct(object, target, objectCalcs, 1)
+
+                if(products1.leftProduct > products50.leftProduct){
+
+                    object.rotateToLeft(
+                        object.getPercentageOfCurrentRotationVel(
+                            1
+                        )
+                    )
+
+                }else{
+                    object.rotateToLeft(
+                        object.getPercentageOfCurrentRotationVel(
+                            50
+                        )
+                    )
+                }
+
+            }
+
         }
 
     }

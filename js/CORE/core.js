@@ -182,8 +182,6 @@ ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS []
 
 /* > RE <
 
-fazer um rezize geral! []
-
 returnArrayWithAlllObjectsOfTeams( // create a cache, think! same params of request use cache! []
 
 reajustar o modo que as armar / modificadores funconão []
