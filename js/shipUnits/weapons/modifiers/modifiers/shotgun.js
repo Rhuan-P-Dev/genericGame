@@ -6,7 +6,7 @@ import { ModStats } from "./modBased/modStats.js"
 
 export class Shotgun {
 
-    constructor(){
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
@@ -14,7 +14,8 @@ export class Shotgun {
                 ModSpread,
                 ModMultObject,
                 ModStats
-            ]
+            ],
+            build
         )
 
         this.name = "shotgun"

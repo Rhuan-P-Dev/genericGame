@@ -1,3 +1,4 @@
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { WeaponsController } from "../../weaponsController.js"
 
 import { P1 } from "./P1.js"
@@ -10,11 +11,17 @@ onInit(function(){
 
 })
 
-export class SP1 extends P1 {
+export class SP1{
 
-    constructor(){
+    constructor(build = false){
         
-        super()
+        new InheritController().inherit(
+            this,
+            [
+                P1
+            ],
+            build
+        )
 
         this.cost *= 15
         this.reload *= 15

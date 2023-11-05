@@ -8,7 +8,7 @@ import { BasicProjetile } from "./basicProjetile.js"
 
 export class MissileProjetile {
 
-    constructor(){
+    constructor(build = false){
 
         new InheritController().inherit(
             this,
@@ -17,8 +17,8 @@ export class MissileProjetile {
                 BasicProjetile,
                 RotableObject,
                 MovableObject,
-            ]
-            
+            ],
+            build
         )
 
         this.onHit.remove("last",10) // damage
@@ -34,8 +34,14 @@ export class MissileProjetile {
         this.maxLife = 15
         this.life = 15
 
-        this.onDeath.add(missileDeath,"last",0)
+        this.rotationVel *= 4
 
+    }
+
+    passBuildList = {
+        ["add_" + missileDeath.name]: (updateThis) => {
+            updateThis.onDeath.add(missileDeath,"last",0)
+        }
     }
 
 }

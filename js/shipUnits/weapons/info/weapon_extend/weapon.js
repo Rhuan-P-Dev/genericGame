@@ -6,14 +6,15 @@ import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 export class Weapon{
 
 
-    constructor(){
+    constructor(build = false){
 
         new InheritController().inherit(
             this,
             [
                 Rotable,
                 BasicActivate
-            ]
+            ],
+            build
         )
 
     }

@@ -1,16 +1,19 @@
+import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { Mod } from "./mod.js"
 
-export class ModMultObject extends Mod {
+export class ModMultObject {
 
-    quantity = undefined
+    quantity = 10
 
-    constructor(
-        quantity = 10
-    ){
+    constructor(build = false){
 
-        super()
-
-        this.quantity = quantity
+        new InheritController().inherit(
+            this,
+            [
+                Mod
+            ],
+            build
+        )
 
     }
 

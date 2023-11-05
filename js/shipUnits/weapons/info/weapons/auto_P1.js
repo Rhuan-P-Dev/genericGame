@@ -6,7 +6,7 @@ import { P1 } from "./P1.js"
 
 export class Auto_P1{
 
-    constructor(){
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
@@ -14,7 +14,8 @@ export class Auto_P1{
                 AutoWeapon,
                 TopDownBehavior,
                 P1,
-            ]
+            ],
+            build
         )
 
         this.name = "auto_P1"

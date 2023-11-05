@@ -40,7 +40,7 @@ export class FactoryInfoController{
 
         if(!factory){return undefined}
 
-        factory = ActivateInfo.preBuild(new factory())
+        factory = ActivateInfo.preBuild(new factory(true))
 
         return factory
 

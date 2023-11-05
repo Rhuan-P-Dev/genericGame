@@ -1,7 +1,6 @@
-
 export class InheritController {
 
-    inherit(object, array){
+    inherit(object, array, buildList){
 
         for (let index = 0; index < array.length; index++) {
 
@@ -11,11 +10,44 @@ export class InheritController {
 
             this.propertieClone(object, currentClass)
 
-            if(currentClass.buildClass){
-                currentClass.buildClass(object)
+            if(currentClass.passBuildList){
+
+                this.passBuildList(currentClass, object)
+
+            }
+
+            if(currentClass.buildList){
+
+                currentClass.buildList.concat(object.buildList, true)
+
+                object.buildList = currentClass.buildList
+
             }
 
         }
+
+        if(buildList){
+
+            object.selfBuild()
+
+            object.buildList.run(object)
+
+        }
+
+    }
+
+    passBuildList(object, baseObject){
+
+        for(let functionName in baseObject.passBuildList){
+
+            object.buildList.add(
+                baseObject.passBuildList[functionName],
+                functionName
+            )
+
+        }
+
+        baseObject.passBuildList = {}
 
     }
 

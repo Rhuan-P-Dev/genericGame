@@ -6,9 +6,7 @@ import { RotableObject } from "./basic/rotableObject.js"
 
 export class Drone {
 
-    constructor(){
-
-         
+    constructor(build = false){
 
         new InheritController().inherit(
             this,
@@ -17,7 +15,8 @@ export class Drone {
                 RotableObject,
                 MovableObject,
                 FocusedTopDownBehavior,
-            ]
+            ],
+            build
         )
 
         this.priority += 2
@@ -25,19 +24,19 @@ export class Drone {
         this.vel /= 2
         this.maxVel /= 2
 
-    }
+        this.life = 50
+        this.maxLife = 50
 
-    life = 50
-    maxLife = 50
+        this.defense = 1
+        this.resistance = 1
 
-    defense = 1
-    resistance = 1
-
-    width = 3
-    height = 3
+        this.width = 3
+        this.height = 3
     
-    energy = 50
-    maxEnergy = 50
-    energyRegen = 0.15
+        this.energy = 50
+        this.maxEnergy = 50
+        this.energyRegen = 0.15
+
+    }
 
 }

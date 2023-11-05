@@ -132,13 +132,13 @@ export class WeaponsController{
 
     createShoot(){
 
-        return new SmallBulletProjetile()
+        return new SmallBulletProjetile(true)
 
     }
 
     createMissile(object){
 
-        let missile = new MissileProjetile()
+        let missile = new MissileProjetile(true)
 
         missile.xMult = object.xMult
         missile.yMult = object.yMult

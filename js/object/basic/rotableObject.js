@@ -5,16 +5,15 @@ import { Rotable } from "./rotable.js"
 
 export class RotableObject {
 
-    constructor(){
-
-         
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
             [
                 Rotable,
                 Object
-            ]
+            ],
+            build
         )
 
         this.priority += 1

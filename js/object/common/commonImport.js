@@ -1,24 +1,18 @@
 import { InheritController } from "../../generalUtils/inherit.js"
-import { Object } from "./object.js"
+import { SelfBuild } from "./selfBuild.js"
 
-export class EnergizadObject {
-
-    energy = 10
-    maxEnergy = 10
-    energyRegen = 0.01
+export class CommonImport {
 
     constructor(build = false){
 
         new InheritController().inherit(
             this,
             [
-                Object
+                SelfBuild
             ],
             build
         )
 
-        this.priority += 1
-        
     }
 
 }

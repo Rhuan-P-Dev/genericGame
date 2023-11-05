@@ -1,16 +1,19 @@
+import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { Mod } from "./mod.js"
 
-export class ModInterval extends Mod {
+export class ModInterval {
 
-    interval = undefined
+    interval = 150
 
-    constructor(
-        interval = 150
-    ){
+    constructor(build = false){
 
-        super()
-
-        this.interval = interval
+        new InheritController().inherit(
+            this,
+            [
+                Mod
+            ],
+            build
+        )
 
     }
 

@@ -5,31 +5,32 @@ import { EnergizadObject } from "./basic/energizedObject.js"
 
 export class BaseObjectFactory{
 
-    constructor(){
+    constructor(build = false){
 
         new InheritController().inherit(
             this,
             [
                 EnergizadObject,
                 FocusedTopDownBehavior,
-            ]
+            ],
+            build
         )
 
-    }
-
-    priority = 4
+        this.priority = 4
     
-    life = 50
-    maxLife = 50
+        this.life = 50
+        this.maxLife = 50
 
-    defense = 0
-    resistance = 1
+        this.defense = 0
+        this.resistance = 1
 
-    width = 8
-    height = 8
+        this.width = 8
+        this.height = 8
 
-    energy = 300
-    maxEnergy = 300
-    energyRegen = 0.3
+        this.energy = 300
+        this.maxEnergy = 300
+        this.energyRegen = 0.3
+
+    }
 
 }

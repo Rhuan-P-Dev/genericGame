@@ -1,4 +1,5 @@
 
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
 import { WeaponsController } from "../../weaponsController.js"
 import { Weapon } from "../weapon_extend/weapon.js"
@@ -13,11 +14,17 @@ onInit(function(){
 
 })
 
-export class P1 extends Weapon {
+export class P1 {
 
-    constructor(){
+    constructor(build = false){
         
-        super()
+        new InheritController().inherit(
+            this,
+            [
+                Weapon
+            ],
+            build
+        )
 
     }
 

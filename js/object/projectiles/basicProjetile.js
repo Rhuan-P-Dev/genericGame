@@ -1,16 +1,25 @@
 
+import { InheritController } from "../../generalUtils/inherit.js"
 import { Object } from "../basic/object.js"
 
-export class BasicProjetile extends Object {
+export class BasicProjetile {
 
-    constructor(){
+    constructor(build = false){
 
-        super()
+        new InheritController().inherit(
+            this,
+            [
+                Object
+            ],
+            build
+        )
+        
+    }
 
-         
-
-        this.onHit.add(selfDestruction, "last", 0)
-
+    passBuildList = {
+        ["add_" + selfDestruction.name]: (updateThis) => {
+            updateThis.onHit.add(selfDestruction, "last", 0)
+        }
     }
 
 }

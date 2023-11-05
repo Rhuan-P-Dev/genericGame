@@ -19,7 +19,7 @@ onInit(function(){
 
 export class M1 {
 
-    constructor(){
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
@@ -28,7 +28,8 @@ export class M1 {
                 Weapon,
                 FocusedTopDownBehavior,
                 HomingWeapon,
-            ]
+            ],
+            build
         )
 
         this.name = "M1"

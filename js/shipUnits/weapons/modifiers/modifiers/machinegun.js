@@ -4,13 +4,14 @@ import { ModCumulative } from "./modBased/modCumulative.js"
 
 export class Machinegun {
 
-    constructor(){
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
             [
                 ModCumulative
-            ]
+            ],
+            build
         )
 
         this.name = "machinegun"

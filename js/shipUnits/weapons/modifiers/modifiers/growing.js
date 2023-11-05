@@ -5,14 +5,15 @@ import { ModStats } from "./modBased/modStats.js"
 
 export class Growing {
 
-    constructor(){
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
             [
                 ModCumulative,
                 ModStats
-            ]
+            ],
+            build
         )
 
         this.name = "growing"

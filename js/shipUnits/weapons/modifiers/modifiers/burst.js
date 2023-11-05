@@ -7,7 +7,7 @@ import { ModStats } from "./modBased/modStats.js"
 
 export class Burst {
 
-    constructor(){
+    constructor(build = false){
         
         new InheritController().inherit(
             this,
@@ -16,7 +16,8 @@ export class Burst {
                 ModMultObject,
                 ModInterval,
                 ModStats
-            ]
+            ],
+            build
         )
 
         this.name = "burst"

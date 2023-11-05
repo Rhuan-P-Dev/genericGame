@@ -1,7 +1,9 @@
 
 import { setFrameOut } from "../../frame/frameController.js"
+import { InheritController } from "../../generalUtils/inherit.js"
 import { CustomMathController } from "../../generalUtils/math.js"
 import { VectorController } from "../../generalUtils/vector.js"
+import { CommonImport } from "../common/commonImport.js"
 
 var Vector = ""
 var CustomMath = ""
@@ -15,24 +17,37 @@ onInit(function(){
 
 export class Rotable {
 
-    buildClass(updateThis = this){
+    constructor(build = false){
 
-        updateThis.modifierStatusOb.add({
-            "func": "updateCircleStats",
-            "class": updateThis
-        })
+        new InheritController().inherit(
+            this,
+            [
+                CommonImport
+            ],
+            build
+        )
 
-        updateThis.modifierStatusOb.add({
-            "func": "updateRadian",
-            "class": updateThis
-        })
+    }
 
-        updateThis.rotateOb.add({
-            "func": "rotationReset",
-            "class": updateThis
-        })
+    passBuildList = {
+        "add_basic_rotateFunctions" : (updateThis) => {
 
-        return updateThis
+            updateThis.modifierStatusOb.add({
+                "func": "updateCircleStats",
+                "class": updateThis
+            })
+    
+            updateThis.modifierStatusOb.add({
+                "func": "updateRadian",
+                "class": updateThis
+            })
+    
+            updateThis.rotateOb.add({
+                "func": "rotationReset",
+                "class": updateThis
+            })
+    
+        }
 
     }
 

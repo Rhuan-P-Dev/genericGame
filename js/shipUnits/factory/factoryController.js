@@ -32,7 +32,7 @@ export class FactoryController{
 
     createObject(object, activate, config){
 
-        let newObject = new config.objectClass()
+        let newObject = new config.objectClass(true)
 
         Activate.basicAjustObject(object, newObject)
 

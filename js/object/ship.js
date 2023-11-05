@@ -6,7 +6,7 @@ import { RotableObject } from "./basic/rotableObject.js"
 
 export class Ship {
 
-    constructor(){
+    constructor(build = false){
 
         new InheritController().inherit(
             this,
@@ -15,26 +15,27 @@ export class Ship {
                 RotableObject,
                 MovableObject,
                 FocusedTopDownBehavior,
-            ]
+            ],
+            build
         )
 
         this.rotationVel *= 2
 
-    }
+        this.priority = 5
 
-    priority = 5
+        this.life = 200
+        this.maxLife = 200
 
-    life = 200
-    maxLife = 200
+        this.defense = 4
+        this.resistance = 0.97
 
-    defense = 4
-    resistance = 0.97
-
-    width = 6
-    height = 6
+        this.width = 6
+        this.height = 6
     
-    energy = 200
-    maxEnergy = 200
-    energyRegen = 0.3
+        this.energy = 200
+        this.maxEnergy = 200
+        this.energyRegen = 0.3
+
+    }
 
 }

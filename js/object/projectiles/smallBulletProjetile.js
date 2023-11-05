@@ -1,14 +1,19 @@
 
-import { EffectsController } from "../../effects/effectsController.js"
+import { InheritController } from "../../generalUtils/inherit.js"
 import { BasicProjetile } from "./basicProjetile.js"
 
-export class SmallBulletProjetile extends BasicProjetile {
+export class SmallBulletProjetile {
 
-    constructor(){
+    constructor(build = false){
 
-        super()
-
-         
+        new InheritController().inherit(
+            this,
+            [
+                BasicProjetile
+            ],
+            build
+            
+        )
 
         this.priority -= 1
 

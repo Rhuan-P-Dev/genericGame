@@ -2,6 +2,7 @@ import { DamageController } from "../../damage/damageController.js"
 import { SingleDamage } from "../../damage/damageTypes/single.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
+import { CommonImport } from "../common/commonImport.js"
 import { ActivateInstructions } from "./activateInstructions.js"
 import { onInstructions } from "./onInstructions.js"
 
@@ -17,7 +18,7 @@ onInit(function(){
 
 export class Object {
 
-    constructor(){
+    constructor(build = false){
 
         new InheritController().inherit(
             this,
@@ -25,23 +26,33 @@ export class Object {
                 ActivateInstructions,
                 onInstructions,
                 SingleDamage,
-            ]
+                CommonImport
+            ],
+            build
         )
 
-        this.onDamage.add({
-            "func": "receiveDamage",
-            "class": Damage
-        },"last",10)
+    }
 
-        this.onHit.add({
-            "func": "doDamage",
-            "class": Damage
-        },"last",10)
+    passBuildList = {
 
-        this.onDeath.add({
-            "func": "removeObType",
-            "class": GameState,
-        },"last",10)
+        "add_basic_objectFunctions": (updateThis) => {
+
+            updateThis.onDamage.add({
+                "func": "receiveDamage",
+                "class": Damage
+            },"last",10)
+    
+            updateThis.onHit.add({
+                "func": "doDamage",
+                "class": Damage
+            },"last",10)
+    
+            updateThis.onDeath.add({
+                "func": "removeObType",
+                "class": GameState,
+            },"last",10)
+    
+        }
 
     }
 

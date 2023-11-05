@@ -38,7 +38,7 @@ export class SpecialInfoController{
 
         if(!special){return undefined}
 
-        special = ActivateInfo.preBuild(new special())
+        special = ActivateInfo.preBuild(new special(true))
 
         return special
 

@@ -49,7 +49,7 @@ export class WeaponsInfoController{
 
         if(!weapon){return undefined}
 
-        weapon = ActivateInfo.preBuild(new weapon())
+        weapon = ActivateInfo.preBuild(new weapon(true))
 
         if(weapon.auto){
 

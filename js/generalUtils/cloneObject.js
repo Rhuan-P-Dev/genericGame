@@ -33,11 +33,13 @@ export class CloneObjectController {
         "onHit": this.cloneComplexOnType,
         "onDeath": this.cloneComplexOnType,
         "onDamage": this.cloneComplexOnType,
+        "buildList": () => {},
+        "passBuildList": () => {},
     }
 
     clone(object){
 
-        let clonedObject = new object.constructor
+        let clonedObject = new object.constructor(true)
 
         this.cloneAttribute(object, clonedObject)
 
@@ -185,7 +187,6 @@ export class CloneObjectController {
         for (let stage in complexOnTypeFunctions) {
 
             let allInstructions = complexOnTypeFunctions[stage].getAll()
-            
 
             for(let priority in allInstructions){
 
@@ -293,7 +294,7 @@ export class CloneObjectController {
 
     cloneEngine(object){
 
-        let newObject = new Rotable().buildClass()
+        let newObject = new Rotable(true)
 
         for (let index = 0; index < this.cloneEngineList.length; index++) {
             

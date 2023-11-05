@@ -1,13 +1,20 @@
+import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { WeaponsModifiersController } from "../../weaponsModifiersController.js"
 import { Mod } from "./mod.js"
 
-export class ModSpread extends Mod {
+export class ModSpread {
 
     spread = undefined
 
-    constructor(){
+    constructor(build = false){
 
-        super()
+        new InheritController().inherit(
+            this,
+            [
+                Mod
+            ],
+            build
+        )
 
     }
 

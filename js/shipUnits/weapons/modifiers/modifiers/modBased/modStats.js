@@ -1,34 +1,37 @@
+import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { Mod } from "./mod.js"
 
-export class ModStats extends Mod {
+export class ModStats {
 
-    stats = undefined
+    stats = {
+        "stats":[
+            "width",
+            "height",
+            "life",
+            "maxLife",
+            "damage",
+            "maxVel",
+            "vel",
+            "lifeTime",
+        ],
+    
+        "invertedStatus":[
+            
+        ],
 
-    constructor(
-        stats = {
-            "stats":[
-                "width",
-                "height",
-                "life",
-                "maxLife",
-                "damage",
-                "maxVel",
-                "vel",
-                "lifeTime",
+        "mult": 0.1,
+    }
+
+    constructor(build = false){
+
+        new InheritController().inherit(
+            this,
+            [
+                Mod
             ],
+            build
+        )
         
-            "invertedStatus":[
-                
-            ],
-
-            "mult": 0.1,
-        }
-    ){
-
-        super()
-
-        this.stats = stats
-
     }
 
 }

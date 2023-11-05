@@ -2,6 +2,8 @@ import { Object } from "./object.js"
 
 import { AIUtilsController } from "../../AI/utils/AIUtils.js"
 import { CustomMathController } from "../../generalUtils/math.js"
+import { InheritController } from "../../generalUtils/inherit.js"
+import { Rotable } from "./rotable.js"
 
 var AIUtils = ""
 var CustomMath = ""
@@ -13,14 +15,21 @@ onInit(function(){
 
 })
 
-export class MovableObject extends Object {
+export class MovableObject {
 
     vel = 0.05
     maxVel = 3
 
-    constructor(){
+    constructor(build = false){
 
-        super()
+        new InheritController().inherit(
+            this,
+            [
+                Object,
+                Rotable,
+            ],
+            build
+        )
 
         this.priority += 1
         

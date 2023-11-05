@@ -34,7 +34,7 @@ export class DefenseInfoController{
     
         if(!defense){return undefined}
 
-        defense = ActivateInfo.preBuild(new defense())
+        defense = ActivateInfo.preBuild(new defense(true))
     
         return defense
     

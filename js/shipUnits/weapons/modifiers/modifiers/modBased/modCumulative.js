@@ -1,23 +1,22 @@
+import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { Mod } from "./mod.js"
 
-export class ModCumulative extends Mod {
+export class ModCumulative{
 
-    value = undefined
-    valueStep = undefined
-    valueBase = undefined
+    value = 0
+    valueStep = 0.1
+    valueBase = 0
     callBackFunction = undefined
 
-    constructor(
-        value = 0,
-        valueStep = 0.1,
-        valueBase = 0,
-    ){
+    constructor(build = false){
 
-        super()
-
-        this.value = value
-        this.valueStep = valueStep
-        this.valueBase = valueBase
+        new InheritController().inherit(
+            this,
+            [
+                Mod
+            ],
+            build
+        )
 
     }
 
