@@ -31,7 +31,11 @@ export class ObjectActivatesController{
 
         if(activate){
 
-            if(GameState.getPlayer().ID == object.ID){
+            if(
+                GameState.getPlayer().ID == object.ID
+                &&
+                !activate.auto
+            ){
 
                 KeyBoard.updateKeyBoardKeys(() => {
                     object.activate(activate.ID)
