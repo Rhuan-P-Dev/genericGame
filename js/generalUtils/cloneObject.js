@@ -167,12 +167,7 @@ export class CloneObjectController {
 
     cloneAI(object, clonedObject = {}){
 
-        if(object.AI){
         AIC.giveAI(clonedObject, object.AI.returnAll(), true)
-        }else{
-            console.log("eu devo deletar isso?")
-            AIC.giveAI(clonedObject, ["movable", "useActivates"], true)
-        }
 
         return clonedObject
 
