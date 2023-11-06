@@ -192,8 +192,8 @@ export class WeaponsController{
         }else{
 
             Effects.add(
-                effect.name,
-                effect.type,
+                effect.config.name,
+                effect.config.type,
                 effect.params,
                 effect.config,
             )
