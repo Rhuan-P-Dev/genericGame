@@ -265,7 +265,7 @@ export class ShipCreatorController{
 
     createShipFactory(){
 
-        let newShip = new Ship()
+        let newShip = new Ship(true)
 
         newShip.ID = randomUniqueID()
         newShip.x = randomInteger(0, ShipCreator.mainCanvas.width)
