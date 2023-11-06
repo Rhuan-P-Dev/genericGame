@@ -135,14 +135,9 @@ export class WeaponsController{
 
     }
 
-    createMissile(object){
+    createMissile(){
 
         let missile = new MissileProjetile(true)
-
-        missile.xMult = object.xMult
-        missile.yMult = object.yMult
-
-        missile.updateCircleStats(missile)
 
         AIC.giveAI(missile, ["missileV1"])
 
