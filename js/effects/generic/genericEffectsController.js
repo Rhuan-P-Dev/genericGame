@@ -91,13 +91,15 @@ export class GenericEffectsController {
 
         "clone": (params) => {
 
-            Special.weakClone(
+            let weakClone = Special.weakClone(
                 params.object,
                 undefined,
                 {
                     "mult": params.mult
                 }
             )
+
+            Activate.addObject(weakClone)
 
         },
 

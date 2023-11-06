@@ -55,7 +55,13 @@ export class SpecialController{
 
     useSpecial(object, ID){
 
-        Activate.useActivate(object, ID)
+        let result = Activate.useActivate(object, ID)
+
+        if(result.return){
+
+            Activate.addObject(result.return)
+
+        }
 
     }
 
@@ -73,7 +79,7 @@ export class SpecialController{
 
         weakClone.ID = randomUniqueID()
 
-        GameState.addObject(weakClone, true)
+        return weakClone
 
     }
 

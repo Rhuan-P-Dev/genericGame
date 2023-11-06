@@ -64,10 +64,10 @@ export class ActivateController{
 
     addObject(object){
 
+        let haveAI = false
+
         if(object.AI){
-            var haveAI = true
-        }else{
-            var haveAI = false
+            haveAI = true
         }
 
         GameState.addObject(object, haveAI)
