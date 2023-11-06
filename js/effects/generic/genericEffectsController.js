@@ -81,7 +81,7 @@ export class GenericEffectsController {
 
             let newObject = help.func(
                 params.object,
-                undefined,
+                params.object,
                 help.config || params.custom.config,
             )
 

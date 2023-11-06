@@ -30,8 +30,7 @@ export class WeaponsController{
 
     ajustObject(weapon, object, config){
 
-
-        Activate.basicAjustObject(weapon.owner, object)
+        Activate.basicAjustObject(weapon.owner, weapon, object)
 
         object.x += weapon.xOffset
         object.y += weapon.yOffset

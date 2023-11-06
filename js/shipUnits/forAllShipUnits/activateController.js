@@ -35,7 +35,7 @@ export class ActivateController{
 
     }
 
-    basicAjustObject(master, object){
+    basicAjustObject(master, activate, object){
 
         object.ID = randomUniqueID()
         object.team = master.team
@@ -49,13 +49,13 @@ export class ActivateController{
         object.currentYVel = master.currentYVel
 
         if(
-            master.radian
+            activate.radian
             &&
             object.radian
         ){
 
             object.setAngle(
-                master.getAngle()
+                activate.getAngle()
             )
 
         }
