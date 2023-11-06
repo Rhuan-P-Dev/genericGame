@@ -32,12 +32,15 @@ export class TypeOfAI {
 
         "movable": movable,
 
+        "accelerate": accelerate,
+
         "rotableTurret": rotableTurret,
         "useActivates": useActivates,
 
         "ship_turret": ship_turret,
 
         "dummy": dummy,
+
     }
 
     getAllTypeOfAI(){
@@ -109,6 +112,12 @@ function movable(object){
         AIUtils.aimAwayTarget(object, target)
     }
     
+}
+
+function accelerate(object){
+
+    object.advanceShip()
+
 }
 
 function rotableTurret(object){
