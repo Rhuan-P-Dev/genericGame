@@ -128,19 +128,15 @@ export class EffectsController {
         ID = randomUniqueID()
     ){
 
-        CloneObject.recursiveCloneAttribute(
-            {
-                "prefixFunc": [],
-                "suffixFunc": ["deleteInstruction"],
-        
-                "stage": "middle",
-                "priority": 5,
-        
-            },
-            config,
-        )
+        let tempConfig = {
+            "prefixFunc": [],
+            "suffixFunc": ["deleteInstruction"],
 
-        config.func = (localParams) => {
+            "stage": "middle",
+            "priority": 5,
+        }
+
+        tempConfig.func = (localParams) => {
 
             params.object = localParams.otherObject
 
@@ -156,12 +152,12 @@ export class EffectsController {
             
         }
 
-        new ComplexOnTypeFunctions().apply(config)
+        new ComplexOnTypeFunctions().apply(tempConfig)
 
         params.object[applyType].add(
-            config,
-            config.stage || "first",
-            config.priority || 0
+            tempConfig,
+            tempConfig.stage || "first",
+            tempConfig.priority || 0
         )
 
     }
