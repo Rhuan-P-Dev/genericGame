@@ -28,8 +28,7 @@ export class MissileProjetile {
         this.width = 3
         this.height = 3
 
-        this.maxVel *= 1.5
-        this.vel *= 2
+        this.vel *= 10
 
         this.maxLife = 15
         this.life = 15

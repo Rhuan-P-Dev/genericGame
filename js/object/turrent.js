@@ -31,7 +31,9 @@ export class Turret {
 
         this.energy = 100
         this.maxEnergy = 100
-        this.energyRegen = 0.1
+        this.energyRegen = 0.5
+
+        this.rotationVel *= 3
 
     }
 
