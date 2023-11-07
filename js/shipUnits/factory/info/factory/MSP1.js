@@ -1,5 +1,5 @@
 import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
-import { Drone } from "../../../../object/drone.js"
+import { Drone } from "../../../../object/complex/drone.js"
 import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { FactoryController } from "../../factoryController.js"
 

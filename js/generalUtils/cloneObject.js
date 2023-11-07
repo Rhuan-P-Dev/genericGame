@@ -1,7 +1,7 @@
 
 import { AIController } from "../AI/AIController.js"
 import { EffectsController } from "../effects/effectsController.js"
-import { ComplexOnType } from "../object/basic/onInstructions.js"
+import { ComplexOnType } from "../object/instructions/onInstructions.js"
 import { Rotable } from "../object/basic/rotable.js"
 import { ActivateInfoController } from "../shipUnits/forAllShipUnits/activateInfoController.js"
 

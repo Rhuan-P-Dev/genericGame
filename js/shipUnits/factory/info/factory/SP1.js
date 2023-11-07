@@ -1,5 +1,5 @@
 import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
-import { Turret } from "../../../../object/turrent.js"
+import { Turret } from "../../../../object/complex/turrent.js"
 import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { FactoryController } from "../../factoryController.js"
 

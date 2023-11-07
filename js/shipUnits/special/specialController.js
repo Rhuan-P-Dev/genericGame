@@ -5,7 +5,7 @@ import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { SpecialInfoController } from "./info/specialInfoController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
-import { ComplexOnType } from "../../object/basic/onInstructions.js"
+import { ComplexOnType } from "../../object/instructions/onInstructions.js"
 import { DamageController } from "../../damage/damageController.js"
 
 var GameState = ""

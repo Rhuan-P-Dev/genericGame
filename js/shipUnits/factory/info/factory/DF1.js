@@ -1,5 +1,5 @@
 import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
-import { BaseObjectFactory } from "../../../../object/factory.js"
+import { BaseObjectFactory } from "../../../../object/complex/factory.js"
 import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { FactoryController } from "../../factoryController.js"
 

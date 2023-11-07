@@ -4,7 +4,7 @@ import { FrameController } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { MultiplyStatsController } from "../generalUtils/multiplyStats.js"
 import { KeyBoardController } from "../keyboard/keyBoardController.js"
-import { Ship } from "../object/ship.js"
+import { Ship } from "../object/complex/ship.js"
 import { ObjectActivatesController } from "../objectController/objectActivatesController.js"
 import { SpecialController } from "../shipUnits/special/specialController.js"
 

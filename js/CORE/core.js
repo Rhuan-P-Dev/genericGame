@@ -178,8 +178,6 @@ add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! []
 
 /*
 
-TODO: refizar os objetos
-
 if(build){
     this.selfBuild() se a classe não tem o inherit deve usar isso!
 }

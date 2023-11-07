@@ -1,8 +1,8 @@
 
-import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
-import { InheritController } from "../generalUtils/inherit.js"
-import { EnergizadObject } from "./basic/energizedObject.js"
-import { RotableObject } from "./basic/rotableObject.js"
+import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
+import { InheritController } from "../../generalUtils/inherit.js"
+import { EnergizadObject } from "../basic/energizedObject.js"
+import { RotableObject } from "../basic/rotableObject.js"
 
 export class Turret {
 
