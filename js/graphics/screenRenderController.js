@@ -68,8 +68,6 @@ export class ScreenRenderController {
 
             ScreenRender.rotateObject(object)
 
-            //ScreenRender.mainCanvasContext.scale(0.33,0.33)
-
             ScreenRender.renderTheFrontOfShip(object)
             
             ScreenRender.renderComplexFormat(object)
@@ -91,7 +89,9 @@ export class ScreenRenderController {
     }
 
     resetCanvas(){
-        ScreenRender.mainCanvasContext.setTransform(1, 0, 0, 1, 0, 0)
+
+        ScreenRender.mainCanvasContext.resetTransform()
+
     }
 
     renderTheFrontOfShip(object){

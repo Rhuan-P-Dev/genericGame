@@ -166,7 +166,39 @@ function browseInit(){
 //// E ESTRUTURAR MELHOR O PROJETO [?]
 //
 
+
+/* > NEXT <
+
+reajustar o modo que as armar / modificadores funconão []
+
+add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! []
+
+
+*/
+
+/*
+
+TODO: refizar os objetos
+
+if(build){
+    this.selfBuild() se a classe não tem o inherit deve usar isso!
+}
+
+*/
+
+/* > opmimize <
+
+optimizar o sistema de colisoes! []
+
+ao inves de fixar todo frame os status dos objetos, você pode user observers! []
+
+*/
+
 /* > ADD <
+
+add this > // wrong!
+object.x = object.owner.x + object.xOffset
+object.y = object.owner.y + object.yOffset
 
 uma arma mina / factory... []
 
@@ -182,13 +214,13 @@ ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS []
 
 /* > RE <
 
+claramente o jeito que os objetos se movimentão esta errado! []
+
 returnArrayWithAlllObjectsOfTeams( // create a cache, think! same params of request use cache! []
 
-reajustar o modo que as armar / modificadores funconão []
+ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
 
 adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
-
-ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
 
 TALVEZ ADICINAR "lifeTime" para illsuions? []
 
@@ -239,22 +271,17 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 // parar o tempo? []
 
+// uma nave especial qndo morre cria um clone de si mesmo com menos STATS. []
 
+// um tipo de factory, que criar algo com pontos obetidos por tempo / kills []
 
+// uma nave special que tem X cores, cada core pode ser derrupado caso a nave the X% de vida, cada core, pode ser: um stats, poderzin!
 
+// quando algo morre divide em dois? []
 
+// uma nave que se adaptar ao dano levado []
 
-
-
-
-
-
-
-
-
-
-
-
+// uma nave que tira a multiplicador nas coisas? []
 
 function gameLoop(){
 
