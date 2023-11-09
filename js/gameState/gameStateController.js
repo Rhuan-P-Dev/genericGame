@@ -109,7 +109,15 @@ export class GameStateController {
             delete GAME[area][object.ID]
         }
 
-        delete GAME.team[object.team][object.ID]
+        if(
+            GAME.team[object.team]
+            &&
+            GAME.team[object.team][object.ID]
+        ){
+
+            delete GAME.team[object.team][object.ID]
+
+        }
 
     }
 
