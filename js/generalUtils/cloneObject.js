@@ -235,7 +235,7 @@ export class CloneObjectController {
 
     cloneEffects(object, clonedObject = {}, config){
 
-        clonedObject.effects = {}
+        Effects.removeAll(clonedObject)
 
         let effectsArray = object.effects
 
