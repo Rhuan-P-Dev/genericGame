@@ -1,4 +1,5 @@
 import { setFrameOut } from "../../../frame/frameController.js"
+import { GameStateController } from "../../../gameState/gameStateController.js"
 import { CloneObjectController } from "../../../generalUtils/cloneObject.js"
 import { MultiplyStatsController } from "../../../generalUtils/multiplyStats.js"
 import { WeaponsController } from "../weaponsController.js"
@@ -9,17 +10,16 @@ import { ModSpread } from "./modifiers/modBased/modSpread.js"
 import { Shotgun } from "./modifiers/shotgun.js"
 
 var Weapons = ""
-
 var cloneObject = ""
 var MultiplyStats = ""
+var GameState = ""
 
 onInit(function(){
 
     Weapons = new WeaponsController()
-
     cloneObject = new CloneObjectController()
     MultiplyStats = new MultiplyStatsController()
-
+    GameState = new GameStateController()
 })
 
 export class WeaponsModifiersController{
@@ -81,6 +81,8 @@ export class WeaponsModifiersController{
         
             }
 
+            GameState.remove(output[index].object)
+
         }
         
         return newOutput
@@ -96,23 +98,25 @@ export class WeaponsModifiersController{
             for (let indey = 0; indey < modifier.quantity; indey++) {
 
                 let tempProjectile = cloneObject.clone(output[index].object)
-                let temConfig = cloneObject.cloneAttribute(output[index].config)
+                let tempConfig = cloneObject.cloneAttribute(output[index].config)
 
                 WeaponsModifiers.spread([{
                     "object": tempProjectile,
-                    "config": temConfig,
+                    "config": tempConfig,
                 }], modifier)
     
                 MultiplyStats.multiply(tempProjectile, modifier.stats)
 
                 newOutput.push({
                     "object": tempProjectile,
-                    "config": temConfig,
+                    "config": tempConfig,
                 })
 
                 newOutput[newOutput.length-1].config.interval = 0
-        
+
             }
+
+            GameState.remove(output[index].object)
 
         }
         
