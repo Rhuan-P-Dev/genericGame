@@ -66,7 +66,16 @@ export class DamageController {
             attacker = attacker.original
         }
 
+        let master = attacker
+
+        while(master.owner){
+
+            master = master.owner
+
+        }
+
         victim.onDamage.run({
+            "otherObjectMaster": master,
             "otherObject": attacker,
             "object": victim,
             "damage": bokedDamage,
