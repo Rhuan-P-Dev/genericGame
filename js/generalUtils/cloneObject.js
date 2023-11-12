@@ -260,6 +260,7 @@ export class CloneObjectController {
                 effectParams.effectType,
                 effectParams.params,
                 effectParams.config,
+                effectParams.promise
             )
 
         }

@@ -167,6 +167,7 @@ export class EffectsController {
         effectType,
         params,
         config = {},
+        promise = false,
         ID = randomUniqueID()
     ){
 
@@ -177,6 +178,7 @@ export class EffectsController {
             effectType,
             params,
             config,
+            promise,
             ID,
         )
 
@@ -218,6 +220,7 @@ export class EffectsController {
         effectType,
         params,
         config = {},
+        promise = false,
         ID = randomUniqueID(),
     ){
 
@@ -230,24 +233,31 @@ export class EffectsController {
             "effect"
         )
 
-        Frame.add(
-            () => {
-                Effects.get(effectName).effect.config.func(params)
-            },
-            config.frameOut,
-            config.repeat,
-            config.overwrite,
-            ID,
-            () => {
-                Effects.remove(params.object, ID)
-            }
-        )
+        if(!promise){
+
+            Frame.add(
+                () => {
+                    
+                    Effects.get(effectName).effect.config.func(params)
+
+                },
+                config.frameOut,
+                config.repeat,
+                config.overwrite,
+                ID,
+                () => {
+                    Effects.remove(params.object, ID)
+                }
+            )
+
+        }
 
         params.object.effects[ID] = {
             effectName,
             effectType,
             params,
             config,
+            promise,
             ID,
         }
         
@@ -289,6 +299,31 @@ export class EffectsController {
 
         object.effects = {}
 
+    }
+
+    closePromises(object){
+       
+        for (let index in object.effects){
+
+            let effect = object.effects[index]
+
+            if(effect.promise){
+
+                effect.promise = false
+
+                this.add(
+                    effect.effectName,
+                    effect.effectType,
+                    effect.params,
+                    effect.config,
+                    effect.promise,
+                    effect.ID,
+                )
+
+            }
+
+        }
+        
     }
 
 }

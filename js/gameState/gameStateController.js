@@ -73,6 +73,8 @@ export class GameStateController {
             GAME.stats[object.ID] = object
         }
 
+        Effects.closePromises(object)
+
     }
 
     removeObType(params){
