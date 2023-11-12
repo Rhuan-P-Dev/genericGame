@@ -4,8 +4,6 @@ import { ActivateInfoController } from "../../forAllShipUnits/activateInfoContro
 import { M1 } from "./weapons/M1.js"
 import { P1 } from "./weapons/P1.js"
 import { SP1 } from "./weapons/SP1.js"
-import { Auto_P1 } from "./weapons/auto_P1.js"
-import { Auto_SP1 } from "./weapons/auto_SP1.js"
 
 
 
@@ -25,10 +23,8 @@ export class WeaponsInfoController{
 
     weapons = {
         "P1": P1,
-        "auto_P1": Auto_P1,
         "M1": M1,
         "SP1": SP1,
-        "auto_SP1": Auto_SP1,
     }
 
     getAll(){
