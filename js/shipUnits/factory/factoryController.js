@@ -38,7 +38,7 @@ export class FactoryController{
 
         AIC.giveAI(newObject, config.AI)
 
-        Factory.setActivates(newObject, config.apply)
+        ObjectActivates.setActivates(newObject, config.apply)
 
         Factory.setBehavior(object, config)
 
@@ -49,22 +49,6 @@ export class FactoryController{
     setBehavior(object, config){
 
         object.searchPriority = config.behavior
-
-    }
-
-    setActivates(object, activates){
-
-        for (let key in activates) {
-
-            for (let index = 0; index < activates[key].length; index++) {
-
-                let activateName = activates[key][index]
-
-                ObjectActivates.giveActivate(object, key, activateName)
-
-            }
-
-        }
 
     }
 

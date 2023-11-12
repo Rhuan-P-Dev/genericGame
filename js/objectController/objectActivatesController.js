@@ -53,6 +53,22 @@ export class ObjectActivatesController{
         }
 
     }
+
+    setActivates(object, activates){
+
+        for (let key in activates) {
+
+            for (let index = 0; index < activates[key].length; index++) {
+
+                let activateName = activates[key][index]
+
+                this.giveActivate(object, key, activateName)
+
+            }
+
+        }
+
+    }
     
     returnRandomActivate(typeOfLoader = "random"){
 
