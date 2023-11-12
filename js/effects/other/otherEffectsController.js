@@ -44,22 +44,33 @@ export class OtherEffectsController {
 
     effectsList = {
 
+        "energy shield": (params) => {
+
+            if(
+                params.object.energy < 0
+                ||
+                params.calcDamage < 0
+            ){return}
+
+            let reducedDamage = params.calcDamage * params.config.getPercentage(params)
+
+            params.object.energy -= reducedDamage
+
+            if(params.object.energy < 0){return}
+
+            params.calcDamage -= reducedDamage
+
+        },
+
+        "resurrection": (params) => {
+
+            params.object.life = params.object.maxLife * params.config.getPercentage(params)
+
+        },
+
         "revenger": (params) => {
 
-            let missile = Weapons.createMissile(params.object)
-
-            missile.damage = params.otherObject.damage
-
-            new InheritController().inherit(
-                missile,
-                [
-                    FocusedTopDownBehavior,
-                ]
-            )
-
-            Activate.basicAjustObject(params.object, missile)
-
-            Activate.addObject(missile)
+           params.otherObjectMaster.life -= params.calcDamage * params.config.getPercentage(params)
 
         },
 
@@ -94,17 +105,117 @@ export class OtherEffectsController {
                 },
     
             },
+            "energy shield of faith": {
 
-            "reflet damage": {
+                "on": {
 
-                "config": {
-                    "func": this.effectsList["revenger"],
-                },
-    
-                "params": {
-                },
-    
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["energy shield"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "getPercentage": (params) => {
+
+                            return params.object.energy / params.object.maxEnergy
+
+                        }
+
+                    },
+        
+                    "params": {},
+
+                }
+
             },
+
+            "energy barrier": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["energy shield"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "getPercentage": (params) => {
+
+                            return 0.25
+
+                        }
+
+                    },
+        
+                    "params": {},
+
+                }
+
+            },
+
+            "resurrection": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["resurrection"],
+                        "suffixFunc": ["stopStages","deleteInstruction"],
+
+                        "stopStages": {
+                            "stages": ["last"],
+                        },
+
+                        "stage": "last",
+                        "priority": 0,
+
+                        "getPercentage": (params) => {
+
+                            return 1
+
+                        }
+
+                    },
+        
+                    "params": {},
+
+                }
+
+            },
+
+            "counterback":  {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["revenger"],
+                        "suffixFunc": [],
+
+                        "stage": "middle",
+                        "priority": 0,
+
+                        "getPercentage": (params) => {
+
+                            return 0.25
+
+                        }
+
+                    },
+        
+                    "params": {},
+
+                }
+
+            },
+
+           
+
+
 
         },
 

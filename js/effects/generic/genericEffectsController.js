@@ -7,12 +7,13 @@ import { ActivateController } from "../../shipUnits/forAllShipUnits/activateCont
 import { SpecialController } from "../../shipUnits/special/specialController.js"
 import { EffectsController } from "../effectsController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
-
+import { VectorController } from "../../generalUtils/vector.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
 
 
 // For 'reinforcements' effect
 import { MSP1 } from "../../shipUnits/factory/info/factory/MSP1.js"
+
 
 
 
@@ -27,6 +28,7 @@ var CustomMath = ""
 var Effects = ""
 var Activate = ""
 var GameState = ""
+var Vector = ""
 
 onInit(function(){
 
@@ -39,6 +41,7 @@ onInit(function(){
     Effects = new EffectsController()
     Activate = new ActivateController()
     GameState = new GameStateController()
+    Vector = new VectorController()
 
 })
 
@@ -148,12 +151,109 @@ export class GenericEffectsController {
 
         },
 
+        "attraction_repulsion": (params) => {
+
+            let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                {
+                    "maxDistance": params.range
+                }
+            )
+
+            ScreenRender.addDrawRequest(
+                {
+                    "func": ScreenRender.drawCircle,
+                    "params": {
+                        "x": params.object.x,
+                        "y": params.object.y,
+                        "radius": params.range,
+                    },
+                }
+            )
+
+            for (let index = 0; index < closestObjects.length; index++) {
+
+                let closestObject = closestObjects[index]
+
+                let direction = Vector.vectorNormalize(
+                    closestObjects[index],
+                    params.object,
+                )
+
+                closestObject.currentXVel -= direction.x * CustomMath.diminishingReturns(
+                    CustomMath.linearReverse(
+                        AIUtils.getDistanceOfObjects(params.object, closestObject),
+                        params.range
+                    ) * 2,
+                    params.force
+                ) * params.mult
+
+                closestObject.currentYVel -= direction.y * CustomMath.diminishingReturns(
+                    CustomMath.linearReverse(
+                        AIUtils.getDistanceOfObjects(params.object, closestObject),
+                        params.range
+                    ) * 2,
+                    params.force
+                ) * params.mult
+
+            }
 
 
+        },
+
+        "devour": (params) => {
+
+            let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                {
+                    "maxDistance": params.range
+                }
+            )
+
+            ScreenRender.addDrawRequest(
+                {
+                    "func": ScreenRender.drawCircle,
+                    "params": {
+                        "x": params.object.x,
+                        "y": params.object.y,
+                        "radius": params.range,
+                        "color":"red"
+                    },
+                }
+            )
+
+            for (let index = 0; index < closestObjects.length; index++) {
+
+                let closestObject = closestObjects[index]
+
+                let expoMult = CustomMath.diminishingReturns(
+                    CustomMath.linearReverse(
+                        AIUtils.getDistanceOfObjects(params.object, closestObject),
+                        params.range
+                    ) * 2,
+                    params.expo
+                ) * params.mult
+
+                let VALUE = closestObject.maxLife * expoMult
+
+                if(params.object.lifeTime){
+
+                    params.object.lifeTime += VALUE
+
+                }
+
+                params.object.life += VALUE
+                params.object.maxLife += VALUE
 
 
+                closestObject.maxLife -= VALUE
+
+                closestObject.life -= 0.01
+
+            }
 
 
+        },
 
         "thunder": (params) => {
 
@@ -256,6 +356,64 @@ export class GenericEffectsController {
     effectsInfo = {
 
         "positive": {
+
+            "devour": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["devour"],
+                        "frameOut": 1,
+                        "repeat": -1,
+
+                    },
+        
+                    "params": {
+                        "range": 200,
+                        "mult": 0.01,
+                        "expo": 5,
+                    },
+
+                },
+
+                "on": {
+
+                    "config": {
+                        "func": this.effectsList["devour"],
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+        
+                    "params": {
+                        "range": 200,
+                        "mult": 0.01,
+                        "expo": 5,
+                    },
+
+                }
+
+            },
+
+            "attraction": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["attraction_repulsion"],
+                        "frameOut": 1,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "range": 200,
+                        "mult": 0.01,
+                        "force": 1,
+                    },
+
+                },
+
+            },
 
             "breathe": {
 
