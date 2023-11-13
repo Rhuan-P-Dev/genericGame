@@ -3,11 +3,18 @@ import { GameStateController } from "../../../gameState/gameStateController.js"
 import { CloneObjectController } from "../../../generalUtils/cloneObject.js"
 import { MultiplyStatsController } from "../../../generalUtils/multiplyStats.js"
 import { WeaponsController } from "../weaponsController.js"
+import { Barrier } from "./modifiers/barrier.js"
 import { Burst } from "./modifiers/burst.js"
 import { Growing } from "./modifiers/growing.js"
 import { Machinegun } from "./modifiers/machinegun.js"
+import { ModDice } from "./modifiers/modBased/modDice.js"
 import { ModSpread } from "./modifiers/modBased/modSpread.js"
+import { Clone } from "./modifiers/clone.js"
+import { ShadowBarrier } from "./modifiers/shadowBarrier.js"
 import { Shotgun } from "./modifiers/shotgun.js"
+import { Swarm } from "./modifiers/swarm.js"
+import { Widen } from "./modifiers/widen.js"
+import { ModDistortion } from "./modifiers/modBased/modDistortion.js"
 
 var Weapons = ""
 var cloneObject = ""
@@ -25,23 +32,145 @@ onInit(function(){
 export class WeaponsModifiersController{
 
     modifiers = {
-        "spread": undefined,
-        "burst": undefined,
-        "shotgun": undefined,
-        "growing": undefined,
-        "machinegun": undefined,
+        "spread": ModSpread,
+        "widen": Widen,
+
+        "distortion": ModDistortion,
+
+        "growing": Growing,
+
+        "machinegun": Machinegun,
+
+        "burst": Burst,
+        "shotgun": Shotgun,
+        "clone": Clone,
+        "barrier": Barrier,
+        "shadow barrier": ShadowBarrier,
+        "swarm": Swarm,
+
+        "dice": ModDice,
     }
 
-    build(){
-        this.modifiers.burst = new Burst()
-        this.modifiers.machinegun = new Machinegun()
-        this.modifiers.growing = new Growing()
-        this.modifiers.shotgun = new Shotgun()
-        this.modifiers.spread = new ModSpread()
+    build(modifierName){
 
-        for(let modifierName in this.modifiers){
-            this.modifiers[modifierName].ID = randomUniqueID()
+        let modifier = new this.modifiers[modifierName]()
+
+        modifier.ID = randomUniqueID()
+
+        return modifier
+
+    }
+
+    setModifierMode(activate){
+
+        activate.func = this.useModifier
+
+        activate.hasModifier = true
+
+        activate.modifiers = new ModifiersDoublyLinkedList()
+
+    }
+
+    addModifier(activate, modifierName){
+
+        let modifier = this.build(modifierName)
+
+        if(!activate.hasModifier){
+
+            activate.weaponConfig.baseFunc = activate.func
+
+            this.setModifierMode(activate)
+
         }
+
+        modifier.activate = activate
+
+        activate.modifiers.add(modifier)
+
+        activate.cost *= modifier.costMult
+
+    }
+
+    useModifier(object, activate){
+
+        activate.modifiers.runAll()
+
+    }
+
+    attributeRandomizer(output, modifier, config, node){
+
+        for (let index = 0; index < output.length; index++) {
+
+            for(let attribute in output[index].object){
+
+                if(
+                    typeof(output[index].object[attribute]) == "number"
+                ){
+
+                    let randomMult = randomFloat(
+                        -modifier.fluctuation,
+                        modifier.fluctuation
+                    )
+
+                    let value = output[index].object[attribute] * randomMult
+
+                    output[index].object[attribute] += value
+
+                }
+
+    
+            }
+
+        }
+        
+        return output
+
+    }
+
+    replicator(output, modifier, config, node){
+
+        let newOutput = []
+
+        for (let index = 0; index < output.length; index++) {
+
+            if(modifier.addOriginalObject){
+                newOutput.push({
+                    "object": output[index].object,
+                    "config": output[index].config,
+                })
+            }
+
+            for (let indey = 0; indey < modifier.quantity; indey++) {
+
+                let tempProjectile = cloneObject.clone(output[index].object)
+                let tempConfig = cloneObject.cloneAttribute(output[index].config)
+
+                MultiplyStats.multiply(tempProjectile, modifier.stats)
+
+                newOutput.push({
+                    "object": tempProjectile,
+                    "config": tempConfig,
+                })
+        
+            }
+
+        }
+        
+        return newOutput
+
+
+    }
+
+    distortion(output, modifier, config, node){
+
+        for (let index = 0; index < output.length; index++) {
+
+            output[index].config.distortionX -= randomFloat(-modifier.distortion, modifier.distortion)
+            output[index].config.distortionY -= randomFloat(-modifier.distortion, modifier.distortion)
+
+        }
+    
+        return output
 
     }
 
@@ -49,8 +178,8 @@ export class WeaponsModifiersController{
 
         for (let index = 0; index < output.length; index++) {
 
-            output[index].config.tempXSpread -= randomFloat(-modifier.spread, modifier.spread)
-            output[index].config.tempYSpread -= randomFloat(-modifier.spread, modifier.spread)
+            output[index].config.tempSpreadX -= randomFloat(-modifier.spread, modifier.spread)
+            output[index].config.tempSpreadY -= randomFloat(-modifier.spread, modifier.spread)
 
         }
     
@@ -176,52 +305,45 @@ export class WeaponsModifiersController{
         
     }
 
-    getAllModifiers(){
+}
 
-        return this.modifiers
-    }
+var WeaponsModifiers = new WeaponsModifiersController()
 
-    setModifierMode(activate){
+export class OutputObjectsConfig {
 
-        activate.func = this.useModifier
+    constructor(){
 
-        activate.hasModifier = true
-
-        activate.modifiers = new ModifiersDoublyLinkedList()
-
-    }
-
-    addModifier(activate, modifierName){
-
-        this.build()
-
-        let modifier = this.getAllModifiers()[modifierName]
-
-        if(!activate.hasModifier){
-
-            activate.config.baseFunc = activate.func
-
-            this.setModifierMode(activate)
-
+        return {
+            "tempSpreadX": 0,
+            "tempSpreadY": 0,
+            "distortionX": 0,
+            "distortionY": 0,
+            "tempMultVel": 1,
+            "interval": 1,
         }
-
-        modifier.activate = activate
-
-        activate.modifiers.add(modifier)
-
-        activate.cost *= modifier.costMult
-
-    }
-
-    useModifier(object, activate){
-
-        activate.modifiers.runAll()
 
     }
 
 }
 
-var WeaponsModifiers = new WeaponsModifiersController()
+class OutputObjects {
+
+    constructor(node){
+
+        let object = node.value.activate.weaponConfig.baseFunc(
+            node.value.activate,//<< useless delete?
+        )
+
+        object.lifeTime = node.value.activate.lifeTime
+
+        return {
+            "object": object,
+            "config": new OutputObjectsConfig()
+        }
+
+    }
+
+}
 
 export class ModifiersDoublyLinkedList extends LinkedList{
 
@@ -246,17 +368,7 @@ export class ModifiersDoublyLinkedList extends LinkedList{
 
         if(outputObjects.length == 0){
 
-            outputObjects.push({
-                "object": node.value.activate.baseFunc(
-                    node.value.activate,
-                ),
-                "config": {
-                    "tempXSpread": 0,
-                    "tempYSpread": 0,
-                    "tempMultVel": 1,
-                    "interval": 1,
-                }
-            })
+            outputObjects.push(new OutputObjects(node))
 
         }
 

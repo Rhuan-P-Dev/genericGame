@@ -7,6 +7,8 @@ import { EffectsController } from "../../effects/effectsController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { AIController } from "../../AI/AIController.js"
+import { OutputObjectsConfig } from "./modifiers/weaponsModifiersController.js"
+import { BlackHoleProjetile } from "../../object/projectiles/blackHoleProjetile.js"
 
 var Activate = ""
 var Effects = ""
@@ -35,22 +37,28 @@ export class WeaponsController{
         object.x += weapon.xOffset
         object.y += weapon.yOffset
 
-        object.lifeTime = weapon.lifeTime
+
+        let triangle = Vector.triangleFactory(
+            weapon.xMult - config.tempSpreadX,
+            weapon.yMult - config.tempSpreadY,
+        )
+
+        let cosine_X = triangle.cosine - config.distortionX
+        let sine_Y = triangle.sine - config.distortionY
+
+        object.currentXVel += cosine_X * ( weapon.weaponConfig.multVel + config.tempMultVel )
+        object.currentYVel += sine_Y * ( weapon.weaponConfig.multVel + config.tempMultVel )
 
 
 
-        let triangle = Vector.triangleFactory(weapon.xMult - config.tempXSpread, weapon.yMult- config.tempYSpread)
 
-        let cosine_X = triangle.cosine // - "DISTORSION"
-        let sine_Y = triangle.sine // - "DISTORSION"
+        object.damage *= weapon.weaponConfig.damageMult
 
-        object.currentXVel += cosine_X * ( weapon.config.multVel + config.tempMultVel )
-        object.currentYVel += sine_Y * ( weapon.config.multVel + config.tempMultVel )
-
+        if(!weapon.hasModifier){
+            object.lifeTime = weapon.lifeTime
+        }
 
 
-
-        object.damage *= weapon.config.damageMult
 
 
 
@@ -97,12 +105,7 @@ export class WeaponsController{
 
         if(newObjects.length == undefined){
 
-            let tempConfig = {
-                "tempXSpread": 0,
-                "tempYSpread": 0,
-                "tempMultVel": 1,
-                "interval": 1,
-            }
+            let tempConfig = new OutputObjectsConfig()
 
             Weapons.ajustObject(weapon, newObjects, tempConfig)
 
@@ -126,6 +129,10 @@ export class WeaponsController{
             }, newObjectConfig.interval)
     
         }
+
+    createBlackHole(){
+
+        return new BlackHoleProjetile(true)
 
     }
 

@@ -2,7 +2,7 @@ import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { WeaponsModifiersController } from "../../weaponsModifiersController.js"
 import { Mod } from "./mod.js"
 
-export class ModSpread {
+export class ModDistortion {
 
     constructor(build = false){
 
@@ -16,12 +16,12 @@ export class ModSpread {
 
     }
 
-    name = "spread"
+    name = "distortion"
 
-    spread = 0.1
+    distortion = 0.1
 
-    costMult = 1.01
+    costMult = 1
 
-    func = new WeaponsModifiersController().spread
+    func = new WeaponsModifiersController().distortion
 
 }

@@ -1,6 +1,7 @@
 import { AIController } from "../../../AI/AIController.js"
 import { GameStateController } from "../../../gameState/gameStateController.js"
 import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
+import { BHG1 } from "./weapons/BHG1.js"
 import { M1 } from "./weapons/M1.js"
 import { P1 } from "./weapons/P1.js"
 import { SP1 } from "./weapons/SP1.js"
@@ -25,6 +26,7 @@ export class WeaponsInfoController{
         "P1": P1,
         "M1": M1,
         "SP1": SP1,
+        "BHG1": BHG1,
     }
 
     getAll(){

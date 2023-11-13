@@ -37,25 +37,15 @@ export class M1 {
         this.reload = 60
         this.reloadTemp = 0
         this.reloadStep = 1
-        this.config = {
+        this.weaponConfig = {
             multVel: 2,
             damageMult: 1,
         }
         this.lifeTime = 200
-        this.baseFunc = Weapons.createMissile
+        this.func = Weapons.createMissile
 
     }
 
     modifiersList = ["burst"]
-
-    build(){
-
-        for (let index = 0; index < this.modifiersList.length; index++) {
-
-            WeaponsModifiers.addModifier(this, this.modifiersList[index])
-            
-        }
-
-    }
 
 }

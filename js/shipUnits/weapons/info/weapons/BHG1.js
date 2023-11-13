@@ -14,7 +14,7 @@ onInit(function(){
 
 })
 
-export class P1 {
+export class BHG1 {
 
     constructor(build = false){
         
@@ -28,20 +28,16 @@ export class P1 {
 
     }
 
-    name = "P1"
-    cost = 5
-    reload = 7
+    name = "BHG1"
+    cost = 100
+    reload = 60*20
     weaponConfig = {
-        multVel: 8,
+        multVel: 1,
         damageMult: 1,
     }
-    
-    lifeTime = 30
 
-  
+    lifeTime = 250
 
-    func = Weapons.createShoot
-
-    modifiersList = ["spread","distortion"]
+    func = Weapons.createBlackHole
 
 }

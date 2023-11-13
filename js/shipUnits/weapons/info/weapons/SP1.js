@@ -26,16 +26,14 @@ export class SP1{
         this.cost *= 15
         this.reload *= 15
 
-        this.config.multVel *= 2
-        this.config.damageMult = 10
+        this.weaponConfig.multVel *= 2
+        this.weaponConfig.damageMult = 10
 
         this.lifeTime *= 1.5
 
     }
 
     name = "SP1"
-
-    func = Weapons.createShoot
 
     modifiersList = []
 

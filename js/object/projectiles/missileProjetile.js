@@ -21,8 +21,6 @@ export class MissileProjetile {
             build
         )
 
-        this.onHit.remove("last",10) // damage
-
         this.damage = 30
 
         this.width = 3
@@ -35,11 +33,16 @@ export class MissileProjetile {
 
         this.rotationVel *= 4
 
+        this.lifeTime = 200
+
     }
 
     passBuildList = {
         ["add_" + missileDeath.name]: (updateThis) => {
             updateThis.onDeath.add(missileDeath,"last",0)
+
+            updateThis.onHit.remove("last",10) // damage
+
         }
     }
 

@@ -242,6 +242,12 @@ export class GenericEffectsController {
 
                 }
 
+                if(closestObject.lifeTime){
+
+                    closestObject.lifeTime -= VALUE
+
+                }
+
                 params.object.life += VALUE
                 params.object.maxLife += VALUE
 
