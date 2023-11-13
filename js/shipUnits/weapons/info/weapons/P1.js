@@ -31,16 +31,30 @@ export class P1 {
     name = "P1"
     cost = 5
     reload = 7
-    weaponConfig = {
-        multVel: 8,
-        damageMult: 1,
+
+    config = {
+
+        weapon: {
+            multVel: 8,
+            damageMult: 1,
+        },
+
+        projectiles: {
+
+            return: ["small bullet"],
+
+            AI: {
+                //0: ["missileV1"]
+            }
+            
+
+        }
+
     }
     
     lifeTime = 30
 
-  
-
-    func = Weapons.createShoot
+    func = Weapons.returnProjectiles
 
     modifiersList = ["spread","distortion"]
 

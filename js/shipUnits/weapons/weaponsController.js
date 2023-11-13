@@ -1,6 +1,4 @@
 import { WeaponsInfoController } from "./info/weaponsInfoController.js"
-import { SmallBulletProjetile } from "../../object/projectiles/smallBulletProjetile.js"
-import { MissileProjetile } from "../../object/projectiles/missileProjetile.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
@@ -8,7 +6,13 @@ import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { AIController } from "../../AI/AIController.js"
 import { OutputObjectsConfig } from "./modifiers/weaponsModifiersController.js"
-import { BlackHoleProjetile } from "../../object/projectiles/blackHoleProjetile.js"
+
+
+// PROJECTILES
+import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
+import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
+import { BlackHoleProjetile } from "../../object/projectiles/complex/blackHoleProjectile.js"
+import { MineProjetile } from "../../object/projectiles/complex/mineProjectile.js"
 
 var Activate = ""
 var Effects = ""
@@ -46,13 +50,13 @@ export class WeaponsController{
         let cosine_X = triangle.cosine - config.distortionX
         let sine_Y = triangle.sine - config.distortionY
 
-        object.currentXVel += cosine_X * ( weapon.weaponConfig.multVel + config.tempMultVel )
-        object.currentYVel += sine_Y * ( weapon.weaponConfig.multVel + config.tempMultVel )
+        object.currentXVel += cosine_X * ( weapon.config.weapon.multVel + config.tempMultVel )
+        object.currentYVel += sine_Y * ( weapon.config.weapon.multVel + config.tempMultVel )
 
 
 
 
-        object.damage *= weapon.weaponConfig.damageMult
+        object.damage *= weapon.config.weapon.damageMult
 
         if(!weapon.hasModifier){
             object.lifeTime = weapon.lifeTime
@@ -103,18 +107,6 @@ export class WeaponsController{
 
     processObjects(weapon, newObjects){
 
-        if(newObjects.length == undefined){
-
-            let tempConfig = new OutputObjectsConfig()
-
-            Weapons.ajustObject(weapon, newObjects, tempConfig)
-
-            Activate.addObject(newObjects)
-
-            return
-
-        }
-
         for (let index = 0; index < newObjects.length; index++) {
             
             let newObject = newObjects[index].object
@@ -130,26 +122,42 @@ export class WeaponsController{
     
         }
 
-    createBlackHole(){
+    }
 
-        return new BlackHoleProjetile(true)
+    projectiles = {
+
+        "small bullet": SmallBulletProjetile,
+        "simple missile": MissileProjetile,
+        "black hole": BlackHoleProjetile,
+        "simple mine": MineProjetile,
 
     }
 
-    createShoot(){
+    returnProjectiles(object, activate, config){
 
-        return new SmallBulletProjetile(true)
+        let projectiles = []
 
-    }
+        for (let index = 0; index < config.projectiles.return.length; index++) {
 
-    createMissile(){
+            let newObject = config.projectiles.return[index]
 
-        let missile = new MissileProjetile(true)
+            newObject = new Weapons.projectiles[newObject](true)
 
-        AIC.giveAI(missile, ["missileV1"])
+            if(typeof(config.projectiles.AI[index]) != "undefined"){
 
-        return missile
-    
+                AIC.giveAI(newObject, config.projectiles.AI[index])
+
+            }
+
+            projectiles.push({
+                "object": newObject,
+                "config": new OutputObjectsConfig()
+            })
+            
+        }
+
+        return projectiles
+
     }
 
     applyEffects(object, effects){

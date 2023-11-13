@@ -1,6 +1,6 @@
 
-import { InheritController } from "../../generalUtils/inherit.js"
-import { BasicProjetile } from "./basicProjetile.js"
+import { InheritController } from "../../../generalUtils/inherit.js"
+import { BasicProjetile } from "../basic/basicProjetile.js"
 
 export class SmallBulletProjetile {
 

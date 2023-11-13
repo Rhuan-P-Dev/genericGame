@@ -1,6 +1,6 @@
 
-import { InheritController } from "../../generalUtils/inherit.js"
-import { Object } from "../basic/object.js"
+import { InheritController } from "../../../generalUtils/inherit.js"
+import { Object } from "../../basic/object.js"
 
 export class BasicProjetile {
 
@@ -25,6 +25,9 @@ export class BasicProjetile {
 }
 
 function selfDestruction(params){
-    params.object.life = -1
-    params.object.maxLife = -1
+
+    params.object.onDeath.run({
+        "object": params.object
+    })
+    
 }

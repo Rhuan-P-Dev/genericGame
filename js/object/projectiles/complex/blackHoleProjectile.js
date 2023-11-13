@@ -1,8 +1,8 @@
 
-import { EffectsController } from "../../effects/effectsController.js"
-import { setFrameOut } from "../../frame/frameController.js"
-import { InheritController } from "../../generalUtils/inherit.js"
-import { BasicProjetile } from "./basicProjetile.js"
+import { EffectsController } from "../../../effects/effectsController.js"
+import { setFrameOut } from "../../../frame/frameController.js"
+import { InheritController } from "../../../generalUtils/inherit.js"
+import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""
 
@@ -46,6 +46,10 @@ export class BlackHoleProjetile {
             setFrameOut(
 
                 () => {
+
+                    if(updateThis.lifeTime > 300){
+                        updateThis.lifeTime = 300
+                    }
 
                     let littleLifeTime = (updateThis.lifeTime / 20)
 

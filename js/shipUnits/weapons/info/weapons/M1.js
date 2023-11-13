@@ -37,12 +37,30 @@ export class M1 {
         this.reload = 60
         this.reloadTemp = 0
         this.reloadStep = 1
-        this.weaponConfig = {
-            multVel: 2,
-            damageMult: 1,
-        }
         this.lifeTime = 200
-        this.func = Weapons.createMissile
+
+        this.config = {
+
+            weapon: {
+                multVel: 2,
+                damageMult: 1,
+            },
+    
+            projectiles: {
+    
+                return: ["simple missile"],
+    
+                AI: {
+                    0: ["missileV1"]
+                }
+                
+    
+            }
+    
+        }
+    
+        this.func = Weapons.returnProjectiles
+        
 
     }
 

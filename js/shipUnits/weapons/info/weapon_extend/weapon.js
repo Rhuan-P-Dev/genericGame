@@ -42,16 +42,25 @@ export class Weapon{
 
     hasModifier = false
 
-    weaponConfig = {
-        multVel: 3,
-        damageMult: 1,
+    config = {
+
+        weapon: {
+            multVel: 3,
+            damageMult: 1,
+        },
+
+        projectiles: {
+
+        }
+
     }
+
     lifeTime = 180
     func = undefined
 
     calcStats(){
 
-        this.range = this.lifeTime * this.weaponConfig.multVel
+        this.range = this.lifeTime * this.config.weapon.multVel
 
     }
 

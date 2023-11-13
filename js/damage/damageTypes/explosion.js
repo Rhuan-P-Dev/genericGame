@@ -1,7 +1,7 @@
 import { RadiusDamage } from "./radius.js"
 
 
-export class MissileDamage extends RadiusDamage {
+export class ExplosionDamage extends RadiusDamage {
 
     constructor(){
         
@@ -12,4 +12,3 @@ export class MissileDamage extends RadiusDamage {
     }
 
 }
-

@@ -26,18 +26,34 @@ export class BHG1 {
             build
         )
 
+        this.name = "BHG1"
+        this.cost = 100
+        this.reload = 60*20
+
+        this.lifeTime = 250
+
+        this.config = {
+
+            weapon: {
+                multVel: 1,
+                damageMult: 1,
+            },
+    
+            projectiles: {
+    
+                return: ["black hole"],
+    
+                AI: {
+                    //0: ["missileV1"]
+                }
+                
+    
+            }
+    
+        }
+    
+        this.func = Weapons.returnProjectiles
+
     }
-
-    name = "BHG1"
-    cost = 100
-    reload = 60*20
-    weaponConfig = {
-        multVel: 1,
-        damageMult: 1,
-    }
-
-    lifeTime = 250
-
-    func = Weapons.createBlackHole
 
 }

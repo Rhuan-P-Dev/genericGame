@@ -77,7 +77,7 @@ export class WeaponsModifiersController{
 
         if(!activate.hasModifier){
 
-            activate.weaponConfig.baseFunc = activate.func
+            activate.config.weapon.baseFunc = activate.func
 
             this.setModifierMode(activate)
 
@@ -330,16 +330,19 @@ class OutputObjects {
 
     constructor(node){
 
-        let object = node.value.activate.weaponConfig.baseFunc(
-            node.value.activate,//<< useless delete?
+        let objects = node.value.activate.config.weapon.baseFunc(
+            node.value.activate.owner,
+            node.value.activate,
+            node.value.activate.config,
         )
 
-        object.lifeTime = node.value.activate.lifeTime
+        for (let index = 0; index < objects.length; index++) {
 
-        return {
-            "object": object,
-            "config": new OutputObjectsConfig()
+            objects[index].object.lifeTime = node.value.activate.lifeTime
+
         }
+
+        return objects
 
     }
 
@@ -368,7 +371,7 @@ export class ModifiersDoublyLinkedList extends LinkedList{
 
         if(outputObjects.length == 0){
 
-            outputObjects.push(new OutputObjects(node))
+            outputObjects = new OutputObjects(node)
 
         }
 
