@@ -17,9 +17,7 @@ export class SP1 extends BasicActivate {
     cost = 20
     type = "factory"
     func = Factory.createObject
-    reload = 240
-    reloadTemp = 0
-    reloadStep = 1
+    reload = 4*60
 
     config = {
         "objectClass": Turret,

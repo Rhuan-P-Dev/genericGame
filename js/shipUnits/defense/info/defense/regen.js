@@ -16,8 +16,6 @@ export class Regen extends BasicActivate {
     type = "defense"
     func = Defense.regen
     reload = 60
-    reloadTemp = 0
-    reloadStep = 1
 
     config = {
         "lifeRegenBuff": 0.17,

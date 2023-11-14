@@ -33,9 +33,6 @@ export class Weapon{
     xOffset = 0//randomInteger(-200,200)
     yOffset = 0//randomInteger(-200,200)
 
-    reloadTemp = 0
-    reloadStep = 1
-
     buildAngle = 0
 
     range = 180
@@ -56,7 +53,6 @@ export class Weapon{
     }
 
     lifeTime = 180
-    func = undefined
 
     calcStats(){
 

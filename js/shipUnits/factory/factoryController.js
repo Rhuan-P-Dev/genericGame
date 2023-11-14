@@ -25,6 +25,7 @@ export class FactoryController{
         let result = Activate.useActivate(object, ID)
 
         if(result.return){
+
             Activate.addObject(result.return)
         }
 

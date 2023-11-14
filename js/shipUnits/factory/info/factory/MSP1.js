@@ -18,8 +18,6 @@ export class MSP1 extends BasicActivate {
     type = "factory"
     func = Factory.createObject
     reload = 10*60
-    reloadTemp = 0
-    reloadStep = 1
 
     config = {
         "objectClass": Drone,

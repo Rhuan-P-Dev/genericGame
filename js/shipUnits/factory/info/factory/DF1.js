@@ -18,8 +18,6 @@ export class DF1 extends BasicActivate {
     type = "factory"
     func = Factory.createObject
     reload = 20*60
-    reloadTemp = 0
-    reloadStep = 1
 
     config = {
         "objectClass": BaseObjectFactory,

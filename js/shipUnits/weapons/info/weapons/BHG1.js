@@ -28,7 +28,7 @@ export class BHG1 {
 
         this.name = "BHG1"
         this.cost = 100
-        this.reload = 60*20
+        this.reload = 20*60
 
         this.lifeTime = 250
 
