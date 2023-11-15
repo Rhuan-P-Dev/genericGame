@@ -61,7 +61,7 @@ export class WeaponExtend{
 
     calcStats(){
 
-        this.range = this.lifeTime * this.config.weapon.multVel
+        this.range = this.lifeTime * this.config.weapon.multVel || this.lifeTime
 
     }
 

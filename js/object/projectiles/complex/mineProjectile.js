@@ -24,7 +24,7 @@ export class MineProjetile {
         this.maxLife = 50
         this.life = 50
 
-        this.lifeTime = 60*10
+        this.lifeTime = 10*60
 
     }
 

@@ -4,6 +4,7 @@ import { SP1 } from "./factory/SP1.js"
 import { DF1 } from "./factory/DF1.js"
 
 import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
+import { MF1 } from "./factory/MF1.js"
 
 var ActivateInfo = ""
 
@@ -20,6 +21,7 @@ export class FactoryInfoController{
         "SP1": SP1,
         "MSP1": MSP1,
         "DF1": DF1,
+        "MF1": MF1,
     }
 
     getAll(){
