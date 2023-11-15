@@ -60,43 +60,13 @@ export class ShipCreatorController{
 
             ObjectActivates.giveActivate(newShip, "weapon")
 
-            new EffectsController().add(
-                "burn",
-                "effect",
-                {
-                    "object": newShip,
-                },
-            )
-
-            new EffectsController().add(
-                "breathe",
-                "effect",
-                {
-                    "object": newShip,
-                },{
-                    //"frameOut": 60
-                }
-            )
-
-            new EffectsController().add(
-                "counterback",
-                "onDamage",
-                {
-                    "object": newShip,
-                },{
-                    //"frameOut": 60
-                }
-            )
-
-            new EffectsController().add(
-                "energy shield of faith",
-                "onDamage",
-                {
-                    "object": newShip,
-                },{
-                    //"frameOut": 60
-                }
-            )
+            //new EffectsController().add(
+            //    "burn",
+            //    "effect",
+            //    {
+            //        "object": newShip,
+            //    },
+            //)
 
             newShip = AIC.giveAI(newShip, AI)
             haveAI = false
