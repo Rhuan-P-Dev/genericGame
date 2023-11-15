@@ -1,20 +1,25 @@
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { DefenseController } from "../../defenseController.js"
+import { DefenseExtend } from "../extend/defense.js"
 
-var Defense = ""
+export class Regen {
 
-onInit(function(){
+    constructor(build = false){
 
-    Defense = new DefenseController()
+        new InheritController().inherit(
+            this,
+            [
+                DefenseExtend
+            ],
+            build
+        )
 
-})
+    }
 
-export class Regen extends BasicActivate {
-
-    name = "Regen"
+    name = "regen"
     cost = 20
-    type = "defense"
-    func = Defense.regen
+    func = new DefenseController().regen
     reload = 60
 
     config = {

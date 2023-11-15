@@ -13,7 +13,7 @@ onInit(function(){
 export class DefenseInfoController{
 
     defenses = {
-        "Regen": Regen
+        "regen": Regen
     }
 
     getAll(){

@@ -3,16 +3,19 @@ import { InheritController } from "../../../../generalUtils/inherit.js"
 import { Rotable } from "../../../../object/basic/rotable.js"
 import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
+import { WeaponsController } from "../../weaponsController.js"
 
 var WeaponsModifiers = ""
+var Weapons = ""
 
 onInit(function(){
 
+    Weapons = new WeaponsController()
     WeaponsModifiers = new WeaponsModifiersController()
 
 })
 
-export class Weapon{
+export class WeaponExtend{
 
 
     constructor(build = false){
@@ -53,6 +56,8 @@ export class Weapon{
     }
 
     lifeTime = 180
+
+    func = Weapons.returnProjectiles
 
     calcStats(){
 

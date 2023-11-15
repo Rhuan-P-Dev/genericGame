@@ -1,22 +1,24 @@
 import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { BaseObjectFactory } from "../../../../object/complex/factory.js"
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
-import { FactoryController } from "../../factoryController.js"
+import { FactoryExtend } from "../extend/factory.js"
 
-var Factory = ""
+export class DF1 {
 
-onInit(function(){
+    constructor(build = false){
 
-    Factory = new FactoryController()
+        new InheritController().inherit(
+            this,
+            [
+                FactoryExtend
+            ],
+            build
+        )
 
-})
-
-export class DF1 extends BasicActivate {
+    }
 
     name = "DF1"
     cost = 200
-    type = "factory"
-    func = Factory.createObject
     reload = 20*60
 
     config = {

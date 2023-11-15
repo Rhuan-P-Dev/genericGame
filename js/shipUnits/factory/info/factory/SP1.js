@@ -1,23 +1,26 @@
 import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { Turret } from "../../../../object/complex/turrent.js"
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
-import { FactoryController } from "../../factoryController.js"
+import { FactoryExtend } from "../extend/factory.js"
 
-var Factory = ""
+export class SP1 {
 
-onInit(function(){
+    constructor(build = false){
 
-    Factory = new FactoryController()
+        new InheritController().inherit(
+            this,
+            [
+                FactoryExtend
+            ],
+            build
+        )
 
-})
-
-export class SP1 extends BasicActivate {
+    }
 
     name = "SP1"
     cost = 20
-    type = "factory"
-    func = Factory.createObject
     reload = 4*60
+
 
     config = {
         "objectClass": Turret,

@@ -1,5 +1,19 @@
+import { InheritController } from "../../generalUtils/inherit.js"
+import { CommonImport } from "../../object/common/commonImport.js"
 
 export class BasicActivate {
+
+    constructor(build = false){
+
+        new InheritController().inherit(
+            this,
+            [
+                CommonImport // for compatibility
+            ],
+            build
+        )
+
+    }
 
     name = undefined
     cost = 10

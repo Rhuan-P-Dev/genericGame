@@ -1,15 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { WeaponsController } from "../../weaponsController.js"
 
 import { P1 } from "./P1.js"
-
-var Weapons = ""
-
-onInit(function(){
-
-    Weapons = new WeaponsController()
-
-})
 
 export class SP1{
 

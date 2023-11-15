@@ -1,21 +1,9 @@
 
 import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
-import { WeaponsController } from "../../weaponsController.js"
-import { EffectsWeapon } from "../weapon_extend/effectsWeapon.js"
-import { HomingWeapon } from "../weapon_extend/homingWeapon.js"
-import { Weapon } from "../weapon_extend/weapon.js"
-
-var Weapons = ""
-var WeaponsModifiers = ""
-
-onInit(function(){
-
-    Weapons = new WeaponsController()
-    WeaponsModifiers = new WeaponsModifiersController()
-
-})
+import { EffectsWeapon } from "../extend/effectsWeapon.js"
+import { HomingWeapon } from "../extend/homingWeapon.js"
+import { WeaponExtend } from "../extend/weapon.js"
 
 export class M1 {
 
@@ -25,7 +13,7 @@ export class M1 {
             this,
             [
                 //EffectsWeapon,
-                Weapon,
+                WeaponExtend,
                 FocusedTopDownBehavior,
                 HomingWeapon,
             ],
@@ -59,9 +47,6 @@ export class M1 {
     
         }
     
-        this.func = Weapons.returnProjectiles
-        
-
     }
 
     modifiersList = ["burst"]

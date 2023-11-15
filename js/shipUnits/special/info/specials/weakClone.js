@@ -1,21 +1,25 @@
 
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { SpecialController } from "../../specialController.js"
+import { SpecialExtend } from "../extend/special.js"
 
-var Special = ""
+export class WeakClone {
 
-onInit(function(){
+    constructor(build = false){
 
-    Special = new SpecialController()
+        new InheritController().inherit(
+            this,
+            [
+                SpecialExtend
+            ],
+            build
+        )
 
-})
-
-export class WeakClone extends BasicActivate {
+    }
 
     name = "WeakClone"
     cost = 50
-    type = "special"
-    func = Special.weakClone
+    func = new SpecialController().weakClone
     reload = 1*60
 
     config = {

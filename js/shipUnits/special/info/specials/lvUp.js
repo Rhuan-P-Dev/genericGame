@@ -1,21 +1,25 @@
 
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { SpecialController } from "../../specialController.js"
+import { SpecialExtend } from "../extend/special.js"
 
-var Special = ""
+export class LvUp {
 
-onInit(function(){
+    constructor(build = false){
 
-    Special = new SpecialController()
+        new InheritController().inherit(
+            this,
+            [
+                SpecialExtend
+            ],
+            build
+        )
 
-})
-
-export class LvUp extends BasicActivate {
+    }
 
     name = "LvUp"
     cost = 50
-    type = "special"
-    func = Special.lvUp
+    func = new SpecialController().lvUp
     reload = 10*60
 
     config = {

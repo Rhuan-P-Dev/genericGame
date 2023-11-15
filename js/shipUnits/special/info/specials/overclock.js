@@ -1,20 +1,24 @@
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
+import { InheritController } from "../../../../generalUtils/inherit.js"
 import { SpecialController } from "../../specialController.js"
+import { SpecialExtend } from "../extend/special.js"
 
-var Special = ""
+export class Overclock {
 
-onInit(function(){
+    constructor(build = false){
 
-    Special = new SpecialController()
+        new InheritController().inherit(
+            this,
+            [
+                SpecialExtend
+            ],
+            build
+        )
 
-})
-
-export class Overclock extends BasicActivate {
+    }
 
     name = "Overclock"
     cost = 0
-    type = "special"
-    func = Special.overclock
+    func = new SpecialController().overclock
     reload = 10
 
     config = {
