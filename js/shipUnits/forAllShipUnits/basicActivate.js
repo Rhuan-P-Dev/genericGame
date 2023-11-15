@@ -23,6 +23,8 @@ export class BasicActivate {
     reloadTemp = 0
     reloadStep = 1
 
+    currentVelMult = 1 // Mmmm....
+
     config = undefined
 
 }

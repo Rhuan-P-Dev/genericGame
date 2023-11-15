@@ -45,8 +45,8 @@ export class ActivateController{
         object.x = master.x
         object.y = master.y
 
-        object.currentXVel = master.currentXVel
-        object.currentYVel = master.currentYVel
+        object.currentXVel = master.currentXVel * activate.currentVelMult
+        object.currentYVel = master.currentYVel * activate.currentVelMult
 
         if(
             activate.radian

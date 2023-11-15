@@ -21,6 +21,7 @@ export class SP1 {
     cost = 20
     reload = 4*60
 
+    currentVelMult = 0
 
     config = {
         "objectClass": Turret,

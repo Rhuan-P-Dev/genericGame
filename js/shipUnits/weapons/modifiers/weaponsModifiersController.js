@@ -318,7 +318,7 @@ export class OutputObjectsConfig {
             "tempSpreadY": 0,
             "distortionX": 0,
             "distortionY": 0,
-            "tempMultVel": 1,
+            "tempMultVel": 0,
             "interval": 1,
         }
 

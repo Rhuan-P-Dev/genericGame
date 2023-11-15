@@ -21,6 +21,8 @@ export class DF1 {
     cost = 200
     reload = 20*60
 
+    currentVelMult = 0
+
     config = {
         "objectClass": BaseObjectFactory,
         "AI": ["useActivates"],
