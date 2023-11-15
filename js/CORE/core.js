@@ -162,17 +162,17 @@ function browseInit(){
 }
 
 
-//
-//// E ESTRUTURAR MELHOR O PROJETO [?]
-//
-
-
 /* > NEXT <
-
-reajustar o modo que as armar / modificadores funconão []
 
 add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! []
 
+focar em polir e refatorar o que ja tem!
+
+ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
+
+o black hole esta imcompleto!
+
+? um projetil tipo spike que gruda nas coisas - FISICAS!?
 
 */
 
@@ -194,19 +194,11 @@ ao inves de fixar todo frame os status dos objetos, você pode user observers! [
 
 /* > ADD <
 
+ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS / DEVE TER SCHEDULER ETC / CERTOS STATUS NÃO DEVEM SOFRER TANTO! []
+
 add this > // wrong!
 object.x = object.owner.x + object.xOffset
 object.y = object.owner.y + object.yOffset
-
-uma arma mina / factory... []
-
-uma arma que aao inver de sobre escrever novos projeteis essa arma criar mais projeteis facros e junta com os antigos []
-
-fazer varios projeteis com "metade" da força. o nome poderiaser replicator??? []
-
-adicionar um novo modificador que randomiza atributos []
-
-ALGUEN DEVE GUARDAR QUAILS STATS DEVEM SER MULT E OUTRAS COISAS []
 
 */
 
@@ -216,11 +208,7 @@ claramente o jeito que os objetos se movimentão esta errado! []
 
 returnArrayWithAlllObjectsOfTeams( // create a cache, think! same params of request use cache! []
 
-ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
-
 adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
-
-TALVEZ ADICINAR "lifeTime" para illsuions? []
 
 */
 
@@ -280,6 +268,23 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // uma nave que se adaptar ao dano levado []
 
 // uma nave que tira a multiplicador nas coisas? []
+
+// uma nave com X poderes e quando ela morre vira X naves com 1 poder cada! []
+
+
+
+
+
+
+
+
+
+
+
+
+
+// areana closer...
+
 
 function gameLoop(){
 
