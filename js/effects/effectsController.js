@@ -140,8 +140,6 @@ export class EffectsController {
 
             params.object = localParams.otherObject
 
-            Effects.fix(params, effectName, "on", "params")
-
             Effects.add(
                 effectName,
                 effectType,
