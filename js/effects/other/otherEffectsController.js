@@ -70,7 +70,11 @@ export class OtherEffectsController {
 
         "revenger": (params) => {
 
-           params.otherObjectMaster.life -= params.calcDamage * params.config.getPercentage(params)
+            let damage = params.calcDamage * params.config.getPercentage(params)
+
+            if(damage > 0){
+                params.otherObjectMaster.life -= damage
+            }
 
         },
 
