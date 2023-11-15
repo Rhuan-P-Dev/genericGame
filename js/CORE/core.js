@@ -86,76 +86,31 @@ onInit(function(){
 
 function browseInit(){
 
-    ShipCreator.createShip("playerTeam", ["missileV1", "useActivates"], true).color = "green"
+    ShipCreator.createShip("playerTeam", ["movable", "useActivates"], true).color = "green"
 
-    //ShipCreator.createShip("playerTeam", ["missileV1","useActivates"]).color = "black"
-
-    //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
-
-    ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "purple"
-
-    //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
-
-    //ShipCreator.createShip("enemyTeam").color = "red"
-
-    //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
-
-    //ShipCreator.createShip("enemyTeam", ["dummy"])
-
-    //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
-
-    //ShipCreator.createShip("playerTeam", ["dummy"]).color = "green"
-
-    //ShipCreator.createShip("neutralTeam", ["dummy"]).color = "black"
-
-    //ShipCreator.createShip("enemyTeam", ["dummy"]).color = "red"
-
-    //ShipCreator.createShip("playerTeam", ["useActivates"]).color = "blue"
-    //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
-    //ShipCreator.createShip("neutralTeam", ["robo"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["dummy"])
-    //ShipCreator.createShip("enemyTeam", ["robo"])
-    //ShipCreator.createShip("enemyTeam", ["raio", "dummy", "missileV1"])
-    //ShipCreator.createShip("enemyTeam", ["movable"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
-
-    //ShipCreator.createShip("playerTeam", ["movable", "useActivates"]).color = "blue"
-    //ShipCreator.createShip("enemyTeam", ["movable_v2", "turret_v2"]).color = "red"
-    //ShipCreator.createShip("neutralTeam", ["movable", "useActivates"]).color = "black"
-
-    //ShipCreator.createShip("enemyTeam", ["movable"]).color = "pink"
-
-    //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
-    //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "red"
+    //ShipCreator.createShip("enemyTeam", ["accelerate"]).color = "purple"
+    ShipCreator.createShip("enemyTeam", ["dummy"]).color = "purple"
 
     setInterval(() => {
 
-        ShipCreator.createShip("playerTeam", ["movable","useActivates"]).color = "lightgreen"
+        ShipCreator.createShip("playerTeam", ["movable", "useActivates"]).color = "blue"
+        ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
 
-        ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "purple"
+    }, 5000)
 
-        //ShipCreator.createShip("enemyTeam", ["missileV1","useActivates"]).color = "purple"
+    setInterval(() => {
 
-        //ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "pink"
+        // arena closer
+        console.log("close...")
 
-        //ShipCreator.createShip("enemyTeam", ["bot", "movable"])
-        //ShipCreator.createShip("enemyTeam", ["movable"])
-        //ShipCreator.createShip("enemyTeam", ["mine"])
-        //ShipCreator.createShip("enemyTeam", ["missileV1"])
-        //ShipCreator.createShip("enemyTeam", ["raio", "dummy"])
+        for (let index = 0; index < 100; index++) {
 
-        //ShipCreator.createShip("playerTeam", ["useActivates"]).color = "blue"
-        //ShipCreator.createShip("enemyTeam", ["useActivates"]).color = "red"
-        //ShipCreator.createShip("neutralTeam", ["useActivates"]).color = "black"
+            ShipCreator.createShip("neutralTeam", ["missileV1","useActivates"]).lifeTime = 10*60
 
-        //ShipCreator.createShip("playerTeam", ["movable", "useActivates"]).color = "blue"
-        //ShipCreator.createShip("enemyTeam", ["movable", "useActivates"]).color = "red"
-        //ShipCreator.createShip("neutralTeam", ["movable", "useActivates"]).color = "black"
+        }
 
-        //ShipCreator.createShip("enemyTeam", ["movable","useActivates"]).color = "purple"
-
-    }, 10000)
+    }, 50000)
 
     KeyBoard.addTriggers()
 
@@ -286,6 +241,24 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // areana closer...
 
 
+var previousTime = performance.now()
+
+
+function calculateFPS() {
+
+    let currentTime = performance.now()
+    let elapsedTime = (currentTime - previousTime) / 1000
+    previousTime = currentTime
+    let fps = parseInt(1 / elapsedTime)
+
+    if(fps < 5){
+        return false
+    }else{
+        return true
+    }
+
+}
+
 function gameLoop(){
 
     Frame.update()
@@ -304,9 +277,15 @@ function gameLoop(){
 
     ScreenRender.update()
 
-    window.requestAnimationFrame(gameLoop)
+    if(calculateFPS()){
+        window.requestAnimationFrame(gameLoop)
+    }else{
+        alert("menos de 5 FPS!")
+        location.reload()
+    }
 
 }
+
 
 const mediumLoopConst = 10
 var mediumLoop = mediumLoopConst
