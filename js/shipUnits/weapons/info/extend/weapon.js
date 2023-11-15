@@ -38,7 +38,7 @@ export class WeaponExtend{
 
     buildAngle = 0
 
-    range = 180
+    range = 0
 
     hasModifier = false
 
@@ -61,7 +61,7 @@ export class WeaponExtend{
 
     calcStats(){
 
-        this.range = this.lifeTime * this.config.weapon.multVel || this.lifeTime
+        this.range += this.lifeTime * this.config.weapon.multVel || this.lifeTime
 
     }
 
