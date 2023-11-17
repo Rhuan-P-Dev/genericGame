@@ -17,7 +17,7 @@ export class LvUp {
 
     }
 
-    name = "LvUp"
+    name = "lv up"
     cost = 50
     func = new SpecialController().lvUp
     reload = 10*60

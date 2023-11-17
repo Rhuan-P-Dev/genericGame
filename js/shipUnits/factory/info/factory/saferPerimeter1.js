@@ -1,9 +1,9 @@
 import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { Drone } from "../../../../object/complex/drone.js"
+import { Turret } from "../../../../object/complex/turrent.js"
 import { FactoryExtend } from "../extend/factory.js"
 
-export class MSP1 {
+export class SaferPerimeter1 {
 
     constructor(build = false){
 
@@ -17,15 +17,17 @@ export class MSP1 {
 
     }
 
-    name = "MSP1"
-    cost = 50
-    reload = 10*60
+    name = "safer perimeter 1"
+    cost = 20
+    reload = 4*60
+
+    currentVelMult = 0
 
     config = {
-        "objectClass": Drone,
-        "AI": ["movable","useActivates"],
+        "objectClass": Turret,
+        "AI": ["rotableTurret","useActivates"],
         "apply": {
-            "weapon": ["P1"],
+            "weapon": ["piston 1"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority
     }

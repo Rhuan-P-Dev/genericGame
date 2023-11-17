@@ -1,9 +1,9 @@
 import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { BaseObjectFactory } from "../../../../object/complex/factory.js"
+import { DroneV2 } from "../../../../object/complex/droneV2.js"
 import { FactoryExtend } from "../extend/factory.js"
 
-export class DF1 {
+export class MineSeeder1 {
 
     constructor(build = false){
 
@@ -17,17 +17,17 @@ export class DF1 {
 
     }
 
-    name = "DF1"
-    cost = 200
-    reload = 20*60
+    name = "mine seeder 1"
+    cost = 50
+    reload = 7*60
 
     currentVelMult = 0
 
     config = {
-        "objectClass": BaseObjectFactory,
-        "AI": ["useActivates"],
+        "objectClass": DroneV2,
+        "AI": ["movable","useActivates"],
         "apply": {
-            "factory": ["MSP1"],
+            "weapon": ["mine launcher 1"],
         },
         "behavior": new TopDownBehavior().searchPriority
     }

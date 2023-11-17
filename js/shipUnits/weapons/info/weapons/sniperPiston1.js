@@ -1,15 +1,15 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 
-import { P1 } from "./P1.js"
+import { Piston1 } from "./piston1.js"
 
-export class SP1{
+export class SniperPiston1{
 
     constructor(build = false){
         
         new InheritController().inherit(
             this,
             [
-                P1
+                Piston1
             ],
             build
         )
@@ -24,7 +24,7 @@ export class SP1{
 
     }
 
-    name = "SP1"
+    name = "sniper piston 1"
 
     modifiersList = []
 

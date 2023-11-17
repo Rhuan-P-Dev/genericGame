@@ -1,10 +1,10 @@
 
-import { MSP1 } from "./factory/MSP1.js"
-import { SP1 } from "./factory/SP1.js"
-import { DF1 } from "./factory/DF1.js"
+import { MovableSaferPerimeter1 } from "./factory/movableSaferPerimeter1.js"
+import { SaferPerimeter1 } from "./factory/saferPerimeter1.js"
+import { BasicSafeZone1 } from "./factory/basicSafeZone1.js"
 
 import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
-import { MF1 } from "./factory/MF1.js"
+import { MineSeeder1 } from "./factory/mineSeeder1.js"
 
 var ActivateInfo = ""
 
@@ -18,10 +18,10 @@ onInit(function(){
 export class FactoryInfoController{
 
     factorys = {
-        "SP1": SP1,
-        "MSP1": MSP1,
-        "DF1": DF1,
-        "MF1": MF1,
+        "safer perimeter 1": SaferPerimeter1,
+        "movable safer perimeter 1": MovableSaferPerimeter1,
+        "basic safe zone 1": BasicSafeZone1,
+        "mine seeder 1": MineSeeder1,
     }
 
     getAll(){

@@ -5,7 +5,7 @@ import { EffectsWeapon } from "../extend/effectsWeapon.js"
 import { HomingWeapon } from "../extend/homingWeapon.js"
 import { WeaponExtend } from "../extend/weapon.js"
 
-export class M1 {
+export class MissileBurst1 {
 
     constructor(build = false){
         
@@ -20,7 +20,7 @@ export class M1 {
             build
         )
 
-        this.name = "M1"
+        this.name = "missile burst 1"
         this.cost = 10
         this.reload = 60
         this.reloadTemp = 0
@@ -31,7 +31,7 @@ export class M1 {
 
             weapon: {
                 multVel: 2,
-                damageMult: 1,
+                damageMult: 0.5,
             },
     
             projectiles: {

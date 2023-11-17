@@ -17,7 +17,7 @@ export class WeakClone {
 
     }
 
-    name = "WeakClone"
+    name = "weak clone"
     cost = 50
     func = new SpecialController().weakClone
     reload = 1*60

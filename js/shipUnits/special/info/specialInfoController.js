@@ -15,9 +15,9 @@ onInit(function(){
 export class SpecialInfoController{
 
     specials = {
-        "WeakClone": WeakClone,
-        "Overclock": Overclock,
-        "LvUp": LvUp,
+        "weak clone": WeakClone,
+        "overclock": Overclock,
+        "lv up": LvUp,
     }
 
     getAll(){

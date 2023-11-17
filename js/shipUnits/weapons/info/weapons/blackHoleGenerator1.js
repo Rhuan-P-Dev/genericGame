@@ -2,7 +2,7 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { WeaponExtend } from "../extend/weapon.js"
 
-export class BHG1 {
+export class BlackHoleGenerator1 {
 
     constructor(build = false){
         
@@ -14,7 +14,7 @@ export class BHG1 {
             build
         )
 
-        this.name = "BHG1"
+        this.name = "black hole generator 1"
         this.cost = 100
         this.reload = 20*60
 

@@ -9,7 +9,6 @@ import { EffectsController } from "../effectsController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 
 // For 'reinforcements' effect
-import { MSP1 } from "../../shipUnits/factory/info/factory/MSP1.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { WeaponsController } from "../../shipUnits/weapons/weaponsController.js"
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"

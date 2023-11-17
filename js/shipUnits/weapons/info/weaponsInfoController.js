@@ -1,11 +1,11 @@
 import { AIController } from "../../../AI/AIController.js"
 import { GameStateController } from "../../../gameState/gameStateController.js"
 import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
-import { BHG1 } from "./weapons/BHG1.js"
-import { M1 } from "./weapons/M1.js"
-import { ML1 } from "./weapons/ML1.js"
-import { P1 } from "./weapons/P1.js"
-import { SP1 } from "./weapons/SP1.js"
+import { BlackHoleGenerator1 } from "./weapons/blackHoleGenerator1.js"
+import { MissileBurst1 } from "./weapons/missileBurst1.js"
+import { MineLauncher1 } from "./weapons/mineLauncher1.js"
+import { Piston1 } from "./weapons/piston1.js"
+import { SniperPiston1 } from "./weapons/sniperPiston1.js"
 
 
 
@@ -24,11 +24,11 @@ onInit(function(){
 export class WeaponsInfoController{
 
     weapons = {
-        "P1": P1,
-        "M1": M1,
-        "SP1": SP1,
-        "BHG1": BHG1,
-        "ML1": ML1,
+        "piston 1": Piston1,
+        "sniper piston 1": SniperPiston1,
+        "missile burst 1": MissileBurst1,
+        "black hole generator 1": BlackHoleGenerator1,
+        "mine launcher 1": MineLauncher1,
     }
 
     getAll(){

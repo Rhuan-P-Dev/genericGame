@@ -16,7 +16,7 @@ export class Overclock {
 
     }
 
-    name = "Overclock"
+    name = "overclock"
     cost = 0
     func = new SpecialController().overclock
     reload = 10

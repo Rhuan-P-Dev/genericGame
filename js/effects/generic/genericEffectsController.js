@@ -12,7 +12,6 @@ import { AnimationsController } from "../../graphics/animation/animationsControl
 
 
 // For 'reinforcements' effect
-import { MSP1 } from "../../shipUnits/factory/info/factory/MSP1.js"
 
 
 
@@ -79,6 +78,10 @@ export class GenericEffectsController {
         },
 
         "reinforcements": (params) => {
+
+            return
+
+            console.log("o reinforcements / help. estão quebrados")
 
             let help = new params.objectClass() || params.custom.class
 
@@ -796,6 +799,7 @@ export class GenericEffectsController {
                 },
     
             },
+            /*
             "help": {
     
                 "effect": {
@@ -842,6 +846,7 @@ export class GenericEffectsController {
                 }
                 
             },
+            */
 
             "d": {
     

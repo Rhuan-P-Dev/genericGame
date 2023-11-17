@@ -1,8 +1,7 @@
-
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { WeaponExtend } from "../extend/weapon.js"
 
-export class P1 {
+export class MineLauncher1 {
 
     constructor(build = false){
         
@@ -16,20 +15,22 @@ export class P1 {
 
     }
 
-    name = "P1"
-    cost = 5
-    reload = 7
+    name = "mine launcher 1"
+    cost = 50
+    reload = 1*60
+
+    currentVelMult = 0
 
     config = {
 
         weapon: {
-            multVel: 8,
+            multVel: 0,
             damageMult: 1,
         },
 
         projectiles: {
 
-            return: ["small bullet"],
+            return: ["simple mine"],
 
             AI: {
                 //0: ["missileV1"]
@@ -40,8 +41,6 @@ export class P1 {
 
     }
     
-    lifeTime = 30
-
-    modifiersList = ["spread","distortion"]
+    lifeTime = 10*60
 
 }
