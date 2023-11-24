@@ -317,6 +317,11 @@ export class GenericEffectsController {
 
                 )
 
+                let frameOut = params.frameOut * params.mult
+
+                // >>> THE FRAMEOUT CANNOT BE SMALLER THAN TWO <<<
+                if(frameOut < 2){frameOut = 2}
+
                 Effects.add(
                     params.effectName,
                     "effect",
@@ -329,10 +334,10 @@ export class GenericEffectsController {
                         "color": params.color,
                         "lineWidth": params.lineWidth * params.mult,
 
-                        "frameOut": params.frameOut * params.mult,
+                        "frameOut": frameOut,
                         "effectName": params.effectName,
                     },{
-                        "frameOut": params.frameOut * params.mult
+                        "frameOut": frameOut,
                     }
                 )
 
