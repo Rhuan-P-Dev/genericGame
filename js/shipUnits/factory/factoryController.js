@@ -29,6 +29,12 @@ export class FactoryController{
             Activate.basicAjustObject(object, result.activate, result.return)
 
             Activate.addObject(result.return)
+
+            result.activate.useActivateObserver.run({
+                "object":result.return,
+                "activate":result.activate
+            })
+
         }
 
     }
