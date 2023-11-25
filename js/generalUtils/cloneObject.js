@@ -101,7 +101,7 @@ export class CloneObjectController {
 
         for (let key in object) {
 
-            if(clonedObject[key]){
+            if(clonedObject[key] !== undefined){
 
                 if(typeof(clonedObject[key]) == "object"){
 
