@@ -15,6 +15,7 @@ import { Shotgun } from "./modifiers/shotgun.js"
 import { Swarm } from "./modifiers/swarm.js"
 import { Widen } from "./modifiers/widen.js"
 import { ModDistortion } from "./modifiers/modBased/modDistortion.js"
+import { MidWiden } from "./modifiers/midWiden.js"
 
 var Weapons = ""
 var cloneObject = ""
@@ -34,6 +35,7 @@ export class WeaponsModifiersController{
     modifiers = {
         "spread": ModSpread,
         "widen": Widen,
+        "mid widen": MidWiden,
 
         "distortion": ModDistortion,
 
