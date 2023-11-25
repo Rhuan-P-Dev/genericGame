@@ -45,7 +45,12 @@ export class FactoryController{
 
         ObjectActivates.setActivates(newObject, config.apply)
 
-        Factory.setBehavior(object, config)
+        Factory.addCustomFunctions(
+            object,
+            activate,
+            config,
+            newObject
+        )
 
         return newObject
 
@@ -54,6 +59,26 @@ export class FactoryController{
     setBehavior(object, config){
 
         object.searchPriority = config.behavior
+
+    }
+
+    addCustomFunctions(
+        object,
+        activate,
+        config,
+        newObject
+    ){
+
+        for(let index in config.customFunctions){
+
+            config.customFunctions[index](
+                object,
+                activate,
+                config,
+                newObject
+            )
+
+        }
 
     }
 
