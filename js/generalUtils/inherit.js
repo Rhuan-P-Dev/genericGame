@@ -55,7 +55,7 @@ export class InheritController {
 
         for(let key in baseObject){
 
-            if(typeof(object[key]) == "undefined"){
+            if(object[key] === undefined){
 
                 object[key] = baseObject[key]
 
