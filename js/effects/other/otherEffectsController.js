@@ -89,6 +89,13 @@ export class OtherEffectsController {
 
         },
 
+        "damage multiplier": (params) => {
+
+            params.calcDamage *= params.config.getPercentage(params)
+            params.damage *= params.config.getPercentage(params)
+
+        },
+
     }
 
     effectsInfo = {
@@ -223,6 +230,41 @@ export class OtherEffectsController {
         },
 
         "negative": {
+
+            "fragile": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": ["countDown"],
+                        "func": this.effectsList["damage multiplier"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "countDown": {
+                            "countDownFunction": ["deleteInstruction"],
+                            "count": 3
+                        },
+
+                        "getPercentage": (params) => {
+
+                            return params.mult
+
+                        }
+
+                    },
+        
+                    "params": {
+
+                        "mult": 1.5
+
+                    },
+
+                }
+
+            },
 
         },
 
