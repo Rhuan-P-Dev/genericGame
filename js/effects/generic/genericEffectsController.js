@@ -264,6 +264,19 @@ export class GenericEffectsController {
 
         },
 
+
+
+
+
+
+
+        "inflict damage":(params) => {
+
+            params.object.life -= params.damage
+
+
+        },
+
         "thunder": (params) => {
 
             let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
@@ -964,6 +977,24 @@ export class GenericEffectsController {
 
                 }
     
+            },
+
+            "burn": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["inflict damage"],
+                        "frameOut": 10,
+                        "repeat": 6,
+                    },
+        
+                    "params": {
+                        "damage": 1,
+                    },
+
+                },
+
             },
 
         },
