@@ -198,11 +198,17 @@ export class EffectsController {
 
         config.config = config
 
-        config.func = (params) => {
+        config.func = (runtimeParams) => {
 
             Effects.fix(params, effectName, "on", "params")
 
-            oldFunc(params)
+            CloneObject.recursiveCloneAttribute(
+                params,
+                runtimeParams,
+                true,
+            )
+
+            oldFunc(runtimeParams)
 
         }
 
@@ -211,6 +217,8 @@ export class EffectsController {
             config.stage || "first",
             config.priority || 0
         )
+
+        delete params.object
 
     }
 
