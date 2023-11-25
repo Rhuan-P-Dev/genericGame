@@ -26,6 +26,8 @@ export class FactoryController{
 
         if(result.return){
 
+            Activate.basicAjustObject(object, result.activate, result.return)
+
             Activate.addObject(result.return)
         }
 
@@ -35,7 +37,9 @@ export class FactoryController{
 
         let newObject = new config.objectClass(true)
 
-        Activate.basicAjustObject(object, activate, newObject)
+
+
+
 
         AIC.giveAI(newObject, config.AI)
 
