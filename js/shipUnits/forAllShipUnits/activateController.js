@@ -27,6 +27,7 @@ export class ActivateController{
 
             activate.reloadTemp = activate.reload
 
+            result.activate = activate
             result.return = activate.func(object, activate, activate.config)
 
         }
