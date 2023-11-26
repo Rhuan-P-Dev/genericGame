@@ -25,8 +25,6 @@ export class BlackHoleProjetile {
             
         )
 
-        this.priority -= 1
-
         this.life = 2000
         this.maxLife = 2000
 
@@ -74,6 +72,9 @@ export class BlackHoleProjetile {
                 "effect",
                 {
                     "object": updateThis,
+                    "range": 200,
+                    "mult": 0.05,
+                    "expo": 5,
                 },{},true
             )
 

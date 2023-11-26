@@ -15,8 +15,6 @@ export class SmallBulletProjetile {
             
         )
 
-        this.priority -= 1
-
         this.life = 1
         this.maxLife = 1
 

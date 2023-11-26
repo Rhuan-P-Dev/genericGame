@@ -13,6 +13,8 @@ export class BasicProjetile {
             ],
             build
         )
+
+        this.priority -= 1
         
     }
 
