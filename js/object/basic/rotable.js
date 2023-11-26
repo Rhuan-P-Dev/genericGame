@@ -32,17 +32,17 @@ export class Rotable {
     passBuildList = {
         "add_basic_rotateFunctions" : (updateThis) => {
 
-            updateThis.modifierStatusOb.add({
+            updateThis.modifierStatusObserver.add({
                 "func": "updateCircleStats",
                 "class": updateThis
             })
     
-            updateThis.modifierStatusOb.add({
+            updateThis.modifierStatusObserver.add({
                 "func": "updateRadian",
                 "class": updateThis
             })
     
-            updateThis.rotateOb.add({
+            updateThis.rotateObserver.add({
                 "func": "rotationReset",
                 "class": updateThis
             })
@@ -51,11 +51,11 @@ export class Rotable {
 
     }
 
-    rotateOb = new Observer()
-    rightRotateOb = new Observer()
-    leftRotateOb = new Observer()
+    rotateObserver = new Observer()
+    rightRotateObserver = new Observer()
+    leftRotateObserver = new Observer()
     
-    modifierStatusOb = new Observer()
+    modifierStatusObserver = new Observer()
     
     xMult = 1
     yMult = 0
@@ -81,7 +81,7 @@ export class Rotable {
         this.xMult = result.x
         this.yMult = result.y
 
-        this.modifierStatusOb.run(this)
+        this.modifierStatusObserver.run(this)
 
     }
 
@@ -118,11 +118,11 @@ export class Rotable {
 
         Vector.rotate(this, -vel || -this.currentRotationVel)
         
-        this.rightRotateOb.run(vel || this.currentRotationVel)
+        this.rightRotateObserver.run(vel || this.currentRotationVel)
 
-        this.modifierStatusOb.run(vel || this.currentRotationVel)
+        this.modifierStatusObserver.run(vel || this.currentRotationVel)
 
-        this.rotateOb.run(vel || this.currentRotationVel) // <- rotationReset <---- It's because of HIM!
+        this.rotateObserver.run(vel || this.currentRotationVel) // <- rotationReset <---- It's because of HIM!
 
         // The value: this.currentRotationVel = X2
 
@@ -132,11 +132,11 @@ export class Rotable {
 
         Vector.rotate(this, vel || this.currentRotationVel)
 
-        this.leftRotateOb.run(vel || this.currentRotationVel)
+        this.leftRotateObserver.run(vel || this.currentRotationVel)
 
-        this.modifierStatusOb.run(vel || this.currentRotationVel)
+        this.modifierStatusObserver.run(vel || this.currentRotationVel)
 
-        this.rotateOb.run(vel || this.currentRotationVel)
+        this.rotateObserver.run(vel || this.currentRotationVel)
 
     }
 
