@@ -15,15 +15,11 @@ export class ActivateInstructions{
 
     addWeapon(weapon){
 
-        weapon.setAngle(
-            this.getAngle() + -Vector.toRadians(weapon.buildAngle)
-        )
+        setWeaponAngle(this, weapon)
 
         this.setAngleObserver.add( () => {
 
-            weapon.setAngle(
-                this.getAngle() + -Vector.toRadians(weapon.buildAngle)
-            )
+            setWeaponAngle(this, weapon)
             
         })
 
@@ -59,5 +55,13 @@ export class ActivateInstructions{
     getActivates(){
         return this.activates
     }
+
+}
+
+function setWeaponAngle(object, weapon){
+
+    weapon.setAngle(
+        object.getAngle() + -Vector.toRadians(weapon.buildAngle)
+    )
 
 }
