@@ -23,7 +23,7 @@ export class PositionalList{
 
     list = {}
 
-    add(value, index){
+    add(value, index, debug = false){
 
         while(true){
 
@@ -35,9 +35,13 @@ export class PositionalList{
 
             }else{
 
-                console.warn(
-                    "The index ["+index+"] are occupied moving: ["+index+"] > ["+(parseInt(index)+1)+"]"
-                )
+                if(debug){
+                    
+                    console.warn(
+                        "The index ["+index+"] are occupied moving: ["+index+"] > ["+(parseInt(index)+1)+"]"
+                    )
+
+                }
 
                 index += 1
                 
