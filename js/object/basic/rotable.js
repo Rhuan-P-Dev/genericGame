@@ -55,6 +55,7 @@ export class Rotable {
     rightRotateObserver = new Observer()
     leftRotateObserver = new Observer()
     
+    setAngleObserver = new Observer()
     modifierStatusObserver = new Observer()
     
     xMult = 1
@@ -80,6 +81,8 @@ export class Rotable {
 
         this.xMult = result.x
         this.yMult = result.y
+
+        this.setAngleObserver.run(this)
 
         this.modifierStatusObserver.run(this)
 

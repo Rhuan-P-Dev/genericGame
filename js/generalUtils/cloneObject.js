@@ -30,6 +30,7 @@ export class CloneObjectController {
         "leftRotateObserver": () => {},
         "modifierStatusObserver": () => {},
         "rotateObserver": () => {},
+        "setAngleObserver": () => {},
         "onHit": this.cloneComplexOnType,
         "onDeath": this.cloneComplexOnType,
         "onDamage": this.cloneComplexOnType,
