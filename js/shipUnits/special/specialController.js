@@ -26,31 +26,6 @@ onInit(function(){
 
 })
 
-const stats = {
-    "stats":[
-        "damage",
-        "defense",
-        "energy",
-        "energyRegen",
-        "life",
-        "lifeRegen",
-        "maxEnergy",
-        "maxLife",
-        "maxVel",
-        "vel",
-        "lifeTime",
-    ],
-
-    "invertedStatus":[
-    ],
-
-    "invertedExponentialStatus": [
-        "resistance"
-    ],
-
-    "mult": undefined,
-}
-
 export class SpecialController{
 
     useSpecial(object, ID){
@@ -73,9 +48,7 @@ export class SpecialController{
 
         let weakClone = CloneObject.clone(object)
 
-        stats.mult = config.mult
-
-        MultiplyStats.multiply(weakClone, stats)
+        MultiplyStats.multiply(weakClone, config.statsMult)
 
         weakClone.ID = randomUniqueID()
 
@@ -85,9 +58,7 @@ export class SpecialController{
 
     lvUp(object, activate, config){
 
-        stats.mult = config.mult
-
-        MultiplyStats.multiply(object, stats)
+        MultiplyStats.multiply(object, config.statsMult)
 
     }
 

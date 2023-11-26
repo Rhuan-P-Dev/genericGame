@@ -58,9 +58,9 @@ export class GenericEffectsController {
 
             Special.lvUp(
                 params.object,
-                undefined,
+                {},
                 {
-                    "mult": params.mult
+                    "statsMult": params.statsMult
                 }
             )
 
@@ -99,9 +99,9 @@ export class GenericEffectsController {
 
             let weakClone = Special.weakClone(
                 params.object,
-                undefined,
+                {},
                 {
-                    "mult": params.mult
+                    "statsMult": params.statsMult
                 }
             )
 
@@ -491,7 +491,7 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "mult": 0.01,
+                        "statsMult": 0.01,
                     },
 
                 },
@@ -512,7 +512,7 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "mult": 0.01,
+                        "statsMult": 0.01,
                     },
 
                 },
@@ -529,7 +529,7 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "mult": 2,
+                        "statsMult": 2,
                     },
 
                 },
@@ -558,7 +558,7 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "mult": 2,
+                        "statsMult": 2,
                     },
 
                 },
@@ -575,7 +575,7 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "mult": 0,
+                        "statsMult": 0,
                     },
 
                 },
@@ -603,7 +603,7 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "mult": 0,
+                        "statsMult": 0,
                     },
 
                 },
@@ -620,7 +620,7 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "mult": -0.5,
+                        "statsMult": -0.5,
                     },
 
                 },
@@ -648,7 +648,7 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "mult": -0.5,
+                        "statsMult": -0.5,
                     },
 
                 },

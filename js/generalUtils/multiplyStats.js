@@ -8,66 +8,98 @@ onInit(function(){
 
 })
 
+const multStats = {
+    "normalStats":[
+        "damage",
+
+        "defense",
+
+        "energy",
+        "maxEnergy",
+        "energyRegen",
+
+        "life",
+        "maxLife",
+        "lifeRegen",
+    ],
+
+    "normalStats_div5": [
+        "width",
+        "height",
+        
+        "lifeTime",
+    ],
+
+    "invertedStatus":[
+    ],
+
+    "exponentialStatus":[
+        "maxVel",
+        "vel",
+        "rotationVel",
+    ],
+
+    "invertedExponentialStatus": [
+        "resistance",
+    ],
+
+}
 
 export class MultiplyStatsController {
 
-    multiply(object, stats){
+    multiply(object, mult, stats = multStats){
 
-        if(stats.stats){
+        if(stats.normalStats){
             this.mult(
                 object,
-                stats.stats,
-                stats.mult
+                mult,
+                stats.normalStats,
             )
+        }
+
+        if(stats.normalStats_div5){
+
+            this.mult(
+                object,
+                mult / 5,
+                stats.normalStats_div5,
+            )
+
         }
 
         if(stats.invertedStatus){
 
             this.mult(
                 object,
+                CustomMath.inverter(mult),
                 stats.invertedStatus,
-                CustomMath.inverter(stats.mult)
             )
 
         }
 
         if(stats.exponentialStatus){
 
-            this.exponentialMultiply(
+            this.exponential(
                 object,
-                stats,
-                "exponentialStatus"
+                mult,
+                stats.exponentialStatus
             )
 
         }
 
         if(stats.invertedExponentialStatus){
 
-            this.exponentialMultiply(
+            this.exponential(
                 object,
-                stats,
-                "invertedExponentialStatus"
+                CustomMath.inverter(mult),
+                stats.invertedExponentialStatus
             )
 
         }
 
     }
 
-    exponentialMultiply(object, stats, statusType){
-
-        // the "evolutron" and the "segunda etapa" dão resutados diferentes mesmo que era para ser igual, a "segunda etapa" é melhor
-
-        // 0.81 vs 0.87
-
-        this.exponential(
-            object,
-            stats[statusType],
-            CustomMath.inverter(stats.mult),
-        )
-
-    }
-
-    mult(object, stats, mult){
+    mult(object, mult, stats){
 
         for (let index = 0; index < stats.length; index++) {
 
@@ -81,7 +113,11 @@ export class MultiplyStatsController {
 
     }
 
-    exponential(object, stats, mult){
+    exponential(object, mult, stats){
+
+        // the "evolutron" and the "segunda etapa" dão resutados diferentes mesmo que era para ser igual, a "segunda etapa" é melhor
+
+        // 0.81 vs 0.87
 
         let penalty = 10
 

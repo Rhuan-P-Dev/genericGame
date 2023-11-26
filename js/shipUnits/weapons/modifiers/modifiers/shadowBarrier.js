@@ -16,7 +16,7 @@ export class ShadowBarrier {
         this.name = "shadow barrier"
         this.costMult = 1.5
 
-        this.stats.mult = -0.90
+        this.stats.statsMult = -0.90
         this.quantity = 10
 
 

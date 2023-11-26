@@ -16,7 +16,7 @@ export class Swarm {
         this.name = "swarm"
         this.costMult = 3
 
-        this.stats.mult = -0.50
+        this.stats.statsMult = -0.50
         this.quantity = 10
 
         this.addOriginalObject = false

@@ -23,7 +23,7 @@ export class WeakClone {
     reload = 1*60
 
     config = {
-        "mult": -0.5
+        "statsMult": -0.5
     }
 
 }

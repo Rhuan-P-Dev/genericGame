@@ -24,7 +24,7 @@ export class Shotgun {
         this.quantity = 10
         this.spread = 0.3
 
-        this.stats.mult = 0.3
+        this.stats.statsMult = 0.3
 
     }
 

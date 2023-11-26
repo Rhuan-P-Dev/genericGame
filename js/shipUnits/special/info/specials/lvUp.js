@@ -23,7 +23,7 @@ export class LvUp {
     reload = 10*60
 
     config = {
-        "mult": 0.1
+        "statsMult": 0.1
     }
 
 }

@@ -20,7 +20,7 @@ export class Clone {
         this.costMult = 2
         this.func = new WeaponsModifiersController().replicator
 
-        this.stats.mult = 0
+        this.stats.statsMult = 0
         this.quantity = 1
 
         this.addOriginalObject = true

@@ -147,7 +147,7 @@ export class WeaponsModifiersController{
                 let tempProjectile = cloneObject.clone(output[index].object)
                 let tempConfig = cloneObject.cloneAttribute(output[index].config)
 
-                MultiplyStats.multiply(tempProjectile, modifier.stats)
+                MultiplyStats.multiply(tempProjectile, modifier.stats.statsMult)
 
                 newOutput.push({
                     "object": tempProjectile,
@@ -201,7 +201,7 @@ export class WeaponsModifiersController{
 
                 let tempProjectile = cloneObject.clone(output[index].object)
 
-                MultiplyStats.multiply(tempProjectile, modifier.stats)
+                MultiplyStats.multiply(tempProjectile, modifier.stats.statsMult)
 
                 newOutput.push({
                     "object": tempProjectile,
@@ -235,8 +235,7 @@ export class WeaponsModifiersController{
                     "object": tempProjectile,
                     "config": tempConfig,
                 }], modifier)
-    
-                MultiplyStats.multiply(tempProjectile, modifier.stats)
+                MultiplyStats.multiply(tempProjectile, modifier.stats.statsMult)
 
                 newOutput.push({
                     "object": tempProjectile,
@@ -265,7 +264,7 @@ export class WeaponsModifiersController{
 
             for (let index = 0; index < output.length; index++) {
 
-                MultiplyStats.multiply(output[index].object, modifier.stats)
+                MultiplyStats.multiply(output[index].object, modifier.stats.statsMult)
                 output[index].config.tempMultVel += modifier.value
 
             }

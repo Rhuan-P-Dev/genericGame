@@ -1,13 +1,14 @@
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
-import { FactoryInfoController } from "./info/factoryInfoController.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { AIController } from "../../AI/AIController.js"
+import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
 
 var GameState = ""
 var ObjectActivates = ""
 var Activate = ""
 var AIC = ""
+var MultiplyStats = ""
 
 onInit(function(){
 
@@ -15,6 +16,7 @@ onInit(function(){
     ObjectActivates = new ObjectActivatesController()
     Activate = new ActivateController()
     AIC = new AIController()
+    MultiplyStats = new MultiplyStatsController()
 
 })
 

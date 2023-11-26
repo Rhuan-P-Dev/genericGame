@@ -16,7 +16,7 @@ export class Barrier {
         this.name = "barrier"
         this.costMult = 1.5
 
-        this.stats.mult = -0.50
+        this.stats.statsMult = -0.50
         this.quantity = 4
 
     }

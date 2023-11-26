@@ -3,8 +3,6 @@ import { ModSpread } from "./modBased/modSpread.js"
 
 export class Widen {
 
-    spread = undefined
-
     constructor(build = false){
 
         new InheritController().inherit(

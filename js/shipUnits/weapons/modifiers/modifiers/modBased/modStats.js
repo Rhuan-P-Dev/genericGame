@@ -4,22 +4,9 @@ import { Mod } from "./mod.js"
 export class ModStats {
 
     stats = {
-        "stats":[ // i need to work more
-            //"width",
-            //"height",
-            "life",
-            "maxLife",
-            "damage",
-            //"maxVel",
-            //"vel",
-            //"lifeTime",
-        ],
-    
-        "invertedStatus":[
-            
-        ],
 
-        "mult": 0.1,
+        "statsMult": 0.1,
+
     }
 
     constructor(build = false){
