@@ -29,7 +29,8 @@ export class SaferPerimeter1 {
         "apply": {
             "weapon": ["piston 1"],
         },
-        "behavior": new FocusedTopDownBehavior().searchPriority
+        "behavior": new FocusedTopDownBehavior().searchPriority,
+        "statsMult": 0
     }
 
 }

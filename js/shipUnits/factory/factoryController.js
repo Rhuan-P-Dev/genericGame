@@ -51,7 +51,10 @@ export class FactoryController{
 
         AIC.giveAI(newObject, config.AI)
 
-        ObjectActivates.setActivates(newObject, config.apply)
+        MultiplyStats.multiply(
+            newObject,
+            config.statsMult,
+        )
 
         Factory.addCustomFunctions(
             object,

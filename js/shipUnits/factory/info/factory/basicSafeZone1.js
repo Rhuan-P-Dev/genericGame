@@ -29,7 +29,8 @@ export class BasicSafeZone1 {
         "apply": {
             "factory": ["movable safer perimeter 1","safer perimeter 1","mine seeder 1"],
         },
-        "behavior": new TopDownBehavior().searchPriority
+        "behavior": new TopDownBehavior().searchPriority,
+        "statsMult": 0
     }
 
 }

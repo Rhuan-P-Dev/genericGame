@@ -29,7 +29,8 @@ export class MineSeeder1 {
         "apply": {
             "weapon": ["mine launcher 1"],
         },
-        "behavior": new TopDownBehavior().searchPriority
+        "behavior": new TopDownBehavior().searchPriority,
+        "statsMult": 0
     }
 
 }
