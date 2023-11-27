@@ -26,7 +26,7 @@ export class MineSeeder1 {
     config = {
         "objectClass": DroneV2,
         "AI": ["movable","useActivates"],
-        "apply": {
+        "activates": {
             "weapon": ["mine launcher 1"],
         },
         "behavior": new TopDownBehavior().searchPriority,

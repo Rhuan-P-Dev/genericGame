@@ -26,7 +26,7 @@ export class BasicSafeZone1 {
     config = {
         "objectClass": BaseObjectFactory,
         "AI": ["useActivates"],
-        "apply": {
+        "activates": {
             "factory": ["movable safer perimeter 1","safer perimeter 1","mine seeder 1"],
         },
         "behavior": new TopDownBehavior().searchPriority,

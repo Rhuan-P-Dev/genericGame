@@ -26,7 +26,7 @@ export class SaferPerimeter1 {
     config = {
         "objectClass": Turret,
         "AI": ["rotableTurret","useActivates"],
-        "apply": {
+        "activates": {
             "weapon": ["piston 1"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority,

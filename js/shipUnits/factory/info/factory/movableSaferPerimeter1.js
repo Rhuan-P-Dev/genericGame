@@ -24,7 +24,7 @@ export class MovableSaferPerimeter1 {
     config = {
         "objectClass": Drone,
         "AI": ["movable","useActivates"],
-        "apply": {
+        "activates": {
             "weapon": ["piston 1"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority,

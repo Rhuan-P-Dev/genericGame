@@ -45,8 +45,7 @@ export class FactoryController{
 
         let newObject = new config.objectClass(true)
 
-
-
+        ObjectActivates.setActivates(newObject, config.activates)
 
 
         AIC.giveAI(newObject, config.AI)
