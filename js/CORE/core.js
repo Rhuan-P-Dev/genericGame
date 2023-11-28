@@ -42,6 +42,11 @@ import { FrameController } from "../frame/frameController.js"
 
 var Frame = ""
 
+/* GAMESTATE */
+import { GameStateController } from "../gameState/gameStateController.js"
+
+var GameState = ""
+
 onInit(function(){
 
     /* AI */
@@ -76,6 +81,10 @@ onInit(function(){
     /* FRAME */
 
     Frame = new FrameController()
+
+    /* GAMESTATE */
+
+    GameState = new GameStateController()
 
     setTimeout(browseInit,1)
     setTimeout(gameLoop,1)
@@ -119,7 +128,13 @@ function browseInit(){
 
 /* > NEXT <
 
+camboio
+
 add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! []
+
+o 'feito' do buraco necro é solo/não da para apagar! de crecer/diminuir
+
+// um tipo de factory, que criar algo com pontos obetidos por tempo / kills []
 
 focar em polir e refatorar o que ja tem!
 
@@ -177,10 +192,6 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 //algo que resusite! []
 
-//UMA ARMA QUE VONCERTE OS ENEMYGOS? [/]
-
-//adicionar algo de evolua com o "tempo" tipo um facotry que posdus algo e qunado esse algo morre produz um versão melhorada! []
-
 // fazer uma nave especial que caça outras naves e recebe recompensas
 // buff para o nave caçada: + dano, etc
 // debuff para naves NÃO caçadas: - dano, etc
@@ -214,8 +225,6 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 // uma nave especial qndo morre cria um clone de si mesmo com menos STATS. []
 
-// um tipo de factory, que criar algo com pontos obetidos por tempo / kills []
-
 // uma nave special que tem X cores, cada core pode ser derrupado caso a nave the X% de vida, cada core, pode ser: um stats, poderzin!
 
 // quando algo morre divide em dois? []
@@ -238,7 +247,7 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 
 
-// areana closer...
+// arena closer...
 
 
 var previousTime = performance.now()
@@ -277,12 +286,12 @@ function gameLoop(){
 
     ScreenRender.update()
 
-    if(calculateFPS()){
-        window.requestAnimationFrame(gameLoop)
-    }else{
-        alert("menos de 5 FPS!")
-        location.reload()
+    if(!calculateFPS()){
+        console.warn("less than 5 FPS!")
+        GameState.restart()
     }
+
+    window.requestAnimationFrame(gameLoop)
 
 }
 
