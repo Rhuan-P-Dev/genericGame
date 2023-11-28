@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { WeaponsModifiersController } from "../weaponsModifiersController.js"
+import { ModDistortion } from "./modBased/modDistortion.js"
 import { ModMultObject } from "./modBased/modMultObject.js"
 import { ModSpread } from "./modBased/modSpread.js"
 import { ModStats } from "./modBased/modStats.js"
@@ -13,7 +14,8 @@ export class Shotgun {
             [
                 ModSpread,
                 ModMultObject,
-                ModStats
+                ModStats,
+                ModDistortion
             ],
             build
         )

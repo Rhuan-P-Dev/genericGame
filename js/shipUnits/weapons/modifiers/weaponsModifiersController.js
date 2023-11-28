@@ -235,6 +235,12 @@ export class WeaponsModifiersController{
                     "object": tempProjectile,
                     "config": tempConfig,
                 }], modifier)
+
+                WeaponsModifiers.distortion([{
+                    "object": tempProjectile,
+                    "config": tempConfig,
+                }], modifier)
+    
                 MultiplyStats.multiply(tempProjectile, modifier.stats.statsMult)
 
                 newOutput.push({
