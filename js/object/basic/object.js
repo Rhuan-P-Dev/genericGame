@@ -66,7 +66,7 @@ export class Object {
     defense = 0
     resistance = 1
 
-    damage = 0
+    damage = 1
 
     x = 10
     y = 10

@@ -37,6 +37,8 @@ export class Drone {
         this.maxEnergy = 50
         this.energyRegen = 0.15
 
+        this.damage = 2
+
     }
 
 }

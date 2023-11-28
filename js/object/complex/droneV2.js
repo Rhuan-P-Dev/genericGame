@@ -30,6 +30,8 @@ export class DroneV2 {
 
         this.rotationVel *= 2
 
+        this.damage *= 1.5
+
     }
 
 }

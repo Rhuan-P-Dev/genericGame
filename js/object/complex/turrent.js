@@ -35,6 +35,8 @@ export class Turret {
 
         this.rotationVel *= 3
 
+        this.damage = 2
+
     }
 
 }

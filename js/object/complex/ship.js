@@ -36,6 +36,8 @@ export class Ship {
         this.maxEnergy = 200
         this.energyRegen = 0.3
 
+        this.damage = 10
+
     }
 
 }
