@@ -36,7 +36,7 @@ export class ActivateController{
 
     }
 
-    basicAjustObject(master, activate, object){
+    primitiveAjustObject(master, object){
 
         object.ID = randomUniqueID()
         object.team = master.team
@@ -46,8 +46,17 @@ export class ActivateController{
         object.x = master.x
         object.y = master.y
 
-        object.currentXVel = master.currentXVel * activate.currentVelMult
-        object.currentYVel = master.currentYVel * activate.currentVelMult
+        object.currentXVel = master.currentXVel
+        object.currentYVel = master.currentYVel
+
+    }
+
+    basicAjustObject(master, activate, object){
+
+        this.primitiveAjustObject(master, object)
+
+        object.currentXVel *= activate.currentVelMult
+        object.currentYVel *= activate.currentVelMult
 
         if(
             activate.radian
