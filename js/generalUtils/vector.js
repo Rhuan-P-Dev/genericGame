@@ -126,4 +126,23 @@ export class VectorController {
 
     }
 
+    getAngleVel(object){
+
+        let objectVectorNormalize = this.vectorNormalize(
+            {
+                "x": object.x + object.currentXVel,
+                "y": object.y + object.currentYVel
+            },{
+                "x": object.x,
+                "y": object.y,
+            }
+        )
+
+        return this.getAngle(
+            objectVectorNormalize.y,
+            objectVectorNormalize.x,
+        )
+
+    }
+
 }
