@@ -83,6 +83,8 @@ export class BlackHoleProjetile {
                 "effect",
                 {
                     "object": updateThis,
+                    "mult": 1,
+                    "force": 0.05
                 },{},true
             )
 
