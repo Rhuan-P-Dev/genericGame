@@ -29,6 +29,16 @@ let player = undefined
 
 export class GameStateController {
 
+    restart(){
+
+        for(let index in GAME.allInOne){
+
+            this.remove(GAME.allInOne[index])
+
+        }
+
+    }
+
     setPlayer(object){
         player = object
     }
