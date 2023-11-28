@@ -29,6 +29,8 @@ export class BaseObjectFactory{
 
         this.energy = 300
         this.maxEnergy = 300
+        this.energyRegen = 0.6
+
         this.damage = 10
 
     }
