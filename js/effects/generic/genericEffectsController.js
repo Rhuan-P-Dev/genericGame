@@ -9,10 +9,14 @@ import { EffectsController } from "../effectsController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
+import { FactoryController } from "../../shipUnits/factory/factoryController.js"
+import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 
 
-// For 'reinforcements' effect
-
+// For 'create objects' effect
+import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
+import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
+import { MovableSaferPerimeter1 } from "../../shipUnits/factory/info/factory/movableSaferPerimeter1.js"
 
 
 
@@ -28,6 +32,7 @@ var Effects = ""
 var Activate = ""
 var GameState = ""
 var Vector = ""
+var Factory = ""
 
 onInit(function(){
 
@@ -41,6 +46,7 @@ onInit(function(){
     Activate = new ActivateController()
     GameState = new GameStateController()
     Vector = new VectorController()
+    Factory = new FactoryController()
 
 })
 
@@ -77,21 +83,53 @@ export class GenericEffectsController {
 
         },
 
-        "reinforcements": (params) => {
+        "create objects": (params) => {
 
-            return
+            for (let index = 0; index < params.repeat; index++) {
+                
+                let newObject = Factory.createObject(
+                    {},
+                    {},
+                    params.config,
+                )
+    
+                Activate.primitiveAjustObject(params.object, newObject)
 
-            console.log("o reinforcements / help. estão quebrados")
+                let angleDispersion = randomFloat(
+                    -Math.PI * params.dispersion,
+                    Math.PI * params.dispersion
+                )
 
-            let help = new params.objectClass() || params.custom.class
+                if(
+                    params.object.radian
+                    &&
+                    newObject.radian
+                ){
 
-            let newObject = help.func(
-                params.object,
-                params.object,
-                help.config || params.custom.config,
-            )
+                    newObject.setAngle(
+                        params.object.getAngle()
+                        +
+                        angleDispersion
+                    )
+        
+                }
 
-            Activate.addObject(newObject)
+                if(params.velMult !== 0){
+
+                    let objectVelAngle = Vector.getAngleVel(params.object)
+
+                    objectVelAngle += angleDispersion
+
+                    objectVelAngle = Vector.setAngle(objectVelAngle)
+
+                    newObject.currentXVel = objectVelAngle.x * params.velMult
+                    newObject.currentYVel = objectVelAngle.y * params.velMult
+
+                }
+
+                Activate.addObject(newObject)
+
+            }
 
         },
 
@@ -817,20 +855,21 @@ export class GenericEffectsController {
                 },
     
             },
-            /*
             "help": {
     
                 "effect": {
 
                     "config": {
-                        "func": this.effectsList["reinforcements"],
+                        "func": this.effectsList["create objects"],
                         "frameOut": 5*60,
                         "repeat": 4,
                     },
         
                     "params": {
-                        "objectClass": MSP1,
-                        "custom": undefined,
+                        "config": new MovableSaferPerimeter1().config,
+                        "repeat": 1,
+                        "dispersion": 0,
+                        "velMult": 0,
                     },
 
                 },
@@ -840,7 +879,7 @@ export class GenericEffectsController {
                     "config": {
 
                         "prefixFunc": ["countDown"],
-                        "func": this.effectsList["reinforcements"],
+                        "func": this.effectsList["create objects"],
                         "suffixFunc": ["timeout"],
 
                         "stage": "first",
@@ -857,14 +896,78 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "objectClass": MSP1,
-                        "custom": undefined,
+                        "config": new MovableSaferPerimeter1().config,
+                        "repeat": 1,
+                        "dispersion": 0,
+                        "velMult": 0,
                     }
 
                 }
                 
             },
-            */
+            "missile cluster": {
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": [],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "config": {
+                            "objectClass": MissileProjetile,
+                            "AI": ["missileV1"],
+                            "activates": {},
+                            "behavior": new FocusedTopDownBehavior().searchPriority,
+                            "statsMult": 0
+                        },
+                        "repeat": 5,
+                        "dispersion": 0.2,
+                        "velMult": 0,
+                    }
+
+                }
+                
+            },
+            "small bullet cluster": {
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": [],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "config": {
+                            "objectClass": SmallBulletProjetile,
+                            "AI": [],
+                            "activates": {},
+                            "behavior": new FocusedTopDownBehavior().searchPriority,
+                            "statsMult": 0
+                        },
+                        "repeat": 5,
+                        "dispersion": 0.2,
+                        "velMult": 5,
+                    }
+
+                }
+                
+            },
+
 
             "d": {
     
