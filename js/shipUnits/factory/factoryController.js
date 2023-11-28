@@ -44,11 +44,16 @@ export class FactoryController{
     createObject(object, activate, config){
 
         let newObject = new config.objectClass(true)
+
+        if(config.AI){
             AIC.giveAI(newObject, config.AI)
+        }
 
         ObjectActivates.setActivates(newObject, config.activates)
 
+        if(config.behavior){
             Factory.setBehavior(newObject, config)
+        }
 
         MultiplyStats.multiply(
             newObject,
