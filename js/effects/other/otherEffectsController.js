@@ -1,41 +1,10 @@
-import { AIUtilsController } from "../../AI/utils/AIUtils.js"
-import { FrameController } from "../../frame/frameController.js"
-import { CustomMathController } from "../../generalUtils/math.js"
-import { ScreenRenderController } from "../../graphics/screenRenderController.js"
-import { ShipCreatorController } from "../../ship/shipCreatorController.js"
-import { ActivateController } from "../../shipUnits/forAllShipUnits/activateController.js"
-import { SpecialController } from "../../shipUnits/special/specialController.js"
-import { EffectsController } from "../effectsController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 
-// For 'reinforcements' effect
-import { InheritController } from "../../generalUtils/inherit.js"
-import { WeaponsController } from "../../shipUnits/weapons/weaponsController.js"
-import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
-
-var Frame = ""
-var AIUtils = ""
-var ScreenRender = ""
-var Special = ""
-var ShipCreator = ""
-var CustomMath = ""
-var Effects = ""
-var Activate = ""
 var GameState = ""
-var Weapons = ""
 
 onInit(function(){
 
-    Frame = new FrameController()
-    AIUtils = new AIUtilsController()
-    ScreenRender = new ScreenRenderController()
-    Special = new SpecialController()
-    ShipCreator = new ShipCreatorController()
-    CustomMath = new CustomMathController()
-    Effects = new EffectsController()
-    Activate = new ActivateController()
     GameState = new GameStateController()
-    Weapons = new WeaponsController()
 
 })
 
