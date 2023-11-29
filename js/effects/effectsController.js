@@ -333,6 +333,57 @@ export class EffectsController {
         
     }
 
+    applyEffects(object, effects){
+
+        for (let index = 0; index < effects.length; index++) {
+
+            let currentEffect = effects[index]
+
+            let global = CloneObject.recursiveCloneAttribute(currentEffect)
+
+            let apply = global.apply
+
+            let effect = global.effect
+
+            effect.params.object = object
+
+            this.applyEffect(
+                effect,
+                apply
+            )
+            
+        }
+
+    }
+
+    applyEffect(
+        effect,
+        apply
+    ){
+
+        if(apply.apply){
+
+            Effects.apply(
+                apply.applyType,
+                effect.config.name,
+                effect.config.type,
+                effect.params,
+                effect.config,
+            )
+
+        }else{
+
+            Effects.add(
+                effect.config.name,
+                effect.config.type,
+                effect.params,
+                effect.config,
+            )
+
+        }
+
+    }
+
 }
 
 var Effects = new EffectsController()
