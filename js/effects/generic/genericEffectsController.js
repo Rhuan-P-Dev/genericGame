@@ -17,6 +17,7 @@ import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior
 import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
 import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
 import { MovableSaferPerimeter1 } from "../../shipUnits/factory/info/factory/movableSaferPerimeter1.js"
+import { SaferPerimeter1 } from "../../shipUnits/factory/info/factory/saferPerimeter1.js"
 
 
 
@@ -86,48 +87,54 @@ export class GenericEffectsController {
         "create objects": (params) => {
 
             for (let index = 0; index < params.repeat; index++) {
-                
-                let newObject = Factory.createObject(
-                    {},
-                    {},
-                    params.config,
-                )
-    
-                Activate.primitiveAjustObject(params.object, newObject)
 
-                let angleDispersion = randomFloat(
-                    -Math.PI * params.dispersion,
-                    Math.PI * params.dispersion
-                )
+                for(let index in params.configs){
 
-                if(
-                    params.object.radian
-                    &&
-                    newObject.radian
-                ){
+                    let config = params.configs[index]
 
-                    newObject.setAngle(
-                        params.object.getAngle()
-                        +
-                        angleDispersion
+                    let newObject = Factory.createObject(
+                        {},
+                        {},
+                        config,
                     )
         
+                    Activate.primitiveAjustObject(params.object, newObject)
+    
+                    let angleDispersion = randomFloat(
+                        -Math.PI * params.dispersion,
+                        Math.PI * params.dispersion
+                    )
+    
+                    if(
+                        params.object.radian
+                        &&
+                        newObject.radian
+                    ){
+    
+                        newObject.setAngle(
+                            params.object.getAngle()
+                            +
+                            angleDispersion
+                        )
+            
+                    }
+    
+                    if(params.velMult !== 0){
+    
+                        let objectVelAngle = Vector.getAngleVel(params.object)
+    
+                        objectVelAngle += angleDispersion
+    
+                        objectVelAngle = Vector.setAngle(objectVelAngle)
+    
+                        newObject.currentXVel = objectVelAngle.x * params.velMult
+                        newObject.currentYVel = objectVelAngle.y * params.velMult
+    
+                    }
+    
+                    Activate.addObject(newObject)
+
                 }
-
-                if(params.velMult !== 0){
-
-                    let objectVelAngle = Vector.getAngleVel(params.object)
-
-                    objectVelAngle += angleDispersion
-
-                    objectVelAngle = Vector.setAngle(objectVelAngle)
-
-                    newObject.currentXVel = objectVelAngle.x * params.velMult
-                    newObject.currentYVel = objectVelAngle.y * params.velMult
-
-                }
-
-                Activate.addObject(newObject)
 
             }
 
@@ -866,7 +873,9 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "config": new MovableSaferPerimeter1().config,
+                        "configs": [
+                            new MovableSaferPerimeter1().config,
+                        ],
                         "repeat": 1,
                         "dispersion": 0,
                         "velMult": 0,
@@ -896,7 +905,9 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "config": new MovableSaferPerimeter1().config,
+                        "configs": [
+                            new MovableSaferPerimeter1().config,
+                        ],
                         "repeat": 1,
                         "dispersion": 0,
                         "velMult": 0,
@@ -921,13 +932,16 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "config": {
-                            "objectClass": MissileProjetile,
-                            "AI": ["missileV1"],
-                            "activates": {},
-                            "behavior": new FocusedTopDownBehavior().searchPriority,
-                            "statsMult": 0
-                        },
+
+                        "configs": [
+                            {
+                                "objectClass": MissileProjetile,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
                         "repeat": 5,
                         "dispersion": 0.2,
                         "velMult": 0,
@@ -952,13 +966,16 @@ export class GenericEffectsController {
                     },
 
                     "params": {
-                        "config": {
-                            "objectClass": SmallBulletProjetile,
-                            "AI": [],
-                            "activates": {},
-                            "behavior": new FocusedTopDownBehavior().searchPriority,
-                            "statsMult": 0
-                        },
+
+                        "configs": [
+                            {
+                                "objectClass": SmallBulletProjetile,
+                                "AI": [],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
                         "repeat": 5,
                         "dispersion": 0.2,
                         "velMult": 5,
