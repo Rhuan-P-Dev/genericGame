@@ -1,4 +1,4 @@
-import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
+import { FocusedNearBehavior } from "../../../../AI/behavior/focusedNearBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { Turret } from "../../../../object/complex/turrent.js"
 import { FactoryExtend } from "../extend/factory.js"
@@ -29,7 +29,7 @@ export class SaferPerimeter1 {
         "activates": {
             "weapon": ["piston 1"],
         },
-        "behavior": new FocusedTopDownBehavior().searchPriority,
+        "behavior": new FocusedNearBehavior().searchPriority,
         "statsMult": 0
     }
 
