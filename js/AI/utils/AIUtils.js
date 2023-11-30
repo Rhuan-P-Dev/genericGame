@@ -1,18 +1,15 @@
 
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
-import { CustomMathController } from "../../generalUtils/math.js"
 import { VectorController } from "../../generalUtils/vector.js"
 
 var GameState = ""
-var CustomMath = ""
 var Vector = ""
 var CloneObject = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
-    CustomMath = new CustomMathController()
     Vector = new VectorController()
     CloneObject = new CloneObjectController()
 
@@ -38,11 +35,9 @@ export class AIUtilsController {
         will determine if the object will chase objects with smaller distance
         */
 
-        let targetObsession = 6
-
         let difference = parsePositive(
             goal.priority - object.searchPriority.targetPriority
-        ) ** targetObsession
+        ) ** object.searchPriority.targetObsession
 
         return Vector.getTriangleSize(goal, object) * difference
 

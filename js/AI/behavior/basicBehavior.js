@@ -2,6 +2,7 @@
 export class BasicBehavior {
 
     searchPriority = {
+        targetObsession: undefined,
         targetPriority: undefined,
         above: undefined,
         below: undefined,
