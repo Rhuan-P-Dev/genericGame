@@ -1,6 +1,9 @@
 import { AIController } from "../../../AI/AIController.js"
 import { GameStateController } from "../../../gameState/gameStateController.js"
 import { ActivateInfoController } from "../../forAllShipUnits/activateInfoController.js"
+import { InheritController } from "../../../generalUtils/inherit.js"
+import { FocusedNearBehavior } from "../../../AI/behavior/focusedNearBehavior.js"
+
 import { BlackHoleGenerator1 } from "./weapons/blackHoleGenerator1.js"
 import { MissileBurst1 } from "./weapons/missileBurst1.js"
 import { MineLauncher1 } from "./weapons/mineLauncher1.js"
@@ -22,6 +25,22 @@ onInit(function(){
 })
 
 export class WeaponsInfoController{
+
+    constructor(){
+
+        this.createAutoWeapons()
+
+    }
+
+    createAutoWeapons(){
+
+        for(let index in this.weapons){
+
+            this.weapons["auto " + index] = "PLACE HOLDER"
+
+        }
+
+    }
 
     weapons = {
         "piston 1": Piston1,
@@ -45,13 +64,20 @@ export class WeaponsInfoController{
 
     build(weaponName){
 
+        let auto = this.checkAutoWeapon(weaponName)
+        weaponName = this.fixWeaponName(weaponName)
+
         let weapon = this.weapons[weaponName]
 
         if(!weapon){return undefined}
 
         weapon = ActivateInfo.preBuild(new weapon(true))
 
-        if(weapon.auto){
+        if(auto){
+
+            this.transformIntoAutoWeapon(weapon)
+
+            weapon.auto = true
 
             AIC.giveAI(weapon, ["ship_turret"])
             GameState.addObject(weapon, true, false, false, false, false, false)
@@ -65,6 +91,55 @@ export class WeaponsInfoController{
         weapon.calcStats()
 
         return weapon
+
+    }
+
+    checkAutoWeapon(weaponName){
+
+        let weaponSubName = weaponName.substring(0,5)
+
+        let auto = false
+
+        if(weaponSubName == "auto "){
+            auto = true
+        }
+
+        return auto
+
+    }
+
+    fixWeaponName(weaponName){
+
+        if(
+            this.checkAutoWeapon(weaponName)
+        ){
+
+            weaponName = weaponName.substring(5)
+
+        }
+
+        return weaponName
+
+    }
+
+    transformIntoAutoWeapon(weapon){
+
+        new InheritController().inherit(
+            weapon,
+            [
+                FocusedNearBehavior,
+            ],
+            false
+        )
+
+        weapon.cost *= 0.5
+        weapon.rotationVel *= 1.75
+
+        weapon.reload *= 1.5
+        weapon.lifeTime *= 0.75
+        weapon.range *= 0.5
+        weapon.config.weapon.multVel *= 0.75
+        weapon.config.weapon.damageMult *= 0.5
 
     }
 
