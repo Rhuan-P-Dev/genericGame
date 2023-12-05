@@ -164,7 +164,11 @@ function ship_turret(object){
 
     let distance = AIUtils.getDistanceOfObjects(object, target)
 
-    if(object.range > distance){
+    if(
+        object.range > distance
+        &&
+        AIUtils.isPointed(object, target, 0.995)
+    ){
 
         object.owner.activate(object.ID)
 
