@@ -73,11 +73,11 @@ export class WeaponsInfoController{
 
         weapon = ActivateInfo.preBuild(new weapon(true))
 
-        if(auto){
+        weapon.auto = auto
+
+        if(weapon.auto){
 
             this.transformIntoAutoWeapon(weapon)
-
-            weapon.auto = true
 
             AIC.giveAI(weapon, ["ship_turret"])
             GameState.addObject(weapon, true, false, false, false, false, false)
@@ -96,15 +96,13 @@ export class WeaponsInfoController{
 
     checkAutoWeapon(weaponName){
 
-        let weaponSubName = weaponName.substring(0,5)
-
-        let auto = false
-
-        if(weaponSubName == "auto "){
-            auto = true
+        if(
+            weaponName.substring(0,5) == "auto "
+        ){
+            return true
+        }else{
+            return false
         }
-
-        return auto
 
     }
 
