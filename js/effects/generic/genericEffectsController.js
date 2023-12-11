@@ -119,18 +119,14 @@ export class GenericEffectsController {
             
                     }
     
-                    if(params.velMult !== 0){
+                    let objectVelAngle = Vector.getAngleVel(params.object)
     
-                        let objectVelAngle = Vector.getAngleVel(params.object)
+                    objectVelAngle += angleDispersion
     
-                        objectVelAngle += angleDispersion
+                    objectVelAngle = Vector.setAngle(objectVelAngle)
     
-                        objectVelAngle = Vector.setAngle(objectVelAngle)
-    
-                        newObject.currentXVel = objectVelAngle.x * params.velMult
-                        newObject.currentYVel = objectVelAngle.y * params.velMult
-    
-                    }
+                    newObject.currentXVel = objectVelAngle.x * params.velMult
+                    newObject.currentYVel = objectVelAngle.y * params.velMult
     
                     Activate.addObject(newObject)
 
