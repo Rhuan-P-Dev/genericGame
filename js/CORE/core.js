@@ -274,11 +274,11 @@ function gameLoop(){
 
     KeyBoard.runCommands()
 
+    AI.update()
+
     Stats.update()
 
     Physics.update()
-
-    AI.update()
 
     Rules.update()
 
