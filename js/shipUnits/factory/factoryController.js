@@ -30,6 +30,8 @@ export class FactoryController{
 
             Activate.basicAjustObject(object, result.activate, result.return)
 
+            ObjectActivates.setActivates(result.return, result.activate.config.activates)
+
             Activate.addObject(result.return)
 
             result.activate.useActivateObserver.run({
@@ -48,8 +50,6 @@ export class FactoryController{
         if(config.AI){
             AIC.giveAI(newObject, config.AI)
         }
-
-        ObjectActivates.setActivates(newObject, config.activates)
 
         if(config.behavior){
             Factory.setBehavior(newObject, config)
