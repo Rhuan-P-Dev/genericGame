@@ -113,6 +113,17 @@ export class VectorController {
         }
     }
 
+    sumAngles(angle){
+
+        let angleXY = this.setAngle(angle)
+
+        return this.getAngle(
+            angleXY.y,
+            angleXY.x
+        )
+
+    }
+
     rotate(object, theta){
 
         let sinTheta = Math.sin(theta)
