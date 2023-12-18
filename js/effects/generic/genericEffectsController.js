@@ -11,6 +11,7 @@ import { VectorController } from "../../generalUtils/vector.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
 import { FactoryController } from "../../shipUnits/factory/factoryController.js"
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
+import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
 
 
 // For 'create objects' effect
@@ -34,6 +35,7 @@ var Activate = ""
 var GameState = ""
 var Vector = ""
 var Factory = ""
+var ObjectActivates = ""
 
 onInit(function(){
 
@@ -48,6 +50,7 @@ onInit(function(){
     GameState = new GameStateController()
     Vector = new VectorController()
     Factory = new FactoryController()
+    ObjectActivates = new ObjectActivatesController()
 
 })
 
@@ -97,6 +100,8 @@ export class GenericEffectsController {
                         {},
                         config,
                     )
+
+                    ObjectActivates.setActivates(newObject, config.activates)
         
                     Activate.primitiveAjustObject(params.object, newObject)
     
