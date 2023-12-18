@@ -32,6 +32,13 @@ export class FactoryController{
 
             ObjectActivates.setActivates(result.return, result.activate.config.activates)
 
+            Factory.addCustomFunctions(
+                object,
+                result.activate,
+                result.activate.config,
+                result.return
+            )
+
             Activate.addObject(result.return)
 
             result.activate.useActivateObserver.run({
@@ -60,12 +67,11 @@ export class FactoryController{
             config.statsMult,
         )
 
-        Factory.addCustomFunctions(
-            object,
-            activate,
-            config,
-            newObject
-        )
+        if(config.lifeTime){
+
+            newObject.lifeTime = config.lifeTime
+
+        }
 
         return newObject
 
