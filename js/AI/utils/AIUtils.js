@@ -101,6 +101,45 @@ export class AIUtilsController {
 
     }
 
+    isInObjectAngle(object, otherObject, angle, angleDistortion = 0){
+
+        let angleL = Vector.toRadians(-angle)
+        let angleR = Vector.toRadians(angle)
+        let objectAngle = Vector.sumAngles(
+            object.getAngle()
+            +
+            Vector.toRadians(angleDistortion)
+        )
+    
+        let diffR = angleR + objectAngle
+        let diffL = angleL + objectAngle
+    
+        let otherObjectAngle = Vector.vectorNormalize(
+            otherObject,
+            object,
+        )
+    
+        otherObjectAngle = Vector.getAngle(
+            otherObjectAngle.y,
+            otherObjectAngle.x,
+        )
+    
+        if(
+            diffL < otherObjectAngle
+            &&
+            diffR > otherObjectAngle
+        ){
+
+            return true
+        
+        }else{
+
+            return false
+
+        }
+    
+    }
+
     returnProduct(direction, object, target, objectCalcs = object, velPercentage = 100){
 
         let rotateFuncName = "rotateTo" + direction
