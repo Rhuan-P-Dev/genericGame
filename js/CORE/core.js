@@ -128,21 +128,55 @@ function browseInit(){
 
 /* > NEXT <
 
-camboio
+add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! [X]
 
-add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! []
+na rotasão precissa ir deireto para a porcentage que deseja caso não aja vá em 100%
+
+re-estruturar os objetos import e etc []
+
+quando for adicioanr um objeto no jogo, loopers como o 'ruler' dever pergar o objeto e analizar para colocar no local correto
+
+focar em polir e refatorar o que ja tem!
+
+qualquer [.life -= X] esta errado!
 
 o 'feito' do buraco necro é solo/não da para apagar! de crecer/diminuir
 
 // um tipo de factory, que criar algo com pontos obetidos por tempo / kills []
 
-focar em polir e refatorar o que ja tem!
-
 ADICIONAR UM TIPO DE MULTIPLICADOR GLOBAL []
 
 o black hole esta imcompleto!
 
-? um projetil tipo spike que gruda nas coisas - FISICAS!?
+special - travel - cria um objeto no ponto de partida e no final, qunado um objeto(aliado) tocam em qualquer um teleprota para o outro!
+
+emp - sistema diferente!
+
+uma arma em formato de cone que congela/slowdon o alvo
+
+- copiar a chefia -
+
+escudo frontal/ de farias diresoes! [agora não dá! :( as balas "teleportão"]
+
+- copiar a chefia -
+
+criar uma nova categoria chamada suporte?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+um missil anti-naves rapidas
+
 
 */
 
@@ -158,7 +192,7 @@ if(build){
 
 optimizar o sistema de colisoes! []
 
-ao inves de fixar todo frame os status dos objetos, você pode user observers! []
+ao inves de fixar todo frame os status dos objetos, você pode user observers! [] empilha, empilha, empilha...
 
 */
 
@@ -187,7 +221,6 @@ adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
 modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 */
-
 //um tipo de objeto especial que NÃO morre []
 
 //algo que resusite! []
@@ -199,7 +232,7 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // duplicator??? [?]
 // ilusionista [?]
 
-// um nave FODA porem... tem um caçador de recompesans [/]
+// um nave FODA porem... tem um caçador de recompesans []
 // algo depois de um tempo vai para a SEGUNDA ETAPA [/]
 
 // nave special: um nave que com opaser dos segundos fica mais forter! [/]
@@ -217,17 +250,11 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // uma nave tipo 'gilgamesh', se a prioridade da nave enemiga for maior... se o HP estiver baixo... []
 // uma nave tipo "gojo joven" []
 
-// "peoes do rei" periodicamente converta algo []
-
 // um nave que "sempre" volta?????? [?]
 
 // parar o tempo? []
 
-// uma nave especial qndo morre cria um clone de si mesmo com menos STATS. []
-
 // uma nave special que tem X cores, cada core pode ser derrupado caso a nave the X% de vida, cada core, pode ser: um stats, poderzin!
-
-// quando algo morre divide em dois? []
 
 // uma nave que se adaptar ao dano levado []
 
@@ -235,17 +262,15 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 // uma nave com X poderes e quando ela morre vira X naves com 1 poder cada! []
 
+// uma nave especial qndo morre cria um clone de si mesmo com menos STATS. []
+// quando algo morre divide em dois? []
 
+// nave: capaz de realizar milagres periodicamente [] duplica tudo!(aliados)
+// nave: "final clock" []
 
-
-
-
-
-
-
-
-
-
+// nave: "rei dos fracos"
+// "peoes do rei" periodicamente converta algo []
+// nave: o deus das factorys
 
 // arena closer...
 
