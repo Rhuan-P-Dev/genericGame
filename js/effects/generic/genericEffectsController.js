@@ -310,6 +310,76 @@ export class GenericEffectsController {
 
         },
 
+        "parasite": (params) => {
+
+            // make more realictic, eenrgy consume, damage, etc
+
+            params.object.life -= params.damage
+
+            let energyDamage = params.damage * params.energyMult
+
+            params.object.energy -= energyDamage
+
+            let closestAlliesObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                {
+                    "maxDistance": params.range,
+                    "includeEnemyTeam": false,
+                    "includeSameTeam": true,
+                    "includeYourself": false,
+                }
+            )
+
+            let closestAllieObject = AIUtils.getObject(
+                closestAlliesObjects,
+                params.object,
+                "closest"
+            )
+
+
+            if(closestAllieObject){
+
+                ScreenRender.addDrawRequest( // debug
+                {
+                    "func": ScreenRender.drawCircle,
+                    "params": {
+                        "x": params.object.x,
+                        "y": params.object.y,
+                        "radius": params.range,
+                    },
+                }
+            )
+
+                ScreenRender.addDrawRequest(
+                    {
+                        "func": ScreenRender.drawLine,
+                        "params": {
+                            "positions": [
+                                [
+                                    params.object.x,
+                                    params.object.y,
+                                ],[
+                                    closestAllieObject.x,
+                                    closestAllieObject.y,
+                                ]
+                            ],
+                            "color": params.color,
+                            "lineWidth": params.lineWidth,
+                        }
+                    }
+
+                )
+
+                closestAllieObject.life -= energyDamage * params.dischargeEnergyMult
+
+            }else{
+
+                params.object.life -= energyDamage * params.selfEnergyMult
+
+            }
+
+        },
+
 
 
 
@@ -325,7 +395,7 @@ export class GenericEffectsController {
 
         "thunder": (params) => {
 
-            let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            let closestAlliesObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
                 params.object,
                 {
                     "maxDistance": params.range,
@@ -346,15 +416,15 @@ export class GenericEffectsController {
                 }
             )
 
-            let closestObject = AIUtils.getObject(
-                closestObjects,
+            let closestAllieObject = AIUtils.getObject(
+                closestAlliesObjects,
                 params.object,
                 "closest"
             )
 
             params.object.life -= params.thunderDamage
 
-            if(closestObject){
+            if(closestAllieObject){
 
                 ScreenRender.addDrawRequest(
                     {
@@ -365,8 +435,8 @@ export class GenericEffectsController {
                                     params.object.x,
                                     params.object.y,
                                 ],[
-                                    closestObject.x,
-                                    closestObject.y,
+                                    closestAllieObject.x,
+                                    closestAllieObject.y,
                                 ]
                             ],
                             "color": params.color,
@@ -385,7 +455,7 @@ export class GenericEffectsController {
                     params.effectName,
                     "effect",
                     {
-                        "object": closestObject,
+                        "object": closestAllieObject,
                         "range": params.range * params.mult,
                         "thunderDamage": params.thunderDamage * params.mult,
                         "mult": params.mult,
@@ -1147,6 +1217,33 @@ export class GenericEffectsController {
                 },
 
             },
+
+            "parasite tesla coil": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["parasite"],
+                        "frameOut": 5*60,
+                        "repeat": 3,
+                    },
+        
+                    "params": {
+
+                        "range": 150,
+                        
+                        "damage": 5,
+                        "energyMult": 10,
+                        "dischargeEnergyMult": 0.5,
+                        "selfEnergyMult": 0.25,
+
+                        "color": "black",
+                        "lineWidth": 2,
+                    },
+
+                },
+
+            }
 
         },
 
