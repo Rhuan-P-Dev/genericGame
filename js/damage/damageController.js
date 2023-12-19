@@ -2,6 +2,7 @@ import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { CustomMathController } from "../generalUtils/math.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
+import { ExplosionDamage } from "./damageTypes/explosion.js"
 
 var AIUtils = ""
 var ScreenRender = ""
@@ -166,6 +167,26 @@ export class DamageController {
     uniform(attacker, victim){
 
         return Damage.boke(attacker)
+
+    }
+
+    explosionDamageShell(object){
+
+        let shell = {}
+
+        shell.damageConfig = new ExplosionDamage().damageConfig
+        
+        shell.damage = object.damage
+
+        shell.ID = object.ID
+        shell.team = object.team
+
+        shell.width = object.width
+        
+        shell.x = object.x
+        shell.y = object.y
+
+        return shell
 
     }
 
