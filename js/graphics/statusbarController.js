@@ -81,10 +81,6 @@ export class StatusbarController {
             }
         )
 
-
-
-
-        
         let VEL = {
             "start": {
                 "x": 25,
@@ -111,6 +107,34 @@ export class StatusbarController {
                 "color": VEL.color
             }
         )
+
+        if(!object.shield){return}
+
+        let SHIELD = {
+            "start": {
+                "x": 25,
+                "y": object.height * 3,
+            },
+            "end": {
+                "x": 25,
+                "y": object.height * 3,
+            },
+            "formula": (object.shield / object.maxShield),
+            "lineWidth": 2,
+            "color": "lightblue"
+        }
+
+        this.renderStat(
+            object,
+            {
+                "start": SHIELD.start,
+                "end": SHIELD.end,
+                "formula": SHIELD.formula,
+                "lineWidth": SHIELD.lineWidth,
+                "color": SHIELD.color
+            }
+        )
+
 
     }
 
