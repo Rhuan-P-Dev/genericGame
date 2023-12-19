@@ -1,4 +1,5 @@
 import { InheritController } from "../../generalUtils/inherit.js"
+import { SmallShieldObject } from "../basic/smallShieldObject.js"
 import { Drone } from "./drone.js"
 
 export class DroneV2 {
@@ -8,7 +9,8 @@ export class DroneV2 {
         new InheritController().inherit(
             this,
             [
-                Drone
+                Drone,
+                SmallShieldObject,
             ],
             build
         )
