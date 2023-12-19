@@ -21,6 +21,12 @@ const multStats = {
         "life",
         "maxLife",
         "lifeRegen",
+
+    ],
+
+    "normalStats_div2": [
+        "priority",
+
     ],
 
     "normalStats_div5": [
@@ -63,6 +69,16 @@ export class MultiplyStatsController {
                 object,
                 mult / 5,
                 stats.normalStats_div5,
+            )
+
+        }
+
+        if(stats.normalStats_div2){
+
+            this.mult(
+                object,
+                mult / 2,
+                stats.normalStats_div2,
             )
 
         }
