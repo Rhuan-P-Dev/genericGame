@@ -152,7 +152,7 @@ export class VectorController {
         return this.getAngle(
             objectVectorNormalize.y,
             objectVectorNormalize.x,
-        )
+        ) || 0
 
     }
 
