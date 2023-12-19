@@ -214,6 +214,21 @@ export class ScreenRenderController {
 
     }
 
+    drawArc(params) {
+
+        ScreenRender.setStyleParams(params)
+
+        ScreenRender.mainCanvasContext.beginPath()
+        ScreenRender.mainCanvasContext.arc(
+            params.x,
+            params.y,
+            params.radius,
+            params.startAngle,
+            params.endAngle
+        )
+        ScreenRender.mainCanvasContext.stroke()
+    }
+
     setStyleParams(params){
 
         ScreenRender.mainCanvasContext.strokeStyle = params.color || ScreenRender.defaultColor
