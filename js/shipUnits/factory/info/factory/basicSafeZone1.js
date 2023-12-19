@@ -1,6 +1,6 @@
 import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { BaseObjectFactory } from "../../../../object/complex/factory.js"
+import { ObjectFactory } from "../../../../object/complex/factory.js"
 import { FactoryExtend } from "../extend/factory.js"
 
 export class BasicSafeZone1 {
@@ -24,7 +24,7 @@ export class BasicSafeZone1 {
     currentVelMult = 0
 
     config = {
-        "objectClass": BaseObjectFactory,
+        "objectClass": ObjectFactory,
         "AI": ["useActivates"],
         "activates": {
             "factory": ["movable safer perimeter 1","safer perimeter 1","mine seeder 1"],

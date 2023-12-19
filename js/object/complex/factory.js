@@ -3,7 +3,7 @@ import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior
 import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizadObject } from "../basic/energizedObject.js"
 
-export class BaseObjectFactory{
+export class ObjectFactory{
 
     constructor(build = false){
 
