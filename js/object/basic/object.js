@@ -2,17 +2,20 @@ import { DamageController } from "../../damage/damageController.js"
 import { SingleDamage } from "../../damage/damageTypes/single.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
+import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { CommonImport } from "../common/commonImport.js"
 import { ActivateInstructions } from "../instructions/activateInstructions.js"
 import { onInstructions } from "../instructions/onInstructions.js"
 
 var GameState = ""
 var Damage = ""
+var ConsumeStats = ""
 
 onInit(function(){
 
     Damage = new DamageController()
     GameState = new GameStateController()
+    ConsumeStats = new ConsumeStatsController()
 
 })
 
@@ -37,11 +40,18 @@ export class Object {
 
         "add_basic_objectFunctions": (updateThis) => {
 
-            updateThis.onDamage.add({
-                "func": "receiveDamage",
-                "class": Damage
-            },"last",10)
-    
+            ConsumeStats.add(
+                updateThis,
+                "life",
+                [
+                    "last",
+                    10
+                ],
+                (object, damage) => {
+                    return (damage * object.resistance) - object.defense
+                }
+            )
+
             updateThis.onHit.add({
                 "func": "doDamage",
                 "class": Damage

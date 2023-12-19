@@ -29,27 +29,7 @@ export class DamageController {
         "uniform": this.uniform
     }
 
-    receiveDamage(params){
-
-        if(params.calcDamage <= 0){
-
-            return
-
-        }
-
-        params.object.life -= params.calcDamage
-
-    }
-
     doDamage(params){
-
-        if(!params.object.damageConfig){ // delet it
-
-            throw "ERRO!!!!!!!!!!!!!!"
-
-            this.damageCalc(params.object, params.victim)
-            return
-        }
 
         this.damageTypeTable[params.object.damageConfig.type](
             params.object,
@@ -60,7 +40,7 @@ export class DamageController {
 
     damageCalc(attacker, victim){
 
-        let damage = (attacker.damage * victim.resistance) - victim.defense
+        let damage = attacker.damage
         let bokedDamage = attacker.damage
 
         if(attacker.original){

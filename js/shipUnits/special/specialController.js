@@ -5,8 +5,9 @@ import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { SpecialInfoController } from "./info/specialInfoController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
-import { ComplexOnType } from "../../object/instructions/onInstructions.js"
+import { ComplexOnType, ComplexOnTypeFunctions } from "../../object/instructions/onInstructions.js"
 import { DamageController } from "../../damage/damageController.js"
+import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 
 var GameState = ""
 var MultiplyStats = ""
@@ -14,6 +15,7 @@ var CloneObject = ""
 var Activate = ""
 var Effects = ""
 var Damage = ""
+var ConsumeStats = ""
 
 onInit(function(){
 
@@ -23,6 +25,7 @@ onInit(function(){
     Activate = new ActivateController()
     Effects = new EffectsController()
     Damage = new DamageController()
+    ConsumeStats = new ConsumeStatsController()
 
 })
 
@@ -107,12 +110,29 @@ export class SpecialController{
         illusion.onDeath.add({
             "func": "removeObType",
             "class": GameState,
-        },"last",10)
+        },"first",0)
+
+        illusion.onHit.add({
+            "func": "removeObType",
+            "class": GameState,
+        },"first",0)
 
         illusion.onDamage.add({
-            "func": "receiveDamage",
-            "class": Damage
-        },"last",10)
+            "func": "removeObType",
+            "class": GameState,
+        },"first",0)
+
+        ConsumeStats.add(
+            illusion,
+            "life",
+            [
+                "last",
+                10
+            ],
+            (object, damage) => {
+                return (damage * object.resistance) - object.defense
+            }
+        )
 
         Effects.removeAll(illusion)
 
