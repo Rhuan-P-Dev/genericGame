@@ -50,11 +50,8 @@ export class OtherEffectsController {
 
             GameState.changeTeam(
                 params.otherObject,
-                params.otherObject.team,
-                params.object.team
+                params.object
             )
-
-            params.otherObject.color = params.object.color
 
         },
 

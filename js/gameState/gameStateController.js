@@ -167,13 +167,15 @@ export class GameStateController {
         return GAME.stats
     }
 
-    changeTeam(object, to, from){
+    changeTeam(oldTeam, newTeam){
 
-        delete GAME.team[to][object.ID]
+        delete GAME.team[oldTeam.team][oldTeam.ID]
 
-        GAME.team[from][object.ID] = object
+        GAME.team[newTeam.team][oldTeam.ID] = oldTeam
 
-        object.team = from
+        oldTeam.team = newTeam.team
+
+        oldTeam.color = newTeam.color
 
     }
 
