@@ -22,6 +22,9 @@ const multStats = {
         "maxLife",
         "lifeRegen",
 
+        "shield",
+        "maxShield",
+        "shieldRegen",
     ],
 
     "normalStats_div2": [
