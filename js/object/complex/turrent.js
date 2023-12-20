@@ -1,8 +1,8 @@
 
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../generalUtils/inherit.js"
-import { EnergizadObject } from "../basic/energizedObject.js"
-import { RotableObject } from "../basic/rotableObject.js"
+import { Rotable } from "../basic/rotable.js"
+import { StationaryObject } from "./stationaryObject.js"
 
 export class Turret {
 
@@ -11,31 +11,14 @@ export class Turret {
         new InheritController().inherit(
             this,
             [
-                RotableObject,
-                EnergizadObject,
+                StationaryObject,
+                Rotable,
                 FocusedTopDownBehavior,
             ],
             build
         )
 
-        this.priority += 1
-
-        this.life = 100
-        this.maxLife = 100
-
-        this.defense = 2
-        this.resistance = 0.98
-
-        this.width = 4
-        this.height = 4
-
-        this.energy = 100
-        this.maxEnergy = 100
-        this.energyRegen = 0.5
-
         this.rotationVel *= 3
-
-        this.damage = 2
 
     }
 
