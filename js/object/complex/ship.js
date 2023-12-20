@@ -3,6 +3,7 @@ import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizadObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
+import { ShieldObject } from "../basic/shieldObject.js"
 
 export class Ship {
 
@@ -15,6 +16,7 @@ export class Ship {
                 RotableObject,
                 MovableObject,
                 FocusedTopDownBehavior,
+                ShieldObject,
             ],
             build
         )
