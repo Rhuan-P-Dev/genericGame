@@ -192,6 +192,10 @@ if(build){
 
 optimizar o sistema de colisoes! []
 
+opmizar o sistema de renderisasção
+Exemplo: https://youtu.be/VKmPGmFY7H4?si=iUtJyK-DVVfxPHlO&t=2562
+
+
 ao inves de fixar todo frame os status dos objetos, você pode user observers! [] empilha, empilha, empilha...
 
 */
@@ -271,6 +275,8 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // nave: "rei dos fracos"
 // "peoes do rei" periodicamente converta algo []
 // nave: o deus das factorys
+
+// nave?: "não sinto o peso dos meus atos"
 
 // arena closer...
 
