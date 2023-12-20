@@ -1,17 +1,14 @@
 
 import { setFrameOut } from "../../frame/frameController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
-import { CustomMathController } from "../../generalUtils/math.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { CommonImport } from "../common/commonImport.js"
 
 var Vector = ""
-var CustomMath = ""
 
 onInit(function(){
 
     Vector = new VectorController()
-    CustomMath = new CustomMathController()
 
 })
 
@@ -177,7 +174,7 @@ export class Rotable {
         setFrameOut(
             () => {
                 this.currentRotationVel = this.resetVel
-            },2,1, true, this.ID + "+rotationReset"
+            },2,1, true, this.ID + " rotationReset"
         )
 
     }
