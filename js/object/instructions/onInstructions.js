@@ -31,7 +31,7 @@ export class PositionalList{
 
                 this.list[index] = value
 
-                return
+                return index
 
             }else{
 
@@ -115,7 +115,7 @@ export class ComplexOnType{
 
         if(this[stage]){
 
-            this[stage].add(value, priority)
+            return this[stage].add(value, priority)
 
         }
 
