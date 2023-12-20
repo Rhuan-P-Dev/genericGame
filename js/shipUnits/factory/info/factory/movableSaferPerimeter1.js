@@ -18,7 +18,7 @@ export class MovableSaferPerimeter1 {
     }
 
     name = "movable safer perimeter 1"
-    cost = 50
+    cost = 35
     reload = 10*60
 
     config = {

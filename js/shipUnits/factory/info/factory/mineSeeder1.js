@@ -1,4 +1,4 @@
-import { TopDownBehavior } from "../../../../AI/behavior/topDownBehavior.js"
+import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { DroneV2 } from "../../../../object/complex/droneV2.js"
 import { FactoryExtend } from "../extend/factory.js"
@@ -18,7 +18,7 @@ export class MineSeeder1 {
     }
 
     name = "mine seeder 1"
-    cost = 50
+    cost = 80
     reload = 7*60
 
     currentVelMult = 0
@@ -29,7 +29,7 @@ export class MineSeeder1 {
         "activates": {
             "weapon": ["mine launcher 1"],
         },
-        "behavior": new TopDownBehavior().searchPriority,
+        "behavior": new FocusedTopDownBehavior().searchPriority,
         "statsMult": 0
     }
 
