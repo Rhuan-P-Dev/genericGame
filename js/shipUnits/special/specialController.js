@@ -37,6 +37,8 @@ export class SpecialController{
 
         if(result.return){
 
+            Activate.basicAjustObject(object, result.activate, result.return)
+
             Activate.addObject(result.return)
 
         }
@@ -136,13 +138,7 @@ export class SpecialController{
 
         Effects.removeAll(illusion)
 
-        let AI = false
-
-        if(illusion.AI){
-            AI = true
-        }
-
-        GameState.addObject(illusion, AI)
+        return illusion
 
     }
 
