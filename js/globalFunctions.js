@@ -33,3 +33,7 @@ function returnRandomObject(objects){
     return Object.keys(objects)[index]
 
 }
+
+function firstLetterUppercase(string) {
+    return string[0].toUpperCase() + string.slice(1);
+}
