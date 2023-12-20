@@ -1,6 +1,5 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
-import { DefenseController } from "../../defenseController.js"
+import { ActivateController } from "../../../forAllShipUnits/activateController.js"
 import { DefenseExtend } from "../extend/defense.js"
 
 export class Regen {
@@ -19,12 +18,18 @@ export class Regen {
 
     name = "regen"
     cost = 20
-    func = new DefenseController().regen
+    func = new ActivateController().setStats
     reload = 60
 
     config = {
-        "lifeRegenBuff": 0.17,
-        "energyRegenDebuff": 0.08,
+
+        stats: {
+            "lifeRegen": 0.17,
+            "energyRegen": -0.17,
+        },
+
+        timer: 2*60
+
     }
 
 }
