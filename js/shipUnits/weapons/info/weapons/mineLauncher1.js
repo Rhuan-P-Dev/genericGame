@@ -13,34 +13,18 @@ export class MineLauncher1 {
             build
         )
 
-    }
+        this.name = "mine launcher 1"
+        this.cost = 50
+        this.reload = 1*60
 
-    name = "mine launcher 1"
-    cost = 50
-    reload = 1*60
+        this.currentVelMult = 0
 
-    currentVelMult = 0
+        this.lifeTime = 10*60
 
-    config = {
+        this.config.weapon.multVel = 0
 
-        weapon: {
-            multVel: 0,
-            damageMult: 1,
-        },
-
-        projectiles: {
-
-            return: ["simple mine"],
-
-            AI: {
-                //0: ["missileV1"]
-            }
-            
-
-        }
+        this.config.projectiles.objectClass = ["simple mine"]
 
     }
-    
-    lifeTime = 10*60
 
 }

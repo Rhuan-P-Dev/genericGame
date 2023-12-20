@@ -14,6 +14,8 @@ export class SniperPiston1{
             build
         )
 
+        this.name = "sniper piston 1"
+
         this.cost *= 15
         this.reload *= 15
 
@@ -22,10 +24,9 @@ export class SniperPiston1{
 
         this.lifeTime *= 1.5
 
+        this.modifiersList = []
+
     }
 
-    name = "sniper piston 1"
-
-    modifiersList = []
 
 }

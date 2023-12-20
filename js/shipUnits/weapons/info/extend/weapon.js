@@ -51,6 +51,33 @@ export class WeaponExtend{
 
         projectiles: {
 
+            objectClass: [],
+
+            AI: {},
+
+            activates: {},
+
+            behavior: {},
+
+            /*
+
+            objectClass: ["small bullet","simple missile"],
+
+            AI: {
+                1: ["missileV1","useActivates"]
+            },
+
+            activates: {
+                1: {
+                    "weapon": ["piston 1"]
+                }
+            },
+
+            behavior: {
+                1: new FocusedTopDownBehavior().searchPriority
+            },
+
+            */
         }
 
     }

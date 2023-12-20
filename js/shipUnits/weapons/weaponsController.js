@@ -1,12 +1,9 @@
-import { WeaponsInfoController } from "./info/weaponsInfoController.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
-import { CloneObjectController } from "../../generalUtils/cloneObject.js"
-import { VectorController } from "../../generalUtils/vector.js"
-import { AIController } from "../../AI/AIController.js"
 import { OutputObjectsConfig } from "./modifiers/weaponsModifiersController.js"
-
+import { FactoryController } from "../factory/factoryController.js"
+import { VectorController } from "../../generalUtils/vector.js"
 
 // PROJECTILES
 import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
@@ -16,19 +13,15 @@ import { MineProjetile } from "../../object/projectiles/complex/mineProjectile.j
 
 var Activate = ""
 var Effects = ""
-var CloneObject = ""
 var Vector = ""
-var WeaponsInfo = ""
-var AIC = ""
+var Factory = ""
 
 onInit(function(){
 
     Activate = new ActivateController()
     Effects = new EffectsController()
-    CloneObject = new CloneObjectController()
     Vector = new VectorController()
-    WeaponsInfo = new WeaponsInfoController()
-    AIC = new AIController()
+    Factory = new FactoryController()
 
 })
 
@@ -137,17 +130,26 @@ export class WeaponsController{
 
         let projectiles = []
 
-        for (let index = 0; index < config.projectiles.return.length; index++) {
+        for (let index = 0; index < config.projectiles.objectClass.length; index++) {
 
-            let newObject = config.projectiles.return[index]
-
-            newObject = new Weapons.projectiles[newObject](true)
-
-            if(typeof(config.projectiles.AI[index]) != "undefined"){
-
-                AIC.giveAI(newObject, config.projectiles.AI[index])
-
+            let tempConfig = {
+                "statsMult": 0
             }
+
+            tempConfig.objectClass = Weapons.projectiles[
+                config.projectiles.objectClass[index]
+            ]
+
+            tempConfig.AI = config.projectiles.AI[index]
+
+            tempConfig.activates = config.projectiles.activates[index]
+            tempConfig.behavior = config.projectiles.behavior
+
+            let newObject = Factory.createObject(
+                {},
+                {},
+                tempConfig
+            )
 
             projectiles.push({
                 "object": newObject,

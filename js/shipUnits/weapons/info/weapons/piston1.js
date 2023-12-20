@@ -14,34 +14,18 @@ export class Piston1 {
             build
         )
 
-    }
+        this.name = "piston 1"
+        this.cost = 5
+        this.reload = 7
 
-    name = "piston 1"
-    cost = 5
-    reload = 7
+        this.lifeTime = 30
 
-    config = {
+        this.config.weapon.multVel = 8
 
-        weapon: {
-            multVel: 8,
-            damageMult: 1,
-        },
+        this.config.projectiles.objectClass = ["small bullet"]
 
-        projectiles: {
-
-            return: ["small bullet"],
-
-            AI: {
-                //0: ["missileV1"]
-            }
-            
-
-        }
+        this.modifiersList = ["spread","distortion"]
 
     }
-    
-    lifeTime = 30
-
-    modifiersList = ["spread","distortion"]
 
 }
