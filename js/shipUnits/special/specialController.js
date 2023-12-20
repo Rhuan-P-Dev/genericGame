@@ -43,19 +43,19 @@ export class SpecialController{
 
     }
 
-    weakClone(object, activate, config){
+    clone(object, activate, config){
 
         console.log(
             "O MODO QUE OS CLONES SÃO FEITOS E MEU 'ME' PODE DAR CONFLITOS COM O 'CLONE V1' ETC!"
         )
 
-        let weakClone = CloneObject.clone(object)
+        let clone = CloneObject.clone(object)
 
-        MultiplyStats.multiply(weakClone, config.statsMult)
+            MultiplyStats.multiply(clone, config.statsMult)
 
-        weakClone.ID = randomUniqueID()
+        clone.ID = randomUniqueID()
 
-        return weakClone
+        return clone
 
     }
 

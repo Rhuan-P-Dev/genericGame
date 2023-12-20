@@ -143,7 +143,7 @@ export class GenericEffectsController {
 
         "clone": (params) => {
 
-            let weakClone = Special.weakClone(
+            let clone = Special.clone(
                 params.object,
                 {},
                 {
@@ -151,7 +151,7 @@ export class GenericEffectsController {
                 }
             )
 
-            Activate.addObject(weakClone)
+            Activate.addObject(clone)
 
         },
 
