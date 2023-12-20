@@ -112,4 +112,33 @@ export class ActivateController{
         }
 
     }
+
+    setPercentageStats(object, activate, config){
+
+        for(let stat in config.stats){
+
+            if(object[stat] !== undefined){
+                object[stat] += object["max" + firstLetterUppercase(stat)] * config.stats[stat]
+            }
+
+        }
+
+        if(config.timer){
+
+            setFrameOut(() => {
+
+                for(let stat in config.stats){
+
+                    if(object[stat] !== undefined){
+                        object[stat] -= object["max" + firstLetterUppercase(stat)] * config.stats[stat]
+                    }
+        
+                }
+
+            }, config.timer)
+
+        }
+
+    }
+
 }
