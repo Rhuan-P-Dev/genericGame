@@ -66,28 +66,6 @@ export class SpecialController{
 
     }
 
-    overclock(object, activate, config){
-
-        let overclockMult = config.overclockMult
-        let overclockDiv = config.overclockDiv
-
-        let overclockBuff = object.energyRegen * overclockMult
-        let overclockDebuff = overclockBuff / overclockDiv
-
-        object.lifeRegen -= overclockDebuff
-        object.energyRegen += overclockBuff
-
-        
-
-        setFrameOut( () => {
-
-            object.lifeRegen += overclockDebuff
-            object.energyRegen -= overclockBuff
-
-        }, 600)
-
-    }
-
     illusion(object, activate, config){
 
         let illusion = CloneObject.clone(object)

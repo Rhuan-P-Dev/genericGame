@@ -1,5 +1,5 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { SpecialController } from "../../specialController.js"
+import { ActivateController } from "../../../forAllShipUnits/activateController.js"
 import { SpecialExtend } from "../extend/special.js"
 
 export class Overclock {
@@ -18,12 +18,18 @@ export class Overclock {
 
     name = "overclock"
     cost = 0
-    func = new SpecialController().overclock
+    func = new ActivateController().setStats
     reload = 10
 
     config = {
-        "overclockMult": 0.1,
-        "overclockDiv": 2,
+
+        stats: {
+            "lifeRegen": -0.05,
+            "energyRegen": 0.1,
+        },
+
+        timer: 10*60
+
     }
 
 }
