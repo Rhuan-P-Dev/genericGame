@@ -3,12 +3,14 @@ import { ObjectActivatesController } from "../../objectController/objectActivate
 import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { AIController } from "../../AI/AIController.js"
 import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
+import { EffectsController } from "../../effects/effectsController.js"
 
 var GameState = ""
 var ObjectActivates = ""
 var Activate = ""
 var AIC = ""
 var MultiplyStats = ""
+var Effects = ""
 
 onInit(function(){
 
@@ -17,6 +19,7 @@ onInit(function(){
     Activate = new ActivateController()
     AIC = new AIController()
     MultiplyStats = new MultiplyStatsController()
+    Effects = new EffectsController()
 
 })
 
@@ -53,6 +56,15 @@ export class FactoryController{
     createObject(object, activate, config){
 
         let newObject = new config.objectClass(true)
+
+        if(activate.effects){
+
+            Effects.applyEffects(
+                newObject,
+                activate.effects
+            )
+
+        }
 
         if(config.AI){
             AIC.giveAI(newObject, config.AI)
