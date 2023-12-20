@@ -1,4 +1,5 @@
 
+import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 
 var GameState = ""
@@ -84,4 +85,31 @@ export class ActivateController{
         
     }
 
+    setStats(object, activate, config){
+
+        for(let stat in config.stats){
+
+            if(object[stat] !== undefined){
+                object[stat] += config.stats[stat]
+            }
+
+        }
+
+        if(config.timer){
+
+            setFrameOut(() => {
+
+                for(let stat in config.stats){
+
+                    if(object[stat] !== undefined){
+                        object[stat] -= config.stats[stat]
+                    }
+        
+                }
+
+            }, config.timer)
+
+        }
+
+    }
 }
