@@ -27,12 +27,15 @@ export class MissileProjetile {
 
         this.vel *= 10
 
-        this.maxLife = 15
-        this.life = 15
+        this.maxLife = 5
+        this.life = 5
 
         this.rotationVel *= 4
 
         this.lifeTime = 100
+
+        this.energy *= 5
+        this.maxEnergy *= 5
 
     }
 
