@@ -2,7 +2,6 @@ import { GameStateController } from "../../gameState/gameStateController.js"
 import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { ActivateController } from "../forAllShipUnits/activateController.js"
-import { SpecialInfoController } from "./info/specialInfoController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { EffectsController } from "../../effects/effectsController.js"
 import { ComplexOnType, ComplexOnTypeFunctions } from "../../object/instructions/onInstructions.js"
@@ -55,7 +54,7 @@ export class SpecialController{
 
             MultiplyStats.multiply(clone, config.statsMult)
 
-        clone.ID = randomUniqueID()
+        
 
         return clone
 
@@ -93,17 +92,9 @@ export class SpecialController{
 
         let illusion = CloneObject.clone(object)
 
-        illusion.life = 1
-        illusion.maxLife = 1
-        illusion.defense = 0
-        illusion.resistance = 1
-        illusion.damage = 0
-
         illusion.lifeTime = undefined
 
         illusion.activates = {}
-
-        illusion.ID = randomUniqueID()
 
         illusion.onDeath = new ComplexOnType()
         illusion.onHit = new ComplexOnType()
