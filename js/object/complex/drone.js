@@ -1,6 +1,6 @@
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../generalUtils/inherit.js"
-import { EnergizadObject } from "../basic/energizedObject.js"
+import { EnergizedObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
 
@@ -11,7 +11,7 @@ export class Drone {
         new InheritController().inherit(
             this,
             [
-                EnergizadObject,
+                EnergizedObject,
                 RotableObject,
                 MovableObject,
                 FocusedTopDownBehavior,

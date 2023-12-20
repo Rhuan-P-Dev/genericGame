@@ -1,7 +1,7 @@
 import { InheritController } from "../../generalUtils/inherit.js"
 import { Object } from "./object.js"
 
-export class EnergizadObject {
+export class EnergizedObject {
 
     energy = 10
     maxEnergy = 10
@@ -12,7 +12,7 @@ export class EnergizadObject {
         new InheritController().inherit(
             this,
             [
-                Object
+                Object,
             ],
             build
         )
