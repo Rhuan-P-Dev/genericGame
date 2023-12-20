@@ -62,10 +62,14 @@ export class FactoryController{
             Factory.setBehavior(newObject, config)
         }
 
-        MultiplyStats.multiply(
-            newObject,
-            config.statsMult,
-        )
+        if(config.statsMult){
+
+            MultiplyStats.multiply(
+                newObject,
+                config.statsMult,
+            )
+
+        }
 
         if(config.lifeTime){
 
