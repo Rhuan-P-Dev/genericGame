@@ -28,6 +28,12 @@ export class StatsController {
 
         object.life += object.lifeRegen
 
+        if(object.shield !== undefined){
+
+            object.shield += object.shieldRegen
+
+        }
+
         if(typeof(object.energy) == "number"){
             object.energy += object.energyRegen
         }

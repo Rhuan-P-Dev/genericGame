@@ -75,6 +75,12 @@ export class RulesController {
             object.energy = object.maxEnergy
         }
 
+        if(object.shield !== undefined){
+            if(object.shield > object.maxShield){
+                object.shield = object.maxShield
+            }
+        }
+
         if(object.life <= 0){
 
             object.onDeath.run({
