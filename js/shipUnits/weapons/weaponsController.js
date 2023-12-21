@@ -10,6 +10,11 @@ import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBull
 import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
 import { BlackHoleProjetile } from "../../object/projectiles/complex/blackHoleProjectile.js"
 import { MineProjetile } from "../../object/projectiles/complex/mineProjectile.js"
+import { MediumBulletProjetiles } from "../../object/projectiles/complex/mediumBulletProjectile.js"
+import { MiniWorldProjectile } from "../../object/projectiles/complex/miniWorldProjectile.js"
+import { ExplosiveSmallBulletProjetile } from "../../object/projectiles/complex/explosiveSmallBulletProjectile.js"
+import { ExplosiveMediumBulletProjectile } from "../../object/projectiles/complex/explosiveMediumBulletProjectile.js"
+import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
 
 var Activate = ""
 var Effects = ""
@@ -120,9 +125,14 @@ export class WeaponsController{
     projectiles = {
 
         "small bullet": SmallBulletProjetile,
+        "medium bullet": MediumBulletProjetiles,
         "simple missile": MissileProjetile,
         "black hole": BlackHoleProjetile,
         "simple mine": MineProjetile,
+        "mini world": MiniWorldProjectile,
+        "explosive small bullet": ExplosiveSmallBulletProjetile,
+        "explosive medium bullet": ExplosiveMediumBulletProjectile,
+        "death's hand": DeathHand
 
     }
 

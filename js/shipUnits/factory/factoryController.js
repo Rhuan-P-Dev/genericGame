@@ -4,6 +4,7 @@ import { ActivateController } from "../forAllShipUnits/activateController.js"
 import { AIController } from "../../AI/AIController.js"
 import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
 import { EffectsController } from "../../effects/effectsController.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 
 var GameState = ""
 var ObjectActivates = ""
@@ -11,6 +12,7 @@ var Activate = ""
 var AIC = ""
 var MultiplyStats = ""
 var Effects = ""
+var CloneObject = ""
 
 onInit(function(){
 
@@ -20,6 +22,7 @@ onInit(function(){
     AIC = new AIController()
     MultiplyStats = new MultiplyStatsController()
     Effects = new EffectsController()
+    CloneObject = new CloneObjectController()
 
 })
 
@@ -116,6 +119,26 @@ export class FactoryController{
             )
 
         }
+
+    }
+
+    yourselfFactory(object, activate, config){
+
+        // imcompleto os usuários disso devem implementar os seus próprios 'selfs'
+        // your self - facotry!
+
+        if(!config.selffff){
+            config.selffff = CloneObject.clone(object) // 'self'
+        }
+
+        let clone = CloneObject.clone(config.selffff)
+
+        MultiplyStats.multiply(clone, config.statsMult)
+
+        clone.width = object.width / 2
+        clone.height = object.height / 2
+
+        return clone
 
     }
 

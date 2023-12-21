@@ -16,5 +16,6 @@ export class SpecialExtend {
     }
 
     type = "special"
+    config = {}
 
 }

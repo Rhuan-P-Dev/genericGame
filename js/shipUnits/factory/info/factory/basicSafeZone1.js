@@ -27,7 +27,12 @@ export class BasicSafeZone1 {
         "objectClass": ObjectFactory,
         "AI": ["useActivates"],
         "activates": {
-            "factory": ["movable safer perimeter 1","safer perimeter 1","mine seeder 1"],
+            "factory": [
+                "stationary basic shield area",
+                "stationary basic anti-projectile system",
+                "safer perimeter 1",
+                "movable safer perimeter 1"
+            ],
         },
         "behavior": new TopDownBehavior().searchPriority,
         "statsMult": 0

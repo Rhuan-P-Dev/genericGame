@@ -9,6 +9,23 @@ import { MissileBurst1 } from "./weapons/missileBurst1.js"
 import { MineLauncher1 } from "./weapons/mineLauncher1.js"
 import { Piston1 } from "./weapons/piston1.js"
 import { SniperPiston1 } from "./weapons/sniperPiston1.js"
+import { Scrapper1 } from "./weapons/scrapper1.js"
+import { FlameThrower1 } from "./weapons/flameThrower1.js"
+import { Fragilizer1 } from "./weapons/fragilizer1.js"
+import { Disassemble1 } from "./weapons/disassemble1.js"
+import { ElectrifiedMissile1 } from "./weapons/electrifiedMissile1.js"
+import { Paintbrush1 } from "./weapons/paintbrush1.js"
+import { Missilepiston } from "./weapons/missilepiston.js"
+import { Shotgun1 } from "./weapons/shotgun1.js"
+import { MissileCluster1 } from "./weapons/missileCluster1.js"
+import { MiniWorldLauncher } from "./weapons/miniWorldLauncher.js"
+import { SmallBulletCluster1 } from "./weapons/smallBulletCluster1.js"
+import { Diffusion1 } from "./weapons/diffusion1.js"
+import { Bubbler1 } from "./weapons/bubbler1.js"
+import { ElectrifiedBomb1 } from "./weapons/electrifiedBomb1.js"
+import { ToyMachinegun } from "./weapons/toyMachinegun.js"
+import { ParasiteInjection1 } from "./weapons/parasiteInjection1.js"
+import { DeathHandLauncher } from "./weapons/deathHandLauncher.js"
 
 
 
@@ -48,6 +65,23 @@ export class WeaponsInfoController{
         "missile burst 1": MissileBurst1,
         "black hole generator 1": BlackHoleGenerator1,
         "mine launcher 1": MineLauncher1,
+        "flame thrower 1": FlameThrower1,
+        "scrapper 1": Scrapper1,
+        "fragilizer 1": Fragilizer1,
+        "disassemble 1": Disassemble1,
+        "electrified missile 1": ElectrifiedMissile1,
+        "paintbrush 1": Paintbrush1,
+        "missilepiston": Missilepiston,
+        "shotgun 1": Shotgun1,
+        "missile cluster 1": MissileCluster1,
+        "mini world launcher": MiniWorldLauncher,
+        "small bullet cluster 1": SmallBulletCluster1,
+        "diffusion 1": Diffusion1,
+        "bubbler 1": Bubbler1,
+        "electrified bomb 1": ElectrifiedBomb1,
+        "toy machinegun": ToyMachinegun,
+        "parasite injection 1": ParasiteInjection1,
+        "death hand launcher": DeathHandLauncher,
     }
 
     getAll(){
