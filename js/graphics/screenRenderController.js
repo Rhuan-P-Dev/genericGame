@@ -1,14 +1,17 @@
 
 import { GameStateController } from "../gameState/gameStateController.js"
 import { VectorController } from "../generalUtils/vector.js"
+import { ComplexRenderController } from "./complexRenderController.js"
 
 var GameState = ""
 var Vector = ""
+var complexRender = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     Vector = new VectorController()
+    complexRender = new ComplexRenderController()
 
 })
 
@@ -58,13 +61,13 @@ export class ScreenRenderController {
 
         ScreenRender.runRequests()
 
-        ScreenRender.defaultParams()
-
         let allObjectsRenderable = GameState.getAllObjectsRender()
 
         for(let objectName in allObjectsRenderable){
 
             let object = allObjectsRenderable[objectName]
+
+            ScreenRender.defaultParams()
 
             ScreenRender.rotateObject(object)
 
@@ -123,6 +126,8 @@ export class ScreenRenderController {
     }
 
     renderComplexFormat(object){
+
+        complexRender.renderComplexFormat(object)
 
         ScreenRender.mainCanvasContext.fillStyle = object.color
 

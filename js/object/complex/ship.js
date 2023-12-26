@@ -1,5 +1,6 @@
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../generalUtils/inherit.js"
+import { ttttttttttttttttttt } from "../../graphics/complexShapes/test.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
@@ -17,6 +18,7 @@ export class Ship {
                 MovableObject,
                 FocusedTopDownBehavior,
                 ShieldObject,
+                ttttttttttttttttttt
             ],
             build
         )

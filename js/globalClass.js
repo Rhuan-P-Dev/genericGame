@@ -1,4 +1,5 @@
-class LinkedList{
+
+class BasicLinkedList{
 
     list = {
         next:{}
@@ -18,6 +19,32 @@ class LinkedList{
             }
         }
     }
+
+}
+
+class AnimationLinkedList extends BasicLinkedList{
+
+    return(){
+
+        return this.list.next
+
+    }
+
+    massAdd(objects){
+
+        for (let index = 0; index < objects.length; index++) {
+            
+            let object = objects[index]
+
+            this.add(object)
+            
+        }
+
+    }
+
+}
+
+class LinkedList extends BasicLinkedList{
     
     remove(value){
         let node = this.list.next
