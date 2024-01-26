@@ -46,7 +46,7 @@ export class DeathHand {
     }
 
     passBuildList = {
-        ["add_miniWorldFunctions"]: (updateThis) => {
+        ["add_deathHandFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last", 0) // selfDestruction
 
