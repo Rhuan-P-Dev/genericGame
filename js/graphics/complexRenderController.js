@@ -38,16 +38,7 @@ export class ComplexRenderController {
 
             }
 
-        },
-
-        "fillArea": (
-            object,
-            functionName,
-            originalParams,
-            params,
-        ) => {
-
-            this.scalonateParam["drawLine"](object, functionName, originalParams, params)
+            
 
         },
 

@@ -191,29 +191,6 @@ export class ScreenRenderController {
 
     }
 
-    fillArea(params){
-
-        ScreenRender.setStyleParams(params)
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(
-            params.positions[0][0],
-            params.positions[0][1]
-        )
-
-        for (let index = 1; index < params.positions.length; index++) {
-    
-            ScreenRender.mainCanvasContext.lineTo(
-                params.positions[index][0],
-                params.positions[index][1]
-            )
-
-        }
-    
-        ScreenRender.mainCanvasContext.fill()
-
-    }
-
     writeText(params){
 
         ScreenRender.setStyleParams(params)
