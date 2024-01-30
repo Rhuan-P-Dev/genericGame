@@ -125,10 +125,7 @@ function browseInit(){
 
 }
 
-
 /* > NEXT <
-
-add varias armas, com efeito, mutadores. para fazer 'testes' altomatizados! [X]
 
 na rotasão precissa ir deireto para a porcentage que deseja caso não aja vá em 100%
 
@@ -222,6 +219,11 @@ adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
 
 /* > BUG <
 
+bug: missions atirados rapida mente com puco dano automatico
+bug: casi vc mude de time suas armar automatica não mudão!
+
+aparentemente the um bug na multiplicasão da velocidade
+
 modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 */
@@ -254,13 +256,14 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // uma nave tipo 'gilgamesh', se a prioridade da nave enemiga for maior... se o HP estiver baixo... []
 // uma nave tipo "gojo joven" []
 
-// um nave que "sempre" volta?????? [?]
+// um nave que "sempre" volta?????? [?] e depois que morre um ultima vez, essa nave nao pode ir para fora? / uma versão alternativa
 
 // parar o tempo? []
 
 // uma nave special que tem X cores, cada core pode ser derrupado caso a nave the X% de vida, cada core, pode ser: um stats, poderzin!
 
 // uma nave que se adaptar ao dano levado []
+// GENERAL DIVINO! []
 
 // uma nave que tira a multiplicador nas coisas? []
 
@@ -279,6 +282,10 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 // nave?: "não sinto o peso dos meus atos"
 
 // arena closer...
+
+//algo que distribui o dano entre aliados
+
+//uma nave uqe fala "wake up", se ele morre ela respauwna, caso morra denovo antes do "wake up" ela morre
 
 
 var previousTime = performance.now()
