@@ -28,6 +28,8 @@ export class DeathHand {
             
         )
 
+        this.graphicID = "death hand - P2"
+
         this.life = 200
         this.maxLife = 200
 

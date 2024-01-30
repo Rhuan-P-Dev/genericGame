@@ -1,17 +1,22 @@
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
+import { ComplexShapesDatabaseController } from "./complexShapes/complexShapesDatabaseController.js"
 import { ScreenRenderController } from "./screenRenderController.js"
 
 var Clone = ""
 var ScreenRender = ""
+var ComplexShapesDatabase
 
 onInit(function(){
 
     Clone = new CloneObjectController()
     ScreenRender = new ScreenRenderController()
+    ComplexShapesDatabase = new ComplexShapesDatabaseController()
 
 })
 
 export class ComplexRenderController {
+
+    lineWidthMult = 0.25
 
     getObjectScale(object){
 
@@ -27,18 +32,18 @@ export class ComplexRenderController {
             params,
         ) => {
 
+            let scale = this.getObjectScale(object)
+
             for(let index in params.positions){
 
                 let pos = params.positions[index]
-
-                let scale = this.getObjectScale(object)
 
                 pos[0] *= scale
                 pos[1] *= scale
 
             }
 
-            
+            params.lineWidth *= scale * this.lineWidthMult
 
         },
 
@@ -55,7 +60,7 @@ export class ComplexRenderController {
             params.y *= scale
 
             params.radius *= scale
-
+            params.lineWidth *= scale * this.lineWidthMult
 
         },
 
@@ -87,13 +92,16 @@ export class ComplexRenderController {
 
     }
 
-    configObjectRender(object){
+    configObjectRender(
+        object,
+        drawInstructions = ComplexShapesDatabase.get(object.graphicID)
+    ){
 
-        let drawInstructions = object.graphicRender.map.return()
+        for (let index = 0; index < drawInstructions.length; index++) {
 
-        while(drawInstructions.value){
+            let drawInstruction = drawInstructions[index]
 
-            let originalParams = drawInstructions.value.params
+            let originalParams = drawInstruction.params
 
             if(originalParams.objectColor){
 
@@ -101,11 +109,7 @@ export class ComplexRenderController {
 
             }
 
-            drawInstructions = drawInstructions.next
-
         }
-
-        object.graphicRender.configurate = false
 
     }
 
@@ -131,34 +135,30 @@ export class ComplexRenderController {
 
     renderComplexFormat(object){
 
-        if(object.graphicRender){
+        let drawInstructions = ComplexShapesDatabase.get(object.graphicID)
 
-            let drawInstructions = object.graphicRender.map.return()
+        //if(object.graphicRender.configurate){
 
-            //if(object.graphicRender.configurate){
+            this.configObjectRender(object, drawInstructions)
 
-                this.configObjectRender(object)
+        //}
 
-            //}
+        for (let index = 0; index < drawInstructions.length; index++) {
 
-            while(drawInstructions.value){
+            let drawInstruction = drawInstructions[index]
 
-                let functionName = drawInstructions.value.functionName
-                let originalParams = drawInstructions.value.params
-                let params = Clone.recursiveCloneAttribute(originalParams)
+            let functionName = drawInstruction.functionName
+            let originalParams = drawInstruction.params
+            let params = Clone.recursiveCloneAttribute(originalParams)
 
-                this.runtimeConfigObjectRender(
-                    object,
-                    functionName,
-                    originalParams,
-                    params
-                )
+            this.runtimeConfigObjectRender(
+                object,
+                functionName,
+                originalParams,
+                params
+            )
 
-                ScreenRender[functionName](params)
-
-                drawInstructions = drawInstructions.next
-
-            }
+            ScreenRender[functionName](params)
 
         }
 

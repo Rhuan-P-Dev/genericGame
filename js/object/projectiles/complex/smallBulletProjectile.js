@@ -15,6 +15,8 @@ export class SmallBulletProjetile {
             
         )
 
+        this.graphicID = "bullet - P1"
+
         this.life = 1
         this.maxLife = 1
 

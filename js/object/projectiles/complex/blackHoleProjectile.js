@@ -25,6 +25,8 @@ export class BlackHoleProjetile {
             
         )
 
+        this.graphicID = "bullet - P1"
+
         this.life = 2000
         this.maxLife = 2000
 
