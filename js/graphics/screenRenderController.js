@@ -150,8 +150,15 @@ export class ScreenRenderController {
             params.y,
             params.radius,
             0,
-            Math.PI * 2)
-        ScreenRender.mainCanvasContext.stroke()
+            Math.PI * 2
+        )
+        
+        if(params.fill){
+            ScreenRender.mainCanvasContext.fill()
+        }else{
+            ScreenRender.mainCanvasContext.stroke()
+        }
+        
 
     }
 
@@ -175,7 +182,11 @@ export class ScreenRenderController {
 
         }
 
-        ScreenRender.mainCanvasContext.stroke()
+        if(params.fill){
+            ScreenRender.mainCanvasContext.fill()
+        }else{
+            ScreenRender.mainCanvasContext.stroke()
+        }
         ScreenRender.mainCanvasContext.closePath()
 
     }
@@ -231,7 +242,11 @@ export class ScreenRenderController {
             params.startAngle,
             params.endAngle
         )
-        ScreenRender.mainCanvasContext.stroke()
+        if(params.fill){
+            ScreenRender.mainCanvasContext.fill()
+        }else{
+            ScreenRender.mainCanvasContext.stroke()
+        }
     }
 
     setStyleParams(params){
