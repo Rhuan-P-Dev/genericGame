@@ -21,6 +21,8 @@ export class Ship {
             build
         )
 
+        this.graphicID = "ship - P2"
+
         this.rotationVel *= 2
 
         this.priority = 5

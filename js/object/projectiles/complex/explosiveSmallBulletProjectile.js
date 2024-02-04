@@ -19,6 +19,8 @@ export class ExplosiveSmallBulletProjetile {
             
         )
 
+        this.graphicID = "explosive bullet - P1"
+
     }
 
 }

@@ -1,14 +1,14 @@
 
 import { GameStateController } from "../gameState/gameStateController.js"
-import { VectorController } from "../generalUtils/vector.js"
+import { ComplexRenderController } from "./complexRenderController.js"
 
 var GameState = ""
-var Vector = ""
+var ComplexRender = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
-    Vector = new VectorController()
+    ComplexRender = new ComplexRenderController()
 
 })
 
@@ -58,19 +58,17 @@ export class ScreenRenderController {
 
         ScreenRender.runRequests()
 
-        ScreenRender.defaultParams()
-
         let allObjectsRenderable = GameState.getAllObjectsRender()
 
         for(let objectName in allObjectsRenderable){
 
             let object = allObjectsRenderable[objectName]
 
+            ScreenRender.defaultParams()
+
             ScreenRender.rotateObject(object)
 
-            ScreenRender.renderTheFrontOfShip(object)
-            
-            ScreenRender.renderComplexFormat(object)
+            ComplexRender.renderComplexFormat(object)
 
             ScreenRender.resetCanvas()
 
@@ -94,47 +92,6 @@ export class ScreenRenderController {
 
     }
 
-    renderTheFrontOfShip(object){
-
-        //ugly
-        if(!object.radian){return}
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(0, 0)
-        ScreenRender.mainCanvasContext.lineTo(
-            0, (object.width + object.height) * 2
-        )
-        ScreenRender.mainCanvasContext.closePath()
-        ScreenRender.mainCanvasContext.stroke()
-
-        return
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(0, 0)
-        ScreenRender.mainCanvasContext.lineTo(
-            0 + ( ( object.width/2 ) * object.cosine ) * 10
-            ,
-            0 + ( ( object.height/2 ) * object.sine ) * 10
-        )
-        ScreenRender.mainCanvasContext.closePath()
-        ScreenRender.mainCanvasContext.stroke()
-
-
-    }
-
-    renderComplexFormat(object){
-
-        ScreenRender.mainCanvasContext.fillStyle = object.color
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(0 - object.width, 0 - object.height)
-        ScreenRender.mainCanvasContext.lineTo(0 + object.width, 0 - object.height)
-        ScreenRender.mainCanvasContext.lineTo(0 + object.width, 0 + object.height)
-        ScreenRender.mainCanvasContext.lineTo(0 - object.width, 0 + object.height)
-        ScreenRender.mainCanvasContext.fill()
-
-    }
-
     drawCircle(params) {
 
         ScreenRender.setStyleParams(params)
@@ -145,8 +102,15 @@ export class ScreenRenderController {
             params.y,
             params.radius,
             0,
-            Math.PI * 2)
-        ScreenRender.mainCanvasContext.stroke()
+            Math.PI * 2
+        )
+        
+        if(params.fill){
+            ScreenRender.mainCanvasContext.fill()
+        }else{
+            ScreenRender.mainCanvasContext.stroke()
+        }
+        
 
     }
 
@@ -170,31 +134,12 @@ export class ScreenRenderController {
 
         }
 
-        ScreenRender.mainCanvasContext.stroke()
-        ScreenRender.mainCanvasContext.closePath()
-
-    }
-
-    fillArea(params){
-
-        ScreenRender.setStyleParams(params)
-
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.moveTo(
-            params.positions[0][0],
-            params.positions[0][1]
-        )
-
-        for (let index = 1; index < params.positions.length; index++) {
-    
-            ScreenRender.mainCanvasContext.lineTo(
-                params.positions[index][0],
-                params.positions[index][1]
-            )
-
+        if(params.fill){
+            ScreenRender.mainCanvasContext.fill()
+        }else{
+            ScreenRender.mainCanvasContext.stroke()
         }
-    
-        ScreenRender.mainCanvasContext.fill()
+        ScreenRender.mainCanvasContext.closePath()
 
     }
 
@@ -226,7 +171,11 @@ export class ScreenRenderController {
             params.startAngle,
             params.endAngle
         )
-        ScreenRender.mainCanvasContext.stroke()
+        if(params.fill){
+            ScreenRender.mainCanvasContext.fill()
+        }else{
+            ScreenRender.mainCanvasContext.stroke()
+        }
     }
 
     setStyleParams(params){

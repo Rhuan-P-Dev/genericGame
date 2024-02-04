@@ -66,6 +66,8 @@ export class Object {
 
     }
 
+    graphicID = "default"
+
     team = "newTeam"
     ID = "newID"
 

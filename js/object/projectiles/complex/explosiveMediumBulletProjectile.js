@@ -18,6 +18,8 @@ export class ExplosiveMediumBulletProjectile {
             
         )
 
+        this.graphicID = "explosive bullet - P1"
+
     }
 
 }

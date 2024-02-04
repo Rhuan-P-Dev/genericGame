@@ -1,4 +1,5 @@
-class LinkedList{
+
+class BasicLinkedList{
 
     list = {
         next:{}
@@ -18,6 +19,10 @@ class LinkedList{
             }
         }
     }
+
+}
+
+class LinkedList extends BasicLinkedList{
     
     remove(value){
         let node = this.list.next

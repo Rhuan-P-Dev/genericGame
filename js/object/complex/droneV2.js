@@ -15,6 +15,8 @@ export class DroneV2 {
             build
         )
 
+        this.graphicID = "drone v2 - P1"
+
         this.vel *= 2
 
         this.life *= 1.6

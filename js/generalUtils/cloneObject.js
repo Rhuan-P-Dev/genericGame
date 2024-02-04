@@ -96,7 +96,7 @@ export class CloneObjectController {
         return clonedObject
     }
 
-    recursiveCloneAttribute(object, clonedObject = {}, overwrite = false){
+    recursiveCloneAttribute(object, clonedObject = new object.constructor, overwrite = false){
 
         let dummy = object
 

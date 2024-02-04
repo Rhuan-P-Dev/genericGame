@@ -142,7 +142,7 @@ export class StatusbarController {
 
         ScreenRender.addDrawRequest(
             {
-                "func": ScreenRender.fillArea,
+                "func": ScreenRender.drawLine,
                 "params": {
                     "positions": [
                         [
@@ -163,7 +163,8 @@ export class StatusbarController {
                         ],
                     ],
                     "color": "black",
-                    "lineWidth": params.lineWidth
+                    "lineWidth": params.lineWidth,
+                    "fill": true,
                 }
             }
         

@@ -28,6 +28,8 @@ export class DeathHand {
             
         )
 
+        this.graphicID = "death hand - P2"
+
         this.life = 200
         this.maxLife = 200
 
@@ -46,7 +48,7 @@ export class DeathHand {
     }
 
     passBuildList = {
-        ["add_miniWorldFunctions"]: (updateThis) => {
+        ["add_deathHandFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last", 0) // selfDestruction
 

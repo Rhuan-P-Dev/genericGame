@@ -13,12 +13,12 @@ export class BigDrone {
             build
         )
 
+        this.graphicID = "big drone - P1"
+
         // ugly - same stats form shieldObject.js
         this.shield *= 5
         this.maxShield *= 5
         this.shieldRegen *= 5
-
-
 
         this.vel *= 1.1
         this.maxVel *= 1.2
