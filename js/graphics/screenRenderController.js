@@ -94,6 +94,11 @@ export class ScreenRenderController {
 
     drawCircle(params) {
 
+        if(params.radius < 0){
+            console.warn("Radius:", params.radius)
+            return
+        }
+
         ScreenRender.setStyleParams(params)
 
         ScreenRender.mainCanvasContext.beginPath()
@@ -160,6 +165,11 @@ export class ScreenRenderController {
     }
 
     drawArc(params) {
+
+        if(params.radius < 0){
+            console.warn("Radius:", params.radius)
+            return
+        }
 
         ScreenRender.setStyleParams(params)
 
