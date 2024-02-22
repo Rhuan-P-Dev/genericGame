@@ -44,7 +44,6 @@ export class DefenseController{
         let index = ConsumeStats.add(
             object,
             "energy",
-            true,
             config.position
         )
 

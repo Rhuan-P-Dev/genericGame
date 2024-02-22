@@ -1,14 +1,5 @@
 import { InheritController } from "../../generalUtils/inherit.js"
-import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { ShieldObject } from "./shieldObject.js"
-
-var ConsumeStats = ""
-
-onInit(function(){
-
-    ConsumeStats = new ConsumeStatsController()
-
-})
 
 export class SmallShieldObject {
 
