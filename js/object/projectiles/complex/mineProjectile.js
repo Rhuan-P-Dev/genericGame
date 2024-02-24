@@ -16,7 +16,7 @@ export class MineProjetile {
             build
         )
 
-        this.graphicID = "mine - P1"
+        this.graphicID = "mine"
 
         this.damage = 100
 

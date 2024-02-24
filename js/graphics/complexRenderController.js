@@ -94,7 +94,7 @@ export class ComplexRenderController {
 
     configObjectRender(
         object,
-        drawInstructions = ComplexShapesDatabase.get(object.graphicID)
+        drawInstructions = ComplexShapesDatabase.get(object.graphicID, false)
     ){
 
         for (let index = 0; index < drawInstructions.length; index++) {
@@ -133,9 +133,60 @@ export class ComplexRenderController {
 
     }
 
+    mirrorFunction(functionName, params, scaleX, scaleY, object){
+
+        ScreenRender.setCanvasState(
+            params.offset,
+            params.rotation,
+            scaleX,
+            scaleY,
+        )
+
+        ScreenRender[functionName](params)
+
+        ScreenRender.reset(object)
+
+    }
+
+    mirror(functionName, params, object){
+
+        ScreenRender.reset(object)
+
+        if(params.xMirror){
+            this.mirrorFunction(
+                functionName,
+                params,
+                params.canvasScale * -1,
+                params.canvasScale,
+                object
+            )
+        }
+
+        if(params.yMirror){
+            this.mirrorFunction(
+                functionName,
+                params,
+                params.canvasScale,
+                params.canvasScale * -1,
+                object
+            )
+        }
+
+        if(params.xyMirror){
+            this.mirrorFunction(
+                functionName,
+                params,
+                params.canvasScale * -1,
+                params.canvasScale * -1,
+                object
+            )
+        }
+
+    }
+
     renderComplexFormat(object){
 
-        let drawInstructions = ComplexShapesDatabase.get(object.graphicID)
+        let drawInstructions = ComplexShapesDatabase.get(object.graphicID, false)
 
         //if(object.graphicRender.configurate){
 
@@ -157,8 +208,17 @@ export class ComplexRenderController {
                 originalParams,
                 params
             )
+            
+            if(params.canvasScale !== undefined){
+                params.canvasScale += 1
+                ScreenRender.applyConfig(params)
+            }
 
             ScreenRender[functionName](params)
+
+            if(params.canvasScale !== undefined){
+                this.mirror(functionName, params, object)
+            }
 
         }
 

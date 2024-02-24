@@ -19,7 +19,7 @@ export class Drone {
             build
         )
 
-        this.graphicID = "drone v1 - P2"
+        this.graphicID = "drone v1"
 
         this.priority += 2
 

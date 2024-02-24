@@ -21,7 +21,7 @@ export class Ship {
             build
         )
 
-        this.graphicID = "ship - P2"
+        this.graphicID = "ship"
 
         this.rotationVel *= 2
 

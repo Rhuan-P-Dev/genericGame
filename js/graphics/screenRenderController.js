@@ -86,6 +86,49 @@ export class ScreenRenderController {
 
     }
 
+    applyConfig(config){
+
+        this.setCanvasState(
+            config.offset,
+            config.rotation,
+            config.canvasScale
+        )
+
+    }
+
+    reset(object){
+
+        ScreenRender.resetCanvas()
+
+        this.setCanvasState(
+            {
+                "x": object.x,
+                "y": object.y
+            },
+            object.radian,
+            1
+        )
+
+    }
+
+    setCanvasState(translate, rotate, scaleX, scaleY = scaleX){
+
+        ScreenRender.mainCanvasContext.translate(
+            translate.x,
+            translate.y
+        )
+
+        ScreenRender.mainCanvasContext.rotate(
+            rotate
+        )
+
+        ScreenRender.mainCanvasContext.scale(
+            scaleX,
+            scaleY
+        )
+
+    }
+
     resetCanvas(){
 
         ScreenRender.mainCanvasContext.resetTransform()

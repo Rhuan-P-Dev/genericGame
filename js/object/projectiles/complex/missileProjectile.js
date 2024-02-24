@@ -20,7 +20,7 @@ export class MissileProjetile {
             build
         )
 
-        this.graphicID = "missile - P3"
+        this.graphicID = "missile"
 
         this.damage = 30
 

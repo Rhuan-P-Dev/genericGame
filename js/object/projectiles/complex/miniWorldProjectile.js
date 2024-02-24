@@ -24,7 +24,7 @@ export class MiniWorldProjectile {
             
         )
 
-        this.graphicID = "mini world - P2"
+        this.graphicID = "mini world"
 
         this.life = 150
         this.maxLife = 150
