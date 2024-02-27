@@ -41,24 +41,6 @@ export class ComplexShapesDatabaseController {
     
     }
 
-    transform(name){
-
-        let drawInstructions = []
-
-        if(typeof(nodes.value.params.reference) === "string"){
-
-            drawInstructions = this.get(nodes.value.params.reference, false, nodes.value.params)
-
-        }else{
-
-            drawInstructions = [nodes.value]
-
-        }
-
-        return drawInstructions
-
-    }
-    
     get(name, raw = true, params = new referenceNode().params) {
     
         if(raw){
