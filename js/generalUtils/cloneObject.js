@@ -106,7 +106,7 @@ export class CloneObjectController {
 
                 if(typeof(clonedObject[key]) == "object"){
 
-                    this.recursiveCloneAttribute(dummy[key], clonedObject[key])
+                    this.recursiveCloneAttribute(dummy[key], clonedObject[key], overwrite)
                     continue
 
                 }
@@ -134,7 +134,7 @@ export class CloneObjectController {
 
                     clonedObject[key] = new object[key].constructor
 
-                    this.recursiveCloneAttribute(dummy[key], clonedObject[key])
+                    this.recursiveCloneAttribute(dummy[key], clonedObject[key], overwrite)
 
                 }else{
                     

@@ -16,7 +16,7 @@ export class ObjectFactory{
             build
         )
 
-        this.graphicID = "factory - P1"
+        this.graphicID = "factory"
 
         this.priority = 4
     

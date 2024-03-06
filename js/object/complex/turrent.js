@@ -18,7 +18,7 @@ export class Turret {
             build
         )
 
-        this.graphicID = "generic turret - P1"
+        this.graphicID = "generic turret"
 
         this.rotationVel *= 3
 

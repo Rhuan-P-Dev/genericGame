@@ -18,7 +18,7 @@ export class ExplosiveMediumBulletProjectile {
             
         )
 
-        this.graphicID = "explosive bullet - P1"
+        this.graphicID = "explosive bullet"
 
     }
 

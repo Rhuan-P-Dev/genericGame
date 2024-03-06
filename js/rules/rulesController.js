@@ -21,7 +21,6 @@ export class RulesController {
         for(let objectName in allObjectsRules){
             let object = allObjectsRules[objectName]
 
-            Rules.screen(object)
             Rules.stats(object)
             //Rules.activates(object)
             Rules.physics(object)
@@ -41,26 +40,6 @@ export class RulesController {
             object.currentYVel = this.maxVel
         }else if(object.currentYVel < -this.maxVel){
             object.currentYVel = -this.maxVel
-        }
-
-    }
-
-    screen(object){
-
-        if(object.x < 0){
-            object.x = Rules.mainCanvas.offsetWidth - object.width
-        }
-
-        if(object.x > Rules.mainCanvas.offsetWidth){
-            object.x = object.width
-        }
-
-        if(object.y < 0){
-            object.y = Rules.mainCanvas.offsetHeight - object.height
-        }
-
-        if(object.y > Rules.mainCanvas.offsetHeight){
-            object.y = object.height
         }
 
     }

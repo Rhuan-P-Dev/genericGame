@@ -25,10 +25,13 @@ export class BlackHoleProjetile {
             
         )
 
-        this.graphicID = "bullet - P1"
+        this.graphicID = "bullet"
 
         this.life = 2000
         this.maxLife = 2000
+
+        this.width = 12
+        this.height = 12
 
         this.damage = 0
 
@@ -42,24 +45,6 @@ export class BlackHoleProjetile {
             updateThis.onHit.remove("last",10) // damage
 
             updateThis.onHit.remove("last", 0) // selfDestruction
-
-            setFrameOut(
-
-                () => {
-
-                    if(updateThis.lifeTime > 300){
-                        updateThis.lifeTime = 300
-                    }
-
-                    let littleLifeTime = (updateThis.lifeTime / 20)
-
-                    updateThis.width = littleLifeTime
-                    updateThis.height = littleLifeTime
-
-                },
-                1,
-                -1
-            )
 
             Effects.add(
                 "devour",

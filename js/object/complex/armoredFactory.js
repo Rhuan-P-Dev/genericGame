@@ -15,7 +15,7 @@ export class ArmoredObjectFactory{
             build
         )
 
-        this.graphicID = "armored factory - P1"
+        this.graphicID = "armored factory"
 
         this.life *= 2
         this.maxLife *= 2

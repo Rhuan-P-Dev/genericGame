@@ -22,8 +22,8 @@ export class StationaryObject {
         this.defense = 2
         this.resistance -= 0.02
 
-        this.width += 2
-        this.height += 2
+        this.width += 4
+        this.height += 4
 
         this.energy = 100
         this.maxEnergy = 100
