@@ -1,3 +1,4 @@
+import { GameStateController } from "../gameState/gameStateController.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { ComplexShapesDatabaseController } from "./complexShapes/complexShapesDatabaseController.js"
 import { ScreenRenderController } from "./screenRenderController.js"
@@ -5,96 +6,22 @@ import { ScreenRenderController } from "./screenRenderController.js"
 var Clone = ""
 var ScreenRender = ""
 var ComplexShapesDatabase
+var GameState
 
 onInit(function(){
 
     Clone = new CloneObjectController()
     ScreenRender = new ScreenRenderController()
     ComplexShapesDatabase = new ComplexShapesDatabaseController()
+    GameState = new GameStateController()
 
 })
 
 export class ComplexRenderController {
 
-    lineWidthMult = 0.25
-
-    getObjectScale(object){
-
-        return ( (object.width + object.height) / 2) / 6
-
-    }
-
-    scalonateParam = {
-        "drawLine": (
-            object,
-            functionName,
-            originalParams,
-            params,
-        ) => {
-
-            let scale = this.getObjectScale(object)
-
-            for(let index in params.positions){
-
-                let pos = params.positions[index]
-
-                pos[0] *= scale
-                pos[1] *= scale
-
-            }
-
-            params.lineWidth *= scale * this.lineWidthMult
-
-        },
-
-        "drawCircle": (
-            object,
-            functionName,
-            originalParams,
-            params,
-        ) => {
-
-            let scale = this.getObjectScale(object)
-
-            params.x *= scale
-            params.y *= scale
-
-            params.radius *= scale
-            params.lineWidth *= scale * this.lineWidthMult
-
-        },
-
-        "drawArc": (
-            object,
-            functionName,
-            originalParams,
-            params,
-        ) => {
-
-            this.scalonateParam["drawCircle"](object, functionName, originalParams, params)
-
-        },
-
-        "writeText": (
-            object,
-            functionName,
-            originalParams,
-            params,
-        ) => {
-
-            let scale = this.getObjectScale(object)
-
-            params.x *= scale
-            params.y *= scale
-            params.fontSize *= scale
-
-        },
-
-    }
-
     configObjectRender(
         object,
-        drawInstructions = ComplexShapesDatabase.get(object.graphicID, false)
+        drawInstructions
     ){
 
         for (let index = 0; index < drawInstructions.length; index++) {
@@ -113,44 +40,28 @@ export class ComplexRenderController {
 
     }
 
-    runtimeConfigObjectRender(
-        object,
-        functionName,
-        originalParams,
-        params,
-    ){
-
-        if(params.scale){
-
-            this.scalonateParam[functionName](
-                object,
-                functionName,
-                originalParams,
-                params,
-            )
-
-        }
-
-    }
-
-    mirrorFunction(functionName, params, scaleX, scaleY, object){
+    mirrorFunction(functionName, params, scaleX, scaleY){
 
         ScreenRender.setCanvasState(
-            params.offset,
-            params.rotation,
+            {
+                "x": this.offscreen.getOffsetX(),
+                "y": this.offscreen.getOffsetY(),
+            },
+            0,
             scaleX,
             scaleY,
+            ScreenRender.offscreenCanvasContext
         )
 
-        ScreenRender[functionName](params)
+        ScreenRender[functionName](params, ScreenRender.offscreenCanvasContext)
 
-        ScreenRender.reset(object)
+        ScreenRender.resetCanvas(ScreenRender.offscreenCanvasContext)
 
     }
 
-    mirror(functionName, params, object){
+    mirror(functionName, params){
 
-        ScreenRender.reset(object)
+        ScreenRender.resetCanvas(ScreenRender.offscreenCanvasContext)
 
         if(params.xMirror){
             this.mirrorFunction(
@@ -158,7 +69,6 @@ export class ComplexRenderController {
                 params,
                 params.canvasScale * -1,
                 params.canvasScale,
-                object
             )
         }
 
@@ -168,7 +78,6 @@ export class ComplexRenderController {
                 params,
                 params.canvasScale,
                 params.canvasScale * -1,
-                object
             )
         }
 
@@ -178,50 +87,172 @@ export class ComplexRenderController {
                 params,
                 params.canvasScale * -1,
                 params.canvasScale * -1,
-                object
             )
         }
 
     }
 
+    useComplexFormat(object){
+
+        ScreenRender.resetCanvas()
+
+        let objectOffset = this.offscreen.getObjectXY(object)
+
+        let focus = ScreenRender.shiftFocus(
+            {
+                "x": GameState.getPlayer().x - (ScreenRender.mainCanvasContext.canvas.width / 2),
+                "y": GameState.getPlayer().y - (ScreenRender.mainCanvasContext.canvas.height / 2),
+            },
+            object,
+        )
+
+        ScreenRender.setCanvasState(
+            focus,
+            object.radian,
+        )
+
+        ScreenRender.mainCanvasContext.drawImage(
+            ScreenRender.offscreenCanvas,
+            objectOffset.x - this.offscreen.width / 2,
+            objectOffset.y - this.offscreen.height / 2,
+            this.offscreen.width,
+            this.offscreen.height,
+            0 - this.offscreen.width / 2,
+            0 - this.offscreen.height / 2,
+            this.offscreen.width,
+            this.offscreen.height
+        )
+
+    }
+
     renderComplexFormat(object){
 
-        let drawInstructions = ComplexShapesDatabase.get(object.graphicID, false)
+        if(!this.offscreen[object.team]){
+            this.offscreen[object.team] = {}
+        }
 
-        //if(object.graphicRender.configurate){
+        if(!this.offscreen[object.team][object.color]){
+            this.offscreen[object.team][object.color] = {}
+        }
 
+        if(
+            this.offscreen[object.team][object.color][object.graphicID] === undefined
+        ){
+
+            this.offscreen[object.team][object.color][object.graphicID] = this.offscreen.lenght
+
+
+
+            let drawInstructions = undefined
+
+            drawInstructions = ComplexShapesDatabase.get(object.graphicID, false)
+    
             this.configObjectRender(object, drawInstructions)
+    
+            for (let index = 0; index < drawInstructions.length; index++) {
+    
+                let drawInstruction = drawInstructions[index]
+    
+                let functionName = drawInstruction.functionName
+                let originalParams = drawInstruction.params
+                let params = Clone.recursiveCloneAttribute(originalParams)
 
-        //}
-
-        for (let index = 0; index < drawInstructions.length; index++) {
-
-            let drawInstruction = drawInstructions[index]
-
-            let functionName = drawInstruction.functionName
-            let originalParams = drawInstruction.params
-            let params = Clone.recursiveCloneAttribute(originalParams)
-
-            this.runtimeConfigObjectRender(
-                object,
-                functionName,
-                originalParams,
-                params
-            )
-            
-            if(params.canvasScale !== undefined){
+                params.lineWidth /= 4
+    
                 params.canvasScale += 1
-                ScreenRender.applyConfig(params)
-            }
+    
+                ScreenRender.resetCanvas(ScreenRender.offscreenCanvasContext)
 
-            ScreenRender[functionName](params)
+                ScreenRender.setCanvasState(
+                    {
+                        "x": this.offscreen.getOffsetX(),
+                        "y": this.offscreen.getOffsetY(),
+                    },
+                    0,
+                    params.canvasScale,
+                    params.canvasScale,
+                    ScreenRender.offscreenCanvasContext
+                )
 
-            if(params.canvasScale !== undefined){
-                this.mirror(functionName, params, object)
+                ScreenRender[functionName](params, ScreenRender.offscreenCanvasContext)
+    
+                this.mirror(functionName, params)
+    
             }
+            
+            //this.drawSeparetorLine() // debug
+
+            this.offscreen.lenght += 1
+
+        }else{
+
+            this.useComplexFormat(object)
 
         }
 
+    }
+
+    offscreen = new offscreen()
+
+    drawSeparetorLine(){
+
+        ScreenRender.drawLine(
+            {
+                "positions": [
+                    [
+                        this.offscreen.getOffsetX() - this.offscreen.width / 2,
+                        this.offscreen.getOffsetY() - this.offscreen.height / 2
+                    ],[
+                        this.offscreen.getOffsetX() + this.offscreen.width / 2,
+                        this.offscreen.getOffsetY() - this.offscreen.height / 2
+                    ],[
+                        this.offscreen.getOffsetX() + this.offscreen.width / 2,
+                        this.offscreen.getOffsetY() + this.offscreen.height / 2
+                    ],[
+                        this.offscreen.getOffsetX() - this.offscreen.width / 2,
+                        this.offscreen.getOffsetY() + this.offscreen.height / 2
+                    ],[
+                        this.offscreen.getOffsetX() - this.offscreen.width / 2,
+                        this.offscreen.getOffsetY() - this.offscreen.height / 2
+                    ]
+
+                ],
+                "color": "black",
+                "lineWidth": 1,
+                "fill": false,
+            },
+            ScreenRender.offscreenCanvasContext
+        )
+    }
+
+}
+
+class offscreen {
+
+    width = 50
+    height = 50
+
+    offsetX = 50
+    offsetY = 30
+    lenght = 0
+
+    getObjectXY(object) {
+
+        let lenght = this[object.team][object.color][object.graphicID]
+
+        return {
+            x: this.getOffsetX(lenght),
+            y: this.getOffsetY()
+        }
+
+    }
+
+    getOffsetX(lenght = this.lenght) {
+        return (this.offsetX * lenght) + 30
+    }
+
+    getOffsetY() {
+        return this.offsetY
     }
 
 }

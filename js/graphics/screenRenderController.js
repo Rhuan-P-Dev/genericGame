@@ -1,14 +1,20 @@
 
+import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { GameStateController } from "../gameState/gameStateController.js"
+import { CustomMathController } from "../generalUtils/math.js"
 import { ComplexRenderController } from "./complexRenderController.js"
 
 var GameState = ""
 var ComplexRender = ""
+var CustomMath = ""
+var AIUtils = ""
 
 onInit(function(){
 
     GameState = new GameStateController()
     ComplexRender = new ComplexRenderController()
+    CustomMath = new CustomMathController()
+    AIUtils = new AIUtilsController()
 
 })
 
@@ -38,6 +44,9 @@ export class ScreenRenderController {
     mainCanvas = document.getElementById("mainCanvas")
     mainCanvasContext = mainCanvas.getContext("2d")
 
+    offscreenCanvas = document.getElementById("offscreenCanvas")
+    offscreenCanvasContext = offscreenCanvas.getContext("2d")
+
     defaultColor = "black"
     defaultLineWidth = 1
 
@@ -56,6 +65,12 @@ export class ScreenRenderController {
 
         ScreenRender.clean()
 
+        ScreenRender.reset({
+            "x": 0,
+            "y": 0,
+            "radian": 0
+        })
+
         ScreenRender.runRequests()
 
         let allObjectsRenderable = GameState.getAllObjectsRender()
@@ -66,8 +81,6 @@ export class ScreenRenderController {
 
             ScreenRender.defaultParams()
 
-            ScreenRender.rotateObject(object)
-
             ComplexRender.renderComplexFormat(object)
 
             ScreenRender.resetCanvas()
@@ -76,76 +89,68 @@ export class ScreenRenderController {
 
     }
 
-    rotateObject(object){
 
-        ScreenRender.mainCanvasContext.translate(object.x, object.y)
 
-        ScreenRender.mainCanvasContext.rotate(
-            object.radian
-        )
-
-    }
-
-    applyConfig(config){
-
-        this.setCanvasState(
-            config.offset,
-            config.rotation,
-            config.canvasScale
-        )
-
-    }
-
-    reset(object){
+    reset(
+        object,
+        scaleX = 1,
+        scaleY = scaleX,
+        canvasContext = ScreenRender.mainCanvasContext
+    ){
 
         ScreenRender.resetCanvas()
 
         this.setCanvasState(
-            {
-                "x": object.x,
-                "y": object.y
-            },
+            this.shiftFocus(
+                {
+                    "x": GameState.getPlayer().x - (canvasContext.canvas.width / 2),
+                    "y": GameState.getPlayer().y - (canvasContext.canvas.height / 2),
+                },
+                object,
+            ),
             object.radian,
-            1
+            scaleX,
+            scaleY,
+            canvasContext
         )
 
     }
 
-    setCanvasState(translate, rotate, scaleX, scaleY = scaleX){
+    setCanvasState(translate, rotate, scaleX, scaleY = scaleX, canvasContext = ScreenRender.mainCanvasContext){
 
-        ScreenRender.mainCanvasContext.translate(
+        canvasContext.translate(
             translate.x,
             translate.y
         )
 
-        ScreenRender.mainCanvasContext.rotate(
+        canvasContext.rotate(
             rotate
         )
 
-        ScreenRender.mainCanvasContext.scale(
+        canvasContext.scale(
             scaleX,
             scaleY
         )
 
     }
 
-    resetCanvas(){
+    resetCanvas(canvasContext = ScreenRender.mainCanvasContext){
 
-        ScreenRender.mainCanvasContext.resetTransform()
+        canvasContext.resetTransform()
 
     }
 
-    drawCircle(params) {
+    drawCircle(params, canvasContext = ScreenRender.mainCanvasContext) {
 
         if(params.radius < 0){
             console.warn("Radius:", params.radius)
             return
         }
 
-        ScreenRender.setStyleParams(params)
+        ScreenRender.setStyleParams(params, canvasContext)
 
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.arc(
+        canvasContext.beginPath()
+        canvasContext.arc(
             params.x,
             params.y,
             params.radius,
@@ -154,28 +159,27 @@ export class ScreenRenderController {
         )
         
         if(params.fill){
-            ScreenRender.mainCanvasContext.fill()
+            canvasContext.fill()
         }else{
-            ScreenRender.mainCanvasContext.stroke()
+            canvasContext.stroke()
         }
-        
 
     }
 
-    drawLine(params){
+    drawLine(params, canvasContext = ScreenRender.mainCanvasContext){
 
-        ScreenRender.setStyleParams(params)
+        ScreenRender.setStyleParams(params, canvasContext)
 
-        ScreenRender.mainCanvasContext.beginPath()
+        canvasContext.beginPath()
 
-        ScreenRender.mainCanvasContext.moveTo(
+        canvasContext.moveTo(
             params.positions[0][0],
             params.positions[0][1]
         )
 
         for (let index = 1; index < params.positions.length; index++) {
     
-            ScreenRender.mainCanvasContext.lineTo(
+            canvasContext.lineTo(
                 params.positions[index][0],
                 params.positions[index][1]
             )
@@ -183,23 +187,23 @@ export class ScreenRenderController {
         }
 
         if(params.fill){
-            ScreenRender.mainCanvasContext.fill()
+            canvasContext.fill()
         }else{
-            ScreenRender.mainCanvasContext.stroke()
+            canvasContext.stroke()
         }
-        ScreenRender.mainCanvasContext.closePath()
+        canvasContext.closePath()
 
     }
 
-    writeText(params){
+    writeText(params, canvasContext = ScreenRender.mainCanvasContext){
 
-        ScreenRender.setStyleParams(params)
+        ScreenRender.setStyleParams(params, canvasContext)
 
-        ScreenRender.mainCanvasContext.font = (params.fontSize || 50) + "px Arial"
+        canvasContext.font = (params.fontSize || 50) + "px Arial"
 
-        ScreenRender.mainCanvasContext.textAlign = params.align || "center"
+        canvasContext.textAlign = params.align || "center"
 
-        ScreenRender.mainCanvasContext.fillText(
+        canvasContext.fillText(
             params.text,
             params.x,
             params.y
@@ -207,17 +211,17 @@ export class ScreenRenderController {
 
     }
 
-    drawArc(params) {
+    drawArc(params, canvasContext = ScreenRender.mainCanvasContext) {
 
         if(params.radius < 0){
             console.warn("Radius:", params.radius)
             return
         }
 
-        ScreenRender.setStyleParams(params)
+        ScreenRender.setStyleParams(params, canvasContext)
 
-        ScreenRender.mainCanvasContext.beginPath()
-        ScreenRender.mainCanvasContext.arc(
+        canvasContext.beginPath()
+        canvasContext.arc(
             params.x,
             params.y,
             params.radius,
@@ -225,35 +229,44 @@ export class ScreenRenderController {
             params.endAngle
         )
         if(params.fill){
-            ScreenRender.mainCanvasContext.fill()
+            canvasContext.fill()
         }else{
-            ScreenRender.mainCanvasContext.stroke()
+            canvasContext.stroke()
         }
     }
 
-    setStyleParams(params){
+    setStyleParams(params, canvasContext = ScreenRender.mainCanvasContext){
 
-        ScreenRender.mainCanvasContext.strokeStyle = params.color || ScreenRender.defaultColor
-        ScreenRender.mainCanvasContext.lineWidth = params.lineWidth || ScreenRender.defaultLineWidth
-        ScreenRender.mainCanvasContext.fillStyle = params.color || ScreenRender.defaultColor
-
-    }
-
-    defaultParams(){
-
-        ScreenRender.mainCanvasContext.strokeStyle = ScreenRender.defaultColor
-        ScreenRender.mainCanvasContext.fillStyle = ScreenRender.defaultColor
-        ScreenRender.mainCanvasContext.lineWidth = ScreenRender.defaultLineWidth
+        canvasContext.strokeStyle = params.color || ScreenRender.defaultColor
+        canvasContext.lineWidth = params.lineWidth || ScreenRender.defaultLineWidth
+        canvasContext.fillStyle = params.color || ScreenRender.defaultColor
 
     }
 
-    clean(){
-        ScreenRender.mainCanvasContext.clearRect(
+    defaultParams(canvasContext = ScreenRender.mainCanvasContext){
+
+        canvasContext.strokeStyle = ScreenRender.defaultColor
+        canvasContext.fillStyle = ScreenRender.defaultColor
+        canvasContext.lineWidth = ScreenRender.defaultLineWidth
+
+    }
+
+    clean(canvasContext = ScreenRender.mainCanvasContext){
+        canvasContext.clearRect(
             0,
             0,
-            ScreenRender.mainCanvas.width,
-            ScreenRender.mainCanvas.height
+            canvasContext.canvas.width,
+            canvasContext.canvas.height
         )
+    }
+
+    shiftFocus(focus, object){
+
+        return {
+            "x": CustomMath.inverter(focus.x) + object.x,
+            "y": CustomMath.inverter(focus.y) + object.y
+        }
+    
     }
 
 }
