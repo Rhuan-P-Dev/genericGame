@@ -22,8 +22,8 @@ export class SmallBulletProjetile {
 
         this.damage = 10
 
-        this.width = 2
-        this.height = 2
+        this.width = 3
+        this.height = 3
 
         this.lifeTime = 30
 

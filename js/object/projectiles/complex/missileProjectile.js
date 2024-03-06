@@ -24,8 +24,8 @@ export class MissileProjetile {
 
         this.damage = 30
 
-        this.width = 3
-        this.height = 3
+        this.width = 4
+        this.height = 4
 
         this.vel *= 10
 
