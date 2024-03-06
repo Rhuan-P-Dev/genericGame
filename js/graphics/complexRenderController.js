@@ -19,6 +19,100 @@ onInit(function(){
 
 export class ComplexRenderController {
 
+    getObjectScale(object){
+
+        return ( (object.width + object.height) / 2) / 6
+
+    }
+
+    scalonateParam = {
+        "drawLine": (
+            object,
+            functionName,
+            originalParams,
+            params,
+        ) => {
+
+            let scale = this.getObjectScale(object)
+
+            for(let index in params.positions){
+
+                let pos = params.positions[index]
+
+                pos[0] *= scale
+                pos[1] *= scale
+
+            }
+
+            params.lineWidth *= scale
+
+        },
+
+        "drawCircle": (
+            object,
+            functionName,
+            originalParams,
+            params,
+        ) => {
+
+            let scale = this.getObjectScale(object)
+
+            params.x *= scale
+            params.y *= scale
+
+            params.radius *= scale
+            params.lineWidth *= scale
+
+        },
+
+        "drawArc": (
+            object,
+            functionName,
+            originalParams,
+            params,
+        ) => {
+
+            this.scalonateParam["drawCircle"](object, functionName, originalParams, params)
+
+        },
+
+        "writeText": (
+            object,
+            functionName,
+            originalParams,
+            params,
+        ) => {
+
+            let scale = this.getObjectScale(object)
+
+            params.x *= scale
+            params.y *= scale
+            params.fontSize *= scale
+
+        },
+
+    }
+
+    runtimeConfigObjectRender(
+        object,
+        functionName,
+        originalParams,
+        params,
+    ){
+
+        if(params.scale){
+
+            this.scalonateParam[functionName](
+                object,
+                functionName,
+                originalParams,
+                params,
+            )
+
+        }
+
+    }
+
     configObjectRender(
         object,
         drawInstructions
@@ -135,11 +229,15 @@ export class ComplexRenderController {
             this.offscreen[object.team][object.color] = {}
         }
 
+        if(!this.offscreen[object.team][object.color][object.graphicID]){
+            this.offscreen[object.team][object.color][object.graphicID] = {}
+        }
+
         if(
-            this.offscreen[object.team][object.color][object.graphicID] === undefined
+            this.offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] === undefined
         ){
 
-            this.offscreen[object.team][object.color][object.graphicID] = this.offscreen.lenght
+            this.offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] = this.offscreen.lenght
 
 
 
@@ -156,6 +254,13 @@ export class ComplexRenderController {
                 let functionName = drawInstruction.functionName
                 let originalParams = drawInstruction.params
                 let params = Clone.recursiveCloneAttribute(originalParams)
+
+                this.runtimeConfigObjectRender(
+                    object,
+                    functionName,
+                    originalParams,
+                    params
+                )
 
                 params.lineWidth /= 4
     
@@ -248,7 +353,7 @@ class offscreen {
 
     getObjectXY(object) {
 
-        let lenght = this[object.team][object.color][object.graphicID]
+        let lenght = this[object.team][object.color][object.graphicID][ComplexRender.getObjectScale(object)]
 
         return {
             x: this.getOffsetX(lenght),
@@ -266,3 +371,5 @@ class offscreen {
     }
 
 }
+
+var ComplexRender = new ComplexRenderController()

@@ -33,6 +33,9 @@ const multStats = {
     ],
 
     "normalStats_div5": [
+        "width",
+        "height",
+
         "lifeTime",
     ],
 
