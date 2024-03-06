@@ -180,7 +180,7 @@ export class ComplexRenderController {
     
             }
             
-            //this.drawSeparetorLine() // debug
+            //this.drawSeparetorLine(object) // debug
 
             this.offscreen.lenght += 1
 
@@ -194,7 +194,7 @@ export class ComplexRenderController {
 
     offscreen = new offscreen()
 
-    drawSeparetorLine(){
+    drawSeparetorLine(object){
 
         ScreenRender.drawLine(
             {
@@ -220,6 +220,16 @@ export class ComplexRenderController {
                 "color": "black",
                 "lineWidth": 1,
                 "fill": false,
+            },
+            ScreenRender.offscreenCanvasContext
+        )
+
+        ScreenRender.drawCircle(
+            {
+                "x": this.offscreen.getOffsetX(),
+                "y": this.offscreen.getOffsetY(),
+                "radius": object.width,
+                "color": "white"
             },
             ScreenRender.offscreenCanvasContext
         )
