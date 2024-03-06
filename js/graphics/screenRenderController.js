@@ -27,11 +27,48 @@ class DrawRequestLinkedList extends LinkedList{
         while(1){
             if(!node.next){return}
 
-            node.value.func(node.value.params)
+            if(this.checkInFocusVision(node.value.params)){
+
+                node.value.func(node.value.params)
+
+            }
 
             node = node.next
 
         }
+
+    }
+
+    checkInFocusVision(params){
+
+        if(!params.positions){
+            return this.checkInFocusVisionXY(params)
+        }else{
+            return this.checkInFocusVisionPositions(params.positions)
+        }
+
+    }
+
+    checkInFocusVisionPositions(positions){
+
+        for (let index = 0; index < positions.length; index++) {
+
+            let position = positions[index]
+
+            return ScreenRender.inFocusObjectVision(
+                {
+                    x: position[0],
+                    y: position[1],
+                }
+            )
+            
+        }
+
+    }
+
+    checkInFocusVisionXY(params){
+
+        return ScreenRender.inFocusObjectVision(params)
 
     }
 
@@ -49,6 +86,8 @@ export class ScreenRenderController {
 
     defaultColor = "black"
     defaultLineWidth = 1
+
+    focusObjectVisionRange = 650
 
     addDrawRequest(params){
 
@@ -79,6 +118,8 @@ export class ScreenRenderController {
 
             let object = allObjectsRenderable[objectName]
 
+            if(!this.inFocusObjectVision(object)){continue}
+
             ScreenRender.defaultParams()
 
             ComplexRender.renderComplexFormat(object)
@@ -89,7 +130,22 @@ export class ScreenRenderController {
 
     }
 
+    inFocusObjectVision(object){
 
+        let player = GameState.getPlayer()
+
+        let distance = AIUtils.getDistanceOfObjects(
+            player,
+            object
+        )
+
+        if(distance < this.focusObjectVisionRange){
+            return true
+        }
+
+        return false
+
+    }
 
     reset(
         object,
