@@ -8,12 +8,16 @@ import { AnimationsDataBase } from "./animationsDataBase.js"
 var GameState = ""
 var ScreenRender = ""
 var DataBase = ""
+var CloneObject
+
 
 onInit(function(){
 
     GameState = new GameStateController()
 
     ScreenRender = new ScreenRenderController()
+
+    CloneObject = new CloneObjectController()
 
     //DataBase = new AnimationsDataBase()
 
@@ -49,7 +53,7 @@ export class AnimationsController {
                         animationArray
                     )
 
-                    let currentPositions = cloneArray(animationArray)
+                    let currentPositions = CloneObject.recursiveCloneAttribute(animationArray)
 
                     this.typeOfAnimation[animation.type]({
                         "func": animationData[shape].func,
@@ -188,28 +192,6 @@ export class AnimationsController {
 }
 
 var Animations = new AnimationsController()
-
-function cloneArray(arr){
-
-    let newArr = new Array()
-
-    for (let x = 0; x < arr.length; x++) {
-
-        for (let y = 0; y < arr[x].length; y++) {
-
-            if(!newArr[x]){
-                newArr[x] = []
-            }
-
-            newArr[x][y] = arr[x][y]
-            
-        }
-        
-    }
-
-    return newArr
-
-}
 
 function absolute(params){
 
