@@ -94,7 +94,7 @@ export class AnimationsController {
                 cachedPositions,
             )
 
-            newFrames = new Array().concat(newFrames, this.createFrames(
+            newFrames = newFrames.concat(newFrames, this.createFrames(
                 cachedPositions,
                 currentFrame,
                 nextFrame,
@@ -126,13 +126,16 @@ export class AnimationsController {
 
         for(let index in nextFrame ){
 
-            let interpolation_0 = (
-                nextFrame[index][0] - cachedPositions[index][0]
-            ) / frameMult
+            let interpolationArray = []
+            interpolationArray[index] = []
 
-            let interpolation_1 = (
-                nextFrame[index][1] - cachedPositions[index][1]
-            ) / frameMult
+            for(let subIndex in nextFrame[index] ){
+
+                interpolationArray[index][subIndex] = (
+                    nextFrame[index][subIndex] - cachedPositions[index][subIndex]
+                ) / frameMult
+
+            }
 
             for (
                 let interpolationMult = 1;
@@ -145,19 +148,15 @@ export class AnimationsController {
                 newFrames[currentIndex] = {}
                 newFrames[currentIndex][index] = {}
 
-                if(typeof(nextFrame[index][0]) == "number"){
+                for(let subIndex in nextFrame[index] ){
 
-                    newFrames[currentIndex][index][0] = cachedPositions[index][0] + (
-                        interpolation_0 * interpolationMult
-                    )
+                    if(nextFrame[index][subIndex] !== undefined){
 
-                }
+                        newFrames[currentIndex][index][subIndex] = cachedPositions[index][subIndex] + (
+                            interpolationArray[index][subIndex] * interpolationMult
+                        )
 
-                if(typeof(nextFrame[index][1]) == "number"){
-
-                    newFrames[currentIndex][index][1] = cachedPositions[index][1] + (
-                        interpolation_1 * interpolationMult
-                    )
+                    }
 
                 }
                 
@@ -173,20 +172,18 @@ export class AnimationsController {
 
         for(let index in frame ){
 
-            if(!array[index]){
+            if(array[index] === undefined){
                 array[index] = []
             }
-    
-            if(typeof(frame[index][0]) == "number"){
-                array[index][0] = frame[index][0]
-            }
-    
-            if(typeof(frame[index][1]) == "number"){
-                array[index][1] = frame[index][1]
-            }
-    
-        }
 
+            for(let subIndex in frame[index] ){
+
+                array[index][subIndex] = frame[index][subIndex]
+
+            }
+
+        }
+          
     }
 
 }
