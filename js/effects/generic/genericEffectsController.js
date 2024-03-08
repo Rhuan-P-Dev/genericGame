@@ -76,13 +76,18 @@ export class GenericEffectsController {
 
             new AnimationsController().run({
                 "name":"heal",
-                "type":"relative",
+                //"type":"relative",
+                "focus": params.object,
+                //"focus": {
+                //    "x": params.object.x,
+                //    "y": params.object.y,
+                //},
                 "offset": {
-                    "x": params.object.x + randomInteger(-0, 0),
-                    "y": params.object.y + randomInteger(-0, 0),
+                    "x": randomInteger(-0, 0),
+                    "y": randomInteger(-0, 0),
                 },
-                "frameRandomOffsetX": 0,
-                "frameRandomOffsetY": 0,
+                "frameRandomOffsetX": 50,
+                "frameRandomOffsetY": 50,
             })
 
         },

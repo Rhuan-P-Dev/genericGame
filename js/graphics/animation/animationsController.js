@@ -25,11 +25,6 @@ onInit(function(){
 
 export class AnimationsController {
 
-    typeOfAnimation = {
-        "absolute": absolute,
-        "relative": relative,
-    }
-
     run(animation){
 
         let animationData = new AnimationsDataBase().get(animation.name)
@@ -40,38 +35,49 @@ export class AnimationsController {
 
             let animationArray = []
 
-            let frameInterval = animationData[shape].frameInterval
-
-            for (let index = 0; index < animationData[shape].loop; index++) {
-
-                for(let frame in animationData[shape].frames){
-
-                    let currentFrame = animationData[shape].frames[frame]
-
-                    this.updatePositions(
-                        currentFrame,
-                        animationArray
-                    )
-
-                    let currentPositions = CloneObject.recursiveCloneAttribute(animationArray)
-
-                    this.typeOfAnimation[animation.type]({
-                        "func": animationData[shape].func,
-                        "currentPositions": currentPositions,
-                        "frameInterval": frameInterval,
-                        "offset": animation.offset,
-                        "frameRandomOffsetX": animation.frameRandomOffsetX,
-                        "frameRandomOffsetY": animation.frameRandomOffsetY,
-                    })
-                    
-                    frameInterval += animationData[shape].frameIntervalIncremental
-        
-                }
-                
-            }
+            this.lazyAnimationEngine(animation, animationData[shape], animationArray)
 
         }
 
+    }
+
+    lazyAnimationEngine(animation, animationData, animationArray, currentLoop = 0, currentFrameLenght = 0){
+
+        if(animationData.loop < currentLoop+1){
+            return
+        }
+    
+        let currentFrame = animationData.frames[currentFrameLenght]
+    
+        this.updatePositions(
+            currentFrame,
+            animationArray
+        )
+    
+        let currentPositions = CloneObject.recursiveCloneAttribute(animationArray)
+    
+        this.drawAnimationFrame({
+            "func": animationData.func,
+            "currentPositions": currentPositions,
+            "focus": animation.focus,
+            "offset": animation.offset,
+            "frameRandomOffsetX": animation.frameRandomOffsetX,
+            "frameRandomOffsetY": animation.frameRandomOffsetY,
+        })
+                
+        if(animationData.frames.length < currentFrameLenght+1){
+    
+            currentLoop++
+            currentFrameLenght = 0
+    
+        }else{
+            currentFrameLenght++
+        }
+    
+        setFrameOut(() => {
+            this.lazyAnimationEngine(animation, animationData, animationArray, currentLoop, currentFrameLenght)
+        },2)
+    
     }
 
     interpolateFrames(data){
@@ -102,12 +108,6 @@ export class AnimationsController {
             ))
             
         }
-
-        console.log(
-
-            newFrames.length
-
-        )
 
         data.frames = newFrames
 
@@ -186,51 +186,39 @@ export class AnimationsController {
           
     }
 
+    drawAnimationFrame(params){
+
+        let randomX = randomInteger(
+            -params.frameRandomOffsetX,
+            params.frameRandomOffsetX
+        )
+    
+        let randomY = randomInteger(
+            -params.frameRandomOffsetY,
+            params.frameRandomOffsetY
+        )
+    
+        for (let index = 0; index < params.currentPositions.length; index++) {
+    
+            params.currentPositions[index][0] += params.focus.x + params.offset.x + randomX
+            params.currentPositions[index][1] += params.focus.y + params.offset.y + randomY
+    
+        }
+    
+        ScreenRender.addDrawRequest(
+            {
+                "func": ScreenRender[params.func],
+                "params": {
+                    "positions": params.currentPositions,
+                    "color": "black",
+                    "lineWidth": 2,
+                }
+            }
+    
+        )
+    
+    }
+
 }
 
 var Animations = new AnimationsController()
-
-function absolute(params){
-
-    setFrameOut( () => {
-        
-        ScreenRender.addDrawRequest(
-        {
-            "func": ScreenRender[params.func],
-            "params": {
-                "positions": params.currentPositions,
-                "color": "black",
-                "lineWidth": 2,
-            }
-        }
-
-    )
-
-    },
-    params.frameInterval,
-    1)
-    
-}
-
-function relative(params){
-
-    let randomX = randomInteger(
-        -params.frameRandomOffsetX,
-        params.frameRandomOffsetX
-    )
-
-    let randomY = randomInteger(
-        -params.frameRandomOffsetY,
-        params.frameRandomOffsetY
-    )
-
-    for (let index = 0; index < params.currentPositions.length; index++) {
-
-        params.currentPositions[index][0] += params.offset.x + randomX
-        params.currentPositions[index][1] += params.offset.y + randomY
-        
-    }
-
-    absolute(params)
-
-}

@@ -123,10 +123,6 @@ export class AnimationsDataBase {
                 "func": "drawLine",
 
                 "loop": 1,
-                "frameInterval": 1,
-                "frameIntervalIncremental": 1,
-
-                "frameInterpolation": "linar",
 
                 "seconds": 0.2,
                 "frameRate": 60, // hardcoded?
@@ -163,7 +159,10 @@ export class AnimationsDataBase {
                         }
                         
                     },{
-                        6: {}
+                        6: {
+                            0: 10,
+                            1: 120,
+                        }
                     },
                     
                 ]
