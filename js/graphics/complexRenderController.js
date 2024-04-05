@@ -21,6 +21,7 @@ export class ComplexRenderController {
 
     getObjectScale(object){
 
+        // 6 = width base & height base
         return ( (object.width + object.height) / 2) / 6
 
     }
