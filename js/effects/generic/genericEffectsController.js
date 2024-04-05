@@ -86,8 +86,8 @@ export class GenericEffectsController {
                     "x": randomInteger(-0, 0),
                     "y": randomInteger(-0, 0),
                 },
-                "frameRandomOffsetX": 50,
-                "frameRandomOffsetY": 50,
+                "frameRandomOffsetX": 0,
+                "frameRandomOffsetY": 0,
             })
 
         },
