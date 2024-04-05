@@ -11,10 +11,6 @@ onInit(function(){
 
 export class AnimationsDataBase {
 
-    constructor(){
-
-    }
-
     database = {
         "caveira": {
             /*"bola": {
@@ -119,55 +115,7 @@ export class AnimationsDataBase {
             },
         },
         "heal": {
-            "simbo": {
-                "func": "drawLine",
-
-                "loop": 1,
-                "frameInterval": 1,
-                "frameIntervalIncremental": 1,
-
-                "frameInterpolation": "linar",
-
-                "seconds": 0.2,
-                "frameRate": 60, // hardcoded?
-                
-                "frames": [
-                    {
-                        0: {
-                            0: -20,
-                            1: 0,
-                        },
-                        1: {
-                            0: 0,
-                            1: 0,
-                        },
-                        2: {
-                            0: 0,
-                            1: -25
-                        },
-                        3: {
-                            0: 0,
-                            1: 0
-                        },
-                        4: {
-                            0: 20,
-                            1: 0
-                        },
-                        5: {
-                            0: 0,
-                            1: 0
-                        },
-                        6: {
-                            0: 0,
-                            1: 40
-                        }
-                        
-                    },{
-                        6: {}
-                    },
-                    
-                ]
-            },
+            "0":{"func":"writeText","loop":1,"seconds":10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":-9}],"text":["...","WAKE UP!"],"fontSize":[3]}},"1":{"func":"drawCircle","loop":1,"seconds":10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[true,false],"xy":[{"x":0,"y":0}],"radius":[12]}},"2":{"func":"drawLine","loop":1,"seconds":10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"continuous":[{"0":{"0":-18,"1":-6},"1":{"0":-18,"1":-6},"2":{"0":0,"1":-6},"3":{"0":0,"1":-6},"4":{"0":18,"1":-6},"5":{"0":18,"1":-6},"6":{"0":18,"1":6},"7":{"0":18,"1":6},"8":{"0":-18,"1":6},"9":{"0":-18,"1":6},"10":{"0":-18,"1":-6}},{"0":{"1":6}}]}}
         },
     }
 

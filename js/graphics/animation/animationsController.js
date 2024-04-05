@@ -1,13 +1,14 @@
-
 import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
-import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { ScreenRenderController } from "../screenRenderController.js"
 import { AnimationsDataBase } from "./animationsDataBase.js"
+import { InterpolateController } from "./interpolateController.js"
 
 var GameState = ""
 var ScreenRender = ""
 var DataBase = ""
+var Interpolate
+
 
 onInit(function(){
 
@@ -17,241 +18,123 @@ onInit(function(){
 
     //DataBase = new AnimationsDataBase()
 
+    Interpolate = new InterpolateController()
+
 })
 
 export class AnimationsController {
 
-    typeOfAnimation = {
-        "absolute": absolute,
-        "relative": relative,
-    }
+    run(animationConfig){
 
-    run(animation){
-
-        let animationData = new AnimationsDataBase().get(animation.name)
+        let animationData = new AnimationsDataBase().get(animationConfig.name)
 
         for(let shape in animationData){
 
-            animationData[shape] = this.interpolateFrames(animationData[shape])
+            animationData[shape] = Interpolate.run(animationData[shape])
 
-            let animationArray = []
+            let animationObject = {}
 
-            let frameInterval = animationData[shape].frameInterval
+            for(let instruction in animationData[shape].frames){
 
-            for (let index = 0; index < animationData[shape].loop; index++) {
+                animationObject[instruction] = []
 
-                for(let frame in animationData[shape].frames){
-
-                    let currentFrame = animationData[shape].frames[frame]
-
-                    this.updatePositions(
-                        currentFrame,
-                        animationArray
-                    )
-
-                    let currentPositions = cloneArray(animationArray)
-
-                    this.typeOfAnimation[animation.type]({
-                        "func": animationData[shape].func,
-                        "currentPositions": currentPositions,
-                        "frameInterval": frameInterval,
-                        "offset": animation.offset,
-                        "frameRandomOffsetX": animation.frameRandomOffsetX,
-                        "frameRandomOffsetY": animation.frameRandomOffsetY,
-                    })
-                    
-                    frameInterval += animationData[shape].frameIntervalIncremental
-        
-                }
-                
             }
+
+            let tempAnimationData = {
+                "xy": {},
+                "text": {},
+                "lineWidth": {},
+                "fill": {},
+                "color": [[]],
+            }
+
+            this.lazyAnimationEngine(animationConfig, animationData[shape], animationObject, tempAnimationData)
 
         }
 
     }
 
-    interpolateFrames(data){
+    lazyAnimationEngine(animationConfig, shapeData, animationObject, tempAnimationData, currentLoop = 0, currentFrameLenght = 0){
 
-        let newFrames = []
-
-        let frameMult = (data.frameRate / (data.frames.length-1)) * data.seconds - 1
-
-        let cachedPositions = []
-
-        for (let index = 0; index < data.frames.length; index++) {
-
-            if(!data.frames[index+1]){break}
-            
-            let currentFrame = data.frames[index]
-            let nextFrame = data.frames[index+1]
-
-            this.updatePositions(
-                currentFrame,
-                cachedPositions,
-            )
-
-            newFrames = new Array().concat(newFrames, this.createFrames(
-                cachedPositions,
-                currentFrame,
-                nextFrame,
-                frameMult
-            ))
-            
+        if(shapeData.loop <= currentLoop){
+            return
         }
 
-        console.log(
+        for(let instruction in shapeData.frames){
 
-            newFrames.length
+            Interpolate.runTimeProcess(shapeData, instruction, tempAnimationData, {
+                currentFrameLenght,
+                "animationObject": animationObject[instruction],
+            })
 
+        }
+    
+        this.drawAnimationFrame(animationConfig, shapeData, tempAnimationData)
+
+        currentFrameLenght++
+        
+        if(shapeData.frameRate * shapeData.seconds <= currentFrameLenght){
+    
+            currentLoop++
+            currentFrameLenght = 0
+    
+        }
+    
+        setFrameOut(() => {
+            this.lazyAnimationEngine(animationConfig, shapeData, animationObject, tempAnimationData, currentLoop, currentFrameLenght)
+        },2)
+    
+    }
+
+    drawAnimationFrame(animationConfig, shapeData, tempAnimationData){
+
+        let randomX = randomInteger(
+            -animationConfig.frameRandomOffsetX,
+            animationConfig.frameRandomOffsetX
+        )
+    
+        let randomY = randomInteger(
+            -animationConfig.frameRandomOffsetY,
+            animationConfig.frameRandomOffsetY
         )
 
-        data.frames = newFrames
+        if(tempAnimationData.continuous){
 
-        return data
-
-    }
-
-    createFrames(
-        cachedPositions,
-        currentFrame,
-        nextFrame,
-        frameMult
-    ){
-
-        let newFrames = [currentFrame]
-
-        for(let index in nextFrame ){
-
-            let interpolation_0 = (
-                nextFrame[index][0] - cachedPositions[index][0]
-            ) / frameMult
-
-            let interpolation_1 = (
-                nextFrame[index][1] - cachedPositions[index][1]
-            ) / frameMult
-
-            for (
-                let interpolationMult = 1;
-                interpolationMult <= frameMult;
-                interpolationMult++
-            ) {
-
-                let currentIndex = newFrames.length
-
-                newFrames[currentIndex] = {}
-                newFrames[currentIndex][index] = {}
-
-                if(typeof(nextFrame[index][0]) == "number"){
-
-                    newFrames[currentIndex][index][0] = cachedPositions[index][0] + (
-                        interpolation_0 * interpolationMult
-                    )
-
-                }
-
-                if(typeof(nextFrame[index][1]) == "number"){
-
-                    newFrames[currentIndex][index][1] = cachedPositions[index][1] + (
-                        interpolation_1 * interpolationMult
-                    )
-
-                }
-                
+            for (let index = 0; index < tempAnimationData.continuous.length; index++) {
+    
+                tempAnimationData.continuous[index][0] += animationConfig.focus.x + animationConfig.offset.x + randomX
+                tempAnimationData.continuous[index][1] += animationConfig.focus.y + animationConfig.offset.y + randomY
+        
             }
+
+        }else{
+
+            tempAnimationData.xy.x += animationConfig.focus.x + animationConfig.offset.x + randomX
+            tempAnimationData.xy.y += animationConfig.focus.y + animationConfig.offset.y + randomY
 
         }
 
-        return newFrames
-    
-    }
-
-    updatePositions(frame, array){
-
-        for(let index in frame ){
-
-            if(!array[index]){
-                array[index] = []
+        ScreenRender.addDrawRequest(
+            {
+                "func": ScreenRender[shapeData.func],
+                "params": {
+                    "positions": tempAnimationData.continuous,
+                    "x": tempAnimationData.xy.x,
+                    "y": tempAnimationData.xy.y,
+                    "radius": tempAnimationData.radius,
+                    "startAngle": tempAnimationData.startAngle,
+                    "endAngle": tempAnimationData.endAngle,
+                    "text": tempAnimationData.text[0],
+                    "color": "rgb("+tempAnimationData.color[0][0]+","+tempAnimationData.color[0][1]+","+tempAnimationData.color[0][2]+")",
+                    "lineWidth": tempAnimationData.lineWidth[0],
+                    "fill": tempAnimationData.fill[0]
+                }
             }
     
-            if(typeof(frame[index][0]) == "number"){
-                array[index][0] = frame[index][0]
-            }
+        )
     
-            if(typeof(frame[index][1]) == "number"){
-                array[index][1] = frame[index][1]
-            }
-    
-        }
-
     }
 
 }
 
 var Animations = new AnimationsController()
-
-function cloneArray(arr){
-
-    let newArr = new Array()
-
-    for (let x = 0; x < arr.length; x++) {
-
-        for (let y = 0; y < arr[x].length; y++) {
-
-            if(!newArr[x]){
-                newArr[x] = []
-            }
-
-            newArr[x][y] = arr[x][y]
-            
-        }
-        
-    }
-
-    return newArr
-
-}
-
-function absolute(params){
-
-    setFrameOut( () => {
-        
-        ScreenRender.addDrawRequest(
-        {
-            "func": ScreenRender[params.func],
-            "params": {
-                "positions": params.currentPositions,
-                "color": "black",
-                "lineWidth": 2,
-            }
-        }
-
-    )
-
-    },
-    params.frameInterval,
-    1)
-    
-}
-
-function relative(params){
-
-    let randomX = randomInteger(
-        -params.frameRandomOffsetX,
-        params.frameRandomOffsetX
-    )
-
-    let randomY = randomInteger(
-        -params.frameRandomOffsetY,
-        params.frameRandomOffsetY
-    )
-
-    for (let index = 0; index < params.currentPositions.length; index++) {
-
-        params.currentPositions[index][0] += params.offset.x + randomX
-        params.currentPositions[index][1] += params.offset.y + randomY
-        
-    }
-
-    absolute(params)
-
-}
