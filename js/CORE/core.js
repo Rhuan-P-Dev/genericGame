@@ -174,6 +174,11 @@ criar uma nova categoria chamada suporte?
 
 um missil anti-naves rapidas
 
+item que chama outras naves como apoio
+
+uma arma que faz um overclock forçado
+uma arma que control suya nave enemiga
+
 
 */
 
