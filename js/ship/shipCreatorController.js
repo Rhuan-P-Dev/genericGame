@@ -59,6 +59,9 @@ export class ShipCreatorController{
             newShip = KeyBoard.makeObjectInPlayerControl(newShip)
 
             ObjectActivates.giveActivate(newShip, "weapon")
+            ObjectActivates.giveActivate(newShip, "defense")
+            ObjectActivates.giveActivate(newShip, "factory")
+            ObjectActivates.giveActivate(newShip, "special")
 
             //new EffectsController().add(
             //    "burn",
