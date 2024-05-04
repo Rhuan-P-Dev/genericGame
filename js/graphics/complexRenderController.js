@@ -290,11 +290,9 @@ export class ComplexRenderController {
 
             this.offscreen.lenght += 1
 
-        }else{
-
-            this.useComplexFormat(object)
-
         }
+
+        this.useComplexFormat(object)
 
     }
 
