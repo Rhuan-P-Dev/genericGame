@@ -94,5 +94,6 @@ export class Object {
     priority = 0
 
     effects = {}
+    animations = {}
 
 }

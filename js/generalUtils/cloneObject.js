@@ -36,6 +36,7 @@ export class CloneObjectController {
         "onDamage": this.cloneComplexOnType,
         "buildList": () => {},
         "passBuildList": () => {},
+        "animations": () => {},
     }
 
     clone(object){

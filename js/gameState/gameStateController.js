@@ -1,10 +1,13 @@
 import { EffectsController } from "../effects/effectsController.js"
+import { AnimationsController } from "../graphics/animation/animationsController.js"
 
 var Effects = ""
+var Animations = ""
 
 onInit(function(){
 
     Effects = new EffectsController()
+    Animations = new AnimationsController()
 
 })
 
@@ -84,6 +87,7 @@ export class GameStateController {
         }
 
         Effects.closePromises(object)
+        Animations.closePromises(object)
 
     }
 
@@ -100,6 +104,8 @@ export class GameStateController {
         this.removeObject(object)
 
         this.removeEffects(object)
+
+        this.removeAnimations(object)
 
     }
 
@@ -136,6 +142,12 @@ export class GameStateController {
     removeEffects(object){
 
         Effects.removeAll(object)
+
+    }
+
+    removeAnimations(object){
+
+        Animations.removeAll(object)
 
     }
 

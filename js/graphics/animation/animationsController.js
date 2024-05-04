@@ -1,13 +1,16 @@
-import { setFrameOut } from "../../frame/frameController.js"
+import { FrameController, setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { ScreenRenderController } from "../screenRenderController.js"
 import { AnimationsDataBase } from "./animationsDataBase.js"
 import { InterpolateController } from "./interpolateController.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 
 var GameState = ""
 var ScreenRender = ""
 var DataBase = ""
 var Interpolate
+var CloneObject
+var Frame
 
 
 onInit(function(){
@@ -19,6 +22,10 @@ onInit(function(){
     //DataBase = new AnimationsDataBase()
 
     Interpolate = new InterpolateController()
+
+    CloneObject = new CloneObjectController()
+
+    Frame = new FrameController()
 
 })
 
@@ -133,6 +140,96 @@ export class AnimationsController {
     
         )
     
+    }
+
+    applyAnimations(object, animations, promise = false){
+
+        for (let index = 0; index < animations.length; index++) {
+
+            let randomID = randomUniqueID()
+
+            if(!promise){
+
+                let animationConfig = animations[index].animationConfig
+                let loopConfig = animations[index].loopConfig
+                let runTimeBuild = animations[index].runTimeBuild
+
+                Frame.add(
+                    () => {
+                        
+                        runTimeBuild(
+                            object,
+                            animationConfig,
+                            loopConfig
+                        )
+                
+                        Animations.run(
+                            CloneObject.recursiveCloneAttribute(animationConfig)
+                        )
+    
+                    },
+                    loopConfig.frameOut,
+                    -1,
+                    true,
+                    randomID,
+                    () => {
+                        Animations.remove(object, randomID)
+                    }
+                )
+
+            }
+
+            object.animations[randomID] = {
+                "runTimeBuild": animations[index].runTimeBuild,
+                "animationConfig": animations[index].animationConfig,
+                "loopConfig": animations[index].loopConfig,
+                promise,
+            }
+
+        }
+
+    }
+
+    closePromises(object){
+
+        for (let index in object.animations){
+
+            let animation = object.animations[index]
+
+            if(animation.promise){
+
+                animation.promise = false
+
+                this.applyAnimations(
+                    object,
+                    [animation],
+                    false
+                )
+
+            }
+
+        }
+
+    }
+
+    remove(object, ID){
+
+        Frame.remove(ID)
+
+        delete object.animations[ID]
+
+    }
+
+    removeAll(object){
+
+        for (let animation in object.animations){
+
+            this.remove(object, animation)
+
+        }
+
+        object.animations = {}
+
     }
 
 }
