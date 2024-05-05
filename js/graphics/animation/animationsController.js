@@ -95,13 +95,11 @@ export class AnimationsController {
 
     drawAnimationFrame(animationConfig, shapeData, tempAnimationData){
 
-        let randomX = randomInteger(
-            -animationConfig.frameRandomOffsetX,
+        let frameRandomOffsetX = randomInterval(
             animationConfig.frameRandomOffsetX
         )
     
-        let randomY = randomInteger(
-            -animationConfig.frameRandomOffsetY,
+        let frameRandomOffsetY = randomInterval(
             animationConfig.frameRandomOffsetY
         )
 
@@ -109,15 +107,36 @@ export class AnimationsController {
 
             for (let index = 0; index < tempAnimationData.continuous.length; index++) {
     
-                tempAnimationData.continuous[index][0] += animationConfig.focus.x + animationConfig.offset.x + randomX
-                tempAnimationData.continuous[index][1] += animationConfig.focus.y + animationConfig.offset.y + randomY
-        
+                tempAnimationData.continuous[index][0] += (
+                    animationConfig.focus.x
+                    +
+                    animationConfig.offset.x
+                    +
+                    frameRandomOffsetX
+                    +
+                    randomInterval(
+                        animationConfig.randomPointOffsetX
+                    )
+                )
+
+                tempAnimationData.continuous[index][1] += (
+                    animationConfig.focus.y
+                    +
+                    animationConfig.offset.y
+                    +
+                    frameRandomOffsetY
+                    +
+                    randomInterval(
+                        animationConfig.randomPointOffsetY
+                    )
+                )
+
             }
 
         }else{
 
-            tempAnimationData.xy.x += animationConfig.focus.x + animationConfig.offset.x + randomX
-            tempAnimationData.xy.y += animationConfig.focus.y + animationConfig.offset.y + randomY
+            tempAnimationData.xy.x += animationConfig.focus.x + animationConfig.offset.x + frameRandomOffsetX
+            tempAnimationData.xy.y += animationConfig.focus.y + animationConfig.offset.y + frameRandomOffsetY
 
         }
 
