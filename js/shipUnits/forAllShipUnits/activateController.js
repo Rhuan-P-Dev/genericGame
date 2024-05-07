@@ -24,12 +24,16 @@ export class ActivateController{
 
         if(object.energy >= cost && activate.reloadTemp <= 0){
 
+            activate.preuseActivateObserver.run(object, activate)
+
             object.energy -= cost
 
             activate.reloadTemp = activate.reload
 
             result.activate = activate
             result.return = activate.func(object, activate, activate.config)
+
+            activate.useActivateObserver.run(object, activate, result.return)
 
         }
 
