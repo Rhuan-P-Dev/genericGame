@@ -4,14 +4,22 @@ import { AIUtilsController } from "../../AI/utils/AIUtils.js"
 import { CustomMathController } from "../../generalUtils/math.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { Rotable } from "./rotable.js"
+import { AnimationsController } from "../../graphics/animation/animationsController.js"
+import { ComplexRenderController } from "../../graphics/complexRenderController.js"
+import { ScreenRenderController } from "../../graphics/screenRenderController.js"
+import { setFrameOut } from "../../frame/frameController.js"
 
 var AIUtils = ""
 var CustomMath = ""
+var ScreenRender
+var ComplexRender
 
 onInit(function(){
 
     AIUtils = new AIUtilsController()
     CustomMath = new CustomMathController()
+    ScreenRender = new ScreenRenderController()
+    ComplexRender = new ComplexRenderController()
 
 })
 
@@ -35,6 +43,67 @@ export class MovableObject {
         
     }
 
+    addMovimentationTrace(){
+
+        let object = new Object()
+
+        object.team = "particule"
+        object.graphicID = "trace particule"
+        object.color = "red"
+        object.radian = 0
+        object.width = 6
+        object.height = 6
+
+        object.x = this.x + randomInterval(object.width/2)
+        object.y = this.y + randomInterval(object.height/2)
+
+        setFrameOut(
+            () => {
+
+                ScreenRender.addDrawRequest(
+                    {
+                        "func": () => {
+
+                            ComplexRender.renderComplexFormat(object)
+        
+                            ScreenRender.reset({
+                                "x": 0,
+                                "y": 0,
+                                "radian": 0
+                            })
+        
+                        },
+                        "params": object,
+                    }
+                )
+
+                
+            },
+            1,
+            10,
+        )
+
+        return
+
+        new AnimationsController().run({
+            "name":"trace",
+            "focus": {
+                "x": this.x,
+                "y": this.y,
+            },
+            "offset": {
+                "x": randomInterval(this.height/2),
+                "y": randomInterval(this.width/2),
+            },
+            "frameRandomOffsetX": 0,
+            "frameRandomOffsetY": 0,
+            "randomPointOffsetX": 0,
+            "randomPointOffsetY": 0,
+        })
+
+
+    }
+
     advanceShip(){
         
         this.advanceShipX()
@@ -42,6 +111,8 @@ export class MovableObject {
 
         this.advanceShipY()
         this.fixVelocityY()
+
+        this.addMovimentationTrace()
 
     }
 

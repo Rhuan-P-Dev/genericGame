@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { ActivateController } from "../../../forAllShipUnits/activateController.js"
+import { OverclockAnimation } from "../animations/overclockAnimation.js"
 import { SpecialExtend } from "../extend/special.js"
 
 export class Overclock {
@@ -9,7 +10,8 @@ export class Overclock {
         new InheritController().inherit(
             this,
             [
-                SpecialExtend
+                SpecialExtend,
+                OverclockAnimation
             ],
             build
         )

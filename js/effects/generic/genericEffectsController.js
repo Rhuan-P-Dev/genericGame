@@ -74,22 +74,6 @@ export class GenericEffectsController {
                 }
             )
 
-            new AnimationsController().run({
-                "name":"heal",
-                //"type":"relative",
-                "focus": params.object,
-                //"focus": {
-                //    "x": params.object.x,
-                //    "y": params.object.y,
-                //},
-                "offset": {
-                    "x": randomInteger(-0, 0),
-                    "y": randomInteger(-0, 0),
-                },
-                "frameRandomOffsetX": 0,
-                "frameRandomOffsetY": 0,
-            })
-
         },
 
         "create objects": (params) => {
@@ -1205,9 +1189,77 @@ export class GenericEffectsController {
     
             },
 
+            "death hand": {
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"death",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": randomInteger(-params.object.width, params.object.width),
+                                        "y": randomInteger(-params.object.height, params.object.height),
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+    
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": this.effectsList["inflict damage"],
+                        "frameOut": 60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "damage": 1,
+                    },
+
+                },
+
+            },
+
             "burn": {
 
                 "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"fire",
+                                    //"type":"relative",
+                                    //"focus": params.object,
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": randomInteger(-params.object.width, params.object.width),
+                                        "y": randomInteger(-params.object.height, params.object.height),
+                                    },
+                                    "frameRandomOffsetX": 2,
+                                    "frameRandomOffsetY": 2,
+                                    "randomPointOffsetX": 1,
+                                    "randomPointOffsetY": 1,
+                                })
+    
+                            },
+                        }
+                    },
 
                     "config": {
                         "func": this.effectsList["inflict damage"],

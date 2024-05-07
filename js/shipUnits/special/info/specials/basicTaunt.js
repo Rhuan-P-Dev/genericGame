@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { ActivateController } from "../../../forAllShipUnits/activateController.js"
+import { TauntAnimation } from "../animations/tauntAnimation.js"
 import { SpecialExtend } from "../extend/special.js"
 
 export class BasicTaunt {
@@ -9,7 +10,8 @@ export class BasicTaunt {
         new InheritController().inherit(
             this,
             [
-                SpecialExtend
+                SpecialExtend,
+                TauntAnimation
             ],
             build
         )

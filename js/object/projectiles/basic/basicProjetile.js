@@ -21,6 +21,9 @@ export class BasicProjetile {
     passBuildList = {
         ["add_" + selfDestruction.name]: (updateThis) => {
             updateThis.onHit.add(selfDestruction, "last", 0)
+        },
+        "remove_death animation": (updateThis) => {
+            updateThis.onDeath.remove("last",11)
         }
     }
 
