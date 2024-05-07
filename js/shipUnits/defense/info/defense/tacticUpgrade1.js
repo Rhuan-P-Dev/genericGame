@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { ActivateController } from "../../../forAllShipUnits/activateController.js"
+import { TacticUpgradeAnimation } from "../animation/tacticUpgradeAnimation.js"
 import { DefenseExtend } from "../extend/defense.js"
 
 export class TacticUpgrade1 {
@@ -9,7 +10,8 @@ export class TacticUpgrade1 {
         new InheritController().inherit(
             this,
             [
-                DefenseExtend
+                DefenseExtend,
+                TacticUpgradeAnimation
             ],
             build
         )

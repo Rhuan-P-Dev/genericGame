@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { ActivateController } from "../../../forAllShipUnits/activateController.js"
+import { BandAidAnimation } from "../animation/regenerationAnimation.js"
 import { DefenseExtend } from "../extend/defense.js"
 
 export class Regen {
@@ -9,7 +10,8 @@ export class Regen {
         new InheritController().inherit(
             this,
             [
-                DefenseExtend
+                DefenseExtend,
+                BandAidAnimation
             ],
             build
         )
@@ -24,8 +26,8 @@ export class Regen {
     config = {
 
         stats: {
-            "lifeRegen": 0.17,
-            "energyRegen": -0.17,
+            "lifeRegen": 10 / (1 * 60),
+            "energyRegen": -(10 / (1 * 60)),
         },
 
         timer: 2*60

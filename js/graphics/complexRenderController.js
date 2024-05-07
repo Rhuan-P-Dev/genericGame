@@ -139,8 +139,8 @@ export class ComplexRenderController {
 
         ScreenRender.setCanvasState(
             {
-                "x": this.offscreen.getOffsetX(),
-                "y": this.offscreen.getOffsetY(),
+                "x": Offscreen.getOffsetX(),
+                "y": Offscreen.getOffsetY(),
             },
             0,
             scaleX,
@@ -191,7 +191,7 @@ export class ComplexRenderController {
 
         ScreenRender.resetCanvas()
 
-        let objectOffset = this.offscreen.getObjectXY(object)
+        let objectOffset = Offscreen.getObjectXY(object)
 
         let focus = ScreenRender.shiftFocus(
             {
@@ -208,39 +208,38 @@ export class ComplexRenderController {
 
         ScreenRender.mainCanvasContext.drawImage(
             ScreenRender.offscreenCanvas,
-            objectOffset.x - this.offscreen.width / 2,
-            objectOffset.y - this.offscreen.height / 2,
-            this.offscreen.width,
-            this.offscreen.height,
-            0 - this.offscreen.width / 2,
-            0 - this.offscreen.height / 2,
-            this.offscreen.width,
-            this.offscreen.height
+            objectOffset.x - Offscreen.width / 2,
+            objectOffset.y - Offscreen.height / 2,
+            Offscreen.width,
+            Offscreen.height,
+            0 - Offscreen.width / 2,
+            0 - Offscreen.height / 2,
+            Offscreen.width,
+            Offscreen.height
         )
 
     }
 
     renderComplexFormat(object){
 
-        if(!this.offscreen[object.team]){
-            this.offscreen[object.team] = {}
+        if(!Offscreen[object.team]){
+            Offscreen[object.team] = {}
         }
 
-        if(!this.offscreen[object.team][object.color]){
-            this.offscreen[object.team][object.color] = {}
+        if(!Offscreen[object.team][object.color]){
+            Offscreen[object.team][object.color] = {}
         }
 
-        if(!this.offscreen[object.team][object.color][object.graphicID]){
-            this.offscreen[object.team][object.color][object.graphicID] = {}
+        if(!Offscreen[object.team][object.color][object.graphicID]){
+            Offscreen[object.team][object.color][object.graphicID] = {}
         }
+
 
         if(
-            this.offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] === undefined
+            Offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] === undefined
         ){
 
-            this.offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] = this.offscreen.lenght
-
-
+            Offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] = Offscreen.lenght
 
             let drawInstructions = undefined
 
@@ -271,8 +270,8 @@ export class ComplexRenderController {
 
                 ScreenRender.setCanvasState(
                     {
-                        "x": this.offscreen.getOffsetX(),
-                        "y": this.offscreen.getOffsetY(),
+                        "x": Offscreen.getOffsetX(),
+                        "y": Offscreen.getOffsetY(),
                     },
                     0,
                     params.canvasScale,
@@ -288,17 +287,13 @@ export class ComplexRenderController {
             
             //this.drawSeparetorLine(object) // debug
 
-            this.offscreen.lenght += 1
-
-        }else{
-
-            this.useComplexFormat(object)
+            Offscreen.lenght += 1
 
         }
 
-    }
+        this.useComplexFormat(object)
 
-    offscreen = new offscreen()
+    }
 
     drawSeparetorLine(object){
 
@@ -306,20 +301,20 @@ export class ComplexRenderController {
             {
                 "positions": [
                     [
-                        this.offscreen.getOffsetX() - this.offscreen.width / 2,
-                        this.offscreen.getOffsetY() - this.offscreen.height / 2
+                        Offscreen.getOffsetX() - Offscreen.width / 2,
+                        Offscreen.getOffsetY() - Offscreen.height / 2
                     ],[
-                        this.offscreen.getOffsetX() + this.offscreen.width / 2,
-                        this.offscreen.getOffsetY() - this.offscreen.height / 2
+                        Offscreen.getOffsetX() + Offscreen.width / 2,
+                        Offscreen.getOffsetY() - Offscreen.height / 2
                     ],[
-                        this.offscreen.getOffsetX() + this.offscreen.width / 2,
-                        this.offscreen.getOffsetY() + this.offscreen.height / 2
+                        Offscreen.getOffsetX() + Offscreen.width / 2,
+                        Offscreen.getOffsetY() + Offscreen.height / 2
                     ],[
-                        this.offscreen.getOffsetX() - this.offscreen.width / 2,
-                        this.offscreen.getOffsetY() + this.offscreen.height / 2
+                        Offscreen.getOffsetX() - Offscreen.width / 2,
+                        Offscreen.getOffsetY() + Offscreen.height / 2
                     ],[
-                        this.offscreen.getOffsetX() - this.offscreen.width / 2,
-                        this.offscreen.getOffsetY() - this.offscreen.height / 2
+                        Offscreen.getOffsetX() - Offscreen.width / 2,
+                        Offscreen.getOffsetY() - Offscreen.height / 2
                     ]
 
                 ],
@@ -332,8 +327,8 @@ export class ComplexRenderController {
 
         ScreenRender.drawCircle(
             {
-                "x": this.offscreen.getOffsetX(),
-                "y": this.offscreen.getOffsetY(),
+                "x": Offscreen.getOffsetX(),
+                "y": Offscreen.getOffsetY(),
                 "radius": object.width,
                 "color": "white"
             },
@@ -372,5 +367,7 @@ class offscreen {
     }
 
 }
+
+const Offscreen = new offscreen()
 
 var ComplexRender = new ComplexRenderController()

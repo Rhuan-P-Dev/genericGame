@@ -43,7 +43,7 @@ export class AdaptiveFactory {
                 //make activate 25% more powerful after each death of 'params.object'
                 for(let index in newObject.activates){
 
-                    newObject.activates[index].useActivateObserver.add(
+                    newObject.activates[index].factoryUseActivateObserver.add(
                         (params) => {
 
                             params.activate.reloadStep = 0

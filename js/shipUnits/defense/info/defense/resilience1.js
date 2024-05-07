@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { DefenseController } from "../../defenseController.js"
+import { ResilienceAnimation } from "../animation/resilienceAnimation.js"
 import { DefenseExtend } from "../extend/defense.js"
 
 export class Resilience1 {
@@ -9,7 +10,8 @@ export class Resilience1 {
         new InheritController().inherit(
             this,
             [
-                DefenseExtend
+                DefenseExtend,
+                ResilienceAnimation
             ],
             build
         )

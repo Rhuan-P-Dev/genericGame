@@ -1,6 +1,7 @@
 
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { SpecialController } from "../../specialController.js"
+import { TeleportAnimation } from "../animations/teleportAnimation.js"
 import { SpecialExtend } from "../extend/special.js"
 
 export class Blink {
@@ -10,7 +11,8 @@ export class Blink {
         new InheritController().inherit(
             this,
             [
-                SpecialExtend
+                SpecialExtend,
+                TeleportAnimation
             ],
             build
         )

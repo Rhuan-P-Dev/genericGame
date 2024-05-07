@@ -42,7 +42,7 @@ export class EvolveFactory {
                 // the activates need to have 'statsMult'
                 for(let index in newObject.activates){
 
-                    newObject.activates[index].useActivateObserver.add(
+                    newObject.activates[index].factoryUseActivateObserver.add(
                         (params) => {
 
                             params.object.onDeath.add(

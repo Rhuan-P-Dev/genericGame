@@ -5,6 +5,7 @@ import { OutputObjectsConfig } from "./modifiers/weaponsModifiersController.js"
 import { FactoryController } from "../factory/factoryController.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
+import { AnimationsController } from "../../graphics/animation/animationsController.js"
 
 // PROJECTILES
 import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
@@ -22,6 +23,7 @@ var Effects = ""
 var Vector = ""
 var Factory = ""
 var ObjectActivates = ""
+var Animations = ""
 
 onInit(function(){
 
@@ -30,6 +32,7 @@ onInit(function(){
     Vector = new VectorController()
     Factory = new FactoryController()
     ObjectActivates = new ObjectActivatesController()
+    Animations = new AnimationsController()
 
 })
 
@@ -80,6 +83,16 @@ export class WeaponsController{
             Effects.applyEffects(
                 object,
                 weapon.effects
+            )
+
+        }
+
+        if(weapon.animations){
+
+            Animations.applyAnimations(
+                object,
+                weapon.animations,
+                true
             )
 
         }

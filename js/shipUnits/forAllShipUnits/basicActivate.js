@@ -27,6 +27,7 @@ export class BasicActivate {
 
     config = undefined
 
+    preuseActivateObserver = new Observer()
     useActivateObserver = new Observer()
 
 }

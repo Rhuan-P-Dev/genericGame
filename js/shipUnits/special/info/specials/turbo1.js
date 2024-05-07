@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { ActivateController } from "../../../forAllShipUnits/activateController.js"
+import { TurboAnimation } from "../animations/turboAnimation.js"
 import { SpecialExtend } from "../extend/special.js"
 
 export class Turbo1 {
@@ -9,7 +10,8 @@ export class Turbo1 {
         new InheritController().inherit(
             this,
             [
-                SpecialExtend
+                SpecialExtend,
+                TurboAnimation
             ],
             build
         )

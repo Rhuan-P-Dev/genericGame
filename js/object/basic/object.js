@@ -2,6 +2,7 @@ import { DamageController } from "../../damage/damageController.js"
 import { SingleDamage } from "../../damage/damageTypes/single.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
+import { AnimationsController } from "../../graphics/animation/animationsController.js"
 import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { CommonImport } from "../common/commonImport.js"
 import { ActivateInstructions } from "../instructions/activateInstructions.js"
@@ -61,6 +62,26 @@ export class Object {
                 "func": "removeObType",
                 "class": GameState,
             },"last",10)
+
+            updateThis.onDeath.add({
+                "func": () => {
+                    new AnimationsController().run({
+                        "name":"ship dead",
+                        "focus": {
+                            "x": updateThis.x,
+                            "y": updateThis.y,
+                        },
+                        "offset": {
+                            "x": 0,
+                            "y": 0,
+                        },
+                        "frameRandomOffsetX": 0,
+                        "frameRandomOffsetY": 0,
+                        "randomPointOffsetX": 0,
+                        "randomPointOffsetY": 0,
+                    })
+                },
+            },"last",11)
     
         }
 
@@ -94,5 +115,6 @@ export class Object {
     priority = 0
 
     effects = {}
+    animations = {}
 
 }

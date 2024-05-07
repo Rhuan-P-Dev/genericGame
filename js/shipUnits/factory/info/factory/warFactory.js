@@ -44,7 +44,7 @@ export class WarFactory {
             ) => { // make activate 10% faster each use
                 for(let index in newObject.activates){
 
-                    newObject.activates[index].useActivateObserver.add(
+                    newObject.activates[index].factoryUseActivateObserver.add(
                         () => {
                             newObject.activates[index].reload *= 0.9
                         }

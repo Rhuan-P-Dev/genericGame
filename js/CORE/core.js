@@ -292,6 +292,7 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 //uma nave uqe fala "wake up", se ele morre ela respauwna, caso morra denovo antes do "wake up" ela morre
 
+//uma nave que rouba os ativadores(ou até os epcial?) e tabem um pouco dos statos
 
 var previousTime = performance.now()
 

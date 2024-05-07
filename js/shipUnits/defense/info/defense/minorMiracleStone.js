@@ -1,5 +1,6 @@
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { ActivateController } from "../../../forAllShipUnits/activateController.js"
+import { MiracleStoneAnimation } from "../animation/miracleStoneAnimation.js"
 import { DefenseExtend } from "../extend/defense.js"
 
 export class MinorMiracleStone {
@@ -9,7 +10,8 @@ export class MinorMiracleStone {
         new InheritController().inherit(
             this,
             [
-                DefenseExtend
+                DefenseExtend,
+                MiracleStoneAnimation
             ],
             build
         )

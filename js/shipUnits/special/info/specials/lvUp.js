@@ -1,6 +1,7 @@
 
 import { InheritController } from "../../../../generalUtils/inherit.js"
 import { SpecialController } from "../../specialController.js"
+import { LVUpAnimation } from "../animations/lvUpAnimation.js"
 import { SpecialExtend } from "../extend/special.js"
 
 export class LvUp {
@@ -10,7 +11,8 @@ export class LvUp {
         new InheritController().inherit(
             this,
             [
-                SpecialExtend
+                SpecialExtend,
+                LVUpAnimation
             ],
             build
         )

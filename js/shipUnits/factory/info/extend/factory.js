@@ -19,4 +19,6 @@ export class FactoryExtend {
     type = "factory"
     func = new FactoryController().createObject
 
+    factoryUseActivateObserver = new Observer()
+
 }

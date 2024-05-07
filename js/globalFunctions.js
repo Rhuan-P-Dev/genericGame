@@ -6,6 +6,10 @@ function randomInteger(min = 0, max = 1){
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function randomInterval(number){
+    return randomInteger(-number, number)
+}
+
 function randomFloat(min = 0, max = 1){
     return Math.random() * (max - min) + min
 }
