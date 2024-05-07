@@ -47,7 +47,7 @@ export class FactoryController{
 
             Activate.addObject(result.return)
 
-            result.activate.useActivateObserver.run({
+            result.activate.factoryUseActivateObserver.run({
                 "object":result.return,
                 "activate":result.activate
             })
