@@ -49,6 +49,19 @@ export class DefenseController{
 
         config.position[1] = index
 
+        ScreenRender.addDrawRequest(
+            {
+                "func": ScreenRender.drawCircle,
+                "params": {
+                    "x": object.x + object.currentXVel,
+                    "y": object.y + object.currentYVel,
+                    "radius": object.width + object.height,
+                    "color": "lightblue",
+                    "lineWidth": 1,
+                },
+            }
+        )
+
         setFrameOut(
             () => {
 
