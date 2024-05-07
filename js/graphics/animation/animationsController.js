@@ -190,7 +190,7 @@ export class AnimationsController {
     
                     },
                     loopConfig.frameOut,
-                    -1,
+                    loopConfig.repeat || -1,
                     true,
                     randomID,
                     () => {
