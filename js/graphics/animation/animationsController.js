@@ -53,6 +53,7 @@ export class AnimationsController {
                 "lineWidth": {},
                 "fill": {},
                 "color": [[]],
+                "fontSize": {},
             }
 
             this.lazyAnimationEngine(animationConfig, animationData[shape], animationObject, tempAnimationData)
@@ -153,7 +154,8 @@ export class AnimationsController {
                     "text": tempAnimationData.text[0],
                     "color": "rgb("+tempAnimationData.color[0][0]+","+tempAnimationData.color[0][1]+","+tempAnimationData.color[0][2]+")",
                     "lineWidth": tempAnimationData.lineWidth[0],
-                    "fill": tempAnimationData.fill[0]
+                    "fill": tempAnimationData.fill[0],
+                    "fontSize": tempAnimationData.fontSize[0],
                 }
             }
     
