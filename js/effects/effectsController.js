@@ -242,10 +242,40 @@ export class EffectsController {
 
         if(!promise){
 
+            let effect = Effects.get(effectName).effect
+            let effectBefore = effect.before
+            let effectAfter = effect.after
+
+            if(effectBefore){
+
+                Frame.add(
+                    () => {
+                        effectBefore.config.func(params)
+                    },
+                    effectBefore.config.frameOut || config.frameOut,
+                    effectBefore.config.repeat || config.repeat,
+                    config.overwrite,
+                    ID+"_before",
+                    () => {
+                        Effects.remove(params.object, ID+"_before")
+                    }
+                )
+
+                params.object.effects[ID+"_before"] = {
+                    effectName,
+                    effectType,
+                    params,
+                    "config": effectBefore.config || config,
+                    promise,
+                    ID,
+                }
+
+            }
+
             Frame.add(
                 () => {
                     
-                    Effects.get(effectName).effect.config.func(params)
+                    effect.config.func(params)
 
                 },
                 config.frameOut,
@@ -256,6 +286,32 @@ export class EffectsController {
                     Effects.remove(params.object, ID)
                 }
             )
+
+            if(effectAfter){
+
+                Frame.add(
+                    () => {
+                        effectAfter.config.func(params)
+                    },
+                    effectAfter.config.frameOut || config.frameOut,
+                    effectAfter.config.repeat || config.repeat,
+                    config.overwrite,
+                    ID+"_after",
+                    () => {
+                        Effects.remove(params.object, ID+"_after")
+                    }
+                )
+
+                params.object.effects[ID+"_after"] = {
+                    effectName,
+                    effectType,
+                    params,
+                    "config": effectAfter.config || config,
+                    promise,
+                    ID,
+                }
+
+            }
 
         }
 
