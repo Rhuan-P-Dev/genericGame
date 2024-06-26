@@ -2,7 +2,6 @@
 import { EffectsController } from "../../../effects/effectsController.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
-import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""

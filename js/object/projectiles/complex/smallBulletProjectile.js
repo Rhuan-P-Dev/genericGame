@@ -1,6 +1,5 @@
 
 import { InheritController } from "../../../generalUtils/inherit.js"
-import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 export class SmallBulletProjetile {

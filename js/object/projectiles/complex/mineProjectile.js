@@ -1,7 +1,6 @@
   
 import { MediumExplosionDamage } from "../../../damage/damageTypes/mediumExplosion.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
-import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicExplosiveProjectile } from "../basic/basicExplosiveProjectile.js"
 
 export class MineProjetile {

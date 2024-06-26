@@ -4,7 +4,6 @@ import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
 import { MovableObject } from "../../basic/movableObject.js"
 import { Rotable } from "../../basic/rotable.js"
-import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""

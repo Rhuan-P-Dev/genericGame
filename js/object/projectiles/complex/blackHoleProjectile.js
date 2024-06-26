@@ -1,8 +1,6 @@
 
 import { EffectsController } from "../../../effects/effectsController.js"
-import { setFrameOut } from "../../../frame/frameController.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
-import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""

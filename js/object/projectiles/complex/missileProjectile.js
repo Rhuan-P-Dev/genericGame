@@ -3,7 +3,6 @@ import { InheritController } from "../../../generalUtils/inherit.js"
 import { EnergizedObject } from "../../basic/energizedObject.js"
 import { MovableObject } from "../../basic/movableObject.js"
 import { RotableObject } from "../../basic/rotableObject.js"
-import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicExplosiveProjectile } from "../basic/basicExplosiveProjectile.js"
 
 export class MissileProjetile {
