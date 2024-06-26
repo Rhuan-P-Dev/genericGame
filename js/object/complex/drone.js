@@ -3,7 +3,6 @@ import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
-import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 export class Drone {
 
@@ -47,7 +46,7 @@ export class Drone {
 
         "drone_life": (updateThis) => {
 
-            updateThis.life = new StatsObserverController(updateThis, "life", 50)
+            updateThis.life.set(50)
     
         }
 

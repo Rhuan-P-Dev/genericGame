@@ -42,7 +42,7 @@ export class BlackHoleProjetile {
     passBuildList = {
 
         "blackHoleProjetile_life": (updateThis) => {
-            updateThis.life = new StatsObserverController(updateThis, "life", 2000)
+            updateThis.life.set(2000)
         },
         ["add_blackHoleFunctions"]: (updateThis) => {
 

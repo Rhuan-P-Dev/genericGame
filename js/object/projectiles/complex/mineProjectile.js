@@ -33,7 +33,7 @@ export class MineProjetile {
     passBuildList = {
 
         "mineProjetile_life": (updateThis) => {
-            updateThis.life = new StatsObserverController(updateThis, "life", 50)
+            updateThis.life.set(50)
         },
 
     }

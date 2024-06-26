@@ -32,7 +32,7 @@ export class SmallBulletProjetile {
     passBuildList = {
 
         "smallBulletProjetile_life": (updateThis) => {
-            updateThis.life = new StatsObserverController(updateThis, "life", 1)
+            updateThis.life.set(1)
         },
 
     }

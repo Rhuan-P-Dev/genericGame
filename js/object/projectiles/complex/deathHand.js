@@ -53,7 +53,7 @@ export class DeathHand {
     passBuildList = {
 
         "deathHand_life": (updateThis) => {
-            updateThis.life = new StatsObserverController(updateThis, "life", 200)
+            updateThis.life.set(200)
         },
 
         ["add_deathHandFunctions"]: (updateThis) => {

@@ -44,7 +44,7 @@ export class MissileProjetile {
     passBuildList = {
 
         "missileProjetile_life": (updateThis) => {
-            updateThis.life = new StatsObserverController(updateThis, "life", 5)
+            updateThis.life.set(5)
         },
 
     }

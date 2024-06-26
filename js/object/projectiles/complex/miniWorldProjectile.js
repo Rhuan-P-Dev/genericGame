@@ -45,7 +45,7 @@ export class MiniWorldProjectile {
     passBuildList = {
 
         "miniWorldProjectile_life": (updateThis) => {
-            updateThis.life = new StatsObserverController(updateThis, "life", 150)
+            updateThis.life.set(150)
         },
 
         ["add_miniWorldFunctions"]: (updateThis) => {

@@ -2,7 +2,6 @@
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
-import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 export class ObjectFactory{
 
@@ -41,7 +40,7 @@ export class ObjectFactory{
 
         "objectFactory_life": (updateThis) => {
 
-            updateThis.life = new StatsObserverController(updateThis, "life", 50)
+            updateThis.life.set(50)
     
         }
 

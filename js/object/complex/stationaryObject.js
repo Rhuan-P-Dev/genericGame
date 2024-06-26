@@ -1,7 +1,6 @@
 
 import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
-import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 export class StationaryObject {
 
@@ -37,7 +36,7 @@ export class StationaryObject {
 
         "stationaryObject_life": (updateThis) => {
 
-            updateThis.life = new StatsObserverController(updateThis, "life", 100)
+            updateThis.life.set(100)
     
         }
 

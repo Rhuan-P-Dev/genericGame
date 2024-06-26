@@ -4,7 +4,6 @@ import { EnergizedObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
 import { ShieldObject } from "../basic/shieldObject.js"
-import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 export class Ship {
 
@@ -48,7 +47,7 @@ export class Ship {
 
         "ship_life": (updateThis) => {
 
-            updateThis.life = new StatsObserverController(updateThis, "life", 200)
+            updateThis.life.set(200)
     
         }
 
