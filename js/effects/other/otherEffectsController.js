@@ -32,7 +32,7 @@ export class OtherEffectsController {
 
         "resurrection": (params) => {
 
-            params.object.life = params.object.maxLife * params.config.getPercentage(params)
+            params.object.life.set(params.object.maxLife * params.config.getPercentage(params))
 
         },
 
@@ -41,7 +41,7 @@ export class OtherEffectsController {
             let damage = params.calcDamage * params.config.getPercentage(params)
 
             if(damage > 0){
-                params.otherObjectMaster.life -= damage
+                params.otherObjectMaster.life.math("-", damage)
             }
 
         },

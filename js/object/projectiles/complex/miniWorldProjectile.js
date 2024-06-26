@@ -2,6 +2,7 @@
 import { EffectsController } from "../../../effects/effectsController.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
+import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""
@@ -29,7 +30,6 @@ export class MiniWorldProjectile {
 
         this.graphicID = "mini world"
 
-        this.life = 150
         this.maxLife = 150
 
         this.width = 8
@@ -43,6 +43,11 @@ export class MiniWorldProjectile {
     }
 
     passBuildList = {
+
+        "miniWorldProjectile_life": (updateThis) => {
+            updateThis.life = new StatsObserverController(updateThis, "life", 150)
+        },
+
         ["add_miniWorldFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last", 0) // selfDestruction

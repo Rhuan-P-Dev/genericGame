@@ -286,13 +286,13 @@ export class GenericEffectsController {
 
                 }
 
-                params.object.life += VALUE
+                params.object.life.math("+", VALUE)
                 params.object.maxLife += VALUE
 
 
                 closestObject.maxLife -= VALUE
 
-                closestObject.life -= 0.01
+                closestObject.life.math("-", 0.01)
 
             }
 
@@ -303,7 +303,7 @@ export class GenericEffectsController {
 
             // make more realictic, eenrgy consume, damage, etc
 
-            params.object.life -= params.damage
+            params.object.life.math("-", params.damage)
 
             let energyDamage = params.damage * params.energyMult
 
@@ -359,11 +359,11 @@ export class GenericEffectsController {
 
                 )
 
-                closestAllieObject.life -= energyDamage * params.dischargeEnergyMult
+                closestAllieObject.life.math("-", energyDamage * params.dischargeEnergyMult) // TODO
 
             }else{
 
-                params.object.life -= energyDamage * params.selfEnergyMult
+                params.object.life.math("-", energyDamage * params.selfEnergyMult)
 
             }
 
@@ -377,7 +377,7 @@ export class GenericEffectsController {
 
         "inflict damage":(params) => {
 
-            params.object.life -= params.damage
+            params.object.life.math("-", params.damage) //TODO
 
 
         },
@@ -411,7 +411,7 @@ export class GenericEffectsController {
                 "closest"
             )
 
-            params.object.life -= params.thunderDamage
+            params.object.life.math("-", params.thunderDamage) //TODO
 
             if(closestAllieObject){
 

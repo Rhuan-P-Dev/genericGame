@@ -4,6 +4,7 @@ import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
 import { MovableObject } from "../../basic/movableObject.js"
 import { Rotable } from "../../basic/rotable.js"
+import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""
@@ -33,7 +34,6 @@ export class DeathHand {
 
         this.graphicID = "death hand"
 
-        this.life = 200
         this.maxLife = 200
 
         this.width = 6
@@ -51,6 +51,11 @@ export class DeathHand {
     }
 
     passBuildList = {
+
+        "deathHand_life": (updateThis) => {
+            updateThis.life = new StatsObserverController(updateThis, "life", 200)
+        },
+
         ["add_deathHandFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last", 0) // selfDestruction

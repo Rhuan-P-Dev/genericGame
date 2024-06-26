@@ -19,7 +19,6 @@ export class DroneV2 {
 
         this.vel *= 2
 
-        this.life *= 1.6
         this.maxLife *= 1.6
 
         this.defense *= 2
@@ -35,6 +34,14 @@ export class DroneV2 {
         this.rotationVel *= 2
 
         this.damage *= 1.5
+
+    }
+
+    passBuildList = {
+
+        "droneV2_life": (updateThis) => {
+            updateThis.life.math("*", 1.6)
+        },
 
     }
 

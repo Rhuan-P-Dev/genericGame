@@ -3,6 +3,7 @@ import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
+import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 export class Drone {
 
@@ -26,7 +27,6 @@ export class Drone {
         this.vel /= 2
         this.maxVel /= 2
 
-        this.life = 50
         this.maxLife = 50
 
         this.defense = 1
@@ -40,6 +40,16 @@ export class Drone {
         this.energyRegen = 0.15
 
         this.damage = 2
+
+    }
+
+    passBuildList = {
+
+        "drone_life": (updateThis) => {
+
+            updateThis.life = new StatsObserverController(updateThis, "life", 50)
+    
+        }
 
     }
 

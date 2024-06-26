@@ -1,6 +1,7 @@
 
 import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
+import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 export class StationaryObject {
 
@@ -16,7 +17,6 @@ export class StationaryObject {
 
         this.priority += 1
 
-        this.life = 100
         this.maxLife = 100
 
         this.defense = 2
@@ -30,6 +30,16 @@ export class StationaryObject {
         this.energyRegen = 0.5
 
         this.damage = 2
+
+    }
+
+    passBuildList = {
+
+        "stationaryObject_life": (updateThis) => {
+
+            updateThis.life = new StatsObserverController(updateThis, "life", 100)
+    
+        }
 
     }
 

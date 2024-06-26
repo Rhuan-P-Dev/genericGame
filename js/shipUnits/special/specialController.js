@@ -138,7 +138,7 @@ export class SpecialController{
         newObject.priority = config.priority
         
         newObject.maxLife = config.life
-        newObject.life = config.life
+        newObject.life.set(config.life)
 
         newObject.defense = config.defense
 

@@ -7,6 +7,7 @@ import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { CommonImport } from "../common/commonImport.js"
 import { ActivateInstructions } from "../instructions/activateInstructions.js"
 import { onInstructions } from "../instructions/onInstructions.js"
+import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 var GameState = ""
 var Damage = ""
@@ -40,6 +41,22 @@ export class Object {
     passBuildList = {
 
         "add_basic_objectFunctions": (updateThis) => {
+
+            updateThis.life = new StatsObserverController(updateThis, "life", 10)
+
+            updateThis.life.observer.add(
+                (params) => {
+
+                    if(params.currentStatValue <= 0){
+                        
+                        params.object.onDeath.run({
+                            "object": params.object
+                        })
+
+                    }
+                }
+            )
+
 
             ConsumeStats.add(
                 updateThis,
@@ -92,7 +109,6 @@ export class Object {
     team = "newTeam"
     ID = "newID"
 
-    life = 10
     maxLife = 10
     lifeRegen = 0
 

@@ -26,7 +26,7 @@ export class StatsController {
 
     calcStatus(object){
 
-        object.life += object.lifeRegen
+            object.life.math("+", object.lifeRegen)
 
         if(object.shield !== undefined){
 

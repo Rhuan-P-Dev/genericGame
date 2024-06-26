@@ -16,11 +16,18 @@ export class MediumBulletProjetiles {
 
         this.damage *= 1.5
 
-        this.life *= 5
         this.maxLife *= 5
 
         this.width *= 2
         this.height *= 2
+
+    }
+
+    passBuildList = {
+
+        "mediumBulletProjetiles_life": (updateThis) => {
+            updateThis.life.math("*", 5)
+        },
 
     }
 

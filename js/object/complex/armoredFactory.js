@@ -17,7 +17,6 @@ export class ArmoredObjectFactory{
 
         this.graphicID = "armored factory"
 
-        this.life *= 2
         this.maxLife *= 2
 
         this.defense += 5
@@ -30,6 +29,14 @@ export class ArmoredObjectFactory{
         this.energyRegen *= 0.8
 
         this.damage *= 1.2
+
+    }
+
+    passBuildList = {
+
+        "armoredObjectFactory_life": (updateThis) => {
+            updateThis.life.math("*", 2)
+        },
 
     }
 

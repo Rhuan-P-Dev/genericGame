@@ -1,5 +1,6 @@
 
 import { InheritController } from "../../../generalUtils/inherit.js"
+import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
 export class SmallBulletProjetile {
@@ -17,7 +18,6 @@ export class SmallBulletProjetile {
 
         this.graphicID = "bullet"
 
-        this.life = 1
         this.maxLife = 1
 
         this.damage = 10
@@ -26,6 +26,14 @@ export class SmallBulletProjetile {
         this.height = 3
 
         this.lifeTime = 30
+
+    }
+
+    passBuildList = {
+
+        "smallBulletProjetile_life": (updateThis) => {
+            updateThis.life = new StatsObserverController(updateThis, "life", 1)
+        },
 
     }
 

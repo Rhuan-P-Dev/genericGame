@@ -1,6 +1,7 @@
   
 import { MediumExplosionDamage } from "../../../damage/damageTypes/mediumExplosion.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
+import { StatsObserverController } from "../../instructions/statsObserverController.js"
 import { BasicExplosiveProjectile } from "../basic/basicExplosiveProjectile.js"
 
 export class MineProjetile {
@@ -24,9 +25,16 @@ export class MineProjetile {
         this.height = 6
 
         this.maxLife = 50
-        this.life = 50
 
         this.lifeTime = 10*60
+
+    }
+
+    passBuildList = {
+
+        "mineProjetile_life": (updateThis) => {
+            updateThis.life = new StatsObserverController(updateThis, "life", 50)
+        },
 
     }
 
