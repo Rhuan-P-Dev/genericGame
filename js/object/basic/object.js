@@ -1,5 +1,6 @@
 import { DamageController } from "../../damage/damageController.js"
 import { SingleDamage } from "../../damage/damageTypes/single.js"
+import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
@@ -49,9 +50,15 @@ export class Object {
 
                     if(params.currentStatValue <= 0){
                         
-                        params.object.onDeath.run({
-                            "object": params.object
-                        })
+                        // The 'onDeath' CANNOT be executed in the same frame as the object dies, or it will cause a fatal bug with the 'thunder' effects.
+                        setFrameOut(
+                            () => {
+                                params.object.onDeath.run({
+                                    "object": params.object
+                                })
+                            },
+                            1
+                        )
 
                     }
                 }
