@@ -347,8 +347,12 @@ export class EffectsController {
     remove(object, ID){
 
         Frame.remove(ID)
+        Frame.remove(ID+"_before")
+        Frame.remove(ID+"_after")
 
         delete object.effects[ID]
+        delete object.effects[ID+"_before"]
+        delete object.effects[ID+"_after"]
 
     }
 
