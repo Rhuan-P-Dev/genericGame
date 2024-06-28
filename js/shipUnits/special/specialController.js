@@ -103,18 +103,6 @@ export class SpecialController{
             "class": GameState,
         },"first",0)
 
-        ConsumeStats.add(
-            illusion,
-            "life",
-            [
-                "last",
-                10
-            ],
-            (object, damage) => {
-                return (damage * object.resistance) - object.defense
-            }
-        )
-
         Effects.removeAll(illusion)
 
         return illusion
