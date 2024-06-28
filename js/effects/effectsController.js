@@ -153,7 +153,7 @@ export class EffectsController {
 
         new ComplexOnTypeFunctions().apply(tempConfig)
 
-        params.object[applyType].add(
+        return params.object[applyType].add(
             tempConfig,
             tempConfig.stage || "first",
             tempConfig.priority || 0
@@ -172,7 +172,7 @@ export class EffectsController {
 
         if(!this.checkEffect(effectName, effectType)){return false}
 
-        this.typeTable[effectType](
+        return this.typeTable[effectType](
             effectName,
             effectType,
             params,
@@ -212,13 +212,18 @@ export class EffectsController {
 
         }
 
-        params.object[effectType].add(
+        let priority = params.object[effectType].add(
             config,
             config.stage || "first",
             config.priority || 0
         )
 
         delete params.object
+
+        return {
+            priority,
+            "stage": config.stage || "first"
+        }
 
     }
 
@@ -323,6 +328,8 @@ export class EffectsController {
             promise,
             ID,
         }
+
+        return ID
         
     }
 
