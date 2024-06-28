@@ -146,9 +146,13 @@ export class GenericEffectsController {
 
         "illusion": (params) => {
 
-            Special.illusion(
+            let illusion = Special.illusion(
                 params.object,
             )
+
+            Activate.primitiveAjustObject(params.object, illusion)
+
+            Activate.addObject(illusion)
 
         },
 
