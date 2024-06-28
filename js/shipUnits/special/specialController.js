@@ -8,6 +8,7 @@ import { ComplexOnType, ComplexOnTypeFunctions } from "../../object/instructions
 import { DamageController } from "../../damage/damageController.js"
 import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { Object } from "../../object/basic/object.js"
+import { StatsObserverController } from "../../object/instructions/statsObserverController.js"
 
 var GameState = ""
 var MultiplyStats = ""
@@ -87,6 +88,23 @@ export class SpecialController{
         illusion.onDeath = new ComplexOnType()
         illusion.onHit = new ComplexOnType()
         illusion.onDamage = new ComplexOnType()
+
+        illusion.life = new StatsObserverController(illusion, "life", illusion.maxLife)
+
+        illusion.life.observer.add(
+            (params) => {
+
+                // The 'onDeath' CANNOT be executed in the same frame as the object dies, or it will cause a fatal bug with the 'thunder' effects.
+                setFrameOut(
+                    () => {
+                        params.object.onDeath.run({
+                            "object": params.object
+                        })
+                    },
+                    1
+                )
+            }
+        )
 
         illusion.onDeath.add({
             "func": "removeObType",
