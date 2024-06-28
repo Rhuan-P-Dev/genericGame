@@ -140,6 +140,8 @@ export class GenericEffectsController {
                 }
             )
 
+            Activate.primitiveAjustObject(params.object, clone)
+
             Activate.addObject(clone)
 
         },
