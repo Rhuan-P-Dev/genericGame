@@ -135,12 +135,12 @@ export class ComplexRenderController {
 
     }
 
-    mirrorFunction(functionName, params, scaleX, scaleY){
+    mirrorFunction(object, functionName, params, scaleX, scaleY){
 
         ScreenRender.setCanvasState(
             {
-                "x": Offscreen.getOffsetX(),
-                "y": Offscreen.getOffsetY(),
+                "x": Offscreen.getOffsetX() + (params.offset.x *  this.getObjectScale(object)),
+                "y": Offscreen.getOffsetY() + (params.offset.y *  this.getObjectScale(object))
             },
             0,
             scaleX,
@@ -154,12 +154,13 @@ export class ComplexRenderController {
 
     }
 
-    mirror(functionName, params){
+    mirror(object, functionName, params){
 
         ScreenRender.resetCanvas(ScreenRender.offscreenCanvasContext)
 
         if(params.xMirror){
             this.mirrorFunction(
+                object,
                 functionName,
                 params,
                 params.canvasScale * -1,
@@ -169,6 +170,7 @@ export class ComplexRenderController {
 
         if(params.yMirror){
             this.mirrorFunction(
+                object,
                 functionName,
                 params,
                 params.canvasScale,
@@ -178,6 +180,7 @@ export class ComplexRenderController {
 
         if(params.xyMirror){
             this.mirrorFunction(
+                object,
                 functionName,
                 params,
                 params.canvasScale * -1,
@@ -270,8 +273,8 @@ export class ComplexRenderController {
 
                 ScreenRender.setCanvasState(
                     {
-                        "x": Offscreen.getOffsetX(),
-                        "y": Offscreen.getOffsetY(),
+                        "x": Offscreen.getOffsetX() + (params.offset.x * this.getObjectScale(object)),
+                        "y": Offscreen.getOffsetY() + (params.offset.y * this.getObjectScale(object))
                     },
                     0,
                     params.canvasScale,
@@ -280,8 +283,8 @@ export class ComplexRenderController {
                 )
 
                 ScreenRender[functionName](params, ScreenRender.offscreenCanvasContext)
-    
-                this.mirror(functionName, params)
+
+                this.mirror(object, functionName, params)
     
             }
             
