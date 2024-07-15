@@ -87,7 +87,7 @@ export class ScreenRenderController {
     defaultColor = "black"
     defaultLineWidth = 1
 
-    focusObjectVisionRange = 650
+    focusObjectVisionRange = 750
 
     addDrawRequest(params){
 
