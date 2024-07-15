@@ -61,6 +61,7 @@ export class DeathHand {
 
             Effects.apply(
                 "onHit",
+                {},
                 "death hand",
                 "effect",
                 {

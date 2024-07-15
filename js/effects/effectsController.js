@@ -119,8 +119,17 @@ export class EffectsController {
         }
     }
 
+    defaultTempConfig = {
+        "prefixFunc": [],
+        "suffixFunc": ["deleteInstruction"],
+        
+        "stage": "middle",
+        "priority": 5,
+    }
+
     apply(
         applyType,
+        tempConfig,
         effectName,
         effectType,
         params,
@@ -128,26 +137,56 @@ export class EffectsController {
         ID = randomUniqueID()
     ){
 
-        let tempConfig = {
-            "prefixFunc": [],
-            "suffixFunc": ["deleteInstruction"],
-
-            "stage": "middle",
-            "priority": 5,
-        }
+        CloneObject.recursiveCloneAttribute(this.defaultTempConfig, tempConfig)
 
         tempConfig.func = (localParams) => {
 
-            params.object = localParams.otherObject
+            let objects = []
+            let IDs = [ID]
 
-            Effects.add(
-                effectName,
-                effectType,
-                params,
-                config,
-                false,
-                ID,
-            )
+            if(
+                localParams.otherObject
+                &&
+                !localParams.otherObjectMaster
+            ){
+
+                objects.push(localParams.otherObject)
+
+            }else if(localParams.otherObjectMaster){
+
+                objects.push(localParams.otherObjectMaster)
+
+            }else{
+
+                objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                    params.object,
+                    {
+                        "maxDistance": params.range,
+                        "includeEnemyTeam": true,
+                        "includeSameTeam": false,
+                        "includeYourself": false,
+                    }
+                )
+            }
+
+            params.object = undefined
+            
+            for (let index = 0; index < objects.length; index++) {
+
+                let newParams = CloneObject.recursiveCloneAttribute(params)
+
+                newParams.object = objects[index]
+                
+                Effects.add(
+                    effectName,
+                    effectType,
+                    newParams,
+                    config,
+                    false,
+                    IDs[index] || randomUniqueID(),
+                )
+                
+            }
             
         }
 
@@ -432,6 +471,7 @@ export class EffectsController {
 
             Effects.apply(
                 apply.applyType,
+                apply.tempConfig || {},
                 effect.config.name,
                 effect.config.type,
                 effect.params,
