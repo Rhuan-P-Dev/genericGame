@@ -197,10 +197,9 @@ export class ComplexRenderController {
         let objectOffset = Offscreen.getObjectXY(object)
 
         let focus = ScreenRender.shiftFocus(
-            {
-                "x": GameState.getPlayer().x - (ScreenRender.mainCanvasContext.canvas.width / 2),
-                "y": GameState.getPlayer().y - (ScreenRender.mainCanvasContext.canvas.height / 2),
-            },
+            ScreenRender.getCanvasXYofFocusObject(
+                ScreenRender.mainCanvasContext
+            ),
             object,
         )
 

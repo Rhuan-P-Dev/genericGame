@@ -166,6 +166,23 @@ export class ScreenRenderController {
         this.focusObject = object
     }
 
+    getCanvasXYofFocusObject(canvas) {
+
+        let focusObject = this.getFocusObject()
+
+        let x = focusObject.x - (canvas.canvas.width / 2)
+        let y = focusObject.y - (canvas.canvas.height / 2)
+
+        //x += focusObject.currentXVel*10
+        //y += focusObject.currentYVel*10
+
+        return {
+            "x": x,
+            "y": y
+        }
+
+    }
+
     reset(
         object,
         scaleX = 1,
@@ -177,10 +194,7 @@ export class ScreenRenderController {
 
         this.setCanvasState(
             this.shiftFocus(
-                {
-                    "x": GameState.getPlayer().x - (canvasContext.canvas.width / 2),
-                    "y": GameState.getPlayer().y - (canvasContext.canvas.height / 2),
-                },
+                this.getCanvasXYofFocusObject(canvasContext),
                 object,
             ),
             object.radian,
