@@ -346,8 +346,6 @@ class offscreen {
     width = 50
     height = 50
 
-    offsetX = 50
-    offsetY = 30
     lenght = 0
 
     getObjectXY(object) {
@@ -362,11 +360,11 @@ class offscreen {
     }
 
     getOffsetX(lenght = this.lenght) {
-        return (this.offsetX * lenght) + 30
+        return (this.width * lenght) + (this.width / 2 )
     }
 
     getOffsetY() {
-        return this.offsetY
+        return this.height / 2
     }
 
 }
