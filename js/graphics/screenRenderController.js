@@ -1,5 +1,6 @@
 
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
+import { setFrameOut } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { CustomMathController } from "../generalUtils/math.js"
 import { ComplexRenderController } from "./complexRenderController.js"
@@ -89,6 +90,16 @@ export class ScreenRenderController {
 
     focusObjectVisionRange = 750
 
+    constructor(){
+
+        setFrameOut(
+            () => {
+                this.focusObject = GameState.getPlayer()
+            }, 1
+        )
+
+    }
+
     addDrawRequest(params){
 
         DrawRequestQueue.add(params)
@@ -132,10 +143,10 @@ export class ScreenRenderController {
 
     inFocusObjectVision(object){
 
-        let player = GameState.getPlayer()
+        let focusObject = this.getFocusObject()
 
         let distance = AIUtils.getDistanceOfObjects(
-            player,
+            focusObject,
             object
         )
 
@@ -145,6 +156,14 @@ export class ScreenRenderController {
 
         return false
 
+    }
+
+    getFocusObject() {
+        return this.focusObject
+    }
+    
+    setFocusObject(object) {
+        this.focusObject = object
     }
 
     reset(
