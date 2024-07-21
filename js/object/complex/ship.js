@@ -41,6 +41,8 @@ export class Ship {
 
         this.damage = 10
 
+        this.vel *= 1.5
+
     }
 
     passBuildList = {
