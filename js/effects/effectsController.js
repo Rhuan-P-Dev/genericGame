@@ -192,6 +192,8 @@ export class EffectsController {
 
         new ComplexOnTypeFunctions().apply(tempConfig)
 
+        tempConfig.config = tempConfig
+
         return params.object[applyType].add(
             tempConfig,
             tempConfig.stage || "first",
