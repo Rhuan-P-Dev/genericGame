@@ -199,9 +199,7 @@ export class GenericEffectsController {
 
             let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
                 params.object,
-                {
-                    "maxDistance": params.range
-                }
+                params.searchConfig
             )
 
             ScreenRender.addDrawRequest(
@@ -210,7 +208,7 @@ export class GenericEffectsController {
                     "params": {
                         "x": params.object.x,
                         "y": params.object.y,
-                        "radius": params.range,
+                        "radius": params.searchConfig.maxDistance,
                     },
                 }
             )
@@ -227,7 +225,7 @@ export class GenericEffectsController {
                 closestObject.currentXVel -= direction.x * CustomMath.diminishingReturns(
                     CustomMath.linearReverse(
                         AIUtils.getDistanceOfObjects(params.object, closestObject),
-                        params.range
+                        params.searchConfig.maxDistance,
                     ) * 2,
                     params.force
                 ) * params.mult
@@ -235,7 +233,7 @@ export class GenericEffectsController {
                 closestObject.currentYVel -= direction.y * CustomMath.diminishingReturns(
                     CustomMath.linearReverse(
                         AIUtils.getDistanceOfObjects(params.object, closestObject),
-                        params.range
+                        params.searchConfig.maxDistance,
                     ) * 2,
                     params.force
                 ) * params.mult
@@ -544,6 +542,14 @@ export class GenericEffectsController {
                     },
         
                     "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 200,
+                        },
+
                         "range": 200,
                         "mult": 0.01,
                         "force": 1,

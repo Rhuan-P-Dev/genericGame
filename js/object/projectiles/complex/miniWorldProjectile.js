@@ -56,9 +56,11 @@ export class MiniWorldProjectile {
                 "effect",
                 {
                     "object": updateThis,
-                    "range": 100,
                     "mult": 1,
-                    "force": 0.01
+                    "force": 0.01,
+                    "searchConfig":{
+                        "maxDistance": 100,
+                    }
                 },{},true
             )
 
