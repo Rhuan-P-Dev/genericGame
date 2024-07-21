@@ -68,6 +68,36 @@ export class OtherEffectsController {
 
         "positive": {
 
+            "deny damage": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": ["stopStages","timeout"],
+                        "func": () => {},
+                        "suffixFunc": [],
+
+                        "stopStages": {
+                            "stages": ["first", "middle", "last",],
+                        },
+
+                        "timeout":{
+                            "frameOut": 60,
+                        },
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+        
+                    "params": {},
+
+                }
+
+            },
+
+            
+
             "converter": {
 
                 "on": {
