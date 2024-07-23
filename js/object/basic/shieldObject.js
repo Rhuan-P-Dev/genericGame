@@ -1,14 +1,5 @@
 import { InheritController } from "../../generalUtils/inherit.js"
-import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { Object } from "./object.js"
-
-var ConsumeStats = ""
-
-onInit(function(){
-
-    ConsumeStats = new ConsumeStatsController()
-
-})
 
 export class ShieldObject {
 
@@ -34,13 +25,11 @@ export class ShieldObject {
 
         "add_shieldConsume": (updateThis) => {
 
-            ConsumeStats.add(
-                updateThis,
+            insertRelativeTo(
+                updateThis.damageOrder.physical,
+                "life",
                 "shield",
-                [
-                    "last",
-                    0
-                ]
+                "before"
             )
     
         }

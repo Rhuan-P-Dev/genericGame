@@ -38,6 +38,84 @@ export class DamageController {
 
     }
 
+    reciveDamage(params){
+
+        let damageCache = {}
+
+        for(let typeOfDamage in params.object.damageOrder){
+
+            //console.log("typeOfDamage", typeOfDamage)
+
+            for(let typeOfDamagedStatsIndex in params.object.damageOrder[typeOfDamage]){
+
+                let typeOfDamagedStats = params.object.damageOrder[typeOfDamage][typeOfDamagedStatsIndex]
+
+                //console.log("typeOfDamagedStats", typeOfDamagedStats)
+
+                if(
+                    params.object[typeOfDamagedStats] === undefined
+                    ||
+                    this.isNegative(params.object, typeOfDamagedStats)
+                    ||
+                    params.calcDamage <= 0
+                    ||
+                    damageCache[typeOfDamage] <= 0
+                ){continue}
+
+                let damage = undefined
+
+                if(!damageCache[typeOfDamage]){
+                    damage = params.calcDamage * (params.object.damageTypes[typeOfDamage] || 0)
+                
+                    damage = (
+                        damage * params.object.resistance
+                    ) - (
+                        (params.object.defense * params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]) || 0
+                    )
+                }else{
+                    damage = damageCache[typeOfDamage]
+                }
+
+                //console.log("damage", damage)
+
+                let statNumber = undefined
+
+                if(typeof params.object[typeOfDamagedStats] == "number"){
+                    statNumber = params.object[typeOfDamagedStats]
+                    params.object[typeOfDamagedStats] -= damage
+                }else{
+                    statNumber = params.object[typeOfDamagedStats].get()
+                    params.object[typeOfDamagedStats].math("-", damage)
+                }
+
+                damageCache[typeOfDamage] = damage - statNumber
+
+            }
+
+        }
+
+        //a
+
+    }
+
+    isNegative(object, typeOfDamagedStats){
+
+        let number = undefined
+
+        if(typeof object[typeOfDamagedStats] == "number"){
+            number = object[typeOfDamagedStats]
+        }else{
+            number = object[typeOfDamagedStats].get()
+        }
+
+        if(number < 0){
+            return true
+        }else{
+            return false
+        }
+
+    }
+
     damageCalc(attacker, victim){
 
         let damage = attacker.damage
