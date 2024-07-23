@@ -31,7 +31,7 @@ export class MissileProjetile {
 
         this.maxLife = 5
 
-        this.rotationVel *= 4
+        this.rotationVel *= 8
 
         this.lifeTime = 100
 
