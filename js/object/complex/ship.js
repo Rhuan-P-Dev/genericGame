@@ -27,7 +27,6 @@ export class Ship {
 
         this.priority = 5
 
-        this.life = 200
         this.maxLife = 200
 
         this.defense = 4
@@ -41,6 +40,18 @@ export class Ship {
         this.energyRegen = 0.3
 
         this.damage = 10
+
+        this.vel *= 1.5
+
+    }
+
+    passBuildList = {
+
+        "ship_life": (updateThis) => {
+
+            updateThis.life.set(200)
+    
+        }
 
     }
 

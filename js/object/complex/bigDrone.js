@@ -25,7 +25,6 @@ export class BigDrone {
 
         //this.priority += 1 == mesma prioridade que uma fatory
 
-        this.life *= 1.2
         this.maxLife *= 1.2
 
         this.defense *= 2
@@ -40,6 +39,14 @@ export class BigDrone {
         this.rotationVel *= 1.25
 
         this.damage *= 2
+
+    }
+
+    passBuildList = {
+
+        "bigDrone_life": (updateThis) => {
+            updateThis.life.math("*", 1.2)
+        },
 
     }
 

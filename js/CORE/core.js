@@ -133,8 +133,6 @@ re-estruturar os objetos import e etc []
 
 quando for adicioanr um objeto no jogo, loopers como o 'ruler' dever pergar o objeto e analizar para colocar no local correto
 
-focar em polir e refatorar o que ja tem!
-
 qualquer [.life -= X] esta errado!
 
 o 'feito' do buraco necro é solo/não da para apagar! de crecer/diminuir

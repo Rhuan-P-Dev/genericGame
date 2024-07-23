@@ -46,8 +46,8 @@ export class RulesController {
 
     stats(object){
 
-        if(object.life > object.maxLife){
-            object.life = object.maxLife
+        if(object.life.get() > object.maxLife){
+            object.life.set(object.maxLife)
         }
 
         if(object.energy > object.maxEnergy){
@@ -58,14 +58,6 @@ export class RulesController {
             if(object.shield > object.maxShield){
                 object.shield = object.maxShield
             }
-        }
-
-        if(object.life <= 0){
-
-            object.onDeath.run({
-                "object": object
-            })
-
         }
 
         if(

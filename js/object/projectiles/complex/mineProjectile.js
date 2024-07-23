@@ -24,9 +24,16 @@ export class MineProjetile {
         this.height = 6
 
         this.maxLife = 50
-        this.life = 50
 
         this.lifeTime = 10*60
+
+    }
+
+    passBuildList = {
+
+        "mineProjetile_life": (updateThis) => {
+            updateThis.life.set(50)
+        },
 
     }
 

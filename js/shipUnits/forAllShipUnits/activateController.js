@@ -94,7 +94,7 @@ export class ActivateController{
         for(let stat in config.stats){
 
             if(object[stat] !== undefined){
-                object[stat] += config.stats[stat]
+                typeof object[stat] == "number" ? object[stat] += config.stats[stat] : object[stat].math("+", config.stats[stat])
             }
 
         }
@@ -106,7 +106,7 @@ export class ActivateController{
                 for(let stat in config.stats){
 
                     if(object[stat] !== undefined){
-                        object[stat] -= config.stats[stat]
+                        typeof object[stat] == "number" ? object[stat] -= config.stats[stat] : object[stat].math("-", config.stats[stat])
                     }
         
                 }
@@ -122,7 +122,11 @@ export class ActivateController{
         for(let stat in config.stats){
 
             if(object[stat] !== undefined){
-                object[stat] += object["max" + firstLetterUppercase(stat)] * config.stats[stat]
+                if(typeof object[stat] == "number"){//-----v future erro?
+                    object[stat] += object["max" + firstLetterUppercase(stat)] * config.stats[stat]
+                }else{
+                    object[stat].math("+", object["max" + firstLetterUppercase(stat)] * config.stats[stat])
+                }
             }
 
         }
@@ -134,7 +138,11 @@ export class ActivateController{
                 for(let stat in config.stats){
 
                     if(object[stat] !== undefined){
-                        object[stat] -= object["max" + firstLetterUppercase(stat)] * config.stats[stat]
+                        if(typeof object[stat] == "number"){//-----v future erro?
+                            object[stat] -= object["max" + firstLetterUppercase(stat)] * config.stats[stat]
+                        }else{
+                            object[stat].math("-", object["max" + firstLetterUppercase(stat)] * config.stats[stat])
+                        }
                     }
         
                 }

@@ -64,6 +64,12 @@ export class GenericEffectsController {
 
         },
 
+        "sum max life": (params) => {
+
+            params.object.life.math("+", params.object.maxLife * params.mult)
+
+        },
+
         "lv up": (params) => {
 
             Special.lvUp(
@@ -140,15 +146,21 @@ export class GenericEffectsController {
                 }
             )
 
+            Activate.primitiveAjustObject(params.object, clone)
+
             Activate.addObject(clone)
 
         },
 
         "illusion": (params) => {
 
-            Special.illusion(
+            let illusion = Special.illusion(
                 params.object,
             )
+
+            Activate.primitiveAjustObject(params.object, illusion)
+
+            Activate.addObject(illusion)
 
         },
 
@@ -193,9 +205,7 @@ export class GenericEffectsController {
 
             let closestObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
                 params.object,
-                {
-                    "maxDistance": params.range
-                }
+                params.searchConfig
             )
 
             ScreenRender.addDrawRequest(
@@ -204,7 +214,7 @@ export class GenericEffectsController {
                     "params": {
                         "x": params.object.x,
                         "y": params.object.y,
-                        "radius": params.range,
+                        "radius": params.searchConfig.maxDistance,
                     },
                 }
             )
@@ -221,7 +231,7 @@ export class GenericEffectsController {
                 closestObject.currentXVel -= direction.x * CustomMath.diminishingReturns(
                     CustomMath.linearReverse(
                         AIUtils.getDistanceOfObjects(params.object, closestObject),
-                        params.range
+                        params.searchConfig.maxDistance,
                     ) * 2,
                     params.force
                 ) * params.mult
@@ -229,7 +239,7 @@ export class GenericEffectsController {
                 closestObject.currentYVel -= direction.y * CustomMath.diminishingReturns(
                     CustomMath.linearReverse(
                         AIUtils.getDistanceOfObjects(params.object, closestObject),
-                        params.range
+                        params.searchConfig.maxDistance,
                     ) * 2,
                     params.force
                 ) * params.mult
@@ -286,13 +296,13 @@ export class GenericEffectsController {
 
                 }
 
-                params.object.life += VALUE
+                params.object.life.math("+", VALUE)
                 params.object.maxLife += VALUE
 
 
                 closestObject.maxLife -= VALUE
 
-                closestObject.life -= 0.01
+                closestObject.life.math("-", 0.01)
 
             }
 
@@ -303,7 +313,7 @@ export class GenericEffectsController {
 
             // make more realictic, eenrgy consume, damage, etc
 
-            params.object.life -= params.damage
+            params.object.life.math("-", params.damage)
 
             let energyDamage = params.damage * params.energyMult
 
@@ -359,11 +369,11 @@ export class GenericEffectsController {
 
                 )
 
-                closestAllieObject.life -= energyDamage * params.dischargeEnergyMult
+                closestAllieObject.life.math("-", energyDamage * params.dischargeEnergyMult) // TODO
 
             }else{
 
-                params.object.life -= energyDamage * params.selfEnergyMult
+                params.object.life.math("-", energyDamage * params.selfEnergyMult)
 
             }
 
@@ -377,8 +387,40 @@ export class GenericEffectsController {
 
         "inflict damage":(params) => {
 
-            params.object.life -= params.damage
+            params.object.life.math("-", params.damage) //TODO
 
+        },
+
+        "inflict area damage":(params) => {
+
+            //let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            //    {
+            //        "team": params.object.team,
+            //        "ID": params.object.ID,
+            //        "x": params.zone.x,
+            //        "y": params.zone.y,
+            //    },
+            //    params.searchConfig
+            //)
+
+            let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                params.searchConfig
+            )
+
+            for (let index = 0; index < objects.length; index++) {
+
+                let object = objects[index]
+
+                let mult = CustomMath.linearReverse(
+                    // ADICINAR UM SCHEDULER PARA O CALCULO!
+                    AIUtils.getDistanceOfObjects(params.object, object),
+                    params.searchConfig.maxDistance,
+                )
+
+                object.life.math("-", params.damage * mult ) //TODO
+
+            }
 
         },
 
@@ -411,7 +453,7 @@ export class GenericEffectsController {
                 "closest"
             )
 
-            params.object.life -= params.thunderDamage
+            params.object.life.math("-", params.thunderDamage) //TODO
 
             if(closestAllieObject){
 
@@ -527,6 +569,60 @@ export class GenericEffectsController {
 
             },
 
+            "the blessed effect: red":{
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"red repulsion",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["attraction_repulsion"](params)
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "frameOut": 25*60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "mult": -2,
+                        "force": 0.4,
+                        "range": 500,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 500,
+                        },
+                        "damage": 100
+                    },
+                }
+
+            },
+
             "attraction": {
 
                 "effect": {
@@ -538,9 +634,47 @@ export class GenericEffectsController {
                     },
         
                     "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 200,
+                        },
+
                         "range": 200,
                         "mult": 0.01,
                         "force": 1,
+                    },
+
+                },
+
+            },
+
+            "the blessed effect: reverse": {
+
+                "effect": {
+
+                    "config": {
+                        "func": (params) => {
+
+                            for (let index = 0; index < 10; index++) {
+
+                                setFrameOut(
+                                    () => {
+                                        this.effectsList["sum max life"](params)
+                                    },index * 5
+                                )
+                                
+                            }
+                            
+                        },
+                        "frameOut": 9*60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
                     },
 
                 },
@@ -1300,7 +1434,62 @@ export class GenericEffectsController {
 
                 },
 
-            }
+            },
+
+            "the blessed effect: blue": {
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"blue attraction",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["attraction_repulsion"](params)
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "frameOut": 5,
+                        "repeat": 5,
+                    },
+        
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": true,
+                            "includeEnemyTeam": false,
+                            "includeYourself": true,
+                            "maxDistance": 100,
+                        },
+
+                        "mult": 1,
+                        "force": 0.1,
+                        "damage": 5
+                    },
+
+                },
+
+            },
 
         },
 

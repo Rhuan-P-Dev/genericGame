@@ -30,7 +30,6 @@ export class MissileProjetile {
         this.vel *= 10
 
         this.maxLife = 5
-        this.life = 5
 
         this.rotationVel *= 4
 
@@ -38,6 +37,14 @@ export class MissileProjetile {
 
         this.energy *= 5
         this.maxEnergy *= 5
+
+    }
+
+    passBuildList = {
+
+        "missileProjetile_life": (updateThis) => {
+            updateThis.life.set(5)
+        },
 
     }
 

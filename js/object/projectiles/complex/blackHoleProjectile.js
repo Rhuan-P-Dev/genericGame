@@ -1,6 +1,5 @@
 
 import { EffectsController } from "../../../effects/effectsController.js"
-import { setFrameOut } from "../../../frame/frameController.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
 import { BasicProjetile } from "../basic/basicProjetile.js"
 
@@ -27,7 +26,6 @@ export class BlackHoleProjetile {
 
         this.graphicID = "bullet"
 
-        this.life = 2000
         this.maxLife = 2000
 
         this.width = 12
@@ -40,6 +38,10 @@ export class BlackHoleProjetile {
     }
 
     passBuildList = {
+
+        "blackHoleProjetile_life": (updateThis) => {
+            updateThis.life.set(2000)
+        },
         ["add_blackHoleFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last",10) // damage

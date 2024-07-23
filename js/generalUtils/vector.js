@@ -83,8 +83,8 @@ export class VectorController {
         let size = this.getTriangleSize(end, start)
 
         let result = {
-            "x": (end.x - start.x) / size,
-            "y": (end.y - start.y) / size,
+            "x": ((end.x - start.x) / size) || 0,
+            "y": ((end.y - start.y) / size) || 0,
         }
 
         return result

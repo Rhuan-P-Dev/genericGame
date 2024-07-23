@@ -33,7 +33,6 @@ export class DeathHand {
 
         this.graphicID = "death hand"
 
-        this.life = 200
         this.maxLife = 200
 
         this.width = 6
@@ -51,12 +50,18 @@ export class DeathHand {
     }
 
     passBuildList = {
+
+        "deathHand_life": (updateThis) => {
+            updateThis.life.set(200)
+        },
+
         ["add_deathHandFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last", 0) // selfDestruction
 
             Effects.apply(
                 "onHit",
+                {},
                 "death hand",
                 "effect",
                 {

@@ -26,7 +26,6 @@ export class Drone {
         this.vel /= 2
         this.maxVel /= 2
 
-        this.life = 50
         this.maxLife = 50
 
         this.defense = 1
@@ -40,6 +39,16 @@ export class Drone {
         this.energyRegen = 0.15
 
         this.damage = 2
+
+    }
+
+    passBuildList = {
+
+        "drone_life": (updateThis) => {
+
+            updateThis.life.set(50)
+    
+        }
 
     }
 

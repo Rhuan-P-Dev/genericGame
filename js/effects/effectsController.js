@@ -119,8 +119,17 @@ export class EffectsController {
         }
     }
 
+    defaultTempConfig = {
+        "prefixFunc": [],
+        "suffixFunc": ["deleteInstruction"],
+        
+        "stage": "middle",
+        "priority": 5,
+    }
+
     apply(
         applyType,
+        tempConfig,
         effectName,
         effectType,
         params,
@@ -128,32 +137,64 @@ export class EffectsController {
         ID = randomUniqueID()
     ){
 
-        let tempConfig = {
-            "prefixFunc": [],
-            "suffixFunc": ["deleteInstruction"],
-
-            "stage": "middle",
-            "priority": 5,
-        }
+        CloneObject.recursiveCloneAttribute(this.defaultTempConfig, tempConfig)
 
         tempConfig.func = (localParams) => {
 
-            params.object = localParams.otherObject
+            let objects = []
+            let IDs = [ID]
 
-            Effects.add(
-                effectName,
-                effectType,
-                params,
-                config,
-                false,
-                ID,
-            )
+            if(
+                localParams.otherObject
+                &&
+                !localParams.otherObjectMaster
+            ){
+
+                objects.push(localParams.otherObject)
+
+            }else if(localParams.otherObjectMaster){
+
+                objects.push(localParams.otherObjectMaster)
+
+            }else{
+
+                objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                    params.object,
+                    {
+                        "maxDistance": params.range,
+                        "includeEnemyTeam": true,
+                        "includeSameTeam": false,
+                        "includeYourself": false,
+                    }
+                )
+            }
+
+            params.object = undefined
+            
+            for (let index = 0; index < objects.length; index++) {
+
+                let newParams = CloneObject.recursiveCloneAttribute(params)
+
+                newParams.object = objects[index]
+                
+                Effects.add(
+                    effectName,
+                    effectType,
+                    newParams,
+                    config,
+                    false,
+                    IDs[index] || randomUniqueID(),
+                )
+                
+            }
             
         }
 
         new ComplexOnTypeFunctions().apply(tempConfig)
 
-        params.object[applyType].add(
+        tempConfig.config = tempConfig
+
+        return params.object[applyType].add(
             tempConfig,
             tempConfig.stage || "first",
             tempConfig.priority || 0
@@ -172,7 +213,7 @@ export class EffectsController {
 
         if(!this.checkEffect(effectName, effectType)){return false}
 
-        this.typeTable[effectType](
+        return this.typeTable[effectType](
             effectName,
             effectType,
             params,
@@ -212,13 +253,18 @@ export class EffectsController {
 
         }
 
-        params.object[effectType].add(
+        let priority = params.object[effectType].add(
             config,
             config.stage || "first",
             config.priority || 0
         )
 
         delete params.object
+
+        return {
+            priority,
+            "stage": config.stage || "first"
+        }
 
     }
 
@@ -323,6 +369,8 @@ export class EffectsController {
             promise,
             ID,
         }
+
+        return ID
         
     }
 
@@ -347,8 +395,12 @@ export class EffectsController {
     remove(object, ID){
 
         Frame.remove(ID)
+        Frame.remove(ID+"_before")
+        Frame.remove(ID+"_after")
 
         delete object.effects[ID]
+        delete object.effects[ID+"_before"]
+        delete object.effects[ID+"_after"]
 
     }
 
@@ -421,6 +473,7 @@ export class EffectsController {
 
             Effects.apply(
                 apply.applyType,
+                apply.tempConfig || {},
                 effect.config.name,
                 effect.config.type,
                 effect.params,

@@ -32,7 +32,7 @@ export class OtherEffectsController {
 
         "resurrection": (params) => {
 
-            params.object.life = params.object.maxLife * params.config.getPercentage(params)
+            params.object.life.set(params.object.maxLife * params.config.getPercentage(params))
 
         },
 
@@ -41,7 +41,7 @@ export class OtherEffectsController {
             let damage = params.calcDamage * params.config.getPercentage(params)
 
             if(damage > 0){
-                params.otherObjectMaster.life -= damage
+                params.otherObjectMaster.life.math("-", damage)
             }
 
         },
@@ -67,6 +67,36 @@ export class OtherEffectsController {
     effectsInfo = {
 
         "positive": {
+
+            "deny damage": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": ["stopStages","timeout"],
+                        "func": () => {},
+                        "suffixFunc": [],
+
+                        "stopStages": {
+                            "stages": ["first", "middle", "last",],
+                        },
+
+                        "timeout":{
+                            "frameOut": 60,
+                        },
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+        
+                    "params": {},
+
+                }
+
+            },
+
+            
 
             "converter": {
 

@@ -133,7 +133,7 @@ export class DefenseController{
 
             }
 
-            currentObject.life -= config.damage
+            currentObject.life.math("-", config.damage)
 
             object.energy -= config.hitEnergyConsume
 
@@ -334,7 +334,7 @@ export class DefenseController{
 
             let otherObject = closestAlliesObjects[objectName]
 
-            otherObject.life += config.heal
+            otherObject.life.math("+", config.heal)
 
         }
 

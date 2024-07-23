@@ -25,7 +25,7 @@ onInit(function(){
 
 export class MovableObject {
 
-    vel = 0.05
+    vel = 0.1
     maxVel = 3
 
     constructor(build = false){

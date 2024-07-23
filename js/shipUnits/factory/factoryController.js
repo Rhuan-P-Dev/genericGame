@@ -56,6 +56,21 @@ export class FactoryController{
 
     }
 
+    createObjectNow(object, activate, config){
+
+        let newObject = Factory.createObject(object, activate, config)
+
+        Activate.primitiveAjustObject(object, newObject)
+
+        newObject.x += config.randomPos || 0
+        newObject.y += config.randomPos || 0
+
+        ObjectActivates.setActivates(newObject, config.activates)
+
+        Activate.addObject(newObject)
+
+    }
+
     createObject(object, activate, config){
 
         let newObject = new config.objectClass(true)

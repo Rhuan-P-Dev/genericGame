@@ -20,7 +20,6 @@ export class ObjectFactory{
 
         this.priority = 4
     
-        this.life = 50
         this.maxLife = 50
 
         this.defense = 0
@@ -34,6 +33,16 @@ export class ObjectFactory{
         this.energyRegen = 0.6
 
         this.damage = 10
+
+    }
+
+    passBuildList = {
+
+        "objectFactory_life": (updateThis) => {
+
+            updateThis.life.set(50)
+    
+        }
 
     }
 

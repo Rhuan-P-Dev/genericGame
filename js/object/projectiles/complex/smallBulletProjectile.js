@@ -17,7 +17,6 @@ export class SmallBulletProjetile {
 
         this.graphicID = "bullet"
 
-        this.life = 1
         this.maxLife = 1
 
         this.damage = 10
@@ -26,6 +25,14 @@ export class SmallBulletProjetile {
         this.height = 3
 
         this.lifeTime = 30
+
+    }
+
+    passBuildList = {
+
+        "smallBulletProjetile_life": (updateThis) => {
+            updateThis.life.set(1)
+        },
 
     }
 

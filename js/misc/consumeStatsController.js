@@ -19,12 +19,12 @@ export class ConsumeStatsController {
                 if(
                     params.calcDamage <= 0
                     ||
-                    params.object[stat] <= 0
+                    (typeof object[stat] == "number" ? params.object[stat] : params.object[stat].get()) <= 0
                 ){return}
 
-                let damage = object[stat] / params.calcDamage
+                let damage = typeof object[stat] == "number" ? object[stat] / params.calcDamage : object[stat].get() / params.calcDamage
 
-                params.object[stat] -= params.calcDamage
+                typeof params.object[stat] == "number" ? params.object[stat] -= params.calcDamage : params.object[stat].math("-", params.calcDamage)
 
                 if(damage <= 1){
 

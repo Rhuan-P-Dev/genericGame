@@ -1,5 +1,6 @@
 import { DamageController } from "../../damage/damageController.js"
 import { SingleDamage } from "../../damage/damageTypes/single.js"
+import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
@@ -7,6 +8,7 @@ import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { CommonImport } from "../common/commonImport.js"
 import { ActivateInstructions } from "../instructions/activateInstructions.js"
 import { onInstructions } from "../instructions/onInstructions.js"
+import { StatsObserverController } from "../instructions/statsObserverController.js"
 
 var GameState = ""
 var Damage = ""
@@ -40,6 +42,28 @@ export class Object {
     passBuildList = {
 
         "add_basic_objectFunctions": (updateThis) => {
+
+            updateThis.life = new StatsObserverController(updateThis, "life", 10)
+
+            updateThis.life.observer.add(
+                (params) => {
+
+                    if(params.currentStatValue <= 0){
+                        
+                        // The 'onDeath' CANNOT be executed in the same frame as the object dies, or it will cause a fatal bug with the 'thunder' effects.
+                        setFrameOut(
+                            () => {
+                                params.object.onDeath.run({
+                                    "object": params.object
+                                })
+                            },
+                            1
+                        )
+
+                    }
+                }
+            )
+
 
             ConsumeStats.add(
                 updateThis,
@@ -92,7 +116,6 @@ export class Object {
     team = "newTeam"
     ID = "newID"
 
-    life = 10
     maxLife = 10
     lifeRegen = 0
 

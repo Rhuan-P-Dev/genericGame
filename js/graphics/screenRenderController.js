@@ -1,5 +1,6 @@
 
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
+import { setFrameOut } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { CustomMathController } from "../generalUtils/math.js"
 import { ComplexRenderController } from "./complexRenderController.js"
@@ -87,7 +88,17 @@ export class ScreenRenderController {
     defaultColor = "black"
     defaultLineWidth = 1
 
-    focusObjectVisionRange = 650
+    focusObjectVisionRange = 750
+
+    constructor(){
+
+        setFrameOut(
+            () => {
+                this.focusObject = GameState.getPlayer()
+            }, 1
+        )
+
+    }
 
     addDrawRequest(params){
 
@@ -132,10 +143,10 @@ export class ScreenRenderController {
 
     inFocusObjectVision(object){
 
-        let player = GameState.getPlayer()
+        let focusObject = this.getFocusObject()
 
         let distance = AIUtils.getDistanceOfObjects(
-            player,
+            focusObject,
             object
         )
 
@@ -144,6 +155,31 @@ export class ScreenRenderController {
         }
 
         return false
+
+    }
+
+    getFocusObject() {
+        return this.focusObject
+    }
+    
+    setFocusObject(object) {
+        this.focusObject = object
+    }
+
+    getCanvasXYofFocusObject(canvas) {
+
+        let focusObject = this.getFocusObject()
+
+        let x = focusObject.x - (canvas.canvas.width / 2)
+        let y = focusObject.y - (canvas.canvas.height / 2)
+
+        //x += focusObject.currentXVel*10
+        //y += focusObject.currentYVel*10
+
+        return {
+            "x": x,
+            "y": y
+        }
 
     }
 
@@ -158,10 +194,7 @@ export class ScreenRenderController {
 
         this.setCanvasState(
             this.shiftFocus(
-                {
-                    "x": GameState.getPlayer().x - (canvasContext.canvas.width / 2),
-                    "y": GameState.getPlayer().y - (canvasContext.canvas.height / 2),
-                },
+                this.getCanvasXYofFocusObject(canvasContext),
                 object,
             ),
             object.radian,

@@ -40,7 +40,7 @@ export class StatusbarController {
                 "x": 25,
                 "y": object.height * 2,
             },
-            "formula": (object.life / object.maxLife),
+            "formula": (object.life.get() / object.maxLife),
             "lineWidth": 2,
             "color": "red"
         }

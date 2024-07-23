@@ -37,6 +37,9 @@ export class CloneObjectController {
         "buildList": () => {},
         "passBuildList": () => {},
         "animations": () => {},
+
+        "life": this.cloneStatsObserver,
+        
     }
 
     clone(object){
@@ -310,6 +313,12 @@ export class CloneObjectController {
         }
 
         return newObject
+
+    }
+
+    cloneStatsObserver(object, clonedObject = {}, config){
+
+        clonedObject[config.keyType].set(object[config.keyType].get())
 
     }
 

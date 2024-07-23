@@ -19,7 +19,7 @@ export class HUDController {
         
         if(!player){return}
 
-        this.HP.innerHTML = parseInt(player.life)
+        this.HP.innerHTML = parseInt(player.life.get())
         this.energy.innerHTML = parseInt(player.energy)
 
     }

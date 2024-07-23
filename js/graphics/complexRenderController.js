@@ -135,12 +135,12 @@ export class ComplexRenderController {
 
     }
 
-    mirrorFunction(functionName, params, scaleX, scaleY){
+    mirrorFunction(object, functionName, params, scaleX, scaleY){
 
         ScreenRender.setCanvasState(
             {
-                "x": Offscreen.getOffsetX(),
-                "y": Offscreen.getOffsetY(),
+                "x": Offscreen.getOffsetX() + (params.offset.x *  this.getObjectScale(object)),
+                "y": Offscreen.getOffsetY() + (params.offset.y *  this.getObjectScale(object))
             },
             0,
             scaleX,
@@ -154,12 +154,13 @@ export class ComplexRenderController {
 
     }
 
-    mirror(functionName, params){
+    mirror(object, functionName, params){
 
         ScreenRender.resetCanvas(ScreenRender.offscreenCanvasContext)
 
         if(params.xMirror){
             this.mirrorFunction(
+                object,
                 functionName,
                 params,
                 params.canvasScale * -1,
@@ -169,6 +170,7 @@ export class ComplexRenderController {
 
         if(params.yMirror){
             this.mirrorFunction(
+                object,
                 functionName,
                 params,
                 params.canvasScale,
@@ -178,6 +180,7 @@ export class ComplexRenderController {
 
         if(params.xyMirror){
             this.mirrorFunction(
+                object,
                 functionName,
                 params,
                 params.canvasScale * -1,
@@ -194,10 +197,9 @@ export class ComplexRenderController {
         let objectOffset = Offscreen.getObjectXY(object)
 
         let focus = ScreenRender.shiftFocus(
-            {
-                "x": GameState.getPlayer().x - (ScreenRender.mainCanvasContext.canvas.width / 2),
-                "y": GameState.getPlayer().y - (ScreenRender.mainCanvasContext.canvas.height / 2),
-            },
+            ScreenRender.getCanvasXYofFocusObject(
+                ScreenRender.mainCanvasContext
+            ),
             object,
         )
 
@@ -270,8 +272,8 @@ export class ComplexRenderController {
 
                 ScreenRender.setCanvasState(
                     {
-                        "x": Offscreen.getOffsetX(),
-                        "y": Offscreen.getOffsetY(),
+                        "x": Offscreen.getOffsetX() + (params.offset.x * this.getObjectScale(object)),
+                        "y": Offscreen.getOffsetY() + (params.offset.y * this.getObjectScale(object))
                     },
                     0,
                     params.canvasScale,
@@ -280,8 +282,8 @@ export class ComplexRenderController {
                 )
 
                 ScreenRender[functionName](params, ScreenRender.offscreenCanvasContext)
-    
-                this.mirror(functionName, params)
+
+                this.mirror(object, functionName, params)
     
             }
             
@@ -343,8 +345,6 @@ class offscreen {
     width = 50
     height = 50
 
-    offsetX = 50
-    offsetY = 30
     lenght = 0
 
     getObjectXY(object) {
@@ -359,11 +359,11 @@ class offscreen {
     }
 
     getOffsetX(lenght = this.lenght) {
-        return (this.offsetX * lenght) + 30
+        return (this.width * lenght) + (this.width / 2 )
     }
 
     getOffsetY() {
-        return this.offsetY
+        return this.height / 2
     }
 
 }

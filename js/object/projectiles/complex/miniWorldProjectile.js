@@ -29,7 +29,6 @@ export class MiniWorldProjectile {
 
         this.graphicID = "mini world"
 
-        this.life = 150
         this.maxLife = 150
 
         this.width = 8
@@ -43,6 +42,11 @@ export class MiniWorldProjectile {
     }
 
     passBuildList = {
+
+        "miniWorldProjectile_life": (updateThis) => {
+            updateThis.life.set(150)
+        },
+
         ["add_miniWorldFunctions"]: (updateThis) => {
 
             updateThis.onHit.remove("last", 0) // selfDestruction
@@ -52,9 +56,11 @@ export class MiniWorldProjectile {
                 "effect",
                 {
                     "object": updateThis,
-                    "range": 100,
                     "mult": 1,
-                    "force": 0.01
+                    "force": 0.01,
+                    "searchConfig":{
+                        "maxDistance": 100,
+                    }
                 },{},true
             )
 

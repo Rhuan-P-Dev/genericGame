@@ -125,7 +125,7 @@ export class MultiplyStatsController {
             let stat = stats[index]
 
             if(object[stat]){
-                object[stat] += object[stat] * mult
+                typeof object[stat] == "number" ? object[stat] += object[stat] * mult : object[stat].math("+", object[stat].get() * mult)
             }
             
         }

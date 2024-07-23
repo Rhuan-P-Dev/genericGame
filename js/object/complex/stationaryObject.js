@@ -16,7 +16,6 @@ export class StationaryObject {
 
         this.priority += 1
 
-        this.life = 100
         this.maxLife = 100
 
         this.defense = 2
@@ -30,6 +29,16 @@ export class StationaryObject {
         this.energyRegen = 0.5
 
         this.damage = 2
+
+    }
+
+    passBuildList = {
+
+        "stationaryObject_life": (updateThis) => {
+
+            updateThis.life.set(100)
+    
+        }
 
     }
 
