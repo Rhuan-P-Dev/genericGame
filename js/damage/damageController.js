@@ -65,7 +65,7 @@ export class DamageController {
                 let damage = undefined
 
                 if(!damageCache[typeOfDamage]){
-                    damage = params.calcDamage * (params.object.damageTypes[typeOfDamage] || 0)
+                    damage = params.calcDamage * (params.otherObject.damageTypes[typeOfDamage] || 0)
                 
                     damage = (
                         damage * params.object.resistance
