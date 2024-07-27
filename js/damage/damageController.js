@@ -88,6 +88,11 @@ export class DamageController {
                     params.object[typeOfDamagedStats].math("-", damage)
                 }
 
+                if(params.otherObject.passDamageMultiplier){
+                    damage = damage * params.otherObject.passDamageMultiplier
+                    statNumber = 0
+                }
+
                 damageCache[typeOfDamage] = damage - statNumber
 
             }
