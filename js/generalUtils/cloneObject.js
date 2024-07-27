@@ -39,6 +39,7 @@ export class CloneObjectController {
         "animations": () => {},
 
         "life": this.cloneStatsObserver,
+        "switchStatsVariables": () => {},
         "damageTypes": this.insideRecursive,
         "defenseTypes": this.insideRecursive,
         "damageOrder": this.insideRecursive
