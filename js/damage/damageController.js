@@ -29,6 +29,46 @@ export class DamageController {
         "uniform": this.uniform
     }
 
+    addDamage(object, type, amount, force = false) {
+
+        if(force) {
+            object.damageTypes[type] = amount
+        }else {
+            object.damageTypes[type] = (object.damageTypes[type] || 0) + amount
+        }
+    }
+
+    addDefense(object, stat, type, amount, force = false) {
+
+        if(!object.defenseTypes[stat]){
+            object.defenseTypes[stat] = {}
+        }
+
+        if(force) {
+            object.defenseTypes[stat][type] = amount
+        }else {
+            object.defenseTypes[stat][type] = (object.defenseTypes[stat][type] || 0) + amount
+        }
+        
+    }
+
+    addDamageOrder(object, damageType, stat, direction, reference) {
+        if (!object.damageOrder[damageType]) {
+            object.damageOrder[damageType] = [
+                stat
+            ]
+        }else{
+            insertRelativeTo(object.damageOrder[damageType], stat, direction, reference)
+        }
+
+    }
+
+    immunityTo(object, stat){
+
+        delete object.damageOrder[stat]
+
+    }
+
     doDamage(params){
 
         this.damageTypeTable[params.object.damageConfig.type](
@@ -39,6 +79,8 @@ export class DamageController {
     }
 
     reciveDamage(params){
+
+        //console.log(params)
 
         let damageCache = {}
 
@@ -63,6 +105,15 @@ export class DamageController {
                 ){continue}
 
                 let damage = undefined
+                let defenseMultiplier = 0
+
+                if(
+                    params.object.defenseTypes[typeOfDamagedStats]
+                    &&
+                    params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
+                ){
+                    defenseMultiplier = params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
+                }
 
                 if(!damageCache[typeOfDamage]){
                     damage = params.calcDamage * (params.otherObject.damageTypes[typeOfDamage] || 0)
@@ -70,7 +121,7 @@ export class DamageController {
                     damage = (
                         damage * params.object.resistance
                     ) - (
-                        (params.object.defense * params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]) || 0
+                        params.object.defense * defenseMultiplier
                     )
                 }else{
                     damage = damageCache[typeOfDamage]

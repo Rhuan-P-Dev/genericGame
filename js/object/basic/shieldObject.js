@@ -1,5 +1,14 @@
 import { InheritController } from "../../generalUtils/inherit.js"
 import { Object } from "./object.js"
+import { DamageController } from "../../damage/damageController.js"
+
+var Damage
+
+onInit(function(){
+
+    Damage = new DamageController()
+
+})
 
 export class ShieldObject {
 
@@ -25,13 +34,49 @@ export class ShieldObject {
 
         "add_shieldConsume": (updateThis) => {
 
-            insertRelativeTo(
-                updateThis.damageOrder.physical,
-                "life",
+            Damage.addDamageOrder(
+                updateThis,
+                "dark energy",
                 "shield",
-                "before"
+                "before",
+                "life",
             )
-    
+
+            Damage.addDamageOrder(
+                updateThis,
+                "physical",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "fire",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "parasite blaster",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "shock",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDefense(updateThis, "shield", "physical", 0.25, true)
+            Damage.addDefense(updateThis, "shield", "fire", 2, true)
+
         }
 
     }

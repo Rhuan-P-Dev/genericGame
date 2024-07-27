@@ -1,5 +1,14 @@
 import { InheritController } from "../../generalUtils/inherit.js"
 import { Object } from "./object.js"
+import { DamageController } from "../../damage/damageController.js"
+
+var Damage
+
+onInit(function(){
+
+    Damage = new DamageController()
+
+})
 
 export class EnergizedObject {
 
@@ -19,6 +28,30 @@ export class EnergizedObject {
 
         this.priority += 1
         
+    }
+
+    passBuildList = {
+
+        "add_someEnergyConsume": (updateThis) => {
+
+            Damage.addDamageOrder(
+                updateThis,
+                "parasite blaster",
+                "energy",
+                "after",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "parasite suck energy",
+                "energy",
+                "before",
+                "life",
+            )
+
+        }
+
     }
 
 }

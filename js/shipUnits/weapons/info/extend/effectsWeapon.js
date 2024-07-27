@@ -25,7 +25,9 @@ export class EffectsWeapon {
 
                 "params": {
                     "range": 10,
-                    "thunderDamage": 1,
+                    "fakeObject": {
+                        "damage": 1,
+                    },
                     "frameOut": 110,
                     "repeat": -1,
                 }

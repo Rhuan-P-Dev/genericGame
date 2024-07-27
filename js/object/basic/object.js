@@ -34,6 +34,22 @@ export class Object {
             build
         )
 
+        Damage.addDamage(this, "physical", 1, true)
+
+        Damage.addDefense(this, "life", "physical", 1, true)
+        Damage.addDefense(this, "life", "parasite suck energy", 2, true)
+
+        Damage.addDamageOrder(this, "physical", "life")
+        Damage.addDamageOrder(this, "shock", "life")
+        Damage.addDamageOrder(this, "fire", "life")
+        Damage.addDamageOrder(this, "death", "life")
+        Damage.addDamageOrder(this, "dark energy", "life")
+        Damage.addDamageOrder(this, "revenge", "life")
+        Damage.addDamageOrder(this, "parasite blaster", "life")
+        Damage.addDamageOrder(this, "parasite self blaster", "life")
+        Damage.addDamageOrder(this, "parasite suck energy damage", "life")
+        Damage.addDamageOrder(this, "parasite suck energy", "life")
+
     }
 
     passBuildList = {
@@ -111,26 +127,12 @@ export class Object {
     resistance = 1
 
     damage = 1
-    damageTypes = {
-        "physical": 1,
-    }
+    damageTypes = {}
 
     defense = 0
-    defenseTypes = {
-        "life": {
-            "physical": 1,
-        },
-        "shield": {},
-        "energy": {},
-    }
+    defenseTypes = {}
 
-    damageOrder = {
-
-        "physical": [
-            "life",
-        ],
-
-    }
+    damageOrder = {}
 
     x = 10
     y = 10

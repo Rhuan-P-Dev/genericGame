@@ -6,7 +6,7 @@ export class ElectrifiedBomb1Effect extends ElectrifiedMissile1Effect {
 
         super()
 
-        this.effects[0].effect.params.thunderDamage = 100
+        this.effects[0].effect.params.fakeObject.damage = 100
 
     }
 

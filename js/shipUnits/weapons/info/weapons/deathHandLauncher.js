@@ -25,7 +25,7 @@ export class DeathHandLauncher {
         this.lifeTime = 500
 
         this.config.weapon.multVel = 2
-        this.config.weapon.damageMult = 0
+        this.config.weapon.damageMult = 1
 
         this.config.projectiles.objectClass = ["death's hand"]
 

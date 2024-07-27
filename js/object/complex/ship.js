@@ -4,6 +4,7 @@ import { EnergizedObject } from "../basic/energizedObject.js"
 import { MovableObject } from "../basic/movableObject.js"
 import { RotableObject } from "../basic/rotableObject.js"
 import { ShieldObject } from "../basic/shieldObject.js"
+import { StandardArmor } from "../basic/standardArmor.js"
 
 export class Ship {
 
@@ -17,6 +18,7 @@ export class Ship {
                 MovableObject,
                 FocusedTopDownBehavior,
                 ShieldObject,
+                StandardArmor
             ],
             build
         )
@@ -50,7 +52,7 @@ export class Ship {
         "ship_life": (updateThis) => {
 
             updateThis.life.set(200)
-    
+
         }
 
     }

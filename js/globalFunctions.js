@@ -42,7 +42,7 @@ function firstLetterUppercase(string) {
     return string[0].toUpperCase() + string.slice(1)
 }
 
-function insertRelativeTo(arr, seach, element, direction = "after") {
+function insertRelativeTo(arr, element, direction = "after", seach) {
     let index = arr.indexOf(seach)
 
     if (index === -1) {

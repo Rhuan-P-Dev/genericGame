@@ -12,7 +12,7 @@ import { AnimationsController } from "../../graphics/animation/animationsControl
 import { FactoryController } from "../../shipUnits/factory/factoryController.js"
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
-
+import { DamageController } from "../../damage/damageController.js"
 
 // For 'create objects' effect
 import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
@@ -36,6 +36,7 @@ var GameState = ""
 var Vector = ""
 var Factory = ""
 var ObjectActivates = ""
+var Damage
 
 onInit(function(){
 
@@ -51,6 +52,7 @@ onInit(function(){
     Vector = new VectorController()
     Factory = new FactoryController()
     ObjectActivates = new ObjectActivatesController()
+    Damage = new DamageController()
 
 })
 
@@ -311,13 +313,12 @@ export class GenericEffectsController {
 
         "parasite": (params) => {
 
+            params.parasiteSelfAttack.damage = params.parasiteObject.damage
+            params.parasiteBlasterAttack.damage = params.parasiteObject.damage
+
             // make more realictic, eenrgy consume, damage, etc
 
-            params.object.life.math("-", params.damage)
-
-            let energyDamage = params.damage * params.energyMult
-
-            params.object.energy -= energyDamage
+            Damage.damageCalc(params.parasiteObject, params.object)
 
             let closestAlliesObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
                 params.object,
@@ -369,11 +370,11 @@ export class GenericEffectsController {
 
                 )
 
-                closestAllieObject.life.math("-", energyDamage * params.dischargeEnergyMult) // TODO
+                Damage.damageCalc(params.parasiteBlasterAttack, closestAllieObject)
 
             }else{
 
-                params.object.life.math("-", energyDamage * params.selfEnergyMult)
+                Damage.damageCalc(params.parasiteSelfAttack, params.object)
 
             }
 
@@ -387,7 +388,10 @@ export class GenericEffectsController {
 
         "inflict damage":(params) => {
 
-            params.object.life.math("-", params.damage) //TODO
+            Damage.damageCalc(
+                params.fakeObject,
+                params.object
+            )
 
         },
 
@@ -418,7 +422,12 @@ export class GenericEffectsController {
                     params.searchConfig.maxDistance,
                 )
 
-                object.life.math("-", params.damage * mult ) //TODO
+                params.fakeObject.damage = params.damage * mult
+
+                Damage.damageCalc(
+                    params.fakeObject,
+                    object
+                )
 
             }
 
@@ -453,7 +462,7 @@ export class GenericEffectsController {
                 "closest"
             )
 
-            params.object.life.math("-", params.thunderDamage) //TODO
+            Damage.damageCalc(params.fakeObject, params.object)
 
             if(closestAllieObject){
 
@@ -482,13 +491,15 @@ export class GenericEffectsController {
                 // >>> THE FRAMEOUT CANNOT BE SMALLER THAN TWO <<<
                 if(frameOut < 2){frameOut = 2}
 
+                params.fakeObject.damage *= params.mult
+
                 Effects.add(
                     params.effectName,
                     "effect",
                     {
                         "object": closestAllieObject,
                         "range": params.range * params.mult,
-                        "thunderDamage": params.thunderDamage * params.mult,
+                        "fakeObject": params.fakeObject,
                         "mult": params.mult,
 
                         "color": params.color,
@@ -617,6 +628,14 @@ export class GenericEffectsController {
                             "includeYourself": false,
                             "maxDistance": 500,
                         },
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "dark energy": 1,
+                            },
+                            "passDamageMultiplier": 0.9,
+                        },
+
                         "damage": 100
                     },
                 }
@@ -1238,8 +1257,15 @@ export class GenericEffectsController {
                     },
         
                     "params": {
+
+                        "fakeObject": {
+                            "damage": 100,
+                            "damageTypes": {
+                                "shock": 1,
+                            }
+                        },
+
                         "range": 300,
-                        "thunderDamage": 100,
                         "mult": 0.5,
     
                         "color": "yellow",
@@ -1261,7 +1287,12 @@ export class GenericEffectsController {
 
                     "params": {
                         "range": 300,
-                        "thunderDamage": 100,
+                        "fakeObject": {
+                            "damage": 100,
+                            "damageTypes": {
+                                "shock": 1,
+                            }
+                        },
                         "mult": 0.5,
     
                         "color": "yellow",
@@ -1288,7 +1319,12 @@ export class GenericEffectsController {
         
                     "params": {
                         "range": 50,
-                        "thunderDamage": 10,
+                        "fakeObject": {
+                            "damage": 10,
+                            "damageTypes": {
+                                "shock": 1,
+                            }
+                        },
                         "mult": 1.1,
     
                         "color": "yellow",
@@ -1309,7 +1345,12 @@ export class GenericEffectsController {
 
                     "params": {
                         "range": 50,
-                        "thunderDamage": 10,
+                        "fakeObject": {
+                            "damage": 10,
+                            "damageTypes": {
+                                "shock": 1,
+                            }
+                        },
                         "mult": 1.1,
     
                         "color": "yellow",
@@ -1358,7 +1399,12 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "damage": 1,
+                        "fakeObject": {
+                            "damage": 1,
+                            "damageTypes": {
+                                "death": 1,
+                            }
+                        }
                     },
 
                 },
@@ -1402,7 +1448,12 @@ export class GenericEffectsController {
                     },
         
                     "params": {
-                        "damage": 1,
+                        "fakeObject": {
+                            "damage": 1,
+                            "damageTypes": {
+                                "fire": 1,
+                            }
+                        }
                     },
 
                 },
@@ -1421,14 +1472,30 @@ export class GenericEffectsController {
         
                     "params": {
 
+                        "parasiteObject": {
+                            "damage": 50,
+                            "damageTypes": {
+                                "parasite suck energy damage": 0.1,
+                                "parasite suck energy": 1,
+                            }
+                        },
+
+                        "parasiteSelfAttack": {
+                            "damageTypes": {
+                                "parasite self blaster": 0.25,
+                            }
+                        },
+
+                        "parasiteBlasterAttack": {
+                            "damageTypes": {
+                                "parasite blaster": 0.5,
+                            },
+                            "passDamageMultiplier": 0.5,
+                        },
+
                         "range": 150,
                         
-                        "damage": 5,
-                        "energyMult": 10,
-                        "dischargeEnergyMult": 0.5,
-                        "selfEnergyMult": 0.25,
-
-                        "color": "black",
+                        "color": "lightblue",
                         "lineWidth": 2,
                     },
 
@@ -1480,6 +1547,13 @@ export class GenericEffectsController {
                             "includeEnemyTeam": false,
                             "includeYourself": true,
                             "maxDistance": 100,
+                        },
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "dark energy": 1,
+                            },
+                            "passDamageMultiplier": 0.9,
                         },
 
                         "mult": 1,

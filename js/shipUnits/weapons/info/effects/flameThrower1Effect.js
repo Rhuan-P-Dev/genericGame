@@ -23,7 +23,9 @@ export class FlameThrower1Effect {
                 },
 
                 "params": {
-                    "damage": 1
+                    "fakeObject": {
+                        "damage": 1,
+                    }
                 }
 
             },

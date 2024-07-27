@@ -1,5 +1,6 @@
 import { InheritController } from "../../generalUtils/inherit.js"
 import { SmallShieldObject } from "../basic/smallShieldObject.js"
+import { StandardArmor } from "../basic/standardArmor.js"
 import { Drone } from "./drone.js"
 
 export class DroneV2 {
@@ -11,6 +12,7 @@ export class DroneV2 {
             [
                 Drone,
                 SmallShieldObject,
+                StandardArmor
             ],
             build
         )
