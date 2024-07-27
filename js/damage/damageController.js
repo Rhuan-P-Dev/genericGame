@@ -42,7 +42,7 @@ export class DamageController {
 
         let damageCache = {}
 
-        for(let typeOfDamage in params.object.damageOrder){
+        for(let typeOfDamage in params.otherObject.damageTypes){
 
             //console.log("typeOfDamage", typeOfDamage)
 
