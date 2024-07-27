@@ -76,6 +76,13 @@ export class DamageController {
                     damage = damageCache[typeOfDamage]
                 }
 
+                if(
+                    damage <= 0
+                ){
+                    damageCache[typeOfDamage] = damage
+                    continue
+                }
+
                 //console.log("damage", damage)
 
                 let statNumber = undefined
