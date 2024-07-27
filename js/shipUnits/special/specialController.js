@@ -89,22 +89,8 @@ export class SpecialController{
         illusion.onHit = new ComplexOnType()
         illusion.onDamage = new ComplexOnType()
 
-        illusion.life = new StatsObserverController(illusion, "life", illusion.maxLife)
-
-        illusion.life.observer.add(
-            (params) => {
-
-                // The 'onDeath' CANNOT be executed in the same frame as the object dies, or it will cause a fatal bug with the 'thunder' effects.
-                setFrameOut(
-                    () => {
-                        params.object.onDeath.run({
-                            "object": params.object
-                        })
-                    },
-                    1
-                )
-            }
-        )
+        illusion.life.set(1)
+        illusion.maxLife = 1
 
         illusion.onDeath.add({
             "func": "removeObType",
