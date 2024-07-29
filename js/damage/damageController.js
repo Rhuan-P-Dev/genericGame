@@ -119,17 +119,13 @@ export class DamageController {
                     defenseMultiplier = params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
                 }
 
-                if(!damageCache[typeOfDamage]){
-                    damage = params.calcDamage * (params.otherObject.damageTypes[typeOfDamage] || 0)
+                damage = damageCache[typeOfDamage] || params.calcDamage
+
+                damage *= params.otherObject.damageTypes[typeOfDamage] || 0
                 
-                    damage = (
-                        damage * params.object.resistance
-                    ) - (
-                        params.object.defense * defenseMultiplier
-                    )
-                }else{
-                    damage = damageCache[typeOfDamage]
-                }
+                damage *= params.object.resistance
+                
+                damage -= params.object.defense * defenseMultiplier
 
                 if(
                     damage <= 0
