@@ -31,6 +31,10 @@ export class DamageController {
 
     addDamage(object, type, amount, force = false) {
 
+        if(!object.damageTypes){
+            object.damageTypes = {}
+        }
+
         if(force) {
             object.damageTypes[type] = amount
         }else {
