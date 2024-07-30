@@ -633,7 +633,6 @@ export class GenericEffectsController {
                             "damageTypes": {
                                 "dark energy": 1,
                             },
-                            "passDamageMultiplier": 0.9,
                         },
 
                         "damage": 100
@@ -1490,7 +1489,6 @@ export class GenericEffectsController {
                             "damageTypes": {
                                 "parasite blaster": 0.5,
                             },
-                            "passDamageMultiplier": 0.5,
                         },
 
                         "range": 150,
@@ -1553,7 +1551,6 @@ export class GenericEffectsController {
                             "damageTypes": {
                                 "dark energy": 1,
                             },
-                            "passDamageMultiplier": 0.9,
                         },
 
                         "mult": 1,
