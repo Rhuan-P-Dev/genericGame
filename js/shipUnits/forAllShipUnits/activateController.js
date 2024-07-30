@@ -12,21 +12,20 @@ onInit(function(){
 
 export class ActivateController{
 
-    useActivate(object, ID){
+    useActivate(object, ID) {
 
         let activate = object.activates[ID]
-
+        let consumableStat = activate.consumableStat
         let cost = activate.cost
 
         let result = {}
 
         result.activate = activate
 
-        if(object.energy >= cost && activate.reloadTemp <= 0){
-
+        if (object[consumableStat] >= cost && activate.reloadTemp <= 0) {
             activate.preuseActivateObserver.run(object, activate)
 
-            object.energy -= cost
+            object[consumableStat] -= cost
 
             activate.reloadTemp = activate.reload
 
@@ -38,7 +37,6 @@ export class ActivateController{
         }
 
         return result
-
     }
 
     primitiveAjustObject(master, object){

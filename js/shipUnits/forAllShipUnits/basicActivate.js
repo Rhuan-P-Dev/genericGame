@@ -17,6 +17,7 @@ export class BasicActivate {
 
     name = undefined
     cost = 10
+    consumableStat = "energy"
     type = "???"
     func = undefined
     reload = 60
