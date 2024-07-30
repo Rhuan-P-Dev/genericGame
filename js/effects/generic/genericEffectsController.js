@@ -587,6 +587,54 @@ export class GenericEffectsController {
 
         "positive": {
 
+            "the blessed effect: special": {
+
+                "effect": {
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["temporarily disable objects"](params)
+                            this.effectsList["slowdown"](params)
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "frameOut": 1,
+                        "repeat": 1*60,
+                    },
+        
+                    "params": {
+
+                        "disableFramesOut": 1*60,
+
+                        "systems": [
+                            "rotation",
+                            "advance",
+                            "activate"
+                        ],
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 150,
+                        },
+
+                        "range": 150,
+                        "mult": 1,
+                        "uniform": true,
+                        "fakeObject": {
+                            "damageTypes": {
+                                "dark energy": 1,
+                            },
+                        },
+
+                        "damage": 6,
+
+                    },
+
+                }
+
+            },
+
             "devour": {
 
                 "effect": {
