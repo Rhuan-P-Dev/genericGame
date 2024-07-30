@@ -67,8 +67,21 @@ export class WeaponsController{
         }
 
 
+        if(weapon.damageTypes){
 
+            for(let typeOfDamage in weapon.damageTypes){
 
+                Damage.addDefense(
+                    object,
+                    "life",
+                    typeOfDamage,
+                    weapon.defenses[typeOfDamage]
+                )
+
+            }
+
+            object.damageTypes = weapon.damageTypes
+        }
 
         if(weapon.homing){
 
