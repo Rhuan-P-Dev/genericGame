@@ -179,4 +179,38 @@ export class Rotable {
 
     }
 
+    disableRotationResul = {
+        "rotateToLeft": undefined,
+        "rotateToRight": undefined
+    }
+
+    disableRotation(){
+
+        if(
+            this.disableRotationResul
+            &&
+            this.disableRotationResul.rotateToLeft === undefined
+            &&
+            this.disableRotationResul.rotateToRight === undefined
+        ){
+
+            this.disableRotationResul.rotateToLeft = this.rotateToLeft
+            this.disableRotationResul.rotateToRight = this.rotateToRight
+
+            this.rotateToLeft = () => {}
+            this.rotateToRight = () => {}
+        }
+
+    }
+
+    enableRotation(){
+
+        this.rotateToLeft = this.disableRotationResul.rotateToLeft
+        this.rotateToRight = this.disableRotationResul.rotateToRight
+
+        this.disableRotationResul.rotateToLeft = undefined
+        this.disableRotationResul.rotateToRight = undefined
+
+    }
+
 }

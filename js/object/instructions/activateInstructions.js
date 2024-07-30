@@ -56,6 +56,22 @@ export class ActivateInstructions{
         return this.activates
     }
 
+    disableResuls = {}
+
+    disableActivate() {
+        for (let ID in this.activates) {
+            this.disableResuls[ID] = this.activates[ID]
+            delete this.activates[ID]
+        }
+    }
+
+    enableActivate() {
+        for (let ID in this.disableResuls) {
+            this.activates[ID] = this.disableResuls[ID]
+            delete this.disableResuls[ID]
+        }
+    }
+
 }
 
 function setWeaponAngle(object, weapon){

@@ -42,7 +42,10 @@ export class CloneObjectController {
         "switchStatsVariables": () => {},
         "damageTypes": this.insideRecursive,
         "defenseTypes": this.insideRecursive,
-        "damageOrder": this.insideRecursive
+        "damageOrder": this.insideRecursive,
+        "disableResuls": this.shared, //will bug?
+        "disableRotationResul": this.shared, //will bug?
+        "disableAdvanceResul": this.shared, //will bug?
     }
 
     clone(object){

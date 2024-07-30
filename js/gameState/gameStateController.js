@@ -107,6 +107,8 @@ export class GameStateController {
 
         this.removeAnimations(object)
 
+        object.disableResuls = {}
+
     }
 
     removeActivates(object){
