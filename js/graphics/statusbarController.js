@@ -1,4 +1,3 @@
-import { setFrameOut } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { ScreenRenderController } from "./screenRenderController.js"
 
@@ -31,110 +30,31 @@ export class StatusbarController {
 
     renderStatus(object){
 
-        let HP = {
-            "start": {
-                "x": 25,
-                "y": object.height * 2,
-            },
-            "end": {
-                "x": 25,
-                "y": object.height * 2,
-            },
-            "formula": (object.life.get() / object.maxLife),
-            "lineWidth": 2,
-            "color": "red"
-        }
+        const statusTable = [
+            { name: "darkEnergy", max: "maxDarkEnergy", color: "purple", position: -1.5},
+            { name: "energy", max: "maxEnergy", color: "yellow", position: -1},
+            { name: "life", max: "maxLife", color: "red", position: 1},
+            { name: "shield", max: "maxShield", color: "lightblue", position: 1.5},
+        ]
 
-        let ENERGY = {
-            "start": {
-                "x": 25,
-                "y": -object.height * 2,
-            },
-            "end": {
-                "x": 25,
-                "y": -object.height * 2,
-            },
-            "formula": (object.energy / object.maxEnergy),
-            "lineWidth": 2,
-            "color": "yellow"
-        }
-
-        this.renderStat(
-            object,
-            {
-                "start": HP.start,
-                "end": HP.end,
-                "formula": HP.formula,
-                "lineWidth": HP.lineWidth,
-                "color": HP.color
+        statusTable.forEach((status) => {
+            if (!object.hasOwnProperty(status.name) || !object.hasOwnProperty(status.max)) {
+                return
             }
-        )
 
-        this.renderStat(
-            object,
-            {
-                "start": ENERGY.start,
-                "end": ENERGY.end,
-                "formula": ENERGY.formula,
-                "lineWidth": ENERGY.lineWidth,
-                "color": ENERGY.color
-            }
-        )
-
-        let VEL = {
-            "start": {
-                "x": 25,
-                "y": -object.height * 3,
-            },
-            "end": {
-                "x": 25,
-                "y": -object.height * 3,
-            },
-            "formula": (
-                (parsePositive(object.currentXVel) + parsePositive(object.currentYVel)) / object.maxVel
-            ),
-            "lineWidth": 2,
-            "color": "blue"
-        }
-
-        this.renderStat(
-            object,
-            {
-                "start": VEL.start,
-                "end": VEL.end,
-                "formula": VEL.formula,
-                "lineWidth": VEL.lineWidth,
-                "color": VEL.color
-            }
-        )
-
-        if(!object.shield){return}
-
-        let SHIELD = {
-            "start": {
-                "x": 25,
-                "y": object.height * 3,
-            },
-            "end": {
-                "x": 25,
-                "y": object.height * 3,
-            },
-            "formula": (object.shield / object.maxShield),
-            "lineWidth": 2,
-            "color": "lightblue"
-        }
-
-        this.renderStat(
-            object,
-            {
-                "start": SHIELD.start,
-                "end": SHIELD.end,
-                "formula": SHIELD.formula,
-                "lineWidth": SHIELD.lineWidth,
-                "color": SHIELD.color
-            }
-        )
-
+            let stat = typeof object[status.name] == "number" ? object[status.name] : object[status.name].get()
+            
+            this.renderStat(
+                object,
+                {
+                    start: { x: 25, y: (object.height*2) * status.position },
+                    end: { x: 25, y: (object.height*2) * status.position },
+                    formula: stat / object[status.max],
+                    lineWidth: 2,
+                    color: status.color,
+                }
+            )
+        })
 
     }
 
