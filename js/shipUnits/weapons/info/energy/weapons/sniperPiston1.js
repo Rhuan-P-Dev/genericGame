@@ -1,4 +1,4 @@
-import { InheritController } from "../../../../generalUtils/inherit.js"
+import { InheritController } from "../../../../../generalUtils/inherit.js"
 
 import { Piston1 } from "./piston1.js"
 

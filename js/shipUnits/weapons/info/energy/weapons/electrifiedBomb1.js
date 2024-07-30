@@ -1,8 +1,8 @@
 
-import { InheritController } from "../../../../generalUtils/inherit.js"
-import { ElectrifiedBomb1Animation } from "../animations/electrifiedBomb1Animation.js"
-import { ElectrifiedBomb1Effect } from "../effects/electrifiedBomb1Effect.js"
-import { WeaponExtend } from "../extend/weapon.js"
+import { InheritController } from "../../../../../generalUtils/inherit.js"
+import { ElectrifiedBomb1Animation } from "../../animations/electrifiedBomb1Animation.js"
+import { ElectrifiedBomb1Effect } from "../../effects/electrifiedBomb1Effect.js"
+import { WeaponExtend } from "../../extend/weapon.js"
 
 export class ElectrifiedBomb1 {
 

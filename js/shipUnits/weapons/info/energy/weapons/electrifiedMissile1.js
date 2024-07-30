@@ -1,10 +1,10 @@
 
-import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
-import { InheritController } from "../../../../generalUtils/inherit.js"
-import { ElectrifiedMissile1Animation } from "../animations/electrifiedMissile1Animation.js"
-import { ElectrifiedMissile1Effect } from "../effects/electrifiedMissile1Effect.js"
-import { HomingWeapon } from "../extend/homingWeapon.js"
-import { WeaponExtend } from "../extend/weapon.js"
+import { FocusedTopDownBehavior } from "../../../../../AI/behavior/focusedTopDownBehavior.js"
+import { InheritController } from "../../../../../generalUtils/inherit.js"
+import { ElectrifiedMissile1Animation } from "../../animations/electrifiedMissile1Animation.js"
+import { ElectrifiedMissile1Effect } from "../../effects/electrifiedMissile1Effect.js"
+import { HomingWeapon } from "../../extend/homingWeapon.js"
+import { WeaponExtend } from "../../extend/weapon.js"
 
 export class ElectrifiedMissile1 {
 
