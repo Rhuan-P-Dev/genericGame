@@ -190,11 +190,15 @@ export class GenericEffectsController {
 
                 let closestObject = closestObjects[index]
 
-                let mult = CustomMath.linearReverse(
-// ADICINAR UM SCHEDULER PARA O CALCULO!
-                    AIUtils.getDistanceOfObjects(params.object, closestObject),
-                    params.range,
-                )
+                let mult = 1
+
+                if(!params.uniform){
+                    mult = CustomMath.linearReverse(
+                        // ADICINAR UM SCHEDULER PARA O CALCULO!
+                        AIUtils.getDistanceOfObjects(params.object, closestObject),
+                        params.range,
+                    )
+                }
 
                 closestObject.currentXVel -= closestObject.currentXVel * (mult * params.mult)
                 closestObject.currentYVel -= closestObject.currentYVel * (mult * params.mult)
@@ -416,11 +420,15 @@ export class GenericEffectsController {
 
                 let object = objects[index]
 
-                let mult = CustomMath.linearReverse(
-                    // ADICINAR UM SCHEDULER PARA O CALCULO!
-                    AIUtils.getDistanceOfObjects(params.object, object),
-                    params.searchConfig.maxDistance,
-                )
+                let mult = 1
+
+                if(!params.uniform){
+                    mult = CustomMath.linearReverse(
+                        // ADICINAR UM SCHEDULER PARA O CALCULO!
+                        AIUtils.getDistanceOfObjects(params.object, object),
+                        params.searchConfig.maxDistance,
+                    )
+                }
 
                 params.fakeObject.damage = params.damage * mult
 
