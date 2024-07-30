@@ -171,7 +171,13 @@ export class EffectsController {
 
             params.object = undefined
             
-            for (let index = 0; index < objects.length; index++) {
+            for (
+                let index = 0;
+                index < objects.length
+                &&
+                objects[index].ID;
+                index++
+            ) {
 
                 let newParams = CloneObject.recursiveCloneAttribute(params)
 
