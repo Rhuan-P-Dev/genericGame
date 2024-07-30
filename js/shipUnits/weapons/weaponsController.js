@@ -6,6 +6,9 @@ import { FactoryController } from "../factory/factoryController.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
+import { AIUtilsController } from "../../AI/utils/AIUtils.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
+import { DamageController } from "../../damage/damageController.js"
 
 // PROJECTILES
 import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
@@ -24,6 +27,10 @@ var Vector = ""
 var Factory = ""
 var ObjectActivates = ""
 var Animations = ""
+var AIUtils
+var CloneObject
+var Damage
+
 
 onInit(function(){
 
@@ -33,6 +40,9 @@ onInit(function(){
     Factory = new FactoryController()
     ObjectActivates = new ObjectActivatesController()
     Animations = new AnimationsController()
+    AIUtils = new AIUtilsController()
+    CloneObject = new CloneObjectController()
+    Damage = new DamageController()
 
 })
 
@@ -114,6 +124,48 @@ export class WeaponsController{
 
 
         object.owner = weapon
+
+    }
+
+    activateEffect(object, activate, config){
+
+        let minimalObject = AIUtils.getMinimalObject(object)
+
+        minimalObject.x += activate.cosine * activate.range
+        minimalObject.y += activate.sine * activate.range
+
+        minimalObject.effects = {}
+
+        let tempEffect = CloneObject.recursiveCloneAttribute(activate.effects[0].effect)
+
+        tempEffect.params.object = minimalObject
+
+        Effects.linkOwerToEffect(
+            tempEffect.params,
+            object
+        )
+
+        Effects.add(
+            tempEffect.config.name,
+            tempEffect.config.type,
+            tempEffect.params,
+            tempEffect.config
+        )
+
+        Weapons.deactivateEffect(minimalObject, (tempEffect.dellObjectTimer || 1) + 1)
+
+    }
+
+    deactivateEffect(effectObject, frames){
+
+        setFrameOut(
+            () => {
+                Effects.removeAll(
+                    effectObject
+                )
+                effectObject = null
+            }, frames
+        )
 
     }
 
