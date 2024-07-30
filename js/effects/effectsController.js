@@ -182,7 +182,19 @@ export class EffectsController {
                 let newParams = CloneObject.recursiveCloneAttribute(params)
 
                 newParams.object = objects[index]
-                
+
+                if(
+                    effectName === "effect"
+                ){
+                    Effects.fix(newParams, effectName, effectType, "params")
+                }
+
+                Effects.linkOwerToEffect(
+                    newParams,
+                    localParams.object,
+                    false
+                )
+
                 Effects.add(
                     effectName,
                     effectType,
