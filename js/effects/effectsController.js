@@ -208,6 +208,35 @@ export class EffectsController {
 
     }
 
+    fakeObjectsNames = [
+        "parasiteSelfAttack",
+        "parasiteBlasterAttack",
+        "parasiteObject",
+        "fakeObject"
+    ]
+
+    linkOwerToEffect(params, owner, force = true){
+
+        for(let fakeNameIndex in Effects.fakeObjectsNames){
+
+            let fakeName = Effects.fakeObjectsNames[fakeNameIndex]
+
+            if(
+                !params[fakeName]
+                &&
+                force
+            ){
+                params[fakeName] = {}
+            }
+
+            if(params[fakeName]){
+                params[fakeName].owner = owner
+            }
+
+        }
+
+    }
+
     add(
         effectName,
         effectType,
