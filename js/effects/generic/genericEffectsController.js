@@ -1552,7 +1552,7 @@ export class GenericEffectsController {
                             "includeSameTeam": true,
                             "includeEnemyTeam": false,
                             "includeYourself": true,
-                            "maxDistance": 100,
+                            "maxDistance": 50,
                         },
 
                         "fakeObject": {
