@@ -384,11 +384,48 @@ export class GenericEffectsController {
 
         },
 
+        "temporarily disable objects": (params) => {
 
+            let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                params.searchConfig
+            )
 
+            ScreenRender.addDrawRequest( // debug
+                {
+                    "func": ScreenRender.drawCircle,
+                    "params": {
+                        "x": params.object.x,
+                        "y": params.object.y,
+                        "radius": params.searchConfig.maxDistance,
+                    },
+                }
+            )
 
+            for (let index = 0; index < objects.length; index++) {
 
+                let object = objects[index]
 
+                for (let indey = 0; indey < params.systems.length; indey++) {
+
+                    if (object["disable"+firstLetterUppercase(
+                        params.systems[indey]
+                    )]){
+                        object["disable"+firstLetterUppercase(params.systems[indey])]()
+
+                        setFrameOut(
+                            () => {
+                                object["enable"+firstLetterUppercase(params.systems[indey])]()
+                            },params.disableFramesOut, 1, true, object.ID + "_enabling "+params.systems[indey]+"..."
+                        )
+
+                    }
+
+                }
+
+            }
+
+        },
 
         "inflict damage":(params) => {
 
