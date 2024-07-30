@@ -22,6 +22,19 @@ export class AIUtilsController {
         "step": this.getStepDistanceOfObjects,
     }
 
+    getMinimalObject(object = {}){
+
+        let minimalObject = {}
+
+        minimalObject.x = object.x || 0
+        minimalObject.y = object.y || 0
+
+        minimalObject.ID = "minimal"//randomUniqueID() + "minimal"
+        minimalObject.team = object.team || "minimal"
+
+        return minimalObject
+    }
+
     getStepDistanceOfObjects(object, goal){
 
         // The greater the difference, the lower the priority
