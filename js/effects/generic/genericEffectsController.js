@@ -628,13 +628,13 @@ export class GenericEffectsController {
                     "params": {
                         "mult": -2,
                         "force": 0.4,
-                        "range": 500,
+                        "range": 300,
 
                         "searchConfig": {
                             "includeSameTeam": false,
                             "includeEnemyTeam": true,
                             "includeYourself": false,
-                            "maxDistance": 500,
+                            "maxDistance": 300,
                         },
 
                         "fakeObject": {
@@ -643,7 +643,7 @@ export class GenericEffectsController {
                             },
                         },
 
-                        "damage": 100
+                        "damage": 50
                     },
                 }
 
