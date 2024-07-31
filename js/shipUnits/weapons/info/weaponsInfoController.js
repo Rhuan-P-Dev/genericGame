@@ -122,7 +122,9 @@ export class WeaponsInfoController{
             weapon.build()
         }
 
-        weapon.calcStats()
+        if(weapon.calcStats){
+            weapon.calcStats()
+        }
 
         return weapon
 
