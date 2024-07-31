@@ -591,6 +591,31 @@ export class GenericEffectsController {
 
                 "effect": {
 
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                ScreenRender.addDrawRequest(
+                                    {
+                                        "func": ScreenRender.drawBigCircleSmallCircles,
+                                        "params": {
+                                            "x": params.object.x,
+                                            "y": params.object.y,
+                                            "radius": 150,
+                                            "numberOfCircles": 30,
+                                            "smallCircleRadius": 5,
+                                            "bigCircleColor": "black",
+                                            "bigCircleFill": true,
+                                            "smallCircleColor": "white",
+                                            "smallCircleFill": true,
+                                        },
+                                    }
+                                )
+                            
+                            },
+                        }
+                    },
+
                     "config": {
                         "func": (params) => {
                             this.effectsList["temporarily disable objects"](params)
