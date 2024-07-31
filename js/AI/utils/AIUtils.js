@@ -22,9 +22,10 @@ export class AIUtilsController {
         "step": this.getStepDistanceOfObjects,
     }
 
-    getMinimalObject(object = {}){
-
-        let minimalObject = {}
+    getMinimalObject(
+        minimalObject = {},
+        object = {}
+    ){
 
         minimalObject.x = object.x || 0
         minimalObject.y = object.y || 0
