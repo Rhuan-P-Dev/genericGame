@@ -77,6 +77,15 @@ export class AnimationsDataBase {
         },
 
 
+        "red repulsion": {
+            "0":{"func":"drawCircle","loop":1,"seconds":0.20,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":0,"2":0}}],"lineWidth":[1,10],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[1,300]}}
+        },
+
+        "blue attraction": {
+            "0":{"func":"drawCircle","loop":1,"seconds":0.10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":255}}],"lineWidth":[1,5],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[55,1]}}
+        },
+
+
 
         "trace": {
             "0":{"func":"drawLine","loop":1,"seconds":0.1,"frameRate":60,"frames":{"color":[{"0":{"0":100,"1":100,"2":100}}],"lineWidth":[1],"fill":[true],"continuous":[{"0":{"0":-2.25,"1":2.25},"1":{"0":-2.25,"1":-2.25},"2":{"0":2.25,"1":-2.25},"3":{"0":2.25,"1":2.25}}]}}

@@ -26,6 +26,10 @@ import { ElectrifiedBomb1 } from "./energy/weapons/electrifiedBomb1.js"
 import { ToyMachinegun } from "./energy/weapons/toyMachinegun.js"
 import { ParasiteInjection1 } from "./energy/weapons/parasiteInjection1.js"
 import { DeathHandLauncher } from "./energy/weapons/deathHandLauncher.js"
+import { EmptyColor } from "./darkEnergy/weapons/emptyColor.js"
+import { BlessedBlue } from "./darkEnergy/effectWeapons/blessedBlue.js"
+import { BlessedRed } from "./darkEnergy/effectWeapons/blessedRed.js"
+import { BlessedSpecial } from "./darkEnergy/effectWeapons/blessedSpecial.js"
 
 
 
@@ -82,6 +86,16 @@ export class WeaponsInfoController{
         "toy machinegun": ToyMachinegun,
         "parasite injection 1": ParasiteInjection1,
         "death hand launcher": DeathHandLauncher,
+
+
+
+
+        //dark energy
+        "blessed blue": BlessedBlue,
+        "blessed red": BlessedRed,
+        "empty color": EmptyColor,
+        "blessed special": BlessedSpecial
+
     }
 
     getAll(){

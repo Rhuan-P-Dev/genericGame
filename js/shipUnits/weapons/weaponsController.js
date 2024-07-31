@@ -20,6 +20,7 @@ import { MiniWorldProjectile } from "../../object/projectiles/complex/miniWorldP
 import { ExplosiveSmallBulletProjetile } from "../../object/projectiles/complex/explosiveSmallBulletProjectile.js"
 import { ExplosiveMediumBulletProjectile } from "../../object/projectiles/complex/explosiveMediumBulletProjectile.js"
 import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
+import { EmptyColorProjetile } from "../../object/projectiles/complex/emptyColorProjectile.js"
 
 var Activate = ""
 var Effects = ""
@@ -232,7 +233,8 @@ export class WeaponsController{
         "mini world": MiniWorldProjectile,
         "explosive small bullet": ExplosiveSmallBulletProjetile,
         "explosive medium bullet": ExplosiveMediumBulletProjectile,
-        "death's hand": DeathHand
+        "death's hand": DeathHand,
+        "empty color": EmptyColorProjetile
 
     }
 
