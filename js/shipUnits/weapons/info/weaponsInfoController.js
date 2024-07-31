@@ -170,8 +170,11 @@ export class WeaponsInfoController{
         weapon.reload *= 1.5
         weapon.lifeTime *= 0.75
         weapon.range *= 0.5
-        weapon.config.weapon.multVel *= 0.75
-        weapon.config.weapon.damageMult *= 0.5
+
+        if(weapon.config.weapon){
+            weapon.config.weapon.multVel *= 0.75
+            weapon.config.weapon.damageMult *= 0.5
+        }
 
     }
 
