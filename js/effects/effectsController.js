@@ -169,8 +169,6 @@ export class EffectsController {
                 )
             }
 
-            params.object = undefined
-            
             for (
                 let index = 0;
                 index < objects.length
