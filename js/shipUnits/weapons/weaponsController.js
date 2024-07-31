@@ -128,8 +128,27 @@ export class WeaponsController{
     }
 
     activateEffect(object, activate, config){
+        
+        //let minimalObject = OnInstructions.getMinimalOnInstructionsObject(
+        //    Effects.getMinimalObject(
+        //        AIUtils.getMinimalObject(
+        //            {},
+        //            object
+        //        )
+        //    )
+        //)
 
-        let minimalObject = AIUtils.getMinimalObject(object)
+        //let minimalObject = Effects.getMinimalObject(
+        //    AIUtils.getMinimalObject(
+        //        {},
+        //        object
+        //    )
+        //)
+
+        let minimalObject = AIUtils.getMinimalObject(
+            {},
+            object
+        )
 
         minimalObject.x += activate.cosine * activate.range
         minimalObject.y += activate.sine * activate.range
