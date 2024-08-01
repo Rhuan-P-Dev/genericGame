@@ -215,16 +215,10 @@ export class CloneObjectController {
     cloneSearchPriority(object, clonedObject = {}){
 
         clonedObject.searchPriority = {}
-        clonedObject.searchPriority.ifDontHave = {}
 
         CloneObject.cloneAttribute(
             object.searchPriority,
             clonedObject.searchPriority
-        )
-
-        CloneObject.cloneAttribute(
-            object.searchPriority.ifDontHave,
-            clonedObject.searchPriority.ifDontHave
         )
 
         return clonedObject
