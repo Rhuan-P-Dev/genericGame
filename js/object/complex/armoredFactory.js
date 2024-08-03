@@ -1,5 +1,6 @@
 import { InheritController } from "../../generalUtils/inherit.js"
 import { ShieldObject } from "../basic/shieldObject.js"
+import { StandardArmor } from "../basic/standardArmor.js"
 import { ObjectFactory } from "./factory.js"
 
 export class ArmoredObjectFactory{
@@ -10,7 +11,8 @@ export class ArmoredObjectFactory{
             this,
             [
                 ObjectFactory,
-                ShieldObject
+                ShieldObject,
+                StandardArmor
             ],
             build
         )

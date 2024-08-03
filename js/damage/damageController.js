@@ -29,12 +29,153 @@ export class DamageController {
         "uniform": this.uniform
     }
 
+    addDamage(object, type, amount, force = false) {
+
+        if(!object.damageTypes){
+            object.damageTypes = {}
+        }
+
+        if(force) {
+            object.damageTypes[type] = amount
+        }else {
+            object.damageTypes[type] = (object.damageTypes[type] || 0) + amount
+        }
+    }
+
+    addDefense(object, stat, type, amount, force = false) {
+
+        if(!object.defenseTypes[stat]){
+            object.defenseTypes[stat] = {}
+        }
+
+        if(force) {
+            object.defenseTypes[stat][type] = amount
+        }else {
+            object.defenseTypes[stat][type] = (object.defenseTypes[stat][type] || 0) + amount
+        }
+        
+    }
+
+    addDamageOrder(object, damageType, stat, direction, reference) {
+        if (!object.damageOrder[damageType]) {
+            object.damageOrder[damageType] = [
+                stat
+            ]
+        }else{
+            insertRelativeTo(object.damageOrder[damageType], stat, direction, reference)
+        }
+
+    }
+
+    immunityTo(object, stat){
+
+        delete object.damageOrder[stat]
+
+    }
+
     doDamage(params){
 
         this.damageTypeTable[params.object.damageConfig.type](
             params.object,
             params.otherObject
         )
+
+    }
+
+    reciveDamage(params){
+
+        //console.log(params)
+
+        let damageCache = {}
+
+        for(let typeOfDamage in params.otherObject.damageTypes){
+
+            //console.log("typeOfDamage", typeOfDamage)
+
+            for(let typeOfDamagedStatsIndex in params.object.damageOrder[typeOfDamage]){
+
+                let typeOfDamagedStats = params.object.damageOrder[typeOfDamage][typeOfDamagedStatsIndex]
+
+                //console.log("typeOfDamagedStats", typeOfDamagedStats)
+
+                if(
+                    params.object[typeOfDamagedStats] === undefined
+                    ||
+                    this.isNegative(params.object, typeOfDamagedStats)
+                    ||
+                    params.calcDamage <= 0
+                    ||
+                    damageCache[typeOfDamage] <= 0
+                ){continue}
+
+                let damage = undefined
+                let defenseMultiplier = 0
+
+                if(
+                    params.object.defenseTypes[typeOfDamagedStats]
+                    &&
+                    params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
+                ){
+                    defenseMultiplier = params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
+                }
+
+                damage = damageCache[typeOfDamage] || params.calcDamage
+
+                damage *= params.otherObject.damageTypes[typeOfDamage] || 0
+                
+                damage *= params.object.resistance
+                
+                damage -= params.object.defense * defenseMultiplier
+
+                if(
+                    damage <= 0
+                ){
+                    damageCache[typeOfDamage] = damage
+                    continue
+                }
+
+                //console.log("damage", damage)
+
+                let statNumber = undefined
+
+                if(typeof params.object[typeOfDamagedStats] == "number"){
+                    statNumber = params.object[typeOfDamagedStats]
+                    params.object[typeOfDamagedStats] -= damage
+                }else{
+                    statNumber = params.object[typeOfDamagedStats].get()
+                    params.object[typeOfDamagedStats].math("-", damage)
+                }
+
+                if(params.otherObject.passDamageMultiplier){
+                    damage = damage * params.otherObject.passDamageMultiplier
+                    statNumber = 0
+                }
+
+                damageCache[typeOfDamage] = damage - statNumber
+
+            }
+
+        }
+
+        //a
+
+    }
+
+    isNegative(object, typeOfDamagedStats){
+
+        let number = undefined
+
+        if(typeof object[typeOfDamagedStats] == "number"){
+            number = object[typeOfDamagedStats]
+        }else{
+            number = object[typeOfDamagedStats].get()
+        }
+
+        if(number < 0){
+            return true
+        }else{
+            return false
+        }
 
     }
 

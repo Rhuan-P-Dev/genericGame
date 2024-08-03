@@ -39,7 +39,10 @@ export class CloneObjectController {
         "animations": () => {},
 
         "life": this.cloneStatsObserver,
-        
+        "switchStatsVariables": () => {},
+        "damageTypes": this.insideRecursive,
+        "defenseTypes": this.insideRecursive,
+        "damageOrder": this.insideRecursive
     }
 
     clone(object){
@@ -319,6 +322,15 @@ export class CloneObjectController {
     cloneStatsObserver(object, clonedObject = {}, config){
 
         clonedObject[config.keyType].set(object[config.keyType].get())
+
+    }
+
+    insideRecursive(object, clonedObject = {}, config){
+
+        clonedObject[config.keyType] = CloneObject.recursiveCloneAttribute(
+            object[config.keyType],
+            clonedObject[config.keyType]
+        )
 
     }
 

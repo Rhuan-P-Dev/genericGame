@@ -1,10 +1,13 @@
+import { DamageController } from "../../damage/damageController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 
 var GameState = ""
+var Damage
 
 onInit(function(){
 
     GameState = new GameStateController()
+    Damage = new DamageController()
 
 })
 
@@ -40,18 +43,33 @@ export class OtherEffectsController {
 
             let damage = params.calcDamage * params.config.getPercentage(params)
 
-            if(damage > 0){
-                params.otherObjectMaster.life.math("-", damage)
+            if(
+                damage > 0
+                &&
+                params.otherObjectMaster.ID
+            ){
+
+                params.fakeObject.damage = damage
+
+                Damage.damageCalc(
+                    params.fakeObject,
+                    params.otherObjectMaster
+                )
+
             }
 
         },
 
         "convert": (params) => {
 
-            GameState.changeTeam(
-                params.otherObject,
-                params.object
-            )
+            if(
+                params.otherObject.ID
+            ){
+                GameState.changeTeam(
+                    params.otherObject,
+                    params.object
+                )
+            }
 
         },
 
@@ -213,7 +231,13 @@ export class OtherEffectsController {
 
                     },
         
-                    "params": {},
+                    "params": {
+                        "fakeObject": {
+                            "damageTypes": {
+                                "revenge": 1,
+                            }
+                        },
+                    },
 
                 }
 

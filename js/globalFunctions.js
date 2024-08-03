@@ -3,7 +3,7 @@ function onInit(func) {
 }
 
 function randomInteger(min = 0, max = 1){
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function randomInterval(number){
@@ -39,5 +39,18 @@ function returnRandomObject(objects){
 }
 
 function firstLetterUppercase(string) {
-    return string[0].toUpperCase() + string.slice(1);
+    return string[0].toUpperCase() + string.slice(1)
+}
+
+function insertRelativeTo(arr, element, direction = "after", seach) {
+    let index = arr.indexOf(seach)
+
+    if (index === -1) {
+      throw new Error(`Element ${seach} not found in the array.`)
+    }
+
+    let insertIndex = direction === "before" ? index : index + 1
+    arr.splice(insertIndex, 0, element)
+
+    return arr
 }

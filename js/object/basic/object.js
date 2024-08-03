@@ -4,7 +4,6 @@ import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
-import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { CommonImport } from "../common/commonImport.js"
 import { ActivateInstructions } from "../instructions/activateInstructions.js"
 import { onInstructions } from "../instructions/onInstructions.js"
@@ -12,13 +11,11 @@ import { StatsObserverController } from "../instructions/statsObserverController
 
 var GameState = ""
 var Damage = ""
-var ConsumeStats = ""
 
 onInit(function(){
 
     Damage = new DamageController()
     GameState = new GameStateController()
-    ConsumeStats = new ConsumeStatsController()
 
 })
 
@@ -36,6 +33,22 @@ export class Object {
             ],
             build
         )
+
+        Damage.addDamage(this, "physical", 1, true)
+
+        Damage.addDefense(this, "life", "physical", 1, true)
+        Damage.addDefense(this, "life", "parasite suck energy", 2, true)
+
+        Damage.addDamageOrder(this, "physical", "life")
+        Damage.addDamageOrder(this, "shock", "life")
+        Damage.addDamageOrder(this, "fire", "life")
+        Damage.addDamageOrder(this, "death", "life")
+        Damage.addDamageOrder(this, "dark energy", "life")
+        Damage.addDamageOrder(this, "revenge", "life")
+        Damage.addDamageOrder(this, "parasite blaster", "life")
+        Damage.addDamageOrder(this, "parasite self blaster", "life")
+        Damage.addDamageOrder(this, "parasite suck energy damage", "life")
+        Damage.addDamageOrder(this, "parasite suck energy", "life")
 
     }
 
@@ -64,18 +77,10 @@ export class Object {
                 }
             )
 
-
-            ConsumeStats.add(
-                updateThis,
-                "life",
-                [
-                    "last",
-                    10
-                ],
-                (object, damage) => {
-                    return (damage * object.resistance) - object.defense
-                }
-            )
+            updateThis.onDamage.add({
+                "func": "reciveDamage",
+                "class": Damage
+            },"last",10)
 
             updateThis.onHit.add({
                 "func": "doDamage",
@@ -119,10 +124,15 @@ export class Object {
     maxLife = 10
     lifeRegen = 0
 
-    defense = 0
     resistance = 1
 
     damage = 1
+    damageTypes = {}
+
+    defense = 0
+    defenseTypes = {}
+
+    damageOrder = {}
 
     x = 10
     y = 10

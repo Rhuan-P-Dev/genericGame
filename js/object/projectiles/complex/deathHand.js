@@ -1,4 +1,5 @@
 
+import { DamageController } from "../../../damage/damageController.js"
 import { EffectsController } from "../../../effects/effectsController.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
@@ -8,11 +9,13 @@ import { BasicProjetile } from "../basic/basicProjetile.js"
 
 var Effects = ""
 var Animations
+var Damage
 
 onInit(function(){
 
     Effects = new EffectsController()
     Animations = new AnimationsController()
+    Damage = new DamageController()
 
 })
 
@@ -39,13 +42,15 @@ export class DeathHand {
         this.height = 6
 
         this.defense = 0
-        this.damage = 0
+        this.damage = 1
 
         this.lifeTime = 500
 
         this.maxVel /= 2
         this.vel *= 2
         this.rotationVel *= 4
+
+        this.damageTypes["death"] = 1
 
     }
 
@@ -56,6 +61,8 @@ export class DeathHand {
         },
 
         ["add_deathHandFunctions"]: (updateThis) => {
+
+            Damage.immunityTo(updateThis, "death")
 
             updateThis.onHit.remove("last", 0) // selfDestruction
 

@@ -1,12 +1,12 @@
 import { InheritController } from "../../generalUtils/inherit.js"
-import { ConsumeStatsController } from "../../misc/consumeStatsController.js"
 import { Object } from "./object.js"
+import { DamageController } from "../../damage/damageController.js"
 
-var ConsumeStats = ""
+var Damage
 
 onInit(function(){
 
-    ConsumeStats = new ConsumeStatsController()
+    Damage = new DamageController()
 
 })
 
@@ -34,15 +34,49 @@ export class ShieldObject {
 
         "add_shieldConsume": (updateThis) => {
 
-            ConsumeStats.add(
+            Damage.addDamageOrder(
                 updateThis,
+                "dark energy",
                 "shield",
-                [
-                    "last",
-                    0
-                ]
+                "before",
+                "life",
             )
-    
+
+            Damage.addDamageOrder(
+                updateThis,
+                "physical",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "fire",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "parasite blaster",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "shock",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDefense(updateThis, "shield", "physical", 0.25, true)
+            Damage.addDefense(updateThis, "shield", "fire", 2, true)
+
         }
 
     }

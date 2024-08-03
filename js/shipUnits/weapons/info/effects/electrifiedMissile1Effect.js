@@ -24,7 +24,11 @@ export class ElectrifiedMissile1Effect {
 
                 "params": {
                     "range": 300,
-                    "thunderDamage": 20,
+
+                    "fakeObject": {
+                        "damage": 20,
+                    },
+
                     "mult": 0.5,
 
                     "color": "yellow",
