@@ -187,6 +187,10 @@ export class WeaponsInfoController{
         weapon.lifeTime *= 0.75
         weapon.range *= 0.5
 
+        if(weapon.distance !== undefined){
+            weapon.distance *= 0.5
+        }
+
         if(weapon.config.weapon){
             weapon.config.weapon.multVel *= 0.75
             weapon.config.weapon.damageMult *= 0.5

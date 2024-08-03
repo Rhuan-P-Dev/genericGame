@@ -151,8 +151,8 @@ export class WeaponsController{
             object
         )
 
-        minimalObject.x += activate.cosine * activate.range
-        minimalObject.y += activate.sine * activate.range
+        minimalObject.x += activate.cosine * activate.distance
+        minimalObject.y += activate.sine * activate.distance
 
         minimalObject.effects = {}
 

@@ -20,7 +20,8 @@ export class BlessedSpecial {
 
         this.cost = 180
         this.reload = 45*60
-        this.range = 0
+        this.distance = 0
+        this.range = 120
 
     }
 
