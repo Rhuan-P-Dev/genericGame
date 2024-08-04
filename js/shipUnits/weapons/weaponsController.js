@@ -160,7 +160,7 @@ export class WeaponsController{
 
         tempEffect.params.object = minimalObject
 
-        Effects.linkOwerToEffect(
+        Effects.linkOwnerToEffect(
             tempEffect.params,
             object
         )

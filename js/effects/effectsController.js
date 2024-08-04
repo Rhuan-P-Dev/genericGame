@@ -187,7 +187,7 @@ export class EffectsController {
                     Effects.fix(newParams, effectName, effectType, "params")
                 }
 
-                Effects.linkOwerToEffect(
+                Effects.linkOwnerToEffect(
                     newParams,
                     localParams.object,
                     false
@@ -225,7 +225,7 @@ export class EffectsController {
         "fakeObject"
     ]
 
-    linkOwerToEffect(params, owner, force = true){
+    linkOwnerToEffect(params, owner, force = true){
 
         for(let fakeNameIndex in Effects.fakeObjectsNames){
 
