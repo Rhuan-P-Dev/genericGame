@@ -4,28 +4,32 @@ import { ActivateInfoController } from "../../forAllShipUnits/activateInfoContro
 import { InheritController } from "../../../generalUtils/inherit.js"
 import { FocusedNearBehavior } from "../../../AI/behavior/focusedNearBehavior.js"
 
-import { BlackHoleGenerator1 } from "./weapons/blackHoleGenerator1.js"
-import { MissileBurst1 } from "./weapons/missileBurst1.js"
-import { MineLauncher1 } from "./weapons/mineLauncher1.js"
-import { Piston1 } from "./weapons/piston1.js"
-import { SniperPiston1 } from "./weapons/sniperPiston1.js"
-import { Scrapper1 } from "./weapons/scrapper1.js"
-import { FlameThrower1 } from "./weapons/flameThrower1.js"
-import { Fragilizer1 } from "./weapons/fragilizer1.js"
-import { Disassemble1 } from "./weapons/disassemble1.js"
-import { ElectrifiedMissile1 } from "./weapons/electrifiedMissile1.js"
-import { Paintbrush1 } from "./weapons/paintbrush1.js"
-import { Missilepiston } from "./weapons/missilepiston.js"
-import { Shotgun1 } from "./weapons/shotgun1.js"
-import { MissileCluster1 } from "./weapons/missileCluster1.js"
-import { MiniWorldLauncher } from "./weapons/miniWorldLauncher.js"
-import { SmallBulletCluster1 } from "./weapons/smallBulletCluster1.js"
-import { Diffusion1 } from "./weapons/diffusion1.js"
-import { Bubbler1 } from "./weapons/bubbler1.js"
-import { ElectrifiedBomb1 } from "./weapons/electrifiedBomb1.js"
-import { ToyMachinegun } from "./weapons/toyMachinegun.js"
-import { ParasiteInjection1 } from "./weapons/parasiteInjection1.js"
-import { DeathHandLauncher } from "./weapons/deathHandLauncher.js"
+import { BlackHoleGenerator1 } from "./energy/weapons/blackHoleGenerator1.js"
+import { MissileBurst1 } from "./energy/weapons/missileBurst1.js"
+import { MineLauncher1 } from "./energy/weapons/mineLauncher1.js"
+import { Piston1 } from "./energy/weapons/piston1.js"
+import { SniperPiston1 } from "./energy/weapons/sniperPiston1.js"
+import { Scrapper1 } from "./energy/weapons/scrapper1.js"
+import { FlameThrower1 } from "./energy/weapons/flameThrower1.js"
+import { Fragilizer1 } from "./energy/weapons/fragilizer1.js"
+import { Disassemble1 } from "./energy/weapons/disassemble1.js"
+import { ElectrifiedMissile1 } from "./energy/weapons/electrifiedMissile1.js"
+import { Paintbrush1 } from "./energy/weapons/paintbrush1.js"
+import { Missilepiston } from "./energy/weapons/missilepiston.js"
+import { Shotgun1 } from "./energy/weapons/shotgun1.js"
+import { MissileCluster1 } from "./energy/weapons/missileCluster1.js"
+import { MiniWorldLauncher } from "./energy/weapons/miniWorldLauncher.js"
+import { SmallBulletCluster1 } from "./energy/weapons/smallBulletCluster1.js"
+import { Diffusion1 } from "./energy/weapons/diffusion1.js"
+import { Bubbler1 } from "./energy/weapons/bubbler1.js"
+import { ElectrifiedBomb1 } from "./energy/weapons/electrifiedBomb1.js"
+import { ToyMachinegun } from "./energy/weapons/toyMachinegun.js"
+import { ParasiteInjection1 } from "./energy/weapons/parasiteInjection1.js"
+import { DeathHandLauncher } from "./energy/weapons/deathHandLauncher.js"
+import { EmptyColor } from "./darkEnergy/weapons/emptyColor.js"
+import { BlessedBlue } from "./darkEnergy/effectWeapons/blessedBlue.js"
+import { BlessedRed } from "./darkEnergy/effectWeapons/blessedRed.js"
+import { BlessedSpecial } from "./darkEnergy/effectWeapons/blessedSpecial.js"
 
 
 
@@ -82,6 +86,16 @@ export class WeaponsInfoController{
         "toy machinegun": ToyMachinegun,
         "parasite injection 1": ParasiteInjection1,
         "death hand launcher": DeathHandLauncher,
+
+
+
+
+        //dark energy
+        "blessed blue": BlessedBlue,
+        "blessed red": BlessedRed,
+        "empty color": EmptyColor,
+        "blessed special": BlessedSpecial
+
     }
 
     getAll(){
@@ -122,7 +136,9 @@ export class WeaponsInfoController{
             weapon.build()
         }
 
-        weapon.calcStats()
+        if(weapon.calcStats){
+            weapon.calcStats()
+        }
 
         return weapon
 
@@ -170,8 +186,15 @@ export class WeaponsInfoController{
         weapon.reload *= 1.5
         weapon.lifeTime *= 0.75
         weapon.range *= 0.5
-        weapon.config.weapon.multVel *= 0.75
-        weapon.config.weapon.damageMult *= 0.5
+
+        if(weapon.distance !== undefined){
+            weapon.distance *= 0.5
+        }
+
+        if(weapon.config.weapon){
+            weapon.config.weapon.multVel *= 0.75
+            weapon.config.weapon.damageMult *= 0.5
+        }
 
     }
 

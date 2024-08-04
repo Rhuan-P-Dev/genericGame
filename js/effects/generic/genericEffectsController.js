@@ -190,11 +190,15 @@ export class GenericEffectsController {
 
                 let closestObject = closestObjects[index]
 
-                let mult = CustomMath.linearReverse(
-// ADICINAR UM SCHEDULER PARA O CALCULO!
-                    AIUtils.getDistanceOfObjects(params.object, closestObject),
-                    params.range,
-                )
+                let mult = 1
+
+                if(!params.uniform){
+                    mult = CustomMath.linearReverse(
+                        // ADICINAR UM SCHEDULER PARA O CALCULO!
+                        AIUtils.getDistanceOfObjects(params.object, closestObject),
+                        params.range,
+                    )
+                }
 
                 closestObject.currentXVel -= closestObject.currentXVel * (mult * params.mult)
                 closestObject.currentYVel -= closestObject.currentYVel * (mult * params.mult)
@@ -380,11 +384,48 @@ export class GenericEffectsController {
 
         },
 
+        "temporarily disable objects": (params) => {
 
+            let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                params.searchConfig
+            )
 
+            ScreenRender.addDrawRequest( // debug
+                {
+                    "func": ScreenRender.drawCircle,
+                    "params": {
+                        "x": params.object.x,
+                        "y": params.object.y,
+                        "radius": params.searchConfig.maxDistance,
+                    },
+                }
+            )
 
+            for (let index = 0; index < objects.length; index++) {
 
+                let object = objects[index]
 
+                for (let indey = 0; indey < params.systems.length; indey++) {
+
+                    if (object["disable"+firstLetterUppercase(
+                        params.systems[indey]
+                    )]){
+                        object["disable"+firstLetterUppercase(params.systems[indey])]()
+
+                        setFrameOut(
+                            () => {
+                                object["enable"+firstLetterUppercase(params.systems[indey])]()
+                            },params.disableFramesOut, 1, true, object.ID + "_enabling "+params.systems[indey]+"..."
+                        )
+
+                    }
+
+                }
+
+            }
+
+        },
 
         "inflict damage":(params) => {
 
@@ -416,11 +457,15 @@ export class GenericEffectsController {
 
                 let object = objects[index]
 
-                let mult = CustomMath.linearReverse(
-                    // ADICINAR UM SCHEDULER PARA O CALCULO!
-                    AIUtils.getDistanceOfObjects(params.object, object),
-                    params.searchConfig.maxDistance,
-                )
+                let mult = 1
+
+                if(!params.uniform){
+                    mult = CustomMath.linearReverse(
+                        // ADICINAR UM SCHEDULER PARA O CALCULO!
+                        AIUtils.getDistanceOfObjects(params.object, object),
+                        params.searchConfig.maxDistance,
+                    )
+                }
 
                 params.fakeObject.damage = params.damage * mult
 
@@ -542,6 +587,79 @@ export class GenericEffectsController {
 
         "positive": {
 
+            "the blessed effect: special": {
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                ScreenRender.addDrawRequest(
+                                    {
+                                        "func": ScreenRender.drawBigCircleSmallCircles,
+                                        "params": {
+                                            "x": params.object.x,
+                                            "y": params.object.y,
+                                            "radius": 150,
+                                            "numberOfCircles": 30,
+                                            "smallCircleRadius": 5,
+                                            "bigCircleColor": "black",
+                                            "bigCircleFill": true,
+                                            "smallCircleColor": "white",
+                                            "smallCircleFill": true,
+                                        },
+                                    }
+                                )
+                            
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["temporarily disable objects"](params)
+                            this.effectsList["slowdown"](params)
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "frameOut": 1,
+                        "repeat": 1*60,
+                    },
+        
+                    "params": {
+
+                        "disableFramesOut": 1*60,
+
+                        "systems": [
+                            "rotation",
+                            "advance",
+                            "activate"
+                        ],
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 150,
+                        },
+
+                        "range": 150,
+                        "mult": 1,
+                        "uniform": true,
+                        "fakeObject": {
+                            "damageTypes": {
+                                "dark energy": 1,
+                            },
+                        },
+
+                        "damage": 6,
+
+                    },
+
+                }
+
+            },
+
             "devour": {
 
                 "effect": {
@@ -620,23 +738,22 @@ export class GenericEffectsController {
                     "params": {
                         "mult": -2,
                         "force": 0.4,
-                        "range": 500,
+                        "range": 300,
 
                         "searchConfig": {
                             "includeSameTeam": false,
                             "includeEnemyTeam": true,
                             "includeYourself": false,
-                            "maxDistance": 500,
+                            "maxDistance": 300,
                         },
 
                         "fakeObject": {
                             "damageTypes": {
                                 "dark energy": 1,
                             },
-                            "passDamageMultiplier": 0.9,
                         },
 
-                        "damage": 100
+                        "damage": 50
                     },
                 }
 
@@ -1490,7 +1607,6 @@ export class GenericEffectsController {
                             "damageTypes": {
                                 "parasite blaster": 0.5,
                             },
-                            "passDamageMultiplier": 0.5,
                         },
 
                         "range": 150,
@@ -1546,14 +1662,13 @@ export class GenericEffectsController {
                             "includeSameTeam": true,
                             "includeEnemyTeam": false,
                             "includeYourself": true,
-                            "maxDistance": 100,
+                            "maxDistance": 50,
                         },
 
                         "fakeObject": {
                             "damageTypes": {
                                 "dark energy": 1,
                             },
-                            "passDamageMultiplier": 0.9,
                         },
 
                         "mult": 1,

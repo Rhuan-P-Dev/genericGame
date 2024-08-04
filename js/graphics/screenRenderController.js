@@ -255,6 +255,35 @@ export class ScreenRenderController {
 
     }
 
+    drawBigCircleSmallCircles(params) {
+
+        ScreenRender.drawCircle({
+            x: params.x,
+            y: params.y,
+            radius: params.radius,
+            color: params.bigCircleColor,
+            fill: params.bigCircleFill,
+        })
+
+        let randomNumberOfCircles = randomInteger(1, params.numberOfCircles)
+    
+        for (let index = 0; index < randomNumberOfCircles; index++) {
+            let angle = Math.random() * 2 * Math.PI
+            let randomRadius = Math.random() * params.smallCircleRadius
+            let distance = Math.random() * (params.radius - randomRadius)
+            let randomX = params.x + Math.cos(angle) * distance
+            let randomY = params.y + Math.sin(angle) * distance
+    
+            ScreenRender.drawCircle({
+                x: randomX,
+                y: randomY,
+                radius: randomRadius,
+                color: params.smallCircleColor,
+                fill: params.smallCircleFill
+            })
+        }
+    }
+
     drawLine(params, canvasContext = ScreenRender.mainCanvasContext){
 
         ScreenRender.setStyleParams(params, canvasContext)

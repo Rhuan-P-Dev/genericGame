@@ -116,6 +116,34 @@ export class MovableObject {
 
     }
 
+    disableAdvanceResul = {
+        "advanceShip": undefined,
+    }
+
+    disableAdvance(){
+
+        if(
+            this.disableAdvanceResul
+            &&
+            this.disableAdvanceResul.advanceShip === undefined
+        ){
+
+            this.disableAdvanceResul.advanceShip = this.advanceShip
+
+            this.advanceShip = () => {}
+
+        }
+
+    }
+
+    enableAdvance(){
+
+        this.advanceShip = this.disableAdvanceResul.advanceShip
+
+        this.disableAdvanceResul.advanceShip = undefined
+
+    }
+
     advanceShipX(){
 
         let mult = 1

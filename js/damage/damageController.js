@@ -82,6 +82,11 @@ export class DamageController {
 
     }
 
+    passDamageMultiplierTable = {
+        "dark energy": 0.8,
+        "parasite blaster": 0.5
+    }
+
     reciveDamage(params){
 
         //console.log(params)
@@ -146,9 +151,19 @@ export class DamageController {
                     params.object[typeOfDamagedStats].math("-", damage)
                 }
 
-                if(params.otherObject.passDamageMultiplier){
-                    damage = damage * params.otherObject.passDamageMultiplier
+                if(
+                    (params.otherObject.passDamageMultiplier || this.passDamageMultiplierTable[typeOfDamage])
+                    &&
+                    (!params.object.defenseTypes[typeOfDamagedStats] || !params.object.defenseTypes[typeOfDamagedStats][typeOfDamage])
+                ){
+
+                    damage = damage * (
+                        (params.otherObject.passDamageMultiplier || 0)
+                        +
+                        (this.passDamageMultiplierTable[typeOfDamage] || 0)
+                    )
                     statNumber = 0
+
                 }
 
                 damageCache[typeOfDamage] = damage - statNumber

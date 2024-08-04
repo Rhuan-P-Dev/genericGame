@@ -1,8 +1,8 @@
 
-import { InheritController } from "../../../../generalUtils/inherit.js"
-import { FlameThrower1Animation } from "../animations/flameThrower1Animation.js"
-import { FlameThrower1Effect } from "../effects/flameThrower1Effect.js"
-import { WeaponExtend } from "../extend/weapon.js"
+import { InheritController } from "../../../../../generalUtils/inherit.js"
+import { FlameThrower1Animation } from "../../animations/flameThrower1Animation.js"
+import { FlameThrower1Effect } from "../../effects/flameThrower1Effect.js"
+import { WeaponExtend } from "../../extend/weapon.js"
 
 export class FlameThrower1 {
 

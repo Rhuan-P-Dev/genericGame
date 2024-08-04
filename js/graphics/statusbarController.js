@@ -1,4 +1,3 @@
-import { setFrameOut } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { ScreenRenderController } from "./screenRenderController.js"
 
@@ -29,112 +28,49 @@ export class StatusbarController {
 
     }
 
+    statusTable = {
+        "above": [
+            { name: "life", max: "maxLife", color: "red"},
+            { name: "shield", max: "maxShield", color: "lightblue"},
+        ],
+        "below": [
+            { name: "energy", max: "maxEnergy", color: "yellow"},
+            { name: "darkEnergy", max: "maxDarkEnergy", color: "purple"},
+        ],
+    }
+
     renderStatus(object){
 
-        let HP = {
-            "start": {
-                "x": 25,
-                "y": object.height * 2,
-            },
-            "end": {
-                "x": 25,
-                "y": object.height * 2,
-            },
-            "formula": (object.life.get() / object.maxLife),
-            "lineWidth": 2,
-            "color": "red"
-        }
+        for(let direction in this.statusTable){
 
-        let ENERGY = {
-            "start": {
-                "x": 25,
-                "y": -object.height * 2,
-            },
-            "end": {
-                "x": 25,
-                "y": -object.height * 2,
-            },
-            "formula": (object.energy / object.maxEnergy),
-            "lineWidth": 2,
-            "color": "yellow"
-        }
+            let position = direction === "above" ? 1 : -1
 
-        this.renderStat(
-            object,
-            {
-                "start": HP.start,
-                "end": HP.end,
-                "formula": HP.formula,
-                "lineWidth": HP.lineWidth,
-                "color": HP.color
+            for (let index = 0; index < this.statusTable[direction].length; index++) {
+
+                let status = this.statusTable[direction][index]
+    
+                if (!object.hasOwnProperty(status.name) || !object.hasOwnProperty(status.max)) {
+                    continue
+                }
+    
+                let stat = typeof object[status.name] == "number" ? object[status.name] : object[status.name].get()
+    
+                this.renderStat(
+                    object,
+                    {
+                        start: { x: 25, y: (object.height*2) * position },
+                        end: { x: 25, y: (object.height*2) * position },
+                        formula: stat / object[status.max],
+                        lineWidth: 2,
+                        color: status.color,
+                    }
+                )
+    
+                position += direction === "above" ? 0.5 : -0.5
+                
             }
-        )
 
-        this.renderStat(
-            object,
-            {
-                "start": ENERGY.start,
-                "end": ENERGY.end,
-                "formula": ENERGY.formula,
-                "lineWidth": ENERGY.lineWidth,
-                "color": ENERGY.color
-            }
-        )
-
-        let VEL = {
-            "start": {
-                "x": 25,
-                "y": -object.height * 3,
-            },
-            "end": {
-                "x": 25,
-                "y": -object.height * 3,
-            },
-            "formula": (
-                (parsePositive(object.currentXVel) + parsePositive(object.currentYVel)) / object.maxVel
-            ),
-            "lineWidth": 2,
-            "color": "blue"
         }
-
-        this.renderStat(
-            object,
-            {
-                "start": VEL.start,
-                "end": VEL.end,
-                "formula": VEL.formula,
-                "lineWidth": VEL.lineWidth,
-                "color": VEL.color
-            }
-        )
-
-        if(!object.shield){return}
-
-        let SHIELD = {
-            "start": {
-                "x": 25,
-                "y": object.height * 3,
-            },
-            "end": {
-                "x": 25,
-                "y": object.height * 3,
-            },
-            "formula": (object.shield / object.maxShield),
-            "lineWidth": 2,
-            "color": "lightblue"
-        }
-
-        this.renderStat(
-            object,
-            {
-                "start": SHIELD.start,
-                "end": SHIELD.end,
-                "formula": SHIELD.formula,
-                "lineWidth": SHIELD.lineWidth,
-                "color": SHIELD.color
-            }
-        )
-
 
     }
 

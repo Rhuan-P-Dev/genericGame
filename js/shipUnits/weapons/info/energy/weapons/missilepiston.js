@@ -1,7 +1,7 @@
-import { FocusedTopDownBehavior } from "../../../../AI/behavior/focusedTopDownBehavior.js"
-import { InheritController } from "../../../../generalUtils/inherit.js"
-import { HomingWeapon } from "../extend/homingWeapon.js"
-import { WeaponExtend } from "../extend/weapon.js"
+import { FocusedTopDownBehavior } from "../../../../../AI/behavior/focusedTopDownBehavior.js"
+import { InheritController } from "../../../../../generalUtils/inherit.js"
+import { HomingWeapon } from "../../extend/homingWeapon.js"
+import { WeaponExtend } from "../../extend/weapon.js"
 
 export class Missilepiston {
 

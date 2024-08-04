@@ -1,6 +1,6 @@
-import { InheritController } from "../../../../generalUtils/inherit.js"
-import { SmallBulletCluster1Effect } from "../effects/smallBulletCluster1Effect.js"
-import { WeaponExtend } from "../extend/weapon.js"
+import { InheritController } from "../../../../../generalUtils/inherit.js"
+import { SmallBulletCluster1Effect } from "../../effects/smallBulletCluster1Effect.js"
+import { WeaponExtend } from "../../extend/weapon.js"
 
 export class SmallBulletCluster1 {
 

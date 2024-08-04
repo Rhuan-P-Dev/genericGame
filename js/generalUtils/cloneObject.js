@@ -42,7 +42,10 @@ export class CloneObjectController {
         "switchStatsVariables": () => {},
         "damageTypes": this.insideRecursive,
         "defenseTypes": this.insideRecursive,
-        "damageOrder": this.insideRecursive
+        "damageOrder": this.insideRecursive,
+        "disableResuls": this.shared, //will bug?
+        "disableRotationResul": this.shared, //will bug?
+        "disableAdvanceResul": this.shared, //will bug?
     }
 
     clone(object){
@@ -212,16 +215,10 @@ export class CloneObjectController {
     cloneSearchPriority(object, clonedObject = {}){
 
         clonedObject.searchPriority = {}
-        clonedObject.searchPriority.ifDontHave = {}
 
         CloneObject.cloneAttribute(
             object.searchPriority,
             clonedObject.searchPriority
-        )
-
-        CloneObject.cloneAttribute(
-            object.searchPriority.ifDontHave,
-            clonedObject.searchPriority.ifDontHave
         )
 
         return clonedObject

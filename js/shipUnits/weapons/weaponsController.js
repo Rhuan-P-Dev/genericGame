@@ -6,6 +6,9 @@ import { FactoryController } from "../factory/factoryController.js"
 import { VectorController } from "../../generalUtils/vector.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
 import { AnimationsController } from "../../graphics/animation/animationsController.js"
+import { AIUtilsController } from "../../AI/utils/AIUtils.js"
+import { CloneObjectController } from "../../generalUtils/cloneObject.js"
+import { DamageController } from "../../damage/damageController.js"
 
 // PROJECTILES
 import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
@@ -17,6 +20,7 @@ import { MiniWorldProjectile } from "../../object/projectiles/complex/miniWorldP
 import { ExplosiveSmallBulletProjetile } from "../../object/projectiles/complex/explosiveSmallBulletProjectile.js"
 import { ExplosiveMediumBulletProjectile } from "../../object/projectiles/complex/explosiveMediumBulletProjectile.js"
 import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
+import { EmptyColorProjetile } from "../../object/projectiles/complex/emptyColorProjectile.js"
 
 var Activate = ""
 var Effects = ""
@@ -24,6 +28,10 @@ var Vector = ""
 var Factory = ""
 var ObjectActivates = ""
 var Animations = ""
+var AIUtils
+var CloneObject
+var Damage
+
 
 onInit(function(){
 
@@ -33,6 +41,9 @@ onInit(function(){
     Factory = new FactoryController()
     ObjectActivates = new ObjectActivatesController()
     Animations = new AnimationsController()
+    AIUtils = new AIUtilsController()
+    CloneObject = new CloneObjectController()
+    Damage = new DamageController()
 
 })
 
@@ -67,8 +78,21 @@ export class WeaponsController{
         }
 
 
+        if(weapon.damageTypes){
 
+            for(let typeOfDamage in weapon.damageTypes){
 
+                Damage.addDefense(
+                    object,
+                    "life",
+                    typeOfDamage,
+                    weapon.defenses[typeOfDamage]
+                )
+
+            }
+
+            object.damageTypes = weapon.damageTypes
+        }
 
         if(weapon.homing){
 
@@ -101,6 +125,67 @@ export class WeaponsController{
 
 
         object.owner = weapon
+
+    }
+
+    activateEffect(object, activate, config){
+        
+        //let minimalObject = OnInstructions.getMinimalOnInstructionsObject(
+        //    Effects.getMinimalObject(
+        //        AIUtils.getMinimalObject(
+        //            {},
+        //            object
+        //        )
+        //    )
+        //)
+
+        //let minimalObject = Effects.getMinimalObject(
+        //    AIUtils.getMinimalObject(
+        //        {},
+        //        object
+        //    )
+        //)
+
+        let minimalObject = AIUtils.getMinimalObject(
+            {},
+            object
+        )
+
+        minimalObject.x += activate.cosine * activate.distance
+        minimalObject.y += activate.sine * activate.distance
+
+        minimalObject.effects = {}
+
+        let tempEffect = CloneObject.recursiveCloneAttribute(activate.effects[0].effect)
+
+        tempEffect.params.object = minimalObject
+
+        Effects.linkOwnerToEffect(
+            tempEffect.params,
+            object
+        )
+
+        Effects.add(
+            tempEffect.config.name,
+            tempEffect.config.type,
+            tempEffect.params,
+            tempEffect.config
+        )
+
+        Weapons.deactivateEffect(minimalObject, (tempEffect.dellObjectTimer || 1) + 1)
+
+    }
+
+    deactivateEffect(effectObject, frames){
+
+        setFrameOut(
+            () => {
+                Effects.removeAll(
+                    effectObject
+                )
+                effectObject = null
+            }, frames
+        )
 
     }
 
@@ -148,7 +233,8 @@ export class WeaponsController{
         "mini world": MiniWorldProjectile,
         "explosive small bullet": ExplosiveSmallBulletProjetile,
         "explosive medium bullet": ExplosiveMediumBulletProjectile,
-        "death's hand": DeathHand
+        "death's hand": DeathHand,
+        "empty color": EmptyColorProjetile
 
     }
 

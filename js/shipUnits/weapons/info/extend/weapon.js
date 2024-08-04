@@ -1,9 +1,8 @@
 
 import { InheritController } from "../../../../generalUtils/inherit.js"
-import { Rotable } from "../../../../object/basic/rotable.js"
-import { BasicActivate } from "../../../forAllShipUnits/basicActivate.js"
 import { WeaponsModifiersController } from "../../modifiers/weaponsModifiersController.js"
 import { WeaponsController } from "../../weaponsController.js"
+import { BasicWeaponExtend } from "./basicWeapon.js"
 
 var WeaponsModifiers = ""
 var Weapons = ""
@@ -17,28 +16,17 @@ onInit(function(){
 
 export class WeaponExtend{
 
-
     constructor(build = false){
 
         new InheritController().inherit(
             this,
             [
-                Rotable,
-                BasicActivate
+                BasicWeaponExtend
             ],
             build
         )
 
     }
-
-    type = "weapon"
-
-    xOffset = 0//randomInteger(-200,200)
-    yOffset = 0//randomInteger(-200,200)
-
-    buildAngle = 0
-
-    range = 0
 
     hasModifier = false
 

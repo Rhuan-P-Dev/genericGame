@@ -169,14 +169,30 @@ export class EffectsController {
                 )
             }
 
-            params.object = undefined
-            
-            for (let index = 0; index < objects.length; index++) {
+            for (
+                let index = 0;
+                index < objects.length
+                &&
+                objects[index].ID;
+                index++
+            ) {
 
                 let newParams = CloneObject.recursiveCloneAttribute(params)
 
                 newParams.object = objects[index]
-                
+
+                if(
+                    effectName === "effect"
+                ){
+                    Effects.fix(newParams, effectName, effectType, "params")
+                }
+
+                Effects.linkOwnerToEffect(
+                    newParams,
+                    localParams.object,
+                    false
+                )
+
                 Effects.add(
                     effectName,
                     effectType,
@@ -199,6 +215,35 @@ export class EffectsController {
             tempConfig.stage || "first",
             tempConfig.priority || 0
         )
+
+    }
+
+    fakeObjectsNames = [
+        "parasiteSelfAttack",
+        "parasiteBlasterAttack",
+        "parasiteObject",
+        "fakeObject"
+    ]
+
+    linkOwnerToEffect(params, owner, force = true){
+
+        for(let fakeNameIndex in Effects.fakeObjectsNames){
+
+            let fakeName = Effects.fakeObjectsNames[fakeNameIndex]
+
+            if(
+                !params[fakeName]
+                &&
+                force
+            ){
+                params[fakeName] = {}
+            }
+
+            if(params[fakeName]){
+                params[fakeName].owner = owner
+            }
+
+        }
 
     }
 
