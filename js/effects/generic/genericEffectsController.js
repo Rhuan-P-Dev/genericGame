@@ -1248,6 +1248,31 @@ export class GenericEffectsController {
             },
             "missile cluster": {
     
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": MissileProjetile,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 5,
+                        "dispersion": 0.2,
+                        "velMult": 0,
+                    },
+
+                },
+
                 "on": {
                 
                     "config": {
