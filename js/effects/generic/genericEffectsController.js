@@ -1035,8 +1035,8 @@ export class GenericEffectsController {
 
                     "config": {
                         "func": this.effectsList["illusion"],
-                        "frameOut": 30,
-                        "repeat": 2,
+                        "frameOut": 5*60,
+                        "repeat": 4,
                     },
         
                     "params": {},
