@@ -37,6 +37,7 @@ var Vector = ""
 var Factory = ""
 var ObjectActivates = ""
 var Damage
+var Animations
 
 onInit(function(){
 
@@ -53,6 +54,7 @@ onInit(function(){
     Factory = new FactoryController()
     ObjectActivates = new ObjectActivatesController()
     Damage = new DamageController()
+    Animations = new AnimationsController()
 
 })
 
@@ -204,6 +206,60 @@ export class GenericEffectsController {
                 closestObject.currentYVel -= closestObject.currentYVel * (mult * params.mult)
 
             }
+
+        },
+        "add death function": (params) => {
+
+            let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                params.searchConfig
+            )
+
+            for (let index = 0; index < objects.length; index++) {
+
+                let object = objects[index]
+
+                if(
+                    Math.random() < (1 / objects.length)
+                    ||
+                    index === objects.length
+                ){
+
+                    object.priority *= params.victimPriorityMult
+
+                    object.onDeath.add(
+                        params.function,"first",1
+                    )
+
+                    if(
+                        params.object.searchPriority.favoriteTargetsObsession[
+                            object.ID
+                        ] === undefined
+                    ){
+                        params.object.searchPriority.favoriteTargetsObsession[
+                            object.ID
+                        ] = params.toVictimSpecialAttentionMult
+                    }else{
+                        params.object.searchPriority.favoriteTargetsObsession[
+                            object.ID
+                        ] -= params.toVictimSpecialAttentionMinus
+                    }
+
+                    Animations.applyAnimations(
+                        object,
+                        params.animations,
+                    )
+
+                    if(params.repeat <= 0){
+                        return
+                    }
+
+                    params.repeat--
+
+                }
+
+            }
+
 
         },
 
