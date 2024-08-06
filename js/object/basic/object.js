@@ -152,4 +152,6 @@ export class Object {
     effects = {}
     animations = {}
 
+    lastAttacker = {}
+
 }
