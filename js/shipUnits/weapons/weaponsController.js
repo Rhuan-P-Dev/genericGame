@@ -77,21 +77,25 @@ export class WeaponsController{
             object.lifeTime = weapon.lifeTime
         }
 
+        for(let typeOfDamage in weapon.defenses){
 
-        if(weapon.damageTypes){
+            Damage.addDefense(
+                object,
+                "life",
+                typeOfDamage,
+                weapon.defenses[typeOfDamage]
+            )
 
-            for(let typeOfDamage in weapon.damageTypes){
+        }
 
-                Damage.addDefense(
-                    object,
-                    "life",
-                    typeOfDamage,
-                    weapon.defenses[typeOfDamage]
-                )
+        for (let typeOfDamage in weapon.damageTypes){
+            
+            Damage.addDamage(
+                object,
+                typeOfDamage,
+                weapon.damageTypes[typeOfDamage]
+            )
 
-            }
-
-            object.damageTypes = weapon.damageTypes
         }
 
         if(weapon.homing){
