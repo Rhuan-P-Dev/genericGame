@@ -1281,6 +1281,31 @@ export class GenericEffectsController {
                 
             },
             "small bullet cluster": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 30,
+                        "repeat": 15,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": SmallBulletProjetile,
+                                "AI": [],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 10,
+                        "dispersion": 1,
+                        "velMult": 8,
+                    },
+
+                },
     
                 "on": {
                 
