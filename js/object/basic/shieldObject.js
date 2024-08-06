@@ -74,8 +74,26 @@ export class ShieldObject {
                 "life",
             )
 
+            Damage.addDamageOrder(
+                updateThis,
+                "self swarm",
+                "shield",
+                "before",
+                "life",
+            )
+
+            Damage.addDamageOrder(
+                updateThis,
+                "self swarm production",
+                "shield",
+                "before",
+                "lifeRegen",
+            )
+
             Damage.addDefense(updateThis, "shield", "physical", 0.25, true)
             Damage.addDefense(updateThis, "shield", "fire", 2, true)
+            Damage.addDefense(updateThis, "shield", "self swarm", 0.9, true)
+            Damage.addDefense(updateThis, "shield", "self swarm production", 99999999999999, true)
 
         }
 
