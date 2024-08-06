@@ -105,7 +105,7 @@ class Observer extends LinkedList {
         }
     }
    
-    run(params){
+    run(params, two, tree){
 
         let node = this.list.next
 
@@ -113,9 +113,9 @@ class Observer extends LinkedList {
             if(!node.next){return}
 
             if(typeof(node.value) == "function"){
-                node.value(params)
+                node.value(params, two, tree)
             }else{
-                node.value.class[node.value.func](params)
+                node.value.class[node.value.func](params, two, tree)
             }
 
             node = node.next
