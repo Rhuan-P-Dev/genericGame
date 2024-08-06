@@ -69,7 +69,13 @@ export class DamageController {
 
     immunityTo(object, stat){
 
-        delete object.damageOrder[stat]
+        if(
+            object.damageOrder
+            &&
+            object.damageOrder[stat]
+        ){
+            delete object.damageOrder[stat]
+        }
 
     }
 
