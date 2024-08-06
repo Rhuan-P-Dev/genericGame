@@ -142,7 +142,24 @@ export class SpecialController{
 
         setFrameOut(() => {
 
-            let bomb = new DamageController().explosionDamageShell(object)
+            //let bomb = OnInstructions.getMinimalOnInstructionsObject(
+            //    Effects.getMinimalObject(
+            //        AIUtils.getMinimalObject(
+            //            new DamageController().getMinimalRadiusDamage({},object),
+            //            object
+            //        )
+            //    )
+            //)
+
+            let bomb = new DamageController().getMinimalRadiusDamage({},object)
+
+            //Effects.linkOwnerToEffect(
+            //    bomb,
+            //    object
+            //)
+
+            bomb.x = object.x
+            bomb.y = object.y
 
             bomb.damageConfig.range = config.range
             bomb.damage = config.damage

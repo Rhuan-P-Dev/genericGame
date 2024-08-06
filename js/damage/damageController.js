@@ -330,23 +330,20 @@ export class DamageController {
 
     }
 
-    explosionDamageShell(object){
+    getMinimalRadiusDamage(
+        minimalObject = {},
+        object = {}
+    ){
 
-        let shell = {}
-
-        shell.damageConfig = new ExplosionDamage().damageConfig
+        minimalObject.damageConfig = new ExplosionDamage().damageConfig
         
-        shell.damage = object.damage
+        minimalObject.damage = object.damage || 1
 
-        shell.ID = object.ID
-        shell.team = object.team
+        minimalObject.damageTypes = object.damageTypes || {}
 
-        shell.width = object.width
-        
-        shell.x = object.x
-        shell.y = object.y
+        minimalObject.width = object.width || 1
 
-        return shell
+        return minimalObject
 
     }
 
