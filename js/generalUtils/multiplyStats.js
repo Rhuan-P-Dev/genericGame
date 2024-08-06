@@ -29,7 +29,7 @@ const multStats = {
 
     "normalStats_div2": [
         "priority",
-
+        "vel",
     ],
 
     "normalStats_div5": [
@@ -37,14 +37,14 @@ const multStats = {
         "height",
 
         "lifeTime",
+
+        "maxVel",
     ],
 
     "invertedStatus":[
     ],
 
     "exponentialStatus":[
-        "maxVel",
-        "vel",
         "rotationVel",
     ],
 
