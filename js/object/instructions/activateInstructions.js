@@ -31,7 +31,11 @@ export class ActivateInstructions{
             weapon.rotateToLeft(vel)
         })
 
+        this.addWeaponObserver.run(weapon)
+
     }
+
+    addWeaponObserver = new Observer()
 
     addActivate(activate){
 

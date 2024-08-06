@@ -46,6 +46,7 @@ export class CloneObjectController {
         "disableResuls": this.shared, //will bug?
         "disableRotationResul": this.shared, //will bug?
         "disableAdvanceResul": this.shared, //will bug?
+        "addWeaponObserver": () => {},
         "lastAttacker": () => {}
     }
 
