@@ -56,11 +56,11 @@ export class FactoryController{
 
     }
 
-    createObjectNow(object, activate, config){
+    createObjectNow(object, activate, config, location = object){
 
         let newObject = Factory.createObject(object, activate, config)
 
-        Activate.primitiveAjustObject(object, newObject)
+        Activate.primitiveAjustObject(object, newObject, location)
 
         newObject.x += config.randomPos || 0
         newObject.y += config.randomPos || 0
