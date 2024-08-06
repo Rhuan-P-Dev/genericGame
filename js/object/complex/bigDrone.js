@@ -23,7 +23,7 @@ export class BigDrone {
         this.vel *= 1.1
         this.maxVel *= 1.2
 
-        //this.priority += 1 == mesma prioridade que uma fatory
+        this.priority += 1
 
         this.maxLife *= 1.2
 

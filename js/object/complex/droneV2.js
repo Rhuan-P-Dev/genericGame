@@ -19,6 +19,8 @@ export class DroneV2 {
 
         this.graphicID = "drone v2"
 
+        this.priority += 1
+
         this.vel *= 2
 
         this.maxLife *= 1.6

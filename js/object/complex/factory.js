@@ -18,7 +18,7 @@ export class ObjectFactory{
 
         this.graphicID = "factory"
 
-        this.priority = 4
+        this.priority = 5
     
         this.maxLife = 50
 

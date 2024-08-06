@@ -27,7 +27,7 @@ export class Ship {
 
         this.rotationVel *= 2
 
-        this.priority = 5
+        this.priority = 6
 
         this.maxLife = 200
 

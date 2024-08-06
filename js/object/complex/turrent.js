@@ -18,6 +18,8 @@ export class Turret {
             build
         )
 
+        this.priority += 1
+
         this.graphicID = "generic turret"
 
         this.rotationVel *= 3
