@@ -131,6 +131,8 @@ export class GenericEffectsController {
     
                     newObject.currentXVel = objectVelAngle.x * params.velMult
                     newObject.currentYVel = objectVelAngle.y * params.velMult
+
+                    newObject.owner = params.object
     
                     Activate.addObject(newObject)
 
