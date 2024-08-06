@@ -85,7 +85,9 @@ export class AnimationsDataBase {
             "0":{"func":"drawCircle","loop":1,"seconds":0.10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":255}}],"lineWidth":[1,5],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[55,1]}}
         },
 
-
+        "black flash": {
+            "0":{"func":"drawLine","loop":1,"seconds":0.2,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"continuous":[{"0":{"0":-0.1,"1":0},"1":{"0":3.15,"1":3},"2":{"0":-4.1,"1":-1.85},"3":{"0":-2.6,"1":3.8},"4":{"0":3.15,"1":-4.9},"5":{"0":5.85,"1":1.15},"6":{"0":-3.7,"1":-3.45}}]}}
+        },
 
         "trace": {
             "0":{"func":"drawLine","loop":1,"seconds":0.1,"frameRate":60,"frames":{"color":[{"0":{"0":100,"1":100,"2":100}}],"lineWidth":[1],"fill":[true],"continuous":[{"0":{"0":-2.25,"1":2.25},"1":{"0":-2.25,"1":-2.25},"2":{"0":2.25,"1":-2.25},"3":{"0":2.25,"1":2.25}}]}}
