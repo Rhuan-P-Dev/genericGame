@@ -26,9 +26,18 @@ export class DarkEnergyObject {
             build
         )
 
-        Damage.addDamage(this, "dark energy", 0.1)
+        this.priority += 1
 
-        Damage.addDefense(this, "life", "dark energy", 0.1)
+    }
+
+    passBuildList = {
+
+        "add_dark_energy_damage_defense": (updateThis) => {
+
+            Damage.addDamage(updateThis, "dark energy", 0.1)
+            Damage.addDefense(updateThis, "life", "dark energy", 0.1)
+
+        },
 
     }
 
