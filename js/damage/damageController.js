@@ -157,6 +157,15 @@ export class DamageController {
                     params.object[typeOfDamagedStats].math("-", damage)
                 }
 
+                params.object.lastAttacker = {
+                    "calcDamage": params.calcDamage,
+                    "damage": params.damage,
+                    "otherObject": params.otherObject,
+                    "otherObjectMaster": params.otherObjectMaster,
+                    "typeOfDamage": typeOfDamage,
+                    "typeOfDamagedStats": typeOfDamagedStats,
+                }
+
                 if(
                     (params.otherObject.passDamageMultiplier || this.passDamageMultiplierTable[typeOfDamage])
                     &&
