@@ -1345,20 +1345,6 @@ export class GenericEffectsController {
                 
             },
 
-
-            "d": {
-    
-                "config": {
-                    "func": this.effectsList["dd"],
-                    "frameOut": 1,
-                    "repeat": -1,
-                },
-    
-                "params": {
-                },
-                
-            },
-
         },
 
         "negative": {
