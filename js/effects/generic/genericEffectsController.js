@@ -619,31 +619,129 @@ export class GenericEffectsController {
 
         },
 
-
-
-
-        "dd": (params) => {
-
-            ScreenRender.addDrawRequest(
-                {
-                    "func": ScreenRender.writeText,
-                    "params": {
-                        "text":"ASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                        "x": params.object.x,
-                        "y": params.object.y,
-                        "fontSize": 25,
-                        "color": "white"
-                    },
-                }
-            )
-
-        },
-
     }
 
     effectsInfo = {
 
         "positive": {
+
+            "bounty search": {
+
+                "effect": {
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["add death function"](params)
+                        },
+                        "frameOut": 1*20*60,
+                        "repeat": 3,
+                    },
+        
+                    "params": {
+
+                        "victimPriorityMult": 0.7,
+                        "toVictimSpecialAttentionMult": 0.4,
+                        "toVictimSpecialAttentionMinus": 0.2,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "minPriority": 5,
+                            "maxDistance": 800,
+                        },
+
+                        "function": (params) => {
+
+                            if(
+                                !params.object.lastAttacker
+                                ||
+                                !params.object.lastAttacker.otherObjectMaster
+                            ){return}
+
+                            let object = params.object.lastAttacker.otherObjectMaster
+
+                            if(object.constructor.name !== "BountyHunter"){return}
+
+                            let repeats = Math.max(
+                                params.object.priority - object.priority,
+                                0
+                            ) + 1
+
+                            while(repeats > 0){
+
+                                let effectName = GenericEffects.getRandomPositiveEffectName()
+
+                                setFrameOut(
+                                    () => {
+
+                                        ScreenRender.addDrawRequest(
+                                            {
+                                                "func": ScreenRender.writeText,
+                                                "params": {
+                                                    "x": object.x,
+                                                    "y": object.y - (object.height*3),
+                                                    "text": effectName,
+                                                    "fontSize": 25
+                                                },
+                                            }
+                                        )
+
+                                    },1,1.5*60
+                                )
+
+                                Effects.add(
+                                    effectName,
+                                    "effect",
+                                    {
+                                        "object": object,
+                                    },
+                                )
+
+                                repeats--
+
+                                object.priority *= 1.5
+
+                            }
+
+                        },
+
+                        "animations": [
+                            {
+                                "animationConfig": {
+                                    "name":"hunted",
+                                    "focus": {},
+                                    "offset": {},
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                },
+                                "loopConfig": {
+                                    "frameOut": 30,
+                                    "repeat": -1
+                                },
+                                "runTimeBuild": (object, animationConfig, loopConfig) => {
+
+                                    animationConfig.focus = object
+                    
+                                    animationConfig.offset = {
+                                        "y": 0,
+                                        "x": 0
+                                    }
+                    
+                                }
+                            }
+                    
+                        ],
+
+                        "repeat": 1
+
+                    },
+
+                }
+
+            },
 
             "the blessed effect: special": {
 
