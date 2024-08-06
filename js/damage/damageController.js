@@ -1,7 +1,10 @@
+import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { CustomMathController } from "../generalUtils/math.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
+import { SelfSwarmDrone } from "../object/complex/special drone/selfSwarmDrone.js"
+import { FactoryController } from "../shipUnits/factory/factoryController.js"
 import { ExplosionDamage } from "./damageTypes/explosion.js"
 
 var AIUtils = ""
@@ -91,7 +94,50 @@ export class DamageController {
     passDamageMultiplierTable = {
         "dark energy": 0.8,
         "parasite blaster": 0.5
+    }
+
+    selfSwarm(params, damage){
+
+        if(
+            params.object.selfSwarmProduction === undefined
+        ){
+            params.object.selfSwarmProduction = 0
+            params.object.selfSwarmProductionMax = 60
+        }
+
+        params.object.selfSwarmProduction += damage
+
+        if(
+            params.object.selfSwarmProduction >= params.object.selfSwarmProductionMax
+        ){
+
+            params.object.selfSwarmProduction -= params.object.selfSwarmProductionMax
+
+            let config = {
+                "objectClass": SelfSwarmDrone,
+                "AI": ["missileV1"],
+                "behavior": new FocusedTopDownBehavior().searchPriority,
+                "statsMult": 0,
+                "randomPos": randomInterval(params.object.width + params.object.height)
+            }
+    
+            new FactoryController().createObjectNow(
+                params.otherObjectMaster,
+                {},
+                config,
+                params.object
+            )
+
+        }
+
+    }
+
     specialEffectsTable = {
+        "life": {
+            "self swarm": (params, damage) => {
+                this.selfSwarm(params, damage)
+            },
+        }
     }
 
     reciveDamage(params){
