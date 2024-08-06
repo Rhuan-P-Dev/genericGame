@@ -77,6 +77,8 @@ class DrawRequestLinkedList extends LinkedList{
 
 var DrawRequestQueue = new DrawRequestLinkedList()
 
+var focusObject = undefined
+
 export class ScreenRenderController {
 
     mainCanvas = document.getElementById("mainCanvas")
@@ -94,7 +96,7 @@ export class ScreenRenderController {
 
         setFrameOut(
             () => {
-                this.focusObject = GameState.getPlayer()
+                focusObject = GameState.getPlayer()
             }, 1
         )
 
@@ -159,11 +161,11 @@ export class ScreenRenderController {
     }
 
     getFocusObject() {
-        return this.focusObject
+        return focusObject
     }
     
     setFocusObject(object) {
-        this.focusObject = object
+        focusObject = object
     }
 
     getCanvasXYofFocusObject(canvas) {
