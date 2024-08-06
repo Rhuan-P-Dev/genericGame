@@ -91,6 +91,7 @@ export class DamageController {
     passDamageMultiplierTable = {
         "dark energy": 0.8,
         "parasite blaster": 0.5
+    specialEffectsTable = {
     }
 
     reciveDamage(params){
@@ -164,6 +165,14 @@ export class DamageController {
                     "otherObjectMaster": params.otherObjectMaster,
                     "typeOfDamage": typeOfDamage,
                     "typeOfDamagedStats": typeOfDamagedStats,
+                }
+
+                if(
+                    this.specialEffectsTable[typeOfDamagedStats]
+                    &&
+                    this.specialEffectsTable[typeOfDamagedStats][typeOfDamage]
+                ){
+                    this.specialEffectsTable[typeOfDamagedStats][typeOfDamage](params, damage)
                 }
 
                 if(

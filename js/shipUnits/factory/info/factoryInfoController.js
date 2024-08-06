@@ -26,6 +26,8 @@ import { StationaryBasicAntiProjectileSystem } from "./factory/stationaryBasicAn
 import { VanguardHelper1 } from "./factory/vanguardHelper1.js"
 import { Upgrader2 } from "./factory/upgrader2.js"
 import { Upgrader3 } from "./factory/upgrader3.js"
+import { SelfSwarmMelee } from "./factory/selfSwarmMelee.js"
+import { SelfSwarmSniper } from "./factory/selfSwarmSniper.js"
 
 
 var ActivateInfo = ""
@@ -79,6 +81,10 @@ export class FactoryInfoController{
         // isso esta imcompleto, navedade deveria utilizar toda a energia para emtão morrer
         // talvez diminuir o range conforme a % da energya
         "stationary basic shield area": StationarBasicShieldArea,
+
+
+        "self swarm melee": SelfSwarmMelee,
+        "self swarm sniper": SelfSwarmSniper,
     }
 
     getAll(){
