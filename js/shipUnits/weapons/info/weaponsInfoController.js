@@ -30,6 +30,8 @@ import { EmptyColor } from "./darkEnergy/weapons/emptyColor.js"
 import { BlessedBlue } from "./darkEnergy/effectWeapons/blessedBlue.js"
 import { BlessedRed } from "./darkEnergy/effectWeapons/blessedRed.js"
 import { BlessedSpecial } from "./darkEnergy/effectWeapons/blessedSpecial.js"
+import { SelfSwarmThreeSniper } from "./energy/weapons/selfSwarmThreeSniper.js"
+import { SelfSwarmRain } from "./energy/weapons/selfSwarmRain.js"
 
 
 
@@ -86,6 +88,8 @@ export class WeaponsInfoController{
         "toy machinegun": ToyMachinegun,
         "parasite injection 1": ParasiteInjection1,
         "death hand launcher": DeathHandLauncher,
+        "self swarm three sniper": SelfSwarmThreeSniper,
+        "self swarm rain": SelfSwarmRain,
 
 
 
