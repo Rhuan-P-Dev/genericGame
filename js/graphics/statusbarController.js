@@ -36,6 +36,7 @@ export class StatusbarController {
         "below": [
             { name: "energy", max: "maxEnergy", color: "yellow"},
             { name: "darkEnergy", max: "maxDarkEnergy", color: "purple"},
+            { name: "selfSwarmProduction", max: "selfSwarmProductionMax", color: "green"},
         ],
     }
 
