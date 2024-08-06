@@ -1678,6 +1678,10 @@ export class GenericEffectsController {
         return this.effectsInfo[effectName]
     }
 
+    getRandomPositiveEffectName() {
+        return returnRandomObject(GenericEffects.effectsInfo.positive)
+    }
+
 }
 
 var GenericEffects = new GenericEffectsController()
