@@ -1315,6 +1315,29 @@ export class GenericEffectsController {
                 
             },
             "safe perimeter pack": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            new MovableSaferPerimeter1().config,
+                            new MovableSaferPerimeter1().config,
+                            new SaferPerimeter1().config,
+                        ],
+
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 0,
+                    },
+
+                },
+    
     
                 "on": {
                 
