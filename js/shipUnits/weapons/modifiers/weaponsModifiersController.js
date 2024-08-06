@@ -95,7 +95,7 @@ export class WeaponsModifiersController{
 
     useModifier(object, activate){
 
-        activate.modifiers.runAll()
+        return activate.modifiers.runAll()
 
     }
 
@@ -403,7 +403,7 @@ export class ModifiersDoublyLinkedList extends LinkedList{
             node = node.previous
         }
 
-        Weapons.processObjects(node.value.activate, outputObjects)
+        return Weapons.processObjects(node.value.activate, outputObjects)
         
     }
 

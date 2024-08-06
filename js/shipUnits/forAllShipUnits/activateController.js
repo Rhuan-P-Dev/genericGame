@@ -1,12 +1,15 @@
 
 import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
+import { WeaponsController } from "../weapons/weaponsController.js"
 
 var GameState = ""
+var Weapons
 
 onInit(function(){
 
     GameState = new GameStateController()
+    Weapons = new WeaponsController()
 
 })
 
@@ -36,7 +39,16 @@ export class ActivateController{
 
         }
 
-        return result
+        if(
+            activate.type !== "weapon"
+            ||
+            activate.func === Weapons.returnProjectiles
+        ){
+            return result
+        }
+
+        return {}
+
     }
 
     primitiveAjustObject(master, object, location = master){

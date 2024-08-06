@@ -197,7 +197,11 @@ export class WeaponsController{
 
         let result = Activate.useActivate(object, ID)
 
-        if(result.return){
+        if(
+            result
+            &&
+            result.return
+        ){
 
             Weapons.processObjects(
                 result.activate,
@@ -224,6 +228,8 @@ export class WeaponsController{
             }, newObjectConfig.interval)
     
         }
+
+        return newObjects
 
     }
 
