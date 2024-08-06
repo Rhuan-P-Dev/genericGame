@@ -49,6 +49,8 @@ export class Object {
         Damage.addDamageOrder(this, "parasite self blaster", "life")
         Damage.addDamageOrder(this, "parasite suck energy damage", "life")
         Damage.addDamageOrder(this, "parasite suck energy", "life")
+        Damage.addDamageOrder(this, "self swarm", "life")
+        Damage.addDamageOrder(this, "self swarm production", "lifeRegen")
 
     }
 
