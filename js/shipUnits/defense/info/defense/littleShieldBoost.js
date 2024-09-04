@@ -33,7 +33,7 @@ export class LittleShieldBoost {
             "shieldRegen": 1 / (5 * 60),
         },
 
-        timer: 30*60
+        timer: 45*60
 
     }
 
