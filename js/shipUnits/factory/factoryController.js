@@ -113,6 +113,12 @@ export class FactoryController{
 
         }
 
+        if(config.creatorSpecialAttention !== undefined){
+            newObject.searchPriority.favoriteTargetsObsession[
+                object.ID
+            ] = config.creatorSpecialAttention
+        }
+
         return newObject
 
     }
