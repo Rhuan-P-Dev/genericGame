@@ -50,7 +50,7 @@ export class AIUtilsController {
         */
 
         let difference = parsePositive(
-            goal.priority - object.searchPriority.targetPriority
+            (goal.priority - object.searchPriority.targetPriority) + 1
         ) ** object.searchPriority.targetObsession
 
         let distance = Vector.getTriangleSize(goal, object) * difference
