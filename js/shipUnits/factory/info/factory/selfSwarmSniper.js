@@ -18,7 +18,7 @@ export class SelfSwarmSniper {
     }
 
     name = "self swarm sniper"
-    cost = 50
+    cost = 80
     reload = 20*60
 
     config = {
