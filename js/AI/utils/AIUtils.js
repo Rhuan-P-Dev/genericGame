@@ -363,6 +363,10 @@ export class AIUtilsController {
             closestObject = {
                 "distance": getDistanceFunction(yourObject, object),
                 "object": object,
+                "avarege": this.getAvaregeStats(
+                    object,
+                    stats,
+                )
             }
 
             break
@@ -375,9 +379,19 @@ export class AIUtilsController {
 
             let distance = getDistanceFunction(yourObject, object)
 
-            if(closestObject.distance > distance){
+            let avarege = this.getAvaregeStats(
+                object,
+                stats,
+            )
+
+            if(
+                closestObject.distance > distance
+                &&
+                closestObject.avarege >= avarege
+            ){
                 closestObject.distance = distance
                 closestObject.object = object
+                closestObject.avarege = avarege
             }
 
         }
@@ -440,7 +454,7 @@ export class AIUtilsController {
 
         if(array.length == 0){return false}
 
-        return AIUtils.getObject(array, object, "step")
+        return AIUtils.getObject(array, object, "step", stats)
 
     }
 
