@@ -31,8 +31,8 @@ export class Drone {
         this.defense = 1
         this.resistance = 1
 
-        this.width = 5
-        this.height = 5
+        this.width = 10
+        this.height = 10
     
         this.energy = 50
         this.maxEnergy = 50

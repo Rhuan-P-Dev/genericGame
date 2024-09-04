@@ -23,8 +23,8 @@ export class ArmoredObjectFactory{
 
         this.defense += 5
 
-        this.width -= 1
-        this.height -= 1
+        this.width *= 0.875
+        this.height *= 0.875
 
         this.energy *= 0.8
         this.maxEnergy *= 0.8

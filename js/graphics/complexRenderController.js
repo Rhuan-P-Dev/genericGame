@@ -343,7 +343,7 @@ export class ComplexRenderController {
 class offscreen {
 
     width = 60
-    height = 50
+    height = 70
 
     lenght = 0
 

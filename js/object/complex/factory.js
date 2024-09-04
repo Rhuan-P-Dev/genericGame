@@ -25,8 +25,8 @@ export class ObjectFactory{
         this.defense = 0
         this.resistance = 1
 
-        this.width = 8
-        this.height = 8
+        this.width = 16
+        this.height = 16
 
         this.energy = 300
         this.maxEnergy = 300
