@@ -28,6 +28,8 @@ export class DummyMaker {
 
         "scale": 8,
 
+        "graphicID": "ship",
+
         "life": 100,
         "defense": 1,
         "priority": 3

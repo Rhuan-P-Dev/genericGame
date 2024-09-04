@@ -124,6 +124,8 @@ export class SpecialController{
 
         let newObject = new Object(true)
 
+        newObject.graphicID = config.graphicID
+
         newObject.width = config.scale
         newObject.height = config.scale
 
