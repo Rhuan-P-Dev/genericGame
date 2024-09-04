@@ -406,7 +406,29 @@ export class AIUtilsController {
 
     }
 
-    getStepPriorityObjectOfTeams(object){
+    getStepPriorityObjectOfSameTeam(
+        object,
+        config = {
+            "minPriority": object.searchPriority.min,
+            "maxPriority": object.searchPriority.max,
+            "includeSameTeam": true,
+            "includeEnemyTeam": false,
+        },
+        stats = []
+    ){
+
+        let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            object,
+            config
+        )
+
+        if(array.length == 0){return false}
+
+        return AIUtils.getObject(array, object, "step", stats)
+
+    }
+
+    getStepPriorityObjectOfTeams(object, stats){
 
         let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
             object,
