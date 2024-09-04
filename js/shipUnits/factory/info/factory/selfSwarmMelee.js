@@ -27,7 +27,7 @@ export class SelfSwarmMelee {
         "coreType":"default",
         "activates": {},
         "behavior": new FocusedTopDownBehavior().searchPriority,
-        "statsMult": 0,
+        "statsMult": 0.5,
         "creatorSpecialAttention": 0.0000001
     }
 
