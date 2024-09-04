@@ -76,8 +76,8 @@ export class AIUtilsController {
     getFutureOf(object, frames = 1){
 
         return {
-            "x": (object.x + object.cosine) + (object.currentXVel * frames ),
-            "y": (object.y + object.sine) + (object.currentYVel * frames ),
+            "x": object.x + (object.currentXVel * frames ),
+            "y": object.y + (object.currentYVel * frames ),
         }
 
     }
