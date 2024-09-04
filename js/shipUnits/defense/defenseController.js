@@ -226,8 +226,6 @@ export class DefenseController{
 
             let otherObject = allObjectsAround[objectName]
 
-            if(otherObject.priority >= 0){continue}
-
             if(
                 AIUtils.isInObjectAngle(
                     object,
