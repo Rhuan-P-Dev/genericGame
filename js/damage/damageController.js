@@ -139,6 +139,28 @@ export class DamageController {
             },
         }
     }
+
+    getMaxDamage(victim, attacker, typeOfDamagedStats) {
+
+        let maxDamage = 0
+    
+        for(let typeOfDamage in attacker.damageTypes){
+    
+            maxDamage += Math.max(
+                this.getDamage(
+                    victim,
+                    attacker,
+                    typeOfDamagedStats,
+                    typeOfDamage,
+                    attacker.damage
+                ), 0
+            )
+    
+        }
+    
+        return maxDamage
+    }
+
     getDamage(victim, attacker, typeOfDamagedStats, typeOfDamage, damage) {
 
         let defenseMultiplier = 0
