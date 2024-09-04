@@ -635,8 +635,8 @@ export class GenericEffectsController {
                         "func": (params) => {
                             this.effectsList["add death function"](params)
                         },
-                        "frameOut": 1*20*60,
-                        "repeat": 3,
+                        "frameOut": 5*60,
+                        "repeat": 4,
                     },
         
                     "params": {
