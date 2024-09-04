@@ -311,7 +311,46 @@ export class AIUtilsController {
 
     }
 
-    getObject(objects, yourObject, method = "closest"){
+    getAvaregeStats(object, stats = [], aditionalValues = []){
+
+        let avaregeValue = 0
+        let avaregeDivision = 0
+
+        for (let index = 0; index < stats.length; index++) {
+
+            let statValue = undefined
+
+            if(!object[stats[index]]){continue}
+
+            if(object[stats[index]].get){
+                statValue = object[stats[index]].get()
+            }else{
+                statValue = object[stats[index]]
+            }
+
+            if(
+                statValue === undefined
+            ){
+                continue
+            }
+
+            avaregeValue += statValue
+            avaregeDivision += 1
+
+        }
+
+        for (let index = 0; index < aditionalValues.length; index++) {
+
+            avaregeValue += aditionalValues[index]
+            avaregeDivision += 1
+
+        }
+
+        return (avaregeValue / avaregeDivision) || 0
+
+    }
+
+    getObject(objects, yourObject, method = "closest", stats = []){
 
         let closestObject = undefined
 
