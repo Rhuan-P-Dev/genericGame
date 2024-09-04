@@ -218,7 +218,7 @@ export class CloneObjectController {
 
         clonedObject.searchPriority = {}
 
-        CloneObject.cloneAttribute(
+        CloneObject.recursiveCloneAttribute(
             object.searchPriority,
             clonedObject.searchPriority
         )

@@ -53,7 +53,17 @@ export class AIUtilsController {
             goal.priority - object.searchPriority.targetPriority
         ) ** object.searchPriority.targetObsession
 
-        return Vector.getTriangleSize(goal, object) * difference
+        let distance = Vector.getTriangleSize(goal, object) * difference
+
+        let multDistance = (
+            object.searchPriority.favoriteTargetsObsession[
+                goal.ID
+            ] || 1
+        )
+
+        distance *= multDistance
+
+        return distance
 
     }
 

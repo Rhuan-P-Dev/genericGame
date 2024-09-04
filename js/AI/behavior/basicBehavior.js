@@ -6,6 +6,7 @@ export class BasicBehavior {
         targetPriority: undefined,
         min: undefined,
         max: undefined,
+        favoriteTargetsObsession: {},
     }
 
 }
