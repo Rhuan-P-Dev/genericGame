@@ -139,6 +139,25 @@ export class DamageController {
             },
         }
     }
+    getDamage(victim, attacker, typeOfDamagedStats, typeOfDamage, damage) {
+
+        let defenseMultiplier = 0
+
+        if(
+            victim.defenseTypes[typeOfDamagedStats]
+            &&
+            victim.defenseTypes[typeOfDamagedStats][typeOfDamage])
+        {
+            defenseMultiplier = victim.defenseTypes[typeOfDamagedStats][typeOfDamage]
+        }
+    
+        damage *= attacker.damageTypes[typeOfDamage] || 0
+        damage *= victim.resistance
+        damage -= victim.defense * defenseMultiplier
+    
+        return damage
+
+    }
 
     reciveDamage(params){
 
@@ -166,24 +185,13 @@ export class DamageController {
                     damageCache[typeOfDamage] <= 0
                 ){continue}
 
-                let damage = undefined
-                let defenseMultiplier = 0
-
-                if(
-                    params.object.defenseTypes[typeOfDamagedStats]
-                    &&
-                    params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
-                ){
-                    defenseMultiplier = params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
-                }
-
-                damage = damageCache[typeOfDamage] || params.calcDamage
-
-                damage *= params.otherObject.damageTypes[typeOfDamage] || 0
-                
-                damage *= params.object.resistance
-                
-                damage -= params.object.defense * defenseMultiplier
+                let damage = this.getDamage(
+                    params.object,
+                    params.otherObject,
+                    typeOfDamagedStats,
+                    typeOfDamage,
+                    damageCache[typeOfDamage] || params.calcDamage
+                )
 
                 if(
                     damage <= 0
