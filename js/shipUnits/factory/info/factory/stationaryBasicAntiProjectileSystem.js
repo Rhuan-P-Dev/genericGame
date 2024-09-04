@@ -26,7 +26,8 @@ export class StationaryBasicAntiProjectileSystem {
 
     config = {
         "objectClass": StationaryObject,
-        "AI": ["useActivates"],
+        "AI": ["useActivates","areaSupport"],
+        "coreType":"factory",
         "activates": {
             "defense": ["basic anti-projectile system"],
         },
