@@ -404,14 +404,17 @@ export class AIUtilsController {
 
     }
 
-    getClosestObjectOfTeams(object){
+    getClosestObjectOfTeams(
+        object,
+        config = {
+            "minPriority": object.searchPriority.min,
+            "maxPriority": object.searchPriority.max,
+        }
+    ){
 
         let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
             object,
-            {
-                "minPriority": object.searchPriority.min,
-                "maxPriority": object.searchPriority.max,
-            }
+            config
         )
 
         if(array.length == 0){return false}
