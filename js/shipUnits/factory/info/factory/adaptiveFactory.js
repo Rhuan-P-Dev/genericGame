@@ -26,6 +26,7 @@ export class AdaptiveFactory {
     config = {
         "objectClass": ArmoredObjectFactory,
         "AI": ["useActivates"],
+        "coreType":"factory",
         "activates": {
             "factory": ["tank 1", "movable safer perimeter 1","assassin 1"],
         },

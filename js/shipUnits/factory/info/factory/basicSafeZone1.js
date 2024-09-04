@@ -25,6 +25,7 @@ export class BasicSafeZone1 {
 
     config = {
         "objectClass": ObjectFactory,
+        "coreType":"factory",
         "AI": ["useActivates"],
         "activates": {
             "factory": [

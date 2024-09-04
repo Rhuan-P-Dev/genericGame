@@ -26,6 +26,7 @@ export class EvolveFactory {
     config = {
         "objectClass": ArmoredObjectFactory,
         "AI": ["useActivates"],
+        "coreType":"factory",
         "activates": {
             "factory": ["movable missile burst 1","movable shotgun 1","movable flame thrower 1"]
         },
