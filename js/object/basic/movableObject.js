@@ -26,7 +26,9 @@ onInit(function(){
 export class MovableObject {
 
     vel = 0.1
-    maxVel = 3
+    maxVel = 6
+
+    velDecay = 0.95
 
     constructor(build = false){
 
@@ -146,116 +148,42 @@ export class MovableObject {
 
     advanceShipX(){
 
-        let mult = 1
-
-        if(this.maxVel / parsePositive(this.currentXVel) < 1){
-            mult = (this.maxVel / parsePositive(this.currentXVel)) ** 4
-        }
-
-        let productMult = AIUtils.getPointed(
-            this,
-            AIUtils.getFutureOf(this),
-        )
-
-        productMult = CustomMath.inverter(
-            productMult
-        )
-
-        productMult = alwaysPositive(productMult)
-
-        this.currentXVel += (this.vel * this.cosine) * (
-            mult + (productMult * (1 - mult))
-        )
+        this.currentXVel += this.vel * this.cosine
 
     } 
 
     advanceShipY(){
 
-        let mult = 1
-
-        if(this.maxVel / parsePositive(this.currentYVel) < 1){
-            mult = (this.maxVel / parsePositive(this.currentYVel)) ** 4
-        }
-
-        let productMult = AIUtils.getPointed(
-            this,
-            AIUtils.getFutureOf(this),
-        )
-
-        productMult = CustomMath.inverter(
-            productMult
-        )
-
-        productMult = alwaysPositive(productMult)
-
-        this.currentYVel += (this.vel * this.sine) * (
-            mult + (productMult * (1 - mult))
-        )
+        this.currentYVel += this.vel * this.sine
 
     }
 
     fixVelocityX(){
 
-        let softMax = CustomMath.exponential(
-            this.maxVel * parsePositive(this.cosine),
-            6
-        )
-
-        let trueMax = parsePositive(this.cosine) * this.maxVel
-
         if(
-            softMax < trueMax
+            parsePositive(this.cosine) * this.maxVel < parsePositive(this.currentXVel)
         ){
-            softMax = trueMax
-        }
-
-        if(
-            this.currentXVel < -softMax
-            &&
-            this.currentXVel < 0
-        ){
-
-            this.currentXVel += this.vel
-
-        }else if(
-            this.currentXVel > softMax
-            &&
-            this.currentXVel > 0
-        ){
-            this.currentXVel -= this.vel
+            this.currentXVel *= this.velDecay
+            if(this.currentXVel < 0){
+                this.currentXVel += this.vel/5
+            }else{
+                this.currentXVel -= this.vel/5
+            }
         }
 
     }
 
     fixVelocityY(){
 
-        let softMax = CustomMath.exponential(
-            this.maxVel * parsePositive(this.sine),
-            6
-        )
-
-        let trueMax = parsePositive(this.sine) * this.maxVel
-
         if(
-            softMax < trueMax
+            parsePositive(this.sine) * this.maxVel < parsePositive(this.currentYVel)
         ){
-            softMax = trueMax
-        }
-
-        if(
-            this.currentYVel < -softMax
-            &&
-            this.currentYVel < 0
-        ){
-
-            this.currentYVel += this.vel
-
-        }else if(
-            this.currentYVel > softMax
-            &&
-            this.currentYVel > 0
-        ){
-            this.currentYVel -= this.vel
+            this.currentYVel *= this.velDecay
+            if(this.currentYVel < 0){
+                this.currentYVel += this.vel/5
+            }else{
+                this.currentYVel -= this.vel/5
+            }
         }
 
     }

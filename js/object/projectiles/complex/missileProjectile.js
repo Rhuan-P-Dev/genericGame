@@ -20,6 +20,8 @@ export class MissileProjetile {
             build
         )
 
+        this.velDecay = 0.9
+
         this.graphicID = "missile"
 
         this.damage = 30
@@ -27,7 +29,8 @@ export class MissileProjetile {
         this.width = 4
         this.height = 4
 
-        this.vel *= 10
+        this.vel *= 8
+        this.maxVel *= 1.5
 
         this.maxLife = 5
 
