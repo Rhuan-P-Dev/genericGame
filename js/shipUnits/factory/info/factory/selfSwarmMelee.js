@@ -23,10 +23,12 @@ export class SelfSwarmMelee {
 
     config = {
         "objectClass": SelfSwarmDrone,
-        "AI": ["missileV1",],
+        "AI": ["missileV1", "escortAlly"],
+        "coreType":"default",
         "activates": {},
         "behavior": new FocusedTopDownBehavior().searchPriority,
         "statsMult": 0,
+        "creatorSpecialAttention": 0.0000001
     }
 
 }

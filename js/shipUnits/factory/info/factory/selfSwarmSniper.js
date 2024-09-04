@@ -23,12 +23,14 @@ export class SelfSwarmSniper {
 
     config = {
         "objectClass": SelfSwarmDrone,
-        "AI": ["movable","useActivates"],
+        "AI": ["movable","useActivates","escortAlly"],
+        "coreType":"default",
         "activates": {
             "weapon": ["self swarm three sniper"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority,
         "statsMult": 0.3,
+        "creatorSpecialAttention": 0.0000001
     }
 
 }
