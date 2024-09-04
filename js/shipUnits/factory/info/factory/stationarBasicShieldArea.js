@@ -26,7 +26,8 @@ export class StationarBasicShieldArea {
 
     config = {
         "objectClass": StationaryObject,
-        "AI": ["useActivates"],
+        "AI": ["useActivates","areaSupport"],
+        "coreType":"factory",
         "activates": {
             "defense": ["basic shield area"],
         },
