@@ -217,6 +217,8 @@ export class GenericEffectsController {
                 params.searchConfig
             )
 
+            let repeat = params.repeat
+
             for (let index = 0; index < objects.length; index++) {
 
                 let object = objects[index]
@@ -224,7 +226,7 @@ export class GenericEffectsController {
                 if(
                     Math.random() < (1 / objects.length)
                     ||
-                    index === objects.length
+                    index === objects.length-1
                 ){
 
                     object.priority *= params.victimPriorityMult
@@ -252,11 +254,11 @@ export class GenericEffectsController {
                         params.animations,
                     )
 
-                    if(params.repeat <= 0){
+                    if(repeat <= 0){
                         return
                     }
 
-                    params.repeat--
+                    repeat--
 
                 }
 
@@ -648,7 +650,6 @@ export class GenericEffectsController {
                             "includeEnemyTeam": true,
                             "includeYourself": false,
                             "minPriority": 5,
-                            "maxDistance": 800,
                         },
 
                         "function": (params) => {
@@ -735,7 +736,7 @@ export class GenericEffectsController {
                     
                         ],
 
-                        "repeat": 1
+                        "repeat": 0
 
                     },
 
