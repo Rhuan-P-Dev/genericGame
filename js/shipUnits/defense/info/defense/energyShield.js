@@ -16,6 +16,8 @@ export class EnergyShield {
 
     }
 
+    subType = ["fortification"]
+
     name = "energy shield"
     cost = 0
     func = new DefenseController().energyShield

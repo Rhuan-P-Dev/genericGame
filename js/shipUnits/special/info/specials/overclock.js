@@ -23,6 +23,8 @@ export class Overclock {
     func = new ActivateController().setStats
     reload = 10
 
+    subType = ["lifeRiskBuff"]
+
     config = {
 
         stats: {

@@ -19,6 +19,8 @@ export class Teleport {
 
     }
 
+    subType = ["movement"]
+
     name = "teleport"
     cost = 100
     func = new SpecialController().teleport

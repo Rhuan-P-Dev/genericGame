@@ -18,6 +18,8 @@ export class Turbo1 {
 
     }
 
+    subType = ["movement"]
+
     name = "turbo 1"
     cost = 20
     func = new ActivateController().setPercentageStats

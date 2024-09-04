@@ -18,6 +18,8 @@ export class LightDefense {
 
     }
 
+    subType = ["shortTermBenefit"]
+
     name = "light defense"
     cost = 25
     func = new ActivateController().setStats

@@ -47,7 +47,9 @@ export class CloneObjectController {
         "disableRotationResul": this.shared, //will bug?
         "disableAdvanceResul": this.shared, //will bug?
         "addWeaponObserver": () => {},
-        "lastAttacker": () => {}
+        "lastAttacker": () => {},
+        "AIVarsStorage": () => {},
+        "coreType": () => {},
     }
 
     clone(object){
@@ -180,7 +182,11 @@ export class CloneObjectController {
 
     cloneAI(object, clonedObject = {}){
 
-        AIC.giveAI(clonedObject, object.AI.returnAll(), true)
+        if(object.AI.returnAll){
+            AIC.giveAI(clonedObject, object.AI.returnAll(), true)
+        }else{
+            AIC.giveCoreAI(clonedObject, object.AI, object.coreType, true)
+        }
 
         return clonedObject
 

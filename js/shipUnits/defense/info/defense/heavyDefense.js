@@ -18,6 +18,8 @@ export class HeavyDefense {
 
     }
 
+    subType = ["shortTermBenefit"]
+
     name = "heavy defense"
     cost = 150
     func = new ActivateController().setStats

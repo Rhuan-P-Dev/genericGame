@@ -19,6 +19,8 @@ export class LvUp {
 
     }
 
+    subType = ["longTermBenefit"]
+
     name = "lv up"
     cost = 50
     func = new SpecialController().lvUp

@@ -18,6 +18,8 @@ export class BasicCamouflage {
 
     }
 
+    subType = ["evasive"]
+
     name = "basic camouflage"
     cost = 20
     func = new ActivateController().setStats

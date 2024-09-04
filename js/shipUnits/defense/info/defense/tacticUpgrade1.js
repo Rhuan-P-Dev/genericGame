@@ -18,6 +18,8 @@ export class TacticUpgrade1 {
 
     }
 
+    subType = ["longTermBenefit"]
+
     name = "tactic upgrade 1"
     cost = 100
     func = new ActivateController().setStats

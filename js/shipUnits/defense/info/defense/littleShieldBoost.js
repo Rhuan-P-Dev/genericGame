@@ -18,6 +18,8 @@ export class LittleShieldBoost {
 
     }
 
+    subType = ["midTermBenefit"]
+
     name = "little shield boost"
     cost = 30
     func = new ActivateController().setStats

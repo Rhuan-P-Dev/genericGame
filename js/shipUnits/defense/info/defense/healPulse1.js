@@ -16,6 +16,8 @@ export class HealPulse1 {
 
     }
 
+    subType = ["areaHeal"]
+
     name = "heal pulse 1"
     cost = 30
     func = new DefenseController().healOther

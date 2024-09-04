@@ -1,0 +1,9 @@
+const PERSONAL_RANGE = 80
+
+const CLOSE_RANGE = 150
+
+const MID_RANGE = 400
+
+const VAST_RANGE = 900
+
+const MAX_RANGE = 3000

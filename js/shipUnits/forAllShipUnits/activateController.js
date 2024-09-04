@@ -15,6 +15,52 @@ onInit(function(){
 
 export class ActivateController{
 
+    getOperations = {
+        "activate cost": (object, activate) => {return activate.cost},
+        "stat": (object, activate) => {return activate.consumableStat},
+        "object resource": (object, activate) => {return object[activate.consumableStat]},
+        "object resource / activate cost": (object, activate) => {return object[activate.consumableStat] / (activate.cost+1)},
+        "object max resource": (object, activate) => {return object["max"+firstLetterUppercase(activate.consumableStat)]},
+        "object resource / object max resource": (object, activate) => {return (
+                object[activate.consumableStat]
+                /
+                object[
+                    "max"+firstLetterUppercase(
+                        activate.consumableStat
+                    )
+                ]
+            )
+        },
+        //"activate cost * second": (object, activate) => {return activate.cost * (60/activate.reload)},
+        "activate cost per second": (object, activate) => {
+            return (
+                (
+                    object[activate.consumableStat + "Regen"] * 60
+                )
+                -
+                (
+                    (activate.cost+(1/60)) * (60/activate.reload)
+                )
+            )
+        },
+    }
+
+    get(
+        object,
+        activate,
+        query
+    ){
+
+        if(
+            this.getOperations[query]
+        ){
+            return this.getOperations[query](object, activate)
+        }else{
+            return false
+        }
+
+    }
+
     useActivate(object, ID) {
 
         let activate = object.activates[ID]

@@ -18,6 +18,8 @@ export class BasicTaunt {
 
     }
 
+    subType = ["tank"]
+
     name = "basic taunt"
     cost = 20
     func = new ActivateController().setStats

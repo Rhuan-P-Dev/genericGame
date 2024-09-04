@@ -154,4 +154,6 @@ export class Object {
 
     lastAttacker = {}
 
+    AIVarsStorage = {}
+
 }

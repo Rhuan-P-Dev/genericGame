@@ -17,6 +17,8 @@ export class TestQuantumBomb {
 
     }
 
+    subType = ["suicide"]
+
     name = "test quantum bomb"
     cost = 10
     func = new SpecialController().quantumBomb

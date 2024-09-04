@@ -18,6 +18,8 @@ export class BandAid {
 
     }
 
+    subType = ["regen","midTermBenefit"]
+
     name = "band aid"
     cost = 50
     func = new ActivateController().setStats

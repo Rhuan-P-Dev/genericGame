@@ -17,6 +17,8 @@ export class DummyMaker {
 
     }
 
+    subType = ["evasive"]
+
     name = "dummy maker"
     cost = 25
     func = new SpecialController().distractionDummy
