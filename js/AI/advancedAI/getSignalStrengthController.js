@@ -166,18 +166,6 @@ export class GetSignalStrengthController {
             core
         )
 
-        strength *= Activate.get(
-            params.object,
-            params.activate,
-            "object resource / object max resource"
-        )
-
-        strength *= Activate.get(
-            params.object,
-            params.activate,
-            "object resource / activate cost"
-        )
-
         strength = this.getGenericStrength(
             params.activate.type,
             strength,
@@ -199,8 +187,22 @@ export class GetSignalStrengthController {
           
             return Math.max(maxStrength ?? tempStrength, tempStrength)
         }, undefined) ?? 1
+
+        strength *= finalTempStrength
         
-        return strength * finalTempStrength
+        strength *= Activate.get(
+            params.object,
+            params.activate,
+            "object resource / object max resource"
+        )
+
+        strength *= Activate.get(
+            params.object,
+            params.activate,
+            "object resource / activate cost"
+        )
+
+        return strength
 
     }
 
