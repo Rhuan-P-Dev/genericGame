@@ -1,13 +1,16 @@
 import { EffectsController } from "../effects/effectsController.js"
+import { FrameController } from "../frame/frameController.js"
 import { AnimationsController } from "../graphics/animation/animationsController.js"
 
 var Effects = ""
 var Animations = ""
+var Frame
 
 onInit(function(){
 
     Effects = new EffectsController()
     Animations = new AnimationsController()
+    Frame = new FrameController()
 
 })
 
@@ -39,6 +42,8 @@ export class GameStateController {
             this.remove(GAME.allInOne[index])
 
         }
+
+        Frame.restart()
 
     }
 
