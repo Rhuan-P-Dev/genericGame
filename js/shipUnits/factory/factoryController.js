@@ -85,7 +85,13 @@ export class FactoryController{
         }
 
         if(config.AI){
-            AIC.giveAI(newObject, config.AI)
+
+            if(config.coreType){
+                AIC.giveCoreAI(newObject, config.AI, config.coreType)
+            }else{
+                AIC.giveAI(newObject, config.AI)
+            }
+
         }
 
         if(config.behavior){
