@@ -116,15 +116,6 @@ export class AIUtilsController {
 
     }
 
-    pointToTarget(object, target){
-
-        let direction = Vector.vectorNormalize(object, target)
-    
-        object.xMult = direction.x
-        object.yMult = direction.y
-
-    }
-
     isInObjectAngle(object, otherObject, angle, angleDistortion = 0){
 
         let angleL = Vector.toRadians(-angle)
