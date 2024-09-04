@@ -125,6 +125,70 @@ function browseInit(){
 
 }
 
+
+// EMPACOTAR!
+// ONDAS DE INIMIGOS INFINITAS, CADA VEZ MAIS FORTE!
+
+// O SYSTEMAS DE ONDAS SIRA FIXO? OU IGUAL O RIMWORLD?
+// MINIMO: arma, defeça, special, factory
+// COMFORME AS ONDAS VÃO AS NAVES INIMIGAR FICAN MAIS INTELIGENCES!
+// ALEATORIMENTE AS NAVES PEGAR AUSILIADOERWES: dark energy, swarm
+// efeitos!
+
+// VC GANHA DINHEIRO - E % VAI SER CONVERTUIDO PARA DINHEIRO PARA BUFF PERM!
+// DINHEIRO você combra: buffs, naves, ativadores, INTELIGENCIA, efeitos
+// BUY! AS AUSILIADOERWES: dark energy, swarm
+
+
+// make AI more letal, sniper, know?
+// make the AI desviar
+
+// LLM ?!!
+// BIG SUPPORT BASE?
+
+// dar uma leve polida
+
+
+
+
+
+
+
+
+// seifador ABSOLÇUTO!
+
+// nave s: nulificador
+
+// um tipo de nulificação abusoluta
+
+// fazer um "movable" que temta desviar do objeto
+
+// overclock - kill
+
+// talvez refazer todo para emcaixar um sistema de zoom decente? que multiplica o X e Y
+
+// os auto wepoans não estam sendo apgados quanso se morre para o special
+
+//se a espanão de domini o teleportase parta outra parte do mapa?
+
+/*
+
+os tiros da fenix serem embuidos de fogo!
+
+O DEUS DA ESCURIDÃO ABISAL! uma nave vai perdendo o HP a escuridão vai tomando! taus etapsas
+NAVE TRISTE!!!
+
+*/
+
+
+// atualiuzar os efeitos que redireconam dano
+
+// UMA NAVE ESPECIAL DEVERIAR CONSEGUIR CLONAR SE?
+
+// um missile com escudo.
+
+// uma arma que degenera stats
+
 /* > NEXT <
 
 na rotasão precissa ir deireto para a porcentage que deseja caso não aja vá em 100%
@@ -145,15 +209,7 @@ o black hole esta imcompleto!
 
 special - travel - cria um objeto no ponto de partida e no final, qunado um objeto(aliado) tocam em qualquer um teleprota para o outro!
 
-emp - sistema diferente!
-
 uma arma em formato de cone que congela/slowdon o alvo
-
-- copiar a chefia -
-
-escudo frontal/ de farias diresoes! [agora não dá! :( as balas "teleportão"]
-
-- copiar a chefia -
 
 criar uma nova categoria chamada suporte?
 
@@ -180,6 +236,7 @@ uma arma que control suya nave enemiga
 
 */
 
+//um totem que sumona algo imortal? destrua o toteM!
 /*
 
 if(build){
@@ -191,12 +248,6 @@ if(build){
 /* > opmimize <
 
 optimizar o sistema de colisoes! []
-
-opmizar o sistema de renderisasção
-Exemplo: https://youtu.be/VKmPGmFY7H4?si=iUtJyK-DVVfxPHlO&t=2562
-
-
-ao inves de fixar todo frame os status dos objetos, você pode user observers! [] empilha, empilha, empilha...
 
 */
 
@@ -211,42 +262,35 @@ object.y = object.owner.y + object.yOffset
 */
 
 /* > RE <
-
-claramente o jeito que os objetos se movimentão esta errado! []
-
 returnArrayWithAlllObjectsOfTeams( // create a cache, think! same params of request use cache! []
 
-adicionar um mecanismo que o objeto de atensao adicional para outro objeto []
+o jeito que o speial do a bensoado funcinar esta earrado
+
+uma nave com dodge não consegue prever pouco dano por frame! caso uma mae "boba" ataque não vai se devender coretametne.
 
 */
 
 /* > BUG <
 
-bug: missions atirados rapida mente com puco dano automatico
+as illusõesa NAõ iluden!
+
+// exesso de uso de memoria ram
+object = null?
+
 bug: casi vc mude de time suas armar automatica não mudão!
 
-aparentemente the um bug na multiplicasão da velocidade
+o "boom" esta em vc qunado clona!
 
 modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 */
-//um tipo de objeto especial que NÃO morre []
-
-//algo que resusite! []
-
-// fazer uma nave especial que caça outras naves e recebe recompensas
-// buff para o nave caçada: + dano, etc
-// debuff para naves NÃO caçadas: - dano, etc
-
-// duplicator??? [?]
-// ilusionista [?]
-
-// um nave FODA porem... tem um caçador de recompesans []
-// algo depois de um tempo vai para a SEGUNDA ETAPA [/]
 
 // nave special: um nave que com opaser dos segundos fica mais forter! [/]
-// nave: que reduz enormemente e pelozidade dos objetos aoredor. pique gojo [/]
-// naves especialis tipo: um namo com energia infinita! [/]
+// naves especialis tipo: um namo com energia infinita! []
+
+//um tipo de objeto especial que NÃO morre []
+
+// um nave FODA porem... tem um caçador de recompesans []
 
 // uma nave special: player no spewna gera algo, toda vez que o player morre ele renaçe no algo []
 
@@ -263,14 +307,10 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 // parar o tempo? []
 
-// uma nave special que tem X cores, cada core pode ser derrupado caso a nave the X% de vida, cada core, pode ser: um stats, poderzin!
-
 // uma nave que se adaptar ao dano levado []
 // GENERAL DIVINO! []
 
 // uma nave que tira a multiplicador nas coisas? []
-
-// uma nave com X poderes e quando ela morre vira X naves com 1 poder cada! []
 
 // uma nave especial qndo morre cria um clone de si mesmo com menos STATS. []
 // quando algo morre divide em dois? []
@@ -286,11 +326,21 @@ modulo que faz os clones NÃO esta clonado os modificadores apenas as armas
 
 // arena closer...
 
-//algo que distribui o dano entre aliados
-
 //uma nave uqe fala "wake up", se ele morre ela respauwna, caso morra denovo antes do "wake up" ela morre
 
 //uma nave que rouba os ativadores(ou até os epcial?) e tabem um pouco dos statos
+
+//uma arma tipi parasite: REBELION! quanto mais forte for sua nave mais danor ela toma!
+
+//um activate de cura que usa MUINTA energia para quando a vids cair por um serto valor recupera vida
+
+//uma nave que tem um "poll" de poder se esse poll checkar o maximo ela transende, essse poll consume para o ataque e para a defesa
+
+// chara like kill XP!
+
+// uma nave que é um "destribuidor"
+
+// sans? gast blast 'drone'
 
 var previousTime = performance.now()
 
