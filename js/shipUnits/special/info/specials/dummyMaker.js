@@ -32,7 +32,7 @@ export class DummyMaker {
 
         "life": 100,
         "defense": 1,
-        "priority": 3
+        "priority": 5
     }
 
 }
