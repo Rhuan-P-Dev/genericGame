@@ -189,6 +189,10 @@ export class GetSignalStrengthController {
         }, undefined) ?? 1
 
         strength *= finalTempStrength
+
+        if(strength < core.minimalActionConfidence){
+            return 0
+        }
         
         strength *= Activate.get(
             params.object,
