@@ -8,9 +8,9 @@ export class TopDownBehavior extends BasicBehavior {
         super()
 
         this.searchPriority.targetObsession = 6
-        this.searchPriority.targetPriority = 10
+        this.searchPriority.targetPriority = 100
         this.searchPriority.min = -5
-        this.searchPriority.max = 10
+        this.searchPriority.max = 100
 
     }
 
