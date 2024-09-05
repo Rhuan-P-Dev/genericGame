@@ -47,7 +47,7 @@ export class CoreAIBuilderController {
         "conservation": 1.25,
 
         //minimum value for an action to be considered
-        "minimalActionConfidence": 0.1
+        "minimalActionConfidence": 0.25
     }
 
     support = {
