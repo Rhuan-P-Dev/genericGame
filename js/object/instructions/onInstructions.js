@@ -361,9 +361,17 @@ export class ComplexOnTypeFunctions{
 
         for (let attribute in metaParams.config.setAttributes.attributes) {
 
-            metaParams.params.object[
-                attribute
-            ] = metaParams.config.setAttributes.attributes[attribute]
+            if(metaParams.params.object[attribute].set){
+                metaParams.params.object[
+                    attribute
+                ].set(metaParams.config.setAttributes.attributes[attribute])
+            }else{
+                metaParams.params.object[
+                    attribute
+                ] = metaParams.config.setAttributes.attributes[attribute]
+            }
+
+            
 
         }
 
