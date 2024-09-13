@@ -134,7 +134,6 @@ export class EffectsController {
         effectType,
         params,
         config = {},
-        ID = randomUniqueID()
     ){
 
         CloneObject.recursiveCloneAttribute(this.defaultTempConfig, tempConfig)
@@ -142,7 +141,6 @@ export class EffectsController {
         tempConfig.func = (localParams) => {
 
             let objects = []
-            let IDs = [ID]
 
             if(
                 localParams.otherObject
@@ -199,7 +197,7 @@ export class EffectsController {
                     newParams,
                     config,
                     false,
-                    IDs[index] || randomUniqueID(),
+                    randomUniqueID()
                 )
                 
             }
