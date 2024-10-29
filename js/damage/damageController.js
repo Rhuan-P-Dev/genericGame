@@ -111,7 +111,7 @@ export class DamageController {
             params.object.selfSwarmProduction >= params.object.selfSwarmProductionMax
         ){
 
-            params.object.selfSwarmProduction -= params.object.selfSwarmProductionMax
+            params.object.selfSwarmProduction = 0
 
             let config = {
                 "objectClass": SelfSwarmDrone,
@@ -127,6 +127,8 @@ export class DamageController {
                 config,
                 params.object
             )
+
+            params.object.selfSwarmProductionMax *= 2
 
         }
 
