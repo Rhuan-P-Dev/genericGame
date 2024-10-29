@@ -1189,7 +1189,7 @@ export class GenericEffectsController {
 
                         "setAttributes": {
                             "attributes": {
-                                "life": 25
+                                "life": 10000
                             }
                         },
 
