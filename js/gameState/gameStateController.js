@@ -63,6 +63,21 @@ export class GameStateController {
     getPlayer(){
         return player
     }
+    checkObject(object){
+
+        if(
+            object === undefined
+            ||
+            object.ID === undefined
+            //||
+            //GAME.team[object.team] === undefined
+        ){
+            return false
+        }else{
+            return true
+        }
+
+    }
 
     addObject(
         object,
