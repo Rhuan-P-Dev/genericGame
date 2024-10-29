@@ -1670,12 +1670,17 @@ export class GenericEffectsController {
                 
                     "config": {
 
-                        "prefixFunc": [],
+                        "prefixFunc": ["countDown"],
                         "func": this.effectsList["create objects"],
                         "suffixFunc": [],
 
                         "stage": "last",
                         "priority": 0,
+
+                        "countDown": {
+                            "countDownFunction": ["deleteInstruction"],
+                            "count": 1
+                        }
 
                     },
 
