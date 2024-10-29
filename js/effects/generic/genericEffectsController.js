@@ -902,6 +902,70 @@ export class GenericEffectsController {
 
                         "damage": 50
                     },
+                },
+                "on": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"red repulsion",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["attraction_repulsion"](params)
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "stage": "first",
+                        "priority": 0,
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "timeout":{
+                            "frameOut": 30*60,
+                        },
+                    },
+        
+                    "params": {
+                        "mult": -2,
+                        "force": 0.4,
+                        "range": 300,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 300,
+                        },
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "dark energy": 1,
+                            },
+                        },
+
+                        "damage": 50
+                    },
                 }
 
             },
