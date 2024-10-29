@@ -547,6 +547,23 @@ export class EffectsController {
 
     }
 
+    addEffectInActivate(activate, effect){
+
+        if(
+            activate.type !== "weapon"
+        ){return}
+
+        if(!activate.effects){
+            activate.effects = []
+        }
+
+        activate.effects = [
+            ...activate.effects,
+            effect
+        ]
+
+    }
+
 }
 
 var Effects = new EffectsController()
