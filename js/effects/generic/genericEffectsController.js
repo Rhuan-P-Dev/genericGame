@@ -1583,8 +1583,8 @@ export class GenericEffectsController {
 
                     "config": {
                         "func": this.effectsList["create objects"],
-                        "frameOut": 30,
-                        "repeat": 15,
+                        "frameOut": 5,
+                        "repeat": 3,
                     },
         
                     "params": {
@@ -1597,7 +1597,7 @@ export class GenericEffectsController {
                                 "statsMult": 0
                             },
                         ],
-                        "repeat": 10,
+                        "repeat": 20,
                         "dispersion": 1,
                         "velMult": 8,
                     },
@@ -1628,9 +1628,9 @@ export class GenericEffectsController {
                                 "statsMult": 0
                             },
                         ],
-                        "repeat": 5,
-                        "dispersion": 0.2,
-                        "velMult": 5,
+                        "repeat": 30,
+                        "dispersion": 1,
+                        "velMult": 8,
                     }
 
                 }
