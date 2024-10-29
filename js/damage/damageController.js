@@ -172,8 +172,67 @@ export class DamageController {
 
     }
 
+    fireAnimation(params, damage){
+
+        for (let index = 0; index < parseInt(damage/2) + 1; index++) {
+
+            Animations.run({
+                "name":"fire",
+                //"type":"relative",
+                //"focus": params.object,
+                "focus": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                },
+                "offset": {
+                    "x": randomInteger(-params.object.width, params.object.width),
+                    "y": randomInteger(-params.object.height, params.object.height),
+                },
+                "frameRandomOffsetX": 2,
+                "frameRandomOffsetY": 2,
+                "randomPointOffsetX": 1,
+                "randomPointOffsetY": 1,
+            })
+
+        }
+
+    }
+
+    fire(params, damage){
+
+        if(
+            damage <= 1
+            ||
+            params.object.life.get() <= 0
+        ){return}
+
+        let fireDamageObject = this.getMinimalDamage(
+            damage * 0.9,
+            {
+                "fire": 1
+            },
+            params.otherObject
+        )
+
+        setFrameOut(() => {
+
+            if(params.object.life.get() <= 0){return}
+
+            this.damageCalc(fireDamageObject, params.object)
+
+        },
+            10,
+            1
+        )
+
+    }
+    }
 
     requiredTable = {
+        "fire": (params, damage) => {
+            this.fireAnimation(params, damage)
+            this.fire(params, damage)
+        },
         "agony": (params, damage) => {
             this.agony(params, damage)
         },

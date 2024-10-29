@@ -1748,32 +1748,6 @@ export class GenericEffectsController {
 
                 "effect": {
 
-                    "before": {
-                        "config": {
-                            "func": (params) => {
-
-                                new AnimationsController().run({
-                                    "name":"fire",
-                                    //"type":"relative",
-                                    //"focus": params.object,
-                                    "focus": {
-                                        "x": params.object.x,
-                                        "y": params.object.y,
-                                    },
-                                    "offset": {
-                                        "x": randomInteger(-params.object.width, params.object.width),
-                                        "y": randomInteger(-params.object.height, params.object.height),
-                                    },
-                                    "frameRandomOffsetX": 2,
-                                    "frameRandomOffsetY": 2,
-                                    "randomPointOffsetX": 1,
-                                    "randomPointOffsetY": 1,
-                                })
-    
-                            },
-                        }
-                    },
-
                     "config": {
                         "func": this.effectsList["inflict damage"],
                         "frameOut": 10,
