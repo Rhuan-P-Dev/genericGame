@@ -63,6 +63,18 @@ export class GameStateController {
     getPlayer(){
         return player
     }
+    addTo(type, object){
+        if(
+            GAME[type]
+            ||
+            this.checkObject(object)
+        ){
+            GAME[type][object.ID] = object
+        }else{
+            console.error(`Type ${type} not found in game state.`)
+        }
+    }
+
     checkObject(object){
 
         if(
