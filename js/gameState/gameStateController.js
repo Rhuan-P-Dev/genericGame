@@ -37,7 +37,9 @@ GAME.team.playerTeam = {}
 GAME.team.enemyTeam = {}
 GAME.team.neutralTeam = {}
 
-let player = undefined
+let player = {
+    "ID": "undefined",
+}
 
 export class GameStateController {
 
@@ -63,6 +65,15 @@ export class GameStateController {
     getPlayer(){
         return player
     }
+
+    removeFrom(type, object){
+        if(GAME[type]){
+            delete GAME[type][object.ID]
+        }else{
+            console.error(`Type ${type} not found in game state.`)
+        }
+    }
+
     addTo(type, object){
         if(
             GAME[type]
