@@ -1,21 +1,25 @@
 import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
+import { setFrameOut } from "../frame/frameController.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { CustomMathController } from "../generalUtils/math.js"
+import { AnimationsController } from "../graphics/animation/animationsController.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
 import { SelfSwarmDrone } from "../object/complex/special drone/selfSwarmDrone.js"
 import { FactoryController } from "../shipUnits/factory/factoryController.js"
 import { ExplosionDamage } from "./damageTypes/explosion.js"
 
-var AIUtils = ""
-var ScreenRender = ""
-var CloneObject = ""
+var AIUtils
+var ScreenRender
+var CloneObject
+var Animations
 
 onInit(function(){
 
     AIUtils = new AIUtilsController()
     ScreenRender = new ScreenRenderController()
     CloneObject = new CloneObjectController()
+    Animations = new AnimationsController()
 
 })
 
@@ -226,12 +230,101 @@ export class DamageController {
         )
 
     }
+
+    shock(params, damage){
+
+        if(
+            damage <= 1
+            ||
+            params.object.life.get() <= 0
+        ){return}
+
+        const RANGE = damage * 10
+        const LINE_WIDTH = RANGE / 100
+        var FRAME_OUT = damage / 5
+
+        let closestAlliesObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            params.object,
+            {
+                "maxDistance": RANGE,
+                "includeEnemyTeam": false,
+                "includeSameTeam": true,
+                "includeYourself": false,
+            }
+        )
+
+        ScreenRender.addDrawRequest( // debug
+            {
+                "func": ScreenRender.drawCircle,
+                "params": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                    "radius": RANGE,
+                },
+            }
+        )
+
+        let closestAllieObject = AIUtils.getObject(
+            closestAlliesObjects,
+            params.object,
+            "closest"
+        )
+
+        if(closestAllieObject){
+
+            ScreenRender.addDrawRequest(
+                {
+                    "func": ScreenRender.drawLine,
+                    "params": {
+                        "positions": [
+                            [
+                                params.object.x,
+                                params.object.y,
+                            ],[
+                                closestAllieObject.x,
+                                closestAllieObject.y,
+                            ]
+                        ],
+                        "color": "yellow",
+                        "lineWidth": LINE_WIDTH,
+                    }
+                }
+
+            )
+
+            // >>> THE FRAMEOUT CANNOT BE SMALLER THAN TWO <<<
+            if(FRAME_OUT < 2){FRAME_OUT = 2}
+
+            let shockDamageObject = this.getMinimalDamage(
+                damage * 0.75,
+                {
+                    "shock": 1
+                },
+                params.otherObject
+            )
+    
+            setFrameOut(() => {
+    
+                if(closestAllieObject.life.get() <= 0){return}
+    
+                this.damageCalc(shockDamageObject, closestAllieObject)
+    
+            },
+                FRAME_OUT,
+                1
+            )
+
+        }
+
     }
 
     requiredTable = {
         "fire": (params, damage) => {
             this.fireAnimation(params, damage)
             this.fire(params, damage)
+        },
+        "shock": (params, damage) => {
+            this.shock(params, damage)
         },
         "agony": (params, damage) => {
             this.agony(params, damage)

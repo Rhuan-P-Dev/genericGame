@@ -538,89 +538,6 @@ export class GenericEffectsController {
 
         },
 
-        "thunder": (params) => {
-
-            let closestAlliesObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
-                params.object,
-                {
-                    "maxDistance": params.range,
-                    "includeEnemyTeam": false,
-                    "includeSameTeam": true,
-                    "includeYourself": false,
-                }
-            )
-
-            ScreenRender.addDrawRequest( // debug
-                {
-                    "func": ScreenRender.drawCircle,
-                    "params": {
-                        "x": params.object.x,
-                        "y": params.object.y,
-                        "radius": params.range,
-                    },
-                }
-            )
-
-            let closestAllieObject = AIUtils.getObject(
-                closestAlliesObjects,
-                params.object,
-                "closest"
-            )
-
-            Damage.damageCalc(params.fakeObject, params.object)
-
-            if(closestAllieObject){
-
-                ScreenRender.addDrawRequest(
-                    {
-                        "func": ScreenRender.drawLine,
-                        "params": {
-                            "positions": [
-                                [
-                                    params.object.x,
-                                    params.object.y,
-                                ],[
-                                    closestAllieObject.x,
-                                    closestAllieObject.y,
-                                ]
-                            ],
-                            "color": params.color,
-                            "lineWidth": params.lineWidth,
-                        }
-                    }
-
-                )
-
-                let frameOut = params.frameOut * params.mult
-
-                // >>> THE FRAMEOUT CANNOT BE SMALLER THAN TWO <<<
-                if(frameOut < 2){frameOut = 2}
-
-                params.fakeObject.damage *= params.mult
-
-                Effects.add(
-                    params.effectName,
-                    "effect",
-                    {
-                        "object": closestAllieObject,
-                        "range": params.range * params.mult,
-                        "fakeObject": params.fakeObject,
-                        "mult": params.mult,
-
-                        "color": params.color,
-                        "lineWidth": params.lineWidth * params.mult,
-
-                        "frameOut": frameOut,
-                        "effectName": params.effectName,
-                    },{
-                        "frameOut": frameOut,
-                    }
-                )
-
-            }
-
-        },
-
     }
 
     effectsInfo = {
@@ -1640,61 +1557,49 @@ export class GenericEffectsController {
     
             },
 
-            "zeus": {
+        "negative": {
+
+            "shock": {
 
                 "effect": {
 
                     "config": {
-                        "func": this.effectsList["thunder"],
-                        "frameOut": 5,
+                        "func": this.effectsList["inflict damage"],
+                        "frameOut": 2,
                         "repeat": 1,
                     },
         
                     "params": {
-                        "range": 50,
                         "fakeObject": {
-                            "damage": 10,
+                            "damage": 15,
                             "damageTypes": {
                                 "shock": 1,
                             }
-                        },
-                        "mult": 1.1,
-    
-                        "color": "yellow",
-                        "lineWidth": 1,
-        
-                        "effectName": "zeus",
-                        "frameOut": 5
+                        }
                     },
 
                 },
 
+
                 "on": {
+
                     "config": {
 
-                        "func": this.effectsList["thunder"],
+                        "func": this.effectsList["inflict damage"],
 
                     },
 
                     "params": {
-                        "range": 50,
                         "fakeObject": {
-                            "damage": 10,
+                            "damage": 15,
                             "damageTypes": {
                                 "shock": 1,
                             }
                         },
-                        "mult": 1.1,
-    
-                        "color": "yellow",
-                        "lineWidth": 1,
-        
-                        "effectName": "zeus",
-                        "frameOut": 5
                     },
 
-                }
-    
+                },
+
             },
 
             "death hand": {

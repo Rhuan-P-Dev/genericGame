@@ -1,8 +1,16 @@
 
+import { DamageController } from "../../../../../damage/damageController.js"
 import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { ElectrifiedBomb1Animation } from "../../animations/electrifiedBomb1Animation.js"
-import { ElectrifiedBomb1Effect } from "../../effects/electrifiedBomb1Effect.js"
 import { WeaponExtend } from "../../extend/weapon.js"
+
+var Damage
+
+onInit(function(){
+
+    Damage = new DamageController()
+
+})
 
 export class ElectrifiedBomb1 {
 
@@ -12,7 +20,6 @@ export class ElectrifiedBomb1 {
             this,
             [
                 ElectrifiedBomb1Animation,
-                ElectrifiedBomb1Effect,
                 WeaponExtend,
             ],
             build
@@ -26,6 +33,8 @@ export class ElectrifiedBomb1 {
 
         this.config.weapon.multVel = 6
         this.config.weapon.damageMult = 5
+
+        Damage.addDamage(this, "shock", 1)
 
         this.config.projectiles.objectClass = ["explosive medium bullet"]
 
