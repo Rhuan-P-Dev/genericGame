@@ -99,7 +99,10 @@ export class AnimationsDataBase {
         "hunted": {
             "0":{"func":"drawArc","loop":1,"seconds":0.5,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":255,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[30,15,40,30],"startAngle":[-0.63],"endAngle":[0.63]}},
             "1":{"func":"drawArc","loop":1,"seconds":0.5,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":255,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[30,15,40,30],"startAngle":[2.5],"endAngle":[3.78]}}
-        }
+        },
+        "purpleShip's death":{
+            "0":{"func":"writeText","loop":1,"seconds":1,"frameRate":60,"frames":{"color":[{"0":{"0":128,"1":0,"2":128}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0},{"y":-6}],"text":["I always come back..."],"fontSize":[20]}}
+        },
 
     }
 
