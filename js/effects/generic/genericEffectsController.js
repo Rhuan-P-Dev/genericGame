@@ -734,7 +734,76 @@ export class GenericEffectsController {
 
                     },
 
-                }
+                },
+                "on": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                ScreenRender.addDrawRequest(
+                                    {
+                                        "func": ScreenRender.drawBigCircleSmallCircles,
+                                        "params": {
+                                            "x": params.object.x,
+                                            "y": params.object.y,
+                                            "radius": 225,
+                                            "numberOfCircles": 30,
+                                            "smallCircleRadius": 5,
+                                            "bigCircleColor": "black",
+                                            "bigCircleFill": true,
+                                            "smallCircleColor": "white",
+                                            "smallCircleFill": true,
+                                        },
+                                    }
+                                )
+                            
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": (params) => {
+                            this.effectsList["temporarily disable objects"](params)
+                            this.effectsList["slowdown"](params)
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "timeout":{
+                            "frameOut": 1*60*60,
+                        },
+
+                    },
+        
+                    "params": {
+
+                        "disableFramesOut": 1*60,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 225,
+                        },
+
+                        "range": 225,
+                        "mult": 1,
+                        "uniform": true,
+                        "fakeObject": {
+                            "damageTypes": {
+                                "dark energy": 1,
+                            },
+                        },
+
+                        "damage": 60,
+
+                    },
+
+                },
 
             },
 
