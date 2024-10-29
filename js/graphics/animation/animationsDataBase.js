@@ -76,6 +76,9 @@ export class AnimationsDataBase {
             "0":{"func":"writeText","loop":1,"seconds":0.15,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":255,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0}],"text":["BOOOM!"],"fontSize":[20]}}
         },
 
+        "fenix death explosion": {
+            "0":{"func":"drawCircle","loop":1,"seconds":0.20,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":102,"2":0}}],"lineWidth":[1,10],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[1,400]}}
+        },
 
         "red repulsion": {
             "0":{"func":"drawCircle","loop":1,"seconds":0.20,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":0,"2":0}}],"lineWidth":[1,10],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[1,300]}}
