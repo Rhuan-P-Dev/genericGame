@@ -18,6 +18,8 @@ export class StationaryObject {
 
         this.maxLife = 100
 
+        this.graphicID = "turret"
+
         this.defense = 2
         this.resistance -= 0.02
 
