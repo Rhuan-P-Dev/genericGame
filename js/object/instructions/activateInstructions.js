@@ -43,6 +43,7 @@ export class ActivateInstructions{
     }
 
     addWeaponObserver = new Observer()
+    addActivateObserver = new Observer()
 
     addActivate(activate){
 
@@ -54,7 +55,9 @@ export class ActivateInstructions{
         }
 
         this.activates[activate.ID] = activate
-        
+
+        this.addActivateObserver.run(activate)
+
     }
 
     activate(ID){
