@@ -543,6 +543,60 @@ export class EffectsController {
                 effect.config,
             )
 
+    // maybe this score is wrong
+    formatEffectsScore(
+        effect,
+        effectsObject = {
+            "add": {
+                "effect": [],
+                "onHit": [],
+                "onDamage": [],
+                "onDeath": []
+            },
+            "apply": []
+        }
+    ){
+
+        if(!effect){return effectsObject}
+
+        let effectName = effect[0]
+        let deBuff = effect[1]
+        let applyType = effect[2]
+
+        if(deBuff == "positive"){
+
+            effectsObject.add[applyType].push(effectName)
+
+        }else{
+
+            let metaEffectType = applyType
+            let metaApplyType = "onDamage"
+
+            if(GenericEffectsScorer.haveThis(
+                effectName
+            )){
+                metaEffectType = "effect"
+
+                if(applyType !== "effect"){
+                    metaApplyType = applyType
+                }
+
+            }
+
+            effectsObject.apply.push(
+                Effects.simpleApplyEffectsTemplate(
+                    effectName,
+                    metaEffectType,
+                    true,
+                    metaApplyType,
+                    false
+                )
+            )
+
+        }
+
+        return effectsObject
+    }
 
     formatAllEffectsScore(effects){
 
