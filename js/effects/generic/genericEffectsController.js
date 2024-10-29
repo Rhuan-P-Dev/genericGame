@@ -1050,6 +1050,38 @@ export class GenericEffectsController {
 
                 },
 
+                "on": {
+
+                    "config": {
+                        "func": (params) => {
+
+                            for (let index = 0; index < 10; index++) {
+
+                                setFrameOut(
+                                    () => {
+                                        this.effectsList["sum max life"](params)
+                                    },index * 5
+                                )
+                                
+                            }
+                            
+                        },
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "timeout":{
+                            "frameOut": 8*60,
+                        },
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                    },
+
+                },
+
             },
 
             "breathe": {
