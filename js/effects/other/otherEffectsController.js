@@ -114,8 +114,6 @@ export class OtherEffectsController {
 
             },
 
-            
-
             "converter": {
 
                 "on": {
@@ -243,10 +241,6 @@ export class OtherEffectsController {
 
             },
 
-           
-
-
-
         },
 
         "negative": {
@@ -279,6 +273,41 @@ export class OtherEffectsController {
                     "params": {
 
                         "mult": 1.5
+
+                    },
+
+                }
+
+            },
+
+            "scrapper": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": ["countDown"],
+                        "func": this.effectsList["damage multiplier"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "countDown": {
+                            "countDownFunction": ["deleteInstruction"],
+                            "count": 70
+                        },
+
+                        "getPercentage": (params) => {
+
+                            return params.mult
+
+                        }
+
+                    },
+        
+                    "params": {
+
+                        "mult": 1.01
 
                     },
 
