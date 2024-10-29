@@ -106,6 +106,9 @@ export class AnimationsDataBase {
         "purpleShip's final death":{
             "0":{"func":"writeText","loop":1,"seconds":1.5,"frameRate":60,"frames":{"color":[{"0":{"0":128,"1":0,"2":128}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0},{"y":-6}],"text":["I CATN'T GO OUTSIDE!!!"],"fontSize":[30]}}
         },
+        "lordIllusionist's fake death":{
+            "0":{"func":"writeText","loop":1,"seconds":3,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0},{"y":-6}],"text":["You winning was always an illusion"],"fontSize":[30]}}
+        },
 
     }
 
