@@ -163,7 +163,31 @@ export class ComplexOnType{
 
     }
 
-    getAll(){
+    getAll(formated = false){
+        if(!formated){
+            return this.stages
+            
+        }else{
+
+            let result = []
+
+            let stages = {
+                first: this.getPositionalList("first"),
+                middle: this.getPositionalList("middle"),
+                last: this.getPositionalList("last")
+            }
+
+            for (let stage in stages) {
+                for (let item in stages[stage]){
+                    result.push(stages[stage][item])
+                }
+            }
+
+            return result
+
+        }
+
+    }
 
     getPositionalList(stage){
         return this[stage].getAll()
