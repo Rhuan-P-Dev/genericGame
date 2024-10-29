@@ -130,8 +130,9 @@ export class DamageController {
 
             params.object.selfSwarmProductionMax *= 2
 
-        }
+    }
 
+    requiredTable = {
     }
 
     specialEffectsTable = {
@@ -216,6 +217,10 @@ export class DamageController {
                     typeOfDamage,
                     damageCache[typeOfDamage] || params.calcDamage
                 )
+
+                if(this.requiredTable[typeOfDamage]){
+                    this.requiredTable[typeOfDamage](params, damage)
+                }
 
                 if(
                     damage <= 0
