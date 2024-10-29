@@ -1326,7 +1326,7 @@ export class GenericEffectsController {
                         },
 
                         "countDown": {
-                            "function": ["deleteInstruction"],
+                            "countDownFunction": ["deleteInstruction"],
                             "count": 3
                         }
 
