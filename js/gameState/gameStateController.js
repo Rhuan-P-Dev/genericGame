@@ -4,8 +4,8 @@ import { FrameController } from "../frame/frameController.js"
 import { AnimationsController } from "../graphics/animation/animationsController.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
 
-var Effects = ""
-var Animations = ""
+var Effects
+var Animations
 var Frame
 var ScreenRender
 var CoreAIBuilder
@@ -115,6 +115,13 @@ export class GameStateController {
         rules = true,
         stats = true
     ){
+
+        if(
+            !this.checkObject(object)
+        ){
+            console.error("Object:", object, " is not valid.")
+            return false
+        }
 
         GAME.allInOne[object.ID] = object
 
