@@ -1817,27 +1817,67 @@ export class GenericEffectsController {
                 }
                 
             },
+            "divine wrath": {
 
-                        "fakeObject": {
-                            "damage": 100,
-                            "damageTypes": {
-                                "shock": 1,
-                            }
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                ScreenRender.addDrawRequest(
+                                    {
+                                        "func": ScreenRender.drawCircle,
+                                        "params": {
+                                            "x": params.object.x,
+                                            "y": params.object.y,
+                                            "radius": params.range,
+                                            "lineWidth": 10,
+                                            "color": "yellow"
+                                        },
+                                    }
+                                )
+    
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": this.effectsList["inflict area damage"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+
+                    "params": {
+
+                        "range": 500,
+
+                        "uniform": true,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 500,
                         },
 
-                        "range": 300,
-                        "mult": 0.5,
-    
-                        "color": "yellow",
-                        "lineWidth": 4,
-        
-                        "effectName": "shock",
-                        "frameOut": 20
+                        "damage": 45,
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "fire": 1,
+                                "shock": 1,
+                                "self swarm": 1,
+                                "self swarm production": 0.01,
+                                "surprise attack": 1
+                            }
+                        }
                     },
 
                 },
 
-                "on": {
+
+            },
 
                     "config": {
 
