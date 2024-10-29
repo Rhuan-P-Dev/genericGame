@@ -13,6 +13,7 @@ import { FactoryController } from "../../shipUnits/factory/factoryController.js"
 import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { ObjectActivatesController } from "../../objectController/objectActivatesController.js"
 import { DamageController } from "../../damage/damageController.js"
+import { AIController } from "../../AI/AIController.js"
 
 // For 'create objects' effect
 import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
@@ -38,6 +39,7 @@ var Factory = ""
 var ObjectActivates = ""
 var Damage
 var Animations
+var AIC
 
 onInit(function(){
 
@@ -55,6 +57,7 @@ onInit(function(){
     ObjectActivates = new ObjectActivatesController()
     Damage = new DamageController()
     Animations = new AnimationsController()
+    AIC = new AIController()
 
 })
 
@@ -462,26 +465,33 @@ export class GenericEffectsController {
                 }
             )
 
-            for (let index = 0; index < objects.length; index++) {
+            for (
+                let index = 0;
+                index < objects.length;
+                index++
+            ) {
 
                 let object = objects[index]
 
-                for (let indey = 0; indey < params.systems.length; indey++) {
+                if(
+                    object.AI === undefined
+                    ||
+                    object.ID == GameState.getPlayer().ID // this will give the player a little advantage
+                ){continue}
 
-                    if (object["disable"+firstLetterUppercase(
-                        params.systems[indey]
-                    )]){
-                        object["disable"+firstLetterUppercase(params.systems[indey])]()
+                //console.log(object)
 
-                        setFrameOut(
-                            () => {
-                                object["enable"+firstLetterUppercase(params.systems[indey])]()
-                            },params.disableFramesOut, 1, true, object.ID + "_enabling "+params.systems[indey]+"..."
-                        )
+                AIC.remove(object)
 
-                    }
-
-                }
+                setFrameOut(
+                    () => {
+                        AIC.add(object)
+                    },
+                    params.disableFramesOut,
+                    1,
+                    true,
+                    object.ID + "_enabling AI..."
+                )
 
             }
 
@@ -703,12 +713,6 @@ export class GenericEffectsController {
                     "params": {
 
                         "disableFramesOut": 1*60,
-
-                        "systems": [
-                            "rotation",
-                            "advance",
-                            "activate"
-                        ],
 
                         "searchConfig": {
                             "includeSameTeam": false,
