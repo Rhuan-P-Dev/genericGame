@@ -21,6 +21,7 @@ import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBull
 import { MovableSaferPerimeter1 } from "../../shipUnits/factory/info/factory/movableSaferPerimeter1.js"
 import { SaferPerimeter1 } from "../../shipUnits/factory/info/factory/saferPerimeter1.js"
 import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
+import { SelfSwarmDrone } from "../../object/complex/special drone/selfSwarmDrone.js"
 
 
 
@@ -1758,16 +1759,64 @@ export class GenericEffectsController {
                 }
                 
             },
+            "selfSwarmMotherShip's death": {
 
                 "effect": {
 
                     "config": {
-                        "func": this.effectsList["thunder"],
-                        "frameOut": 20,
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 1,
                         "repeat": 1,
                     },
         
                     "params": {
+                        "configs": [
+                            {
+                                "objectClass": SelfSwarmDrone,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 4,
+                        "dispersion": 1,
+                        "velMult": 1,
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["deleteInstruction"],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": SelfSwarmDrone,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 4,
+                        "dispersion": 1,
+                        "velMult": 1,
+                    },
+
+                }
+                
+            },
 
                         "fakeObject": {
                             "damage": 100,
