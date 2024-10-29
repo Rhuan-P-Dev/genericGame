@@ -1366,7 +1366,7 @@ export class GenericEffectsController {
                         "priority": 5,
 
                         "timeout":{
-                            "frameOut": 15,
+                            "frameOut": 5,
                         },
 
                     },
