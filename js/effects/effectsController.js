@@ -1,3 +1,4 @@
+import { GenericEffectsScorerController } from "../../jsWaveGame/scorers/effects/generic/genericEffectsScorerController.js"
 import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { FrameController, setFrameOut } from "../frame/frameController.js"
@@ -23,6 +24,7 @@ var CloneObject = ""
 
 var GenericEffects = ""
 var OtherEffects = ""
+var GenericEffectsScorer
 
 onInit(function(){
 
@@ -36,6 +38,7 @@ onInit(function(){
 
     GenericEffects = new GenericEffectsController()
     OtherEffects = new OtherEffectsController()
+    GenericEffectsScorer = new GenericEffectsScorerController()
 
 })
 
@@ -44,6 +47,33 @@ export class EffectsController {
     effectsList = {}
 
     builded = false
+    setEffects(object, effects, promise = false){
+
+        for (let effectType in effects.add) {
+
+            for (let index = 0; index < effects.add[effectType].length; index++) {
+
+                let effectName = effects.add[effectType][index]
+
+                this.add(
+                    effectName,
+                    effectType,
+                    {
+                        object: object,
+                    },
+                    {},
+                    promise
+                )
+
+            }
+
+        }
+
+        if(effects.apply){
+            Effects.applyEffects(object, effects.apply)
+        }
+
+    }
 
     buildGeneric(){
 
