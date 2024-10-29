@@ -30,6 +30,10 @@ const multStats = {
     "normalStats_div2": [
         "priority",
         "vel",
+        "darkEnergy",
+        "maxDarkEnergy",
+        "darkEnergyRegen",
+
     ],
 
     "normalStats_div5": [
