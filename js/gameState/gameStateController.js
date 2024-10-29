@@ -2,10 +2,12 @@ import { CoreAIBuilderController } from "../AI/advancedAI/coreAIBuilderControlle
 import { EffectsController } from "../effects/effectsController.js"
 import { FrameController } from "../frame/frameController.js"
 import { AnimationsController } from "../graphics/animation/animationsController.js"
+import { ScreenRenderController } from "../graphics/screenRenderController.js"
 
 var Effects = ""
 var Animations = ""
 var Frame
+var ScreenRender
 var CoreAIBuilder
 
 onInit(function(){
@@ -13,6 +15,7 @@ onInit(function(){
     Effects = new EffectsController()
     Animations = new AnimationsController()
     Frame = new FrameController()
+    ScreenRender = new ScreenRenderController()
     CoreAIBuilder = new CoreAIBuilderController()
 
 })
@@ -53,6 +56,8 @@ export class GameStateController {
 
     setPlayer(object){
         player = object
+        //ugly
+        ScreenRender.setFocusObject(object)
     }
 
     getPlayer(){
