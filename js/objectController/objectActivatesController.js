@@ -70,7 +70,7 @@ export class ObjectActivatesController{
 
     }
     
-    returnRandomActivate(typeOfLoader = "random"){
+    returnRandomActivate(typeOfLoader = "random", addOnGame = true){
 
         let loaderName = this.defineTypeOfLoarderName(typeOfLoader)
 
@@ -78,7 +78,7 @@ export class ObjectActivatesController{
 
         let activateName = returnRandomObject(allActivates)
 
-        return ActivateInfo.build(loaderName, activateName)
+        return ActivateInfo.build(loaderName, activateName, addOnGame)
 
     }
 
