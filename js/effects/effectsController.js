@@ -543,6 +543,29 @@ export class EffectsController {
                 effect.config,
             )
 
+    getEffectsCount(object){
+
+        let maybeEffects = [
+            ...object.onDamage.getAll(true),
+            ...object.onHit.getAll(true),
+            ...object.onDeath.getAll(true),
+        ]
+
+        let effects = 0
+
+        for (let index = 0; index < maybeEffects.length; index++) {
+
+            let maybeEffect = maybeEffects[index]
+
+            if(maybeEffect.effectName){
+                effects++
+            }
+
+        }
+
+        return effects
+    }
+
     getAllEffectsInfo(object){
 
         let effects = []
