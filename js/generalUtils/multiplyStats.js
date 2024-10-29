@@ -43,6 +43,10 @@ const multStats = {
         "lifeTime",
 
         "maxVel",
+
+        "divineEnergy",
+        "maxDivineEnergy",
+        "divineEnergyRegen",
     ],
 
     "invertedStatus":[
