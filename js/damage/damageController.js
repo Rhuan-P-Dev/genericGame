@@ -439,6 +439,33 @@ export class DamageController {
         return minimalObject
 
     }
+
+    doMinimalAttack(
+        damage,
+        damageTypes,
+        object,
+        otherObject,
+    ){
+
+        if(
+            !object
+            ||
+            !otherObject
+        ){return}
+
+        let damageObject = this.getMinimalDamage(
+            damage,
+            damageTypes,
+            object
+        )
+
+        this.damageCalc(
+            damageObject,
+            otherObject
+        )
+
+    }
+
 }
 
 var Damage = new DamageController()
