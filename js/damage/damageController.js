@@ -130,9 +130,53 @@ export class DamageController {
 
             params.object.selfSwarmProductionMax *= 2
 
+        }
+
     }
 
+    agony(params, damage){
+
+        if(
+            damage <= 1
+            ||
+            params.object.life.get() <= 0
+        ){return}
+
+        let physicalDamageObject = this.getMinimalDamage(
+            damage / 3,
+            {
+                "physical": 1
+            },
+            params.otherObject
+        )
+
+        let agonyDamageObject = this.getMinimalDamage(
+            damage / 2,
+            {
+                "agony": 1
+            },
+            params.otherObject
+        )
+
+        setFrameOut(() => {
+
+            if(params.object.life.get() <= 0){return}
+
+            this.damageCalc(physicalDamageObject, params.object)
+            this.damageCalc(agonyDamageObject, params.object)
+
+        },
+            5*60,
+            3
+        )
+
+    }
+
+
     requiredTable = {
+        "agony": (params, damage) => {
+            this.agony(params, damage)
+        },
     }
 
     specialEffectsTable = {
