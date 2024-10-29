@@ -20,6 +20,7 @@ import { MissileProjetile } from "../../object/projectiles/complex/missileProjec
 import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBulletProjectile.js"
 import { MovableSaferPerimeter1 } from "../../shipUnits/factory/info/factory/movableSaferPerimeter1.js"
 import { SaferPerimeter1 } from "../../shipUnits/factory/info/factory/saferPerimeter1.js"
+import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
 
 
 
@@ -1699,12 +1700,64 @@ export class GenericEffectsController {
                 }
                 
             },
+            "purpleShip's breakdown": {
 
-        },
+                "effect": {
 
-        "negative": {
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": DeathHand,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 8,
+                        "dispersion": 1,
+                        "velMult": 8,
+                    },
 
-            "shock": {
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["deleteInstruction"],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": DeathHand,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 8,
+                        "dispersion": 1,
+                        "velMult": 8,
+                    },
+
+                }
+                
+            },
 
                 "effect": {
 
