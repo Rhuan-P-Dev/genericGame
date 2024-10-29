@@ -1,4 +1,5 @@
 
+import { FocusedTopDownBehavior } from "../../AI/behavior/focusedTopDownBehavior.js"
 import { InheritController } from "../../generalUtils/inherit.js"
 import { EnergizedObject } from "../basic/energizedObject.js"
 
@@ -10,6 +11,7 @@ export class StationaryObject {
             this,
             [
                 EnergizedObject,
+                FocusedTopDownBehavior
             ],
             build
         )
