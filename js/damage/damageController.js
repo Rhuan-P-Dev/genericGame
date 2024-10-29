@@ -311,13 +311,18 @@ export class DamageController {
 
         }
 
-        victim.onDamage.run({
-            "otherObjectMaster": master,
-            "otherObject": attacker,
-            "object": victim,
-            "damage": bokedDamage,
-            "calcDamage": damage,
-        })
+        // The 'onDamage' CANNOT be executed in the same frame as the object take damage, or it will cause a fatal recursive error.
+        setFrameOut(
+            () => {
+                victim.onDamage.run({
+                    "otherObjectMaster": master,
+                    "otherObject": attacker,
+                    "object": victim,
+                    "damage": bokedDamage,
+                    "calcDamage": damage,
+                })
+            },1
+        )
 
     }
 
