@@ -97,7 +97,8 @@ export class DamageController {
 
     passDamageMultiplierTable = {
         "dark energy": 0.8,
-        "parasite blaster": 0.5
+        "parasite blaster": 0.5,
+        "surprise attack": 1,
     }
 
     selfSwarm(params, damage){
