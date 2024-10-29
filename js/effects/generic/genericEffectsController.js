@@ -996,6 +996,30 @@ export class GenericEffectsController {
 
                 },
 
+                "on": {
+
+                    "config": {
+                        "func": this.effectsList["attraction_repulsion"],
+                        "stage": "first",
+                        "priority": 0,
+                    },
+        
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 200,
+                        },
+
+                        "range": 200,
+                        "mult": 0.05,
+                        "force": 1.5,
+                    },
+
+                },
+
             },
 
             "the blessed effect: reverse": {
