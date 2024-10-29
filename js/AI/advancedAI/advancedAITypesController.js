@@ -141,6 +141,8 @@ function missileV1(object){
 
     if(!target){return false}
 
+    let distance = CoreAI.get(object,"offensiveSearch","distance", true)
+
     return {
         "do": (params) => {
             AIUtils.aimToTarget(
@@ -151,7 +153,8 @@ function missileV1(object){
         },
         "params": {
             "object": object,
-            "target": target
+            "target": target,
+            "distance": distance
         }
     }
 
