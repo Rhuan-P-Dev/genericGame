@@ -545,6 +545,23 @@ export class EffectsController {
 
         }
 
+    addEffectsInActivates(object, effects){
+
+        for (let index = 0; index < effects.length; index++) {
+
+            let effect = effects[index]
+
+            for (let ID in object.activates) {
+
+                this.addEffectInActivate(
+                    object.activates[ID],
+                    effect
+                )
+
+            }
+
+        }
+
     }
 
     addEffectInActivate(activate, effect){
