@@ -20,6 +20,10 @@ onInit(function(){
 
 export class AIController {
 
+    remove(object){
+        GameState.removeFrom("AI", object)
+    }
+
     update(){
 
         let allAI = GameState.getAllAI()
