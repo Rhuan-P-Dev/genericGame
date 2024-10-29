@@ -173,30 +173,25 @@ function escortAlly(object){
     return {
         "do": (params, core) => {
 
-            if(
-                true//params.distance * core.approximation > CLOSE_RANGE
-            ){
+            let angle = Math.atan2(
+                params.target.y + params.target.currentYVel
+                -
+                params.object.y + params.object.currentYVel,
+                params.target.x + params.target.currentXVel
+                -
+                params.object.x + params.object.currentXVel
+            )
 
-                let angle = Math.atan2(
-                    params.target.y + params.target.currentYVel
-                    -
-                    params.object.y + params.object.currentYVel,
-                    params.target.x + params.target.currentXVel
-                    -
-                    params.object.x + params.object.currentXVel
-                )
+            let newX = params.target.x + Math.cos(angle + Math.PI / 2) * (CLOSE_RANGE / core.approximation)
+            let newY = params.target.y + Math.sin(angle + Math.PI / 2) * (CLOSE_RANGE / core.approximation)
 
-                let newX = params.target.x + Math.cos(angle + Math.PI / 2) * (CLOSE_RANGE / core.approximation)
-                let newY = params.target.y + Math.sin(angle + Math.PI / 2) * (CLOSE_RANGE / core.approximation)
-
-                AIUtils.aimToTarget(
-                    params.object,
-                    {
-                        "x": newX,
-                        "y": newY
-                    }
-                )
-            }
+            AIUtils.aimToTarget(
+                params.object,
+                {
+                    "x": newX,
+                    "y": newY
+                }
+            )
 
         },
         "params": {
