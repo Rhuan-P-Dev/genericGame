@@ -1,3 +1,4 @@
+import { CoreAIBuilderController } from "../AI/advancedAI/coreAIBuilderController.js"
 import { EffectsController } from "../effects/effectsController.js"
 import { FrameController } from "../frame/frameController.js"
 import { AnimationsController } from "../graphics/animation/animationsController.js"
@@ -5,12 +6,14 @@ import { AnimationsController } from "../graphics/animation/animationsController
 var Effects = ""
 var Animations = ""
 var Frame
+var CoreAIBuilder
 
 onInit(function(){
 
     Effects = new EffectsController()
     Animations = new AnimationsController()
     Frame = new FrameController()
+    CoreAIBuilder = new CoreAIBuilderController()
 
 })
 
@@ -44,6 +47,7 @@ export class GameStateController {
         }
 
         Frame.restart()
+        CoreAIBuilder.restart()
 
     }
 

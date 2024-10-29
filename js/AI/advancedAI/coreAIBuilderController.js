@@ -70,6 +70,14 @@ export class CoreAIBuilderController {
         },
     }
 
+    restart(){
+
+        for(const key in CACHE){
+            delete CACHE[key]
+        }
+
+    }
+
     build(coreName = "undefined"){
 
         if(!this[coreName]){
