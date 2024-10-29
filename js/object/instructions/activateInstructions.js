@@ -15,6 +15,13 @@ export class ActivateInstructions{
 
     addWeapon(weapon){
 
+        if(this.getAngle === undefined){
+
+            console.error("Angle not defined, cannot add weapon")
+
+            return false
+        }
+
         setWeaponAngle(this, weapon)
 
         this.setAngleObserver.add( () => {
