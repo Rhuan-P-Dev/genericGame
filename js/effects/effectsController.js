@@ -543,7 +543,31 @@ export class EffectsController {
                 effect.config,
             )
 
+
+    formatAllEffectsScore(effects){
+
+        let effectsObject = this.formatEffectsScore()
+
+        if(!effects){effects = []}
+
+        for (let index = 0; index < effects.length; index++) {
+
+            if(!effectsObject){
+                effectsObject = this.formatEffectsScore(
+                    effects[index]
+                )
+            }else{
+                effectsObject = this.formatEffectsScore(
+                    effects[index],
+                    effectsObject
+                )
+            }
+
         }
+
+        return effectsObject
+
+    }
 
     addEffectsInActivates(object, effects){
 
