@@ -91,7 +91,7 @@ export class ObjectActivatesController{
 
     }
 
-    defineTypeOfLoarderName(typeOfLoader){
+    defineTypeOfLoarderName(typeOfLoader = "random"){
 
         if(typeOfLoader == "random"){
             typeOfLoader = returnRandomObject(ActivateInfo.getLoarders())
