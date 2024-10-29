@@ -121,7 +121,7 @@ export class EffectsController {
 
     defaultTempConfig = {
         "prefixFunc": [],
-        "suffixFunc": ["deleteInstruction"],
+        "suffixFunc": [],
         
         "stage": "middle",
         "priority": 5,
@@ -134,9 +134,15 @@ export class EffectsController {
         effectType,
         params,
         config = {},
+        selfDelete = true
     ){
 
         CloneObject.recursiveCloneAttribute(this.defaultTempConfig, tempConfig)
+
+        if(selfDelete){
+            //console.log(tempConfig)
+            tempConfig.suffixFunc.push("deleteInstruction")
+        }
 
         tempConfig.func = (localParams) => {
 
@@ -532,6 +538,7 @@ export class EffectsController {
                 effect.config.type,
                 effect.params,
                 effect.config,
+                apply.selfDelete
             )
 
         }else{
@@ -542,6 +549,40 @@ export class EffectsController {
                 effect.params,
                 effect.config,
             )
+
+        }
+
+    }
+
+    simpleApplyEffectsTemplate(effectName, effectType, apply = false, applyType, selfDelete = true){
+
+        return {
+        
+            "apply": {
+
+                "apply": apply,
+                "applyType": applyType,
+                "selfDelete": selfDelete
+
+            },
+
+            "effect": {
+
+                "config": {
+
+                    "name": effectName,
+                    "type": effectType,
+
+                },
+
+                "params": {
+                },
+
+            },
+
+        }
+
+    }
 
     getEffectsCount(object){
 
