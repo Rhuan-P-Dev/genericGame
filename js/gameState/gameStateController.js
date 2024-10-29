@@ -43,6 +43,10 @@ let player = {
 
 export class GameStateController {
 
+    getObjectsNumber(team){
+        return Object.keys(GAME.team[team]).length
+    }
+
     restart(){
 
         for(let index in GAME.allInOne){
