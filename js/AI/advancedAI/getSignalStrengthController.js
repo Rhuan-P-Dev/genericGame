@@ -59,6 +59,14 @@ export class GetSignalStrengthController {
 
     }
 
+    getGenericMovimentationStrength(params, strength = 1, core){
+
+        strength *= 1000
+
+        return strength
+
+    }
+
     getEscortAllyStrength(params, strength = 1, core){
 
         strength *= params.target.maxLife / params.target.life.get()
