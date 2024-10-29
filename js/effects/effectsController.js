@@ -274,11 +274,22 @@ export class EffectsController {
         config
     ){
 
+        if(!config.before){
+            config.before = {}
+        }
+
         Effects.fix(config, effectName, "on", "config")
+        Effects.fix(config.before, effectName, "on", "before")
 
         new ComplexOnTypeFunctions().apply(config)
 
         let oldFunc = config.func
+        let oldFuncBefore = config.before?.config?.func || null
+
+        let callFuncs = (runtimeParams) => {
+            if(oldFuncBefore){oldFuncBefore(runtimeParams)}
+            oldFunc(runtimeParams)
+        }
 
         config.config = config
 
@@ -292,7 +303,7 @@ export class EffectsController {
                 true,
             )
 
-            oldFunc(runtimeParams)
+            callFuncs(runtimeParams)
 
         }
 
