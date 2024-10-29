@@ -24,6 +24,10 @@ export class AIController {
         GameState.removeFrom("AI", object)
     }
 
+    add(object){
+        GameState.addTo("AI", object)
+    }
+
     update(){
 
         let allAI = GameState.getAllAI()
