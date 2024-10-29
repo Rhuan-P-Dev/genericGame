@@ -240,6 +240,8 @@ export class ComplexOnTypeFunctions{
 
     apply(params){
 
+        params.config = params
+
         for (let index = 0; index < this.listOfApply.length; index++) {
 
             let newParams = params[
