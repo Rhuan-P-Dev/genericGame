@@ -91,4 +91,17 @@ export class DefenseInfoController{
     
     }
 
+    buildAll(){
+
+        let defenses = []
+
+        for(let defenseName in this.defenses){
+            defenses.push(
+                this.build(defenseName)
+            )
+        }
+
+        return defenses
+    }
+
 }
