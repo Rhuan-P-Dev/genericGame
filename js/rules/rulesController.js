@@ -54,6 +54,10 @@ export class RulesController {
             object.darkEnergy = object.maxDarkEnergy
         }
 
+        if(object.divineEnergy > object.maxDivineEnergy){
+            object.divineEnergy = object.maxDivineEnergy
+        }
+
         if(object.energy > object.maxEnergy){
             object.energy = object.maxEnergy
         }
