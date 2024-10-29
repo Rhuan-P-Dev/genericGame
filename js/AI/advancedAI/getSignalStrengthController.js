@@ -67,6 +67,21 @@ export class GetSignalStrengthController {
 
     }
 
+    getMissileV1Strength(params, strength = 1, core){
+
+        strength = this.getGenericMovimentationStrength(params, strength, core)
+
+        strength *= params.target.maxLife / params.target.life.get()
+        strength *= params.object.life.get() / params.object.maxLife
+
+        strength *= params.target.maxEnergy / params.target.energy
+
+        strength *= (MID_RANGE * core.approximation) / params.distance
+
+        return strength
+
+    }
+
     getEscortAllyStrength(params, strength = 1, core){
 
         strength = this.getGenericMovimentationStrength(params, strength, core)
