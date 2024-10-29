@@ -101,4 +101,16 @@ export class ObjectActivatesController{
 
     }
 
+    addActivateInFormat(type, activates, format){
+
+        if(!format[type]){
+            format[type] = []
+        }
+
+        format[type] = format[type].concat(activates)
+
+        return format
+
+    }
+
 }
