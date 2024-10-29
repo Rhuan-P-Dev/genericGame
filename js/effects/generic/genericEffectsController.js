@@ -1692,8 +1692,8 @@ export class GenericEffectsController {
                             new SaferPerimeter1().config,
                         ],
                         "repeat": 1,
-                        "dispersion": 0.2,
-                        "velMult": 5,
+                        "dispersion": 1,
+                        "velMult": 0,
                     }
 
                 }
