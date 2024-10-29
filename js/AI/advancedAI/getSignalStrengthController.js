@@ -69,6 +69,8 @@ export class GetSignalStrengthController {
 
     getEscortAllyStrength(params, strength = 1, core){
 
+        strength = this.getGenericMovimentationStrength(params, strength, core)
+
         strength *= params.target.maxLife / params.target.life.get()
         strength *= params.object.maxLife / params.object.life.get()
 
@@ -83,6 +85,8 @@ export class GetSignalStrengthController {
 
     getMovableStrength(params, strength = 1, core){
 
+        strength = this.getGenericMovimentationStrength(params, strength, core)
+
         strength *= params.object.life.get() / params.object.maxLife
 
         strength *= params.target.maxLife / params.target.life.get()
@@ -96,8 +100,8 @@ export class GetSignalStrengthController {
 
     }
 
-    getFleeStrength(params, strength = 1){
-
+    getFleeStrength(params, strength = 1, core) {
+        strength = this.getGenericMovimentationStrength(params, strength, core)
         strength *= params.object.maxLife / params.object.life.get()
 
         return strength
