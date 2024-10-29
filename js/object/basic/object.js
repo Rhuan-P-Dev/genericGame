@@ -9,8 +9,8 @@ import { ActivateInstructions } from "../instructions/activateInstructions.js"
 import { onInstructions } from "../instructions/onInstructions.js"
 import { StatsObserverController } from "../instructions/statsObserverController.js"
 
-var GameState = ""
-var Damage = ""
+var GameState
+var Damage
 
 onInit(function(){
 
@@ -42,15 +42,22 @@ export class Object {
         Damage.addDamageOrder(this, "physical", "life")
         Damage.addDamageOrder(this, "shock", "life")
         Damage.addDamageOrder(this, "fire", "life")
-        Damage.addDamageOrder(this, "death", "life")
-        Damage.addDamageOrder(this, "dark energy", "life")
-        Damage.addDamageOrder(this, "revenge", "life")
         Damage.addDamageOrder(this, "parasite blaster", "life")
         Damage.addDamageOrder(this, "parasite self blaster", "life")
         Damage.addDamageOrder(this, "parasite suck energy damage", "life")
         Damage.addDamageOrder(this, "parasite suck energy", "life")
         Damage.addDamageOrder(this, "self swarm", "life")
         Damage.addDamageOrder(this, "self swarm production", "lifeRegen")
+
+        Damage.addDamageOrder(this, "death", "life")
+
+        Damage.addDamageOrder(this, "revenge", "life")
+
+        Damage.addDamageOrder(this, "dark energy", "life")
+
+        Damage.addDamageOrder(this, "agony", "life")
+
+        Damage.addDamageOrder(this, "surprise attack", "life")
 
     }
 
@@ -155,5 +162,13 @@ export class Object {
     lastAttacker = {}
 
     AIVarsStorage = {}
+
+    // Hacky?
+
+    xMult = 1
+    yMult = 0
+
+    cosine = 1
+    sine = 0
 
 }
