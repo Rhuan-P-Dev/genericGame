@@ -543,6 +543,10 @@ export class EffectsController {
                 effect.config,
             )
 
+    getTotalEffects(object){
+        return Object.keys(object.effects).length + this.getEffectsCount(object)
+    }
+
     // maybe this score is wrong
     formatEffectsScore(
         effect,
