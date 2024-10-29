@@ -76,6 +76,20 @@ export class ActivateInstructions{
         }
     }
 
+    getAll(object){
+
+        let result = []
+
+        for (let ID in object.activates) {
+            result.push(
+                object.activates[ID]
+            )
+        }
+
+        return result
+
+    }
+
 }
 
 function setWeaponAngle(object, weapon){
