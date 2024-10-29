@@ -1878,34 +1878,69 @@ export class GenericEffectsController {
 
 
             },
+            "minor divine wrath": {
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                ScreenRender.addDrawRequest(
+                                    {
+                                        "func": ScreenRender.drawCircle,
+                                        "params": {
+                                            "x": params.object.x,
+                                            "y": params.object.y,
+                                            "radius": params.range,
+                                            "lineWidth": 2,
+                                            "color": "yellow"
+                                        },
+                                    }
+                                )
+    
+                            },
+                        }
+                    },
 
                     "config": {
-
-                        "func": this.effectsList["thunder"],
-
+                        "func": this.effectsList["inflict area damage"],
+                        "frameOut": 1,
+                        "repeat": 1,
                     },
 
                     "params": {
-                        "range": 300,
-                        "fakeObject": {
-                            "damage": 100,
-                            "damageTypes": {
-                                "shock": 1,
-                            }
+
+                        "range": 150,
+
+                        "uniform": true,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 150,
                         },
-                        "mult": 0.5,
-    
-                        "color": "yellow",
-                        "lineWidth": 4,
-        
-                        "effectName": "shock",
-                        "frameOut": 20
+
+                        "damage": 15,
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "fire": 1,
+                                "shock": 1,
+                                "self swarm": 1,
+                                "self swarm production": 0.01,
+                                "surprise attack": 1
+                            }
+                        }
                     },
 
-
                 },
-    
+
+
             },
+
+        },
 
         "negative": {
 
