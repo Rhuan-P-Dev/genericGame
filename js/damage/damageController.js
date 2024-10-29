@@ -423,6 +423,22 @@ export class DamageController {
 
     }
 
+    getMinimalDamage(
+        damage,
+        damageTypes,
+        object,
+    ){
+
+        let minimalObject = {
+            "damage": damage,
+            "damageTypes": damageTypes
+        }
+
+        minimalObject.owner = object
+
+        return minimalObject
+
+    }
 }
 
 var Damage = new DamageController()
