@@ -165,8 +165,8 @@ export class ComplexOnType{
 
     getAll(){
 
-        return this.stages
-
+    getPositionalList(stage){
+        return this[stage].getAll()
     }
 
     defaultConfig = {
