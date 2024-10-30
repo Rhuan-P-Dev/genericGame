@@ -397,6 +397,19 @@ export class DamageController {
     
         return damage
 
+    addTempDamageOrder(frames, object, damageType, stat, direction, reference){
+
+        this.addDamageOrder(object, damageType, stat, direction, reference)
+
+        setFrameOut(
+            () => {
+                this.removeDamageOrder(object, damageType, stat)
+            },
+            frames,
+        )
+
+    }
+
     addTempDefense(frames, object, stat, damageType, damageTypeValue){
 
         this.addDefense(
