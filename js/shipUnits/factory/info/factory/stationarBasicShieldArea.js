@@ -34,7 +34,7 @@ export class StationarBasicShieldArea {
         "behavior": new FocusedTopDownBehavior().searchPriority,
         "statsMult": 0,
 
-        "lifeTime": 20*60,
+        "lifeTime": 30*60,
         
     }
 
