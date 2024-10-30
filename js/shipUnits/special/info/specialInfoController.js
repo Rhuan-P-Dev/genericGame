@@ -13,6 +13,7 @@ import { TestQuantumBomb } from "./specials/testQuantumBomb.js"
 import { GhostSystem } from "./specials/ghostSystem.js"
 import { Turbo1 } from "./specials/turbo1.js"
 import { Splitter1 } from "./specials/splitter1.js"
+import { Camouflage } from "./specials/camouflage.js"
 
 var ActivateInfo = ""
 
@@ -30,6 +31,7 @@ export class SpecialInfoController{
         "lv up": LvUp,
         "illusion 1": Illusion1,
         "basic camouflage": BasicCamouflage,
+        "camouflage": Camouflage,
         "basic taunt": BasicTaunt,
         "blink": Blink,
         "teleport": Teleport,
