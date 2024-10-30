@@ -13,6 +13,7 @@ var AIUtils
 var ScreenRender
 var CloneObject
 var Animations
+var CustomMath
 
 onInit(function(){
 
@@ -20,6 +21,7 @@ onInit(function(){
     ScreenRender = new ScreenRenderController()
     CloneObject = new CloneObjectController()
     Animations = new AnimationsController()
+    CustomMath = new CustomMathController()
 
 })
 
@@ -379,6 +381,27 @@ export class DamageController {
     
         return damage
 
+    addTempDefense(frames, object, stat, damageType, damageTypeValue){
+
+        this.addDefense(
+            object,
+            stat,
+            damageType,
+            damageTypeValue,
+        )
+
+        setFrameOut(
+            () => {
+                this.addDefense(
+                    object,
+                    stat,
+                    damageType,
+                    CustomMath.inverter(damageTypeValue)
+                )
+            },
+            frames,
+        )
+
     }
 
     reciveDamage(params){
@@ -584,17 +607,17 @@ export class DamageController {
         let attackerBoked = Damage.boke(attacker)
         //let victimBoked = Damage.boke(victim)
 
-        let mult = new CustomMathController().linearReverse(
+        let mult = CustomMath.linearReverse(
             AIUtils.getDistanceOfObjects(attacker, victim),
             attacker.damageConfig.range,
         )
 
-        mult += new CustomMathController().linear(
+        mult += CustomMath.linear(
             attacker.width,
             attacker.damageConfig.range
         )
 
-        mult += new CustomMathController().linear(
+        mult += CustomMath.linear(
             victim.width,
             attacker.damageConfig.range
         )
