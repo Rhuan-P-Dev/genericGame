@@ -111,4 +111,17 @@ export class FactoryInfoController{
 
     }
 
+    buildAll(){
+
+        let factorys = []
+
+        for(let factoryName in this.factorys){
+            factorys.push(
+                this.build(factoryName)
+            )
+        }
+
+        return factorys
+    }
+
 }
