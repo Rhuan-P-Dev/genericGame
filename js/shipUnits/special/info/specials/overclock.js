@@ -21,7 +21,7 @@ export class Overclock {
     name = "overclock"
     cost = 0
     func = new ActivateController().setStats
-    reload = 10
+    reload = 60
 
     subType = ["lifeRiskBuff"]
 
