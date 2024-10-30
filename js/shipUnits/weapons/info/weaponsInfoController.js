@@ -114,7 +114,7 @@ export class WeaponsInfoController{
 
     }
 
-    build(weaponName){
+    build(weaponName, addOnGame = true){
 
         let auto = this.checkAutoWeapon(weaponName)
         weaponName = this.fixWeaponName(weaponName)
@@ -132,7 +132,10 @@ export class WeaponsInfoController{
             this.transformIntoAutoWeapon(weapon)
 
             AIC.giveAI(weapon, ["ship_turret"])
-            GameState.addObject(weapon, true, false, false, false, false, false)
+
+            if(addOnGame){
+                GameState.addObject(weapon, true, false, false, false, false, false)
+            }
 
         }
 
