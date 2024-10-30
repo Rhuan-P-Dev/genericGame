@@ -397,6 +397,53 @@ export class DamageController {
     
         return damage
 
+    }
+
+    statOrder = {
+        "energy shield": {
+            "physical": 0.5,
+            "fire": 4,
+            "self swarm": 5,
+            "self swarm production": 1000,
+            "shock": -0.01,
+            "parasite blaster": 0,
+            "dark energy": 0,
+            "agony": 0,
+            "surprise attack": 0
+        }
+    }
+
+    statConsume = {
+        "energy shield": "energy"
+    }
+
+    addTempStatOrder(frame, object, type){
+
+        for (const damageType in this.statOrder[type]) {
+
+            const damageTypeValue = this.statOrder[type][damageType]
+            const stat = this.statConsume[type]
+
+            this.addTempDefense(
+                frame,
+                object,
+                stat,
+                damageType,
+                damageTypeValue,
+            )
+
+            this.addTempDamageOrder(
+                frame,
+                object,
+                damageType,
+                stat,
+                "before",
+            )
+
+        }
+
+    }
+
     addTempDamageOrder(frames, object, damageType, stat, direction, reference){
 
         this.addDamageOrder(object, damageType, stat, direction, reference)
