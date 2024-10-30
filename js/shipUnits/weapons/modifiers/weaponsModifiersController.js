@@ -66,6 +66,9 @@ export class WeaponsModifiersController{
         return this.modifiers
     }
 
+    getMult(modifier){
+        return modifier.costMult
+    }
 
     build(modifierName){
 
