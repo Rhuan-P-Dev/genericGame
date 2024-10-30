@@ -155,10 +155,10 @@ export class SpecialController{
 
             let bomb = new DamageController().getMinimalRadiusDamage({},object)
 
-            //Effects.linkOwnerToEffect(
-            //    bomb,
-            //    object
-            //)
+            Effects.linkOwnerToEffect(
+                bomb,
+                object
+            )// ?
 
             bomb.x = object.x
             bomb.y = object.y
