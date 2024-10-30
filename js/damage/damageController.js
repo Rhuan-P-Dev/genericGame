@@ -76,6 +76,22 @@ export class DamageController {
 
     }
 
+    removeDamageOrder(object, damageType, stat) {
+        if (
+            object.damageOrder
+            &&
+            object.damageOrder[damageType]
+        ) {
+            const index = object.damageOrder[damageType].indexOf(stat)
+            if (index !== -1) {
+                object.damageOrder[damageType].splice(index, 1)
+            }
+            if (object.damageOrder[damageType].length === 0) {
+                delete object.damageOrder[damageType]
+            }
+        }
+    }
+
     immunityTo(object, stat){
 
         if(
