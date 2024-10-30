@@ -22,7 +22,7 @@ export class ParasiteInjection1 {
 
         this.name = "parasite injection 1"
         this.cost = 100
-        this.reload = 2*60
+        this.reload = 6*60
         
         this.lifeTime = 250
 
