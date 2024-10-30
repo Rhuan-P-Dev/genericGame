@@ -34,6 +34,10 @@ export class StatsController {
             object.darkEnergy += object.darkEnergyRegen
         }
 
+        if(object.divineEnergyRegen !== undefined){
+            object.divineEnergy += object.divineEnergyRegen
+        }
+
         if(object.shield !== undefined){
 
             object.shield += object.shieldRegen
