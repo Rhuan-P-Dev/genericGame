@@ -19,7 +19,7 @@ export class MineLauncher1 {
 
         this.currentVelMult = 0
 
-        this.lifeTime = 10*60
+        this.lifeTime = 1*60*60
 
         this.config.weapon.multVel = 0
 
