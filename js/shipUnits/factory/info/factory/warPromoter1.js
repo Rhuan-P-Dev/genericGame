@@ -19,7 +19,7 @@ export class WarPromoter1 {
 
     name = "war promoter 1"
     cost = 100
-    reload = 10*60
+    reload = 1*60*60
 
     config = {
         "objectClass": BigDrone,
