@@ -60,14 +60,16 @@ export class FactoryController{
 
         let newObject = Factory.createObject(object, activate, config)
 
-        Activate.primitiveAjustObject(object, newObject, location)
+        if(Activate.primitiveAjustObject(object, newObject, location)){
 
-        newObject.x += config.randomPos || 0
-        newObject.y += config.randomPos || 0
+            newObject.x += config.randomPos || 0
+            newObject.y += config.randomPos || 0
 
-        ObjectActivates.setActivates(newObject, config.activates)
+            ObjectActivates.setActivates(newObject, config.activates)
 
-        Activate.addObject(newObject)
+            Activate.addObject(newObject)
+
+        }
 
     }
 
