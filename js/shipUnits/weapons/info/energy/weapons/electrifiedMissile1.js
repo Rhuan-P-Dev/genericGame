@@ -33,7 +33,7 @@ export class ElectrifiedMissile1 {
         this.cost = 30
         this.reload = 1*60
 
-        this.lifeTime = 125
+        this.lifeTime = 60
         this.range = this.lifeTime*4
 
         this.config.weapon.multVel = 2
