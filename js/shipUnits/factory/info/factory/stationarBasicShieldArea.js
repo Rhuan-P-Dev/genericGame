@@ -20,7 +20,7 @@ export class StationarBasicShieldArea {
 
     name = "stationary basic shield area"
     cost = 60
-    reload = 5*60
+    reload = 15*60
 
     currentVelMult = 0
 

@@ -19,7 +19,7 @@ export class SelfSwarmMelee {
 
     name = "self swarm melee"
     cost = 50
-    reload = 10*60
+    reload = 15*60
 
     config = {
         "objectClass": SelfSwarmDrone,

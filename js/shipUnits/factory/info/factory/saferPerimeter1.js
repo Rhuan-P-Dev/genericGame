@@ -19,7 +19,7 @@ export class SaferPerimeter1 {
 
     name = "safer perimeter 1"
     cost = 20
-    reload = 4*60
+    reload = 10*60
 
     currentVelMult = 0
 

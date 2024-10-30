@@ -19,7 +19,7 @@ export class Upgrader3 {
 
     name = "upgrader 3"
     cost = 110
-    reload = 40*60
+    reload = 1.5*60*60
 
     currentVelMult = 0
 

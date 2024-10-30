@@ -19,7 +19,7 @@ export class MovableShotgun1 {
 
     name = "movable shotgun 1"
     cost = 40
-    reload = 6*60
+    reload = 16*60
 
     currentVelMult = 0
 

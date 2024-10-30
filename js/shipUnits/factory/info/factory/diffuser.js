@@ -19,7 +19,7 @@ export class Diffuser {
 
     name = "diffuser"
     cost = 80
-    reload = 10*60
+    reload = 30*60
 
     currentVelMult = 0
 

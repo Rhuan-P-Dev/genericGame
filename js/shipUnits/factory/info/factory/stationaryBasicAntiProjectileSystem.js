@@ -20,7 +20,7 @@ export class StationaryBasicAntiProjectileSystem {
 
     name = "stationary basic anti-projectile system"
     cost = 50
-    reload = 5*60
+    reload = 15*60
 
     currentVelMult = 0
 

@@ -19,7 +19,7 @@ export class MovableMissileBurst1 {
 
     name = "movable missile burst 1"
     cost = 80
-    reload = 15*60
+    reload = 30*60
 
     currentVelMult = 0
 

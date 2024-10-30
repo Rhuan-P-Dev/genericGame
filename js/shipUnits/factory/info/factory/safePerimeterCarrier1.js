@@ -21,7 +21,7 @@ export class SafePerimeterCarrier1 {
 
     name = "safe perimeter carrier 1"
     cost = 110
-    reload = 20*60
+    reload = 40*60
 
     config = {
         "objectClass": BigDrone,

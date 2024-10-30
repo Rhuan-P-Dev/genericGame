@@ -19,7 +19,7 @@ export class AntiMob1 {
 
     name = "anti-mob 1"
     cost = 50
-    reload = 5*60
+    reload = 30*60
 
     currentVelMult = 0
 

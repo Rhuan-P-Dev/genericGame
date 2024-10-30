@@ -19,7 +19,7 @@ export class MovableDisassemble1 {
 
     name = "movable disassemble 1"
     cost = 80
-    reload = 7*60
+    reload = 15*60
 
     currentVelMult = 0
 

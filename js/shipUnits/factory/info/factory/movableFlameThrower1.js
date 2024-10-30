@@ -19,7 +19,7 @@ export class MovableFlameThrower1 {
 
     name = "movable flame thrower 1"
     cost = 50
-    reload = 7*60
+    reload = 15*60
 
     currentVelMult = 0
 

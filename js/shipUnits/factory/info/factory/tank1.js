@@ -19,7 +19,7 @@ export class Tank1 {
 
     name = "tank 1"
     cost = 40
-    reload = 12*60
+    reload = 24*60
 
     currentVelMult = 0
 

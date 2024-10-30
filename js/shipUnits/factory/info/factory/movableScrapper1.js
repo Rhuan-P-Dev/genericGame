@@ -19,7 +19,7 @@ export class MovableScrapper1 {
 
     name = "movable scrapper 1"
     cost = 35
-    reload = 8*60
+    reload = 18*60
 
     config = {
         "objectClass": Drone,
