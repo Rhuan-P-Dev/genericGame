@@ -15,7 +15,7 @@ export class BlackHoleGenerator1 {
         )
 
         this.name = "black hole generator 1"
-        this.cost = 100
+        this.cost = 600
         this.reload = 60*60
 
         this.lifeTime = 250
