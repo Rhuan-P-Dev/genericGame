@@ -21,7 +21,7 @@ export class Missilepiston {
         this.cost = 30
         this.reload = 30
 
-        this.lifeTime = 100
+        this.lifeTime = 60
         this.range = this.lifeTime*4
 
         this.config.weapon.multVel = 1
