@@ -64,4 +64,17 @@ export class SpecialInfoController{
 
     }
 
+    buildAll(){
+
+        let specials = []
+
+        for(let specialName in this.specials){
+            specials.push(
+                this.build(specialName)
+            )
+        }
+
+        return specials
+    }
+
 }
