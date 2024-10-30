@@ -35,9 +35,9 @@ import { SelfSwarmRain } from "./energy/weapons/selfSwarmRain.js"
 
 
 
-var GameState = ""
-var AIC = ""
-var ActivateInfo = ""
+var GameState
+var AIC
+var ActivateInfo
 
 onInit(function(){
 
@@ -146,6 +146,19 @@ export class WeaponsInfoController{
 
         return weapon
 
+    }
+
+    buildAll(addOnGame = true){
+
+        let weapons = []
+
+        for(let weaponName in this.weapons){
+            weapons.push(
+                this.build(weaponName, addOnGame)
+            )
+        }
+
+        return weapons
     }
 
     checkAutoWeapon(weaponName){
