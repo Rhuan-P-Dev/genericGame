@@ -155,10 +155,13 @@ export class FactoryController{
         // your self - facotry!
 
         if(!config.selffff){
-            config.selffff = CloneObject.clone(object) // 'self'
+            //config.selffff = CloneObject.clone(object, false) // 'self'
+
+
+            // bug! with the blessed!
         }
 
-        let clone = CloneObject.clone(config.selffff)
+        let clone = CloneObject.clone(object)
 
         MultiplyStats.multiply(clone, config.statsMult)
 
