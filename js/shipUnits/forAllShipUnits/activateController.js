@@ -122,16 +122,24 @@ export class ActivateController{
 
     primitiveAjustObject(master, object, location = master){
 
-        object.ID = randomUniqueID()
-        object.team = master.team
+        if(this.checkPrimitiveObject(master, location)){
 
-        object.color = master.color
+            object.ID = randomUniqueID()
+            object.team = master.team
 
-        object.x = location.x
-        object.y = location.y
+            object.color = master.color
 
-        object.currentXVel = location.currentXVel
-        object.currentYVel = location.currentYVel
+            object.x = location.x
+            object.y = location.y
+
+            object.currentXVel = location.currentXVel
+            object.currentYVel = location.currentYVel
+
+            return true
+
+        }else{
+            return false
+        }
 
     }
 
