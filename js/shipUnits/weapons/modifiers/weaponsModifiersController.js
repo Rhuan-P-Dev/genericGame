@@ -62,6 +62,10 @@ export class WeaponsModifiersController{
         }
     }
 
+    getAll(){
+        return this.modifiers
+    }
+
 
     build(modifierName){
 
