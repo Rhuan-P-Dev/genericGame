@@ -53,6 +53,16 @@ export class WeaponsModifiersController{
         "dice": ModDice,
     }
 
+    get(modifierName, build = false){
+
+        if(build){
+            return new this.modifiers[modifierName](true)
+        }else{
+            return this.modifiers[modifierName]
+        }
+    }
+
+
     build(modifierName){
 
         let modifier = new this.modifiers[modifierName]()
