@@ -29,7 +29,7 @@ export class SelfSwarmRain {
         this.cost = 20
         this.reload = 5*60
 
-        this.lifeTime = 3*60
+        this.lifeTime = 1.25*60
 
         this.config.weapon.multVel = 6
         this.config.weapon.damageMult = 0.25
