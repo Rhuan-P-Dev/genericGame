@@ -24,7 +24,7 @@ export class ParasiteInjection1 {
         this.cost = 100
         this.reload = 6*60
         
-        this.lifeTime = 250
+        this.lifeTime = 70
 
         this.config.weapon.multVel = 2
         this.config.weapon.damageMult = 0
