@@ -25,11 +25,11 @@ export class EnergyShield {
 
     config = {
 
-        position: [
-            "middle",
-            10
-        ]
-        
+        "duration": 1,
+        "shieldType": "energy shield",
+        "color": "lightblue",
+        "lineWidth": 1,
+
     }
 
 }

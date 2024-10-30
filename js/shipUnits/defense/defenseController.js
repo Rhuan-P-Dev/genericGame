@@ -1,5 +1,6 @@
 
 import { AIUtilsController } from "../../AI/utils/AIUtils.js"
+import { DamageController } from "../../damage/damageController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { CustomMathController } from "../../generalUtils/math.js"
@@ -17,6 +18,7 @@ var CustomMath = ""
 var Vector = ""
 var GameState = ""
 var CustomMath = ""
+var Damage
 
 onInit(function(){
 
@@ -27,7 +29,8 @@ onInit(function(){
     CustomMath = new CustomMathController()
     Vector = new VectorController()
     GameState = new GameStateController()
-    CustomMath = new CustomMathController() 
+    CustomMath = new CustomMathController()
+    Damage = new DamageController()
 
 })
 
@@ -41,38 +44,31 @@ export class DefenseController{
 
     energyShield(object, activate, config){
 
-        let index = ConsumeStats.add(
+        Damage.addTempStatOrder(
+            config.duration+1,
             object,
-            "energy",
-            config.position
-        )
-
-        config.position[1] = index
-
-        ScreenRender.addDrawRequest(
-            {
-                "func": ScreenRender.drawCircle,
-                "params": {
-                    "x": object.x + object.currentXVel,
-                    "y": object.y + object.currentYVel,
-                    "radius": object.width + object.height,
-                    "color": "lightblue",
-                    "lineWidth": 1,
-                },
-            }
+            config.shieldType
         )
 
         setFrameOut(
             () => {
-
-                ConsumeStats.remove(
-                    object,
-                    config.position,
+                ScreenRender.addDrawRequest(
+                    {
+                        "func": ScreenRender.drawCircle,
+                        "params": {
+                            "x": object.x + object.currentXVel,
+                            "y": object.y + object.currentYVel,
+                            "radius": object.width + object.height,
+                            "color": config.color,
+                            "lineWidth": config.lineWidth,
+                        },
+                    }
                 )
-
-            },1,1
+            },
+            1,
+            config.duration
         )
-    
+
     }
 
     antiProjectileSystem(object, activate, config){
@@ -133,7 +129,7 @@ export class DefenseController{
 
             }
 
-            currentObject.life.math("-", config.damage)
+            currentObject.life.math("-", config.damage) //TODO?
 
             object.energy -= config.hitEnergyConsume
 
