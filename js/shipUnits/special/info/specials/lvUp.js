@@ -24,7 +24,7 @@ export class LvUp {
     name = "lv up"
     cost = 50
     func = new SpecialController().lvUp
-    reload = 10*60
+    reload = 30*60
 
     config = {
         "statsMult": 0.1
