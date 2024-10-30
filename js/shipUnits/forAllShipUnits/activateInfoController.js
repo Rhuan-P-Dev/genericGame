@@ -55,9 +55,9 @@ export class ActivateInfoController{
 
     }
 
-    build(type, activateName){
+    build(type, activateName, addOnGame = true){
 
-        let activate = this.loaderType[type].build(activateName)
+        let activate = this.loaderType[type].build(activateName, addOnGame)
 
         if(!activate){return undefined}
 
