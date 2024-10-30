@@ -14,7 +14,7 @@ export class Diffusion1 {
         )
 
         this.name = "diffusion 1"
-        this.cost = 2
+        this.cost = 4
         this.reload = 5
         
         this.lifeTime = 30
