@@ -6,4 +6,4 @@ const MID_RANGE = 400
 
 const VAST_RANGE = 900
 
-const MAX_RANGE = 3000
+const MAX_RANGE = 20000
