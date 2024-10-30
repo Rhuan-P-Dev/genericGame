@@ -16,13 +16,13 @@ export class SmallBulletCluster1 {
         )
 
         this.name = "small bullet cluster 1"
-        this.cost = 50
-        this.reload = 1*60
+        this.cost = 90
+        this.reload = 3*60
 
-        this.lifeTime = 50
+        this.lifeTime = 60
 
-        this.config.weapon.multVel = 5
-        this.config.weapon.damageMult = 2
+        this.config.weapon.multVel = 6
+        this.config.weapon.damageMult = 4
 
         this.config.projectiles.objectClass = ["medium bullet"]
 
