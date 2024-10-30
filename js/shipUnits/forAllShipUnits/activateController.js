@@ -97,6 +97,29 @@ export class ActivateController{
 
     }
 
+    checkPrimitiveObject(master, location = master){
+
+        if(
+            master.team === undefined
+            ||
+            master.color === undefined
+            ||
+            location.x === undefined
+            ||
+            location.y === undefined
+            ||
+            location.currentXVel === undefined
+            ||
+            location.currentYVel === undefined
+        ){
+            console.error("checkPrimitiveObject - ERROR")
+            return false
+        }else{
+            return true
+        }
+
+    }
+
     primitiveAjustObject(master, object, location = master){
 
         object.ID = randomUniqueID()
