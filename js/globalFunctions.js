@@ -38,6 +38,12 @@ function returnRandomObject(objects){
 
 }
 
+function returnRandomArray(array){
+    let index = randomInteger(0, array.length-1)
+    return array[index]
+}
+
+
 function firstLetterUppercase(string) {
     return string[0].toUpperCase() + string.slice(1)
 }
