@@ -361,6 +361,12 @@ export class EffectsController {
             config.priority || 0
         )
 
+        Effects.linkOwnerToEffect(
+            params,
+            params.object,
+            false
+        )
+
         delete params.object
 
         return {
