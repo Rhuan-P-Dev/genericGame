@@ -136,6 +136,7 @@ export class EffectsController {
         "onHit": this.addOn,
         "onDeath": this.addOn,
         "onDamage": this.addOn,
+        "onKill": this.addOn,
     }
 
     getAll(){
@@ -682,6 +683,7 @@ export class EffectsController {
             ...object.onDamage.getAll(true),
             ...object.onHit.getAll(true),
             ...object.onDeath.getAll(true),
+            ...object.onKill.getAll(true),
         ]
 
         for (let index = 0; index < maybeEffects.length; index++) {
@@ -718,7 +720,8 @@ export class EffectsController {
                 "effect": [],
                 "onHit": [],
                 "onDamage": [],
-                "onDeath": []
+                "onDeath": [],
+                "onKill": [],
             },
             "apply": []
         }
