@@ -1963,6 +1963,29 @@ export class GenericEffectsController {
 
 
             },
+            "investor soul": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["sum percentage of stat"],
+                        "frameOut": 1*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+                        "statName": [
+                            "life",
+                            "energy",
+                            "shield",
+                            "darkEnergy"
+                        ],
+                        "statsMult": 1.01,
+                    },
+
+                },
+
+            }
 
         },
 
