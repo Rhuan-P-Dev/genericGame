@@ -18,12 +18,14 @@ export class CoreAIBuilderController {
         "support": "default",
     }
 
+    // 1 = neutral
+
     default = {
         "offensive": 1.25,
         "defensive": 1,
         "support": 0.75,
 
-        //how much does he like to get close to things
+        //how much does it like to get close to things
         "approximation": 1,
 
         "long buff": 1.2,
