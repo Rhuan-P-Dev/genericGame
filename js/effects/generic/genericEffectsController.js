@@ -66,6 +66,7 @@ var ObjectActivates = ""
 var Damage
 var Animations
 var AIC
+var MultiplyStats
 
 onInit(function(){
 
@@ -84,6 +85,7 @@ onInit(function(){
     Damage = new DamageController()
     Animations = new AnimationsController()
     AIC = new AIController()
+    MultiplyStats = new MultiplyStatsController()
 
 })
 
@@ -91,16 +93,100 @@ export class GenericEffectsController {
 
     effectsList = {
 
-        "sum max energy": (params) => {
+        "sum max stat": (params) => {
 
-            params.object.energy += params.object.maxEnergy * params.mult
+            if(
+                params.statName === undefined
+                ||
+                typeof params.statName !== "string"
+            ){
+                console.error(params)
+                console.error(params.statName)
+                console.error("Invalid statName")
+                return
+            }
+
+            if(
+                typeof params.object[params.statName.toLowerCase()] == "number"
+            ){
+                params.object[params.statName.toLowerCase()] += params.object["max"+params.statName] * params.mult
+            }else{
+                params.object[params.statName.toLowerCase()].math("+", params.object["max"+params.statName] * params.mult)
+            }
 
         },
 
-        "sum max life": (params) => {
+        "sum percentage of stat": (params) => {
 
-            params.object.life.math("+", params.object.maxLife * params.mult)
+            if(
+                params.statName === undefined
+            ){
+                console.error(params)
+                console.error(params.statName)
+                throw new Error("statName is undefined")
+            }
 
+            for (let index = 0; index < params.statName.length; index++) {
+
+                const statName = params.statName[index]
+
+                if(params.object[statName] === undefined){continue}
+
+                if(
+                    typeof params.object[statName] == "number"
+                ){
+                    params.object[statName] *= params.statsMult
+                }else{
+                    params.object[statName].math("*", params.statsMult)
+                }
+
+            }
+
+        },
+
+        "area sum max stat": (params) => {
+            let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                params.searchConfig
+            )
+        
+            // Debug draw to visualize the area effect
+            ScreenRender.addDrawRequest({
+                func: ScreenRender.drawCircle,
+                params: {
+                    x: params.object.x,
+                    y: params.object.y,
+                    radius: params.searchConfig.maxDistance,
+                },
+            })
+        
+            for (let index = 0; index < objects.length; index++) {
+                let object = objects[index]
+
+                let mult = 1;
+                if (!params.uniform) {
+                    mult = CustomMath.linearReverse(
+                        AIUtils.getDistanceOfObjects(params.object, object),
+                        params.searchConfig.maxDistance
+                    )
+                }
+
+                for (let indey = 0; indey < params.statName.length; indey++) {
+
+                    let stat = params.statName[indey]
+
+                    if(object[stat.toLowerCase()] == undefined){continue}
+
+                    if (typeof object[stat.toLowerCase()] == "number") {
+                        object[stat.toLowerCase()] += object["max" + stat] * params.mult * mult
+                    } else {
+                        object[stat.toLowerCase()].math("+", object["max" + stat] * params.mult * mult)
+                    }
+
+                }
+
+                
+            }
         },
 
         "lv up": (params) => {
@@ -116,6 +202,11 @@ export class GenericEffectsController {
         },
 
         "create objects": (params) => {
+
+            if(params.target){
+                var trueObject = params.object
+                params.object = params.target
+            }
 
             for (let index = 0; index < params.repeat; index++) {
 
@@ -162,16 +253,29 @@ export class GenericEffectsController {
                     newObject.currentYVel = objectVelAngle.y * params.velMult
 
                     newObject.owner = params.object
-    
+
+                    newObject.x += randomInterval(
+                        params.distance || 0
+                    )
+                    newObject.y += randomInterval(
+                        params.distance || 0
+                    )
+
                     Activate.addObject(newObject)
 
                 }
 
             }
 
+            if(params.target){
+                params.object = trueObject
+            }
+
         },
 
         "clone": (params) => {
+
+            console.warn("SEM O CLONE OS BUGS PARAM??????????????????????")
 
             let clone = Special.clone(
                 params.object,
@@ -183,7 +287,16 @@ export class GenericEffectsController {
 
             Activate.primitiveAjustObject(params.object, clone)
 
-            Activate.addObject(clone)
+            //console.log(params)
+            //console.log(clone)
+
+            //a
+
+            setFrameOut(
+                () => {
+                    Activate.addObject(clone)
+                }, 30
+            )
 
         },
 
@@ -499,24 +612,9 @@ export class GenericEffectsController {
 
                 let object = objects[index]
 
-                if(
-                    object.AI === undefined
-                    ||
-                    object.ID == GameState.getPlayer().ID // this will give the player a little advantage
-                ){continue}
-
-                //console.log(object)
-
-                AIC.remove(object)
-
-                setFrameOut(
-                    () => {
-                        AIC.add(object)
-                    },
-                    params.disableFramesOut,
-                    1,
-                    true,
-                    object.ID + "_enabling AI..."
+                AIC.toggleAI(
+                    object,
+                    params.disableFramesOut
                 )
 
             }
@@ -533,6 +631,16 @@ export class GenericEffectsController {
         },
 
         "inflict area damage":(params) => {
+
+            // Debug draw to visualize the area effect
+            ScreenRender.addDrawRequest({
+                func: ScreenRender.drawCircle,
+                params: {
+                    x: params.object.x,
+                    y: params.object.y,
+                    radius: params.searchConfig.maxDistance,
+                },
+            })
 
             //let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
             //    {
@@ -571,6 +679,86 @@ export class GenericEffectsController {
                 )
 
             }
+
+        },
+
+        "try mark star": (params) => {
+
+            const enemy = AIUtils.getStepPriorityObjectOfTeams(
+                params.object,
+                params.searchConfig
+            )
+
+            if(!enemy){return}
+
+            if(enemy.stars === undefined){
+                enemy.stars = 0
+                enemy.maxStars = 5
+
+                Effects.add(
+                    "wanted by government",
+                    "effect",
+                    {
+                        "object": enemy,
+                        "target": params.object,
+                    },
+                )
+            }
+
+            enemy.stars += params.value
+
+        },
+
+        "gated create objects": (params) => {
+
+            const loopConfigs = params.configs
+
+            for (
+                let index = 0;
+                loopConfigs[index]
+                &&
+                loopConfigs[index][0]
+                &&
+                index < params.object[params.baseStat];
+                index++
+            ) {
+
+                params.configs = loopConfigs[index]
+
+                this.effectsList["create objects"](
+                    params
+                )
+
+            }
+
+            params.configs = loopConfigs
+
+        },
+
+        "search objects": (params) => {
+
+            let objects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                params.searchConfig
+            )
+
+            params.objectsStats = {
+                "totalObjects": 0,
+                "totalPriority": 0,
+            }
+
+            params.objectsStats.totalObjects += objects.length-1
+
+            for (let index = 0; index < objects.length; index++) {
+                let object = objects[index]
+
+                if(object.priority > 0){
+                    params.objectsStats.totalPriority += object.priority
+                }
+
+            }
+
+            params.func(params)
 
         },
 
@@ -1059,7 +1247,7 @@ export class GenericEffectsController {
 
                                 setFrameOut(
                                     () => {
-                                        this.effectsList["sum max life"](params)
+                                        this.effectsList["sum max stat"](params)
                                     },index * 5
                                 )
                                 
@@ -1072,6 +1260,7 @@ export class GenericEffectsController {
         
                     "params": {
                         "mult": 0.01,
+                        "statName": "Life",
                     },
 
                 },
@@ -1085,7 +1274,7 @@ export class GenericEffectsController {
 
                                 setFrameOut(
                                     () => {
-                                        this.effectsList["sum max life"](params)
+                                        this.effectsList["sum max stat"](params)
                                     },index * 5
                                 )
                                 
@@ -1104,6 +1293,7 @@ export class GenericEffectsController {
         
                     "params": {
                         "mult": 0.01,
+                        "statName": "Life",
                     },
 
                 },
@@ -1115,13 +1305,14 @@ export class GenericEffectsController {
                 "effect": {
 
                     "config": {
-                        "func": this.effectsList["sum max energy"],
+                        "func": this.effectsList["sum max stat"],
                         "frameOut": 60,
                         "repeat": -1,
                     },
         
                     "params": {
                         "mult": 0.01,
+                        "statName": "Energy",
                     },
 
                 },
@@ -1130,7 +1321,7 @@ export class GenericEffectsController {
 
                     "config": {
                         "prefixFunc": [],
-                        "func": this.effectsList["sum max energy"],
+                        "func": this.effectsList["sum max stat"],
                         "suffixFunc": ["timeout"],
 
                         "timeout":{
@@ -1143,6 +1334,47 @@ export class GenericEffectsController {
         
                     "params": {
                         "mult": 0.01,
+                        "statName": "Energy",
+                    },
+
+                },
+    
+            },
+            "heart beat": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["sum max stat"],
+                        "frameOut": 60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                        "statName": "Life",
+                    },
+
+                },
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["sum max stat"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 10,
+                        },
+
+                        "stage": "first",
+                        "priority": 0,
+                    },
+        
+                    "params": {
+                        "mult": 0.01,
+                        "statName": "Life",
                     },
 
                 },
@@ -1154,7 +1386,7 @@ export class GenericEffectsController {
 
                     "config": {
                         "func": this.effectsList["lv up"],
-                        "frameOut": 60,
+                        "frameOut": 60*5,
                         "repeat": -1,
                     },
         
@@ -1322,6 +1554,46 @@ export class GenericEffectsController {
                 },
     
             }, // delet?
+            "infinite replicant": {
+
+                "effect": {
+    
+                    "config": {
+                        "func": this.effectsList["clone"],
+                        "frameOut": 1.5*60*60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "statsMult": 0,
+                    },
+
+                },
+
+                "on": {
+
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["clone"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "middle",
+                        "priority": 5,
+
+                        "timeout":{
+                            "frameOut": 61*60,
+                        },
+
+                    },
+
+                    "params": {
+                        "statsMult": 0,
+                    },
+
+                },
+    
+            },
             "illusion v1": {
     
                 "effect": {
@@ -1404,6 +1676,25 @@ export class GenericEffectsController {
 
                 }
     
+            },
+            "snow area": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["slowdown"],
+                        "frameOut": 10,
+                        "repeat": -1,
+                        "overwrite": false,
+                    },
+        
+                    "params": {
+                        "range": 75,
+                        "mult": 1,
+                    },
+
+                },
+
             },
             "untouchable": {
 
@@ -1661,6 +1952,64 @@ export class GenericEffectsController {
                         ],
                         "repeat": 30,
                         "dispersion": 1,
+                        "velMult": 8,
+                    }
+
+                }
+                
+            },
+            "frontal snowball storm": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 15,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": SmallSnowBulletProjectile,
+                                "AI": [],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 0.05,
+                        "velMult": 10,
+                    },
+
+                },
+
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": SmallSnowBulletProjectile,
+                                "AI": [],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 3,
+                        "dispersion": 0.025,
                         "velMult": 8,
                     }
 
@@ -1962,6 +2311,1142 @@ export class GenericEffectsController {
                 },
 
 
+            },
+            "try add star": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["try mark star"],
+                        "frameOut": 25*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": VAST_RANGE,
+                        },
+
+                        "value": 1
+                    },
+
+                },
+
+            },
+
+            "mrD's death": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Ship,
+                                "AI": ["movable","useActivates","escortAlly","areaSupport","directionalDefense","dodge"],
+                                "coreType":"default",
+                                "activates": {
+                                    "weapon": ["random","random"],
+                                    "defense": ["random"]
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.5,
+                            },{
+                                "objectClass": Police,
+                                "AI": ["movable","useActivates","escortAlly","areaSupport","directionalDefense","dodge"],
+                                "coreType":"default",
+                                "activates": {
+                                    "weapon": ["random","random","random"],
+                                    "defense": ["random","random"]
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },{
+                                "objectClass": Ship,
+                                "AI": ["movable","useActivates","escortAlly","areaSupport","directionalDefense","dodge"],
+                                "coreType":"default",
+                                "activates": {
+                                    "weapon": ["random","random"],
+                                    "defense": ["random"]
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.5,
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                        "distance": OUTOFF_VISION_RANGE
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["deleteInstruction"],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Ship,
+                                "AI": ["movable","useActivates","escortAlly","areaSupport","directionalDefense","dodge"],
+                                "coreType":"default",
+                                "activates": {
+                                    "weapon": ["random","random"],
+                                    "defense": ["random"]
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.5,
+                            },{
+                                "objectClass": Police,
+                                "AI": ["movable","useActivates","escortAlly","areaSupport","directionalDefense","dodge"],
+                                "coreType":"default",
+                                "activates": {
+                                    "weapon": ["random","random","random"],
+                                    "defense": ["random","random"]
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },{
+                                "objectClass": Ship,
+                                "AI": ["movable","useActivates","escortAlly","areaSupport","directionalDefense","dodge"],
+                                "coreType":"default",
+                                "activates": {
+                                    "weapon": ["random","random"],
+                                    "defense": ["random"]
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.5,
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                        "distance": OUTOFF_VISION_RANGE
+                    },
+
+                }
+                
+            },
+
+            "mrD's last ally's": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 30,
+                        "repeat": 1,
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Ship,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {
+                                    "weapon": ["random"],
+                                    "defense": ["random"],
+                                },
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.1,
+                                "creatorSpecialAttention": 0.0000001,
+                            },
+                        ],
+                        "repeat": 3,
+                        "dispersion": 1,
+                        "velMult": 3,
+                    },
+
+                },
+                
+            },
+
+            "zombies horde": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 30*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Zombie,
+                                "AI": ["missileV1","useActivates","escortAlly"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                        "distance": OUTOFF_VISION_RANGE
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 20*60,
+                        },
+
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Zombie,
+                                "AI": ["missileV1","useActivates","escortAlly"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                        "distance": OUTOFF_VISION_RANGE
+                    },
+
+                }
+                
+            },
+
+            "reaper's death pulse": {
+
+                "effect": {
+
+                    "config": {
+                        "func": (params) => {
+                            new AnimationsController().run({
+                                "name":"reaper's death pulse",
+                                "focus": {
+                                    "x": params.object.x,
+                                    "y": params.object.y,
+                                },
+                                "offset": {
+                                    "x": 0,
+                                    "y": 0,
+                                },
+                                "frameRandomOffsetX": 0,
+                                "frameRandomOffsetY": 0,
+                                "randomPointOffsetX": 0,
+                                "randomPointOffsetY": 0,
+                            })
+
+                            this.effectsList["inflict area damage"](params)
+                        },
+                        "frameOut": 10*60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 400,
+                        },
+
+                        "range": 400,
+                        "mult": 1,
+                        "uniform": true,
+                        "fakeObject": {
+                            "damageTypes": {
+                                "death": 1,
+                            },
+                        },
+
+                        "damage": 20,
+
+                    },
+
+                },
+                "on": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"reaper's death pulse",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+                            
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": this.effectsList["inflict area damage"],
+                        "suffixFunc": ["timeout"],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "timeout":{
+                            "frameOut": 10*60,
+                        },
+
+                    },
+        
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 400,
+                        },
+
+                        "range": 400,
+                        "mult": 1,
+                        "uniform": true,
+                        "fakeObject": {
+                            "damageTypes": {
+                                "death": 1,
+                            },
+                        },
+
+                        "damage": 20,
+
+                    },
+
+                },
+
+            },
+
+            "queen's war call": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 5*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                                "creatorSpecialAttention": 0.0000001
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                        "distance": OUTOFF_VISION_RANGE
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 2.5*60,
+                        },
+
+
+                        "stage": "last",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                                "creatorSpecialAttention": 0.0000001
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                        "distance": OUTOFF_VISION_RANGE
+                    },
+
+                }
+                
+            },
+
+            "royalty scout": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 30,
+                        "repeat": 1,
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                                "creatorSpecialAttention": 0.0000001,
+                            },
+                        ],
+                        "repeat": 8,
+                        "dispersion": 1,
+                        "velMult": 2,
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["deleteInstruction"],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                                "creatorSpecialAttention": 0.0000001,
+                            },
+                        ],
+                        "repeat": 8,
+                        "dispersion": 1,
+                        "velMult": 2,
+                    },
+
+                }
+                
+            },
+
+            "royalty guard": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 1*60*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessBishop,
+                                "AI": ["useActivates","escortAlly","areaSupport"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessTower,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 0.9*60*60,
+                        },
+
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessPawn,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessBishop,
+                                "AI": ["useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },{
+                                "objectClass": ChessTower,
+                                "AI": ["movable","useActivates","escortAlly"],
+                                "coreType":"support",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0.2,
+                                "creatorSpecialAttention": 0.0000001,
+                                "lifeTime": 1*60*60
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 1,
+                    },
+
+                }
+                
+            },
+
+            "action fight": {
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"action fight",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": this.effectsList["inflict area damage"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": true,
+                            "includeEnemyTeam": false,
+                            "includeYourself": true,
+                            "maxDistance": 100,
+                        },
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "physical": 1,
+                                "death": 0.25,
+                                "agony": 0.5,
+                                "surprise attack": 0.1,
+                            },
+                        },
+
+                        "uniform": true,
+
+                        "damage": 50
+                    },
+
+                },
+
+            },
+
+            "action mercy": {
+
+                "effect": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"action mercy",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+
+                            },
+                        }
+                    },
+
+                    "config": {
+                        "func": this.effectsList["inflict area damage"],
+                        "frameOut": 1,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+
+                        "searchConfig": {
+                            "includeSameTeam": true,
+                            "includeEnemyTeam": false,
+                            "includeYourself": true,
+                            "maxDistance": 120,
+                        },
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "ink": 1,
+                            },
+                            "passDamageMultiplier": 1
+                        },
+
+                        "uniform": true,
+
+                        "damage": 20
+                    },
+
+                },
+
+            },
+
+            "one for all": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["search objects"],
+                        "frameOut": 30*60,
+                        "repeat": 1,
+                    },
+        
+                    "params": {
+
+                        "func": (params) => {
+
+                            MultiplyStats.multiply(
+                                params.object,
+                                params.objectsStats.totalPriority*0.1
+                            )
+
+                        },
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 1000,
+                        },
+
+                    },
+
+                },
+
+            },
+
+            "inspiration": {
+
+                "effect": {
+
+                    "config": {
+                        "func": (params) => {
+
+                            this.effectsList["area sum max stat"](params)
+
+                            params.searchConfig.includeSameTeam = false
+                            params.searchConfig.includeEnemyTeam = true
+                            params.searchConfig.includeYourself = false
+
+                            this.effectsList["inflict area damage"](params)
+
+                            params.searchConfig.includeSameTeam = true
+                            params.searchConfig.includeEnemyTeam = false
+                            params.searchConfig.includeYourself = true
+                        },
+                        "frameOut": 2.5*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "ink": 1,
+                            },
+                            "passDamageMultiplier": 1
+                        },
+
+                        "uniform": true,
+
+                        "damage": 1,
+
+                        "searchConfig": {
+                            "includeSameTeam": true,
+                            "includeEnemyTeam": false,
+                            "includeYourself": true,
+                            "maxDistance": 250,
+                        },
+
+                        "mult": 0.01,
+                        "statName": ["Life","Energy","Shield"],
+                    },
+
+                },
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 5*60,
+                        },
+
+
+                        "stage": "first",
+                        "priority": 0,
+
+                        "func": (params) => {
+
+                            this.effectsList["area sum max stat"](params)
+
+                            params.searchConfig.includeSameTeam = false
+                            params.searchConfig.includeEnemyTeam = true
+                            params.searchConfig.includeYourself = false
+
+                            this.effectsList["inflict area damage"](params)
+
+                            params.searchConfig.includeSameTeam = true
+                            params.searchConfig.includeEnemyTeam = false
+                            params.searchConfig.includeYourself = true
+                        },
+                    },
+
+                    "params": {
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "ink": 1,
+                            },
+                            "passDamageMultiplier": 1
+                        },
+
+                        "uniform": true,
+
+                        "damage": 10,
+
+                        "searchConfig": {
+                            "includeSameTeam": true,
+                            "includeEnemyTeam": false,
+                            "includeYourself": true,
+                            "maxDistance": 500,
+                        },
+
+                        "mult": 0.1,
+                        "statName": ["Life","Energy","Shield"],
+                    },
+
+                }
+                
+            },
+
+            "redemption of the heart": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["inflict area damage"],
+                        "frameOut": 1*60*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "ink": 1,
+                            },
+                            "passDamageMultiplier": 1
+                        },
+
+                        "uniform": true,
+
+                        "damage": 30,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 500,
+                        },
+
+                    },
+
+                },
+    
+            },
+
+            "reaper's final invitation": {
+
+                "on": {
+
+                    "before": {
+                        "config": {
+                            "func": (params) => {
+
+                                new AnimationsController().run({
+                                    "name":"reaper's final invitation",
+                                    "focus": {
+                                        "x": params.object.x,
+                                        "y": params.object.y,
+                                    },
+                                    "offset": {
+                                        "x": 0,
+                                        "y": 0,
+                                    },
+                                    "frameRandomOffsetX": 0,
+                                    "frameRandomOffsetY": 0,
+                                    "randomPointOffsetX": 0,
+                                    "randomPointOffsetY": 0,
+                                })
+                            
+                            },
+                        }
+                    },
+
+                    "config": {
+
+                        "prefixFunc": [],
+                        "suffixFunc": [],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                        "func": this.effectsList["inflict area damage"]
+                    },
+
+                    "params": {
+
+                        "fakeObject": {
+                            "damageTypes": {
+                                "death": 1,
+                            },
+                        },
+
+                        "uniform": false,
+
+                        "damage": 100,
+
+                        "searchConfig": {
+                            "includeSameTeam": false,
+                            "includeEnemyTeam": true,
+                            "includeYourself": false,
+                            "maxDistance": 1000,
+                        },
+                    },
+
+                }
+                
+            },
+
+            "reaper's whispers of souls": {
+    
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": DeathHand,
+                                "AI": ["missileV1"],
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 6,
+                    },
+
+                }
+                
+            },
+
+            "slime's death": {
+
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": UnstableSlime,
+                                "AI": ["missileV1","useActivates"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },
+                        ],
+                        "repeat": 4,
+                        "dispersion": 1,
+                        "velMult": 5,
+                    },
+
+                },
+    
+            },
+
+            "slime spawner": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["create objects"],
+                        "frameOut": 20*60,
+                        "repeat": -1,
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Slime,
+                                "AI": ["missileV1","useActivates"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },
+                        ],
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 5,
+                    },
+
+                },
+
+                "on": {
+                
+                    "config": {
+
+                        "prefixFunc": [],
+                        "func": this.effectsList["create objects"],
+                        "suffixFunc": [],
+
+                        "stage": "first",
+                        "priority": 0,
+
+                    },
+
+                    "params": {
+                        "configs": [
+                            {
+                                "objectClass": Slime,
+                                "AI": ["missileV1","useActivates"],
+                                "coreType":"default",
+                                "activates": {},
+                                "behavior": new FocusedTopDownBehavior().searchPriority,
+                                "statsMult": 0,
+                            },
+                        ],
+                        "repeat": 4,
+                        "dispersion": 1,
+                        "velMult": 5,
+                    },
+
+                },
+    
             },
             "investor soul": {
 
