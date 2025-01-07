@@ -48,14 +48,18 @@ function firstLetterUppercase(string) {
     return string[0].toUpperCase() + string.slice(1)
 }
 
-function insertRelativeTo(arr, element, direction = "after", seach) {
+function insertRelativeTo(arr, element, direction = "after", seach, log = true) {
     let index = arr.indexOf(seach)
 
     if (index === -1) {
-      throw new Error(`Element ${seach} not found in the array.`)
+        if(log){
+            console.warn(`Element [${seach}] not found in the array.`)
+        }
+        var insertIndex = direction === "before" ? 0 : arr.length-1
+    }else{
+        var insertIndex = direction === "before" ? index : index + 1
     }
 
-    let insertIndex = direction === "before" ? index : index + 1
     arr.splice(insertIndex, 0, element)
 
     return arr

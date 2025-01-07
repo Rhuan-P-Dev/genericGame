@@ -65,13 +65,13 @@ export class DamageController {
         
     }
 
-    addDamageOrder(object, damageType, stat, direction, reference) {
+    addDamageOrder(object, damageType, stat, direction, reference, log = true) {
         if (!object.damageOrder[damageType]) {
             object.damageOrder[damageType] = [
                 stat
             ]
         }else{
-            insertRelativeTo(object.damageOrder[damageType], stat, direction, reference)
+            insertRelativeTo(object.damageOrder[damageType], stat, direction, reference, log)
         }
 
     }
@@ -447,9 +447,9 @@ export class DamageController {
 
     }
 
-    addTempDamageOrder(frames, object, damageType, stat, direction, reference){
+    addTempDamageOrder(frames, object, damageType, stat, direction, reference, log = false){
 
-        this.addDamageOrder(object, damageType, stat, direction, reference)
+        this.addDamageOrder(object, damageType, stat, direction, reference, log)
 
         setFrameOut(
             () => {
