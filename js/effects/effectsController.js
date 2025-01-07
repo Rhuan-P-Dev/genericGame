@@ -258,11 +258,19 @@ export class EffectsController {
 
         tempConfig.config = tempConfig
 
-        return params.object[applyType].add(
+        tempConfig.effectName = effectName
+        tempConfig.applyOnOther = true
+
+        let priority = params.object[applyType].add(
             tempConfig,
             tempConfig.stage || "first",
             tempConfig.priority || 0
         )
+
+        tempConfig.priority = priority
+        tempConfig.config.priority = priority
+
+        return priority
 
     }
 
