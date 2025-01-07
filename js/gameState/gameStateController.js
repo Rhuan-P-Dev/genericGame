@@ -206,6 +206,39 @@ export class GameStateController {
 
     }
 
+    overwriteObject(object) {
+        if (!this.checkObject(object)) {
+            console.error("Invalid object provided to overwriteObject:", object)
+            return
+        }
+
+        let oldObject = this.getObject(object.ID)
+
+        if (!this.checkObject(oldObject)) {
+            console.error("Object to overwrite does not exist:", object.ID)
+            return
+        }
+
+        let objectExist = this.getObjectOperationSlots(oldObject.ID)
+
+        this.remove(oldObject)
+
+        this.addObject(
+            object,
+            objectExist.AI,
+            objectExist.team,
+            objectExist.render,
+            objectExist.physics,
+            objectExist.rules,
+            objectExist.stats
+        )
+
+        if(
+            object.ID == this.getPlayer().ID
+        ){
+            KeyBoard.makeObjectInPlayerControl(object)
+            KeyBoard.reUpdateKeyBoardKeys(object)
+        }
 
     }
 
