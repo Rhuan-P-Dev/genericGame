@@ -47,6 +47,18 @@ export class EffectsController {
     effectsList = {}
 
     builded = false
+
+    getMinimalObject(
+        minimalObject = {},
+        object = {}
+    ){
+
+        minimalObject.effects = {}
+
+        return minimalObject
+
+    }
+
     setEffects(object, effects, promise = false){
 
         for (let effectType in effects.add) {
