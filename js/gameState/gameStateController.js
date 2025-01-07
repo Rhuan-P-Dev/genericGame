@@ -244,7 +244,17 @@ export class GameStateController {
         return GAME.stats
     }
 
-    changeTeam(oldTeam, newTeam){
+    changeTeam(oldTeam, newTeam, skipCheck = false){
+
+        if(
+            (
+                !this.checkObject(oldTeam)
+                ||
+                !this.checkObject(newTeam)
+            )
+            &&
+            !skipCheck
+        ){return}
 
         delete GAME.team[oldTeam.team][oldTeam.ID]
 
