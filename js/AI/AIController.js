@@ -27,6 +27,10 @@ export class AIController {
             delete excludeAI[object.ID]
         }
     }
+
+    addExclusion(object){
+        excludeAI[object.ID] = true
+    }
     }
 
     update(){
