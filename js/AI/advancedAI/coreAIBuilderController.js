@@ -136,4 +136,21 @@ export class CoreAIBuilderController {
 
         return name
     }
+
+    addAI(
+        coreParams,
+        coreName = `customCore-${randomUniqueID()}`,
+        parent = "default"
+    ) {
+        if (!this[parent]) {
+            throw new Error(`Parent core: ${parent} - not found`)
+        }
+        this[coreName] = { ...coreParams }
+        this.inheritance[coreName] = parent
+
+        this.build(coreName)
+
+        return coreName
+    }
+
 }
