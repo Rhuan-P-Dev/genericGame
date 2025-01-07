@@ -764,6 +764,8 @@ export class DamageController {
             !object
             ||
             !otherObject
+            ||
+            otherObject.life.get() <= 0
         ){return}
 
         let damageObject = this.getMinimalDamage(
