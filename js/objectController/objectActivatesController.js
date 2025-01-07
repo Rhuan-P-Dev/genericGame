@@ -32,7 +32,9 @@ export class ObjectActivatesController{
         if(activate){
 
             object.addActivate(activate)
-            
+
+            return activate
+
         }else{
             console.error("The loader have:",ActivateInfo.getLoarders()[typeOfLoader])
             throw new Error(
