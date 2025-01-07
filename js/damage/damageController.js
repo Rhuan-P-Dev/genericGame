@@ -602,6 +602,8 @@ export class DamageController {
 
     damageCalc(attacker, victim){
 
+        if(!victim.onDamage){return}
+
         let damage = attacker.damage
         let bokedDamage = attacker.damage
 
