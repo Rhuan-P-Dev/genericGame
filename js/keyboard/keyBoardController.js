@@ -120,6 +120,24 @@ export class KeyBoardController {
 
     }
 
+    tryAddToPlayer(object){
+
+        if(GameState.getPlayer().ID != object.ID){return}
+
+        this.makeObjectInPlayerControl(object)
+
+        for (const ID in object.activates) {
+
+            if(object.activates[ID].auto){continue}
+            
+            KeyBoard.updateKeyBoardKeys(() => {
+                object.activate(ID)
+            })
+
+        }
+
+    }
+
 }
 
 var KeyBoard = new KeyBoardController()
