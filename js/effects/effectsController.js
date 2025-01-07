@@ -388,6 +388,12 @@ export class EffectsController {
             "effect"
         )
 
+        Effects.linkOwnerToEffect(
+            params,
+            params.object,
+            false
+        )
+
         if(!promise){
 
             let effect = Effects.get(effectName).effect
