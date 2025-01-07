@@ -6,8 +6,28 @@ var CloneObject = ""
 onInit(function(){
 
     CloneObject = new CloneObjectController()
-
 })
+
+export class OnInstructionsController {
+
+    getMinimalOnInstructionsObject(
+        minimalObject = {},
+        object = {}
+    ){
+
+        new InheritController().inherit(
+            minimalObject,
+            [
+                onInstructions,
+            ],
+            false
+        )
+
+        return minimalObject
+
+    }
+
+}
 
 export class onInstructions {
 
