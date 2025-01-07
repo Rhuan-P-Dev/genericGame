@@ -18,14 +18,15 @@ onInit(function(){
 
 })
 
+const excludeAI = {}
+
 export class AIController {
 
-    remove(object){
-        GameState.removeFrom("AI", object)
+    removeExclusion(object){
+        if(excludeAI[object.ID]){
+            delete excludeAI[object.ID]
+        }
     }
-
-    add(object){
-        GameState.addTo("AI", object)
     }
 
     update(){
