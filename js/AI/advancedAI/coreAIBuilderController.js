@@ -115,4 +115,25 @@ export class CoreAIBuilderController {
         return CACHE[coreName]
     }
 
+    randomAI(percentage, parent = "default") {
+        if (!this[parent]) {
+            throw new Error(`Parent core: ${parent} - not found`)
+        }
+        let modifiedCore = { ...this[parent] }
+        for (let key in modifiedCore) {
+            if (
+                key !== "limitedActions"
+                &&
+                typeof modifiedCore[key] === "number"
+            ) {
+                modifiedCore[key] *= randomInterval(percentage) + 1
+            }
+        }
+
+        let name = `${randomUniqueID()}-randomAI_${percentage}`
+
+        this.addAI(modifiedCore, name, parent)
+
+        return name
+    }
 }
