@@ -535,6 +535,84 @@ export class AIUtilsController {
         return array
 
     }
+    filterObjectsByCoordinates(
+        objects,
+        start,
+        end,
+    ) {
+    
+        const co1_2 = start.getLeftRightPoints()
+    
+        const co1 = [
+            co1_2[0].x,
+            co1_2[0].y
+        ]
+    
+        const co2 = [
+            co1_2[1].x,
+            co1_2[1].y
+        ]
+    
+        end.getAngle = start.getAngle
+        end.xMult = start.xMult
+        end.yMult = start.yMult
+        end.width = start.width
+        end.height = start.height
+    
+        const co3_4 = start.getLeftRightPoints(end)
+    
+        const co3 = [
+            co3_4[1].x,
+            co3_4[1].y
+        ]
+    
+        const co4 = [
+            co3_4[0].x,
+            co3_4[0].y
+        ]
+
+        function isPointInsidePolygon(point, polygon) {
+            let inside = false;
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i][0], yi = polygon[i][1];
+                const xj = polygon[j][0], yj = polygon[j][1];
+                const intersect = ((yi > point[1]) != (yj > point[1])) && (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+    
+        function isCircleInsidePolygon(circle, polygon) {
+            const radius = circle.width / 2;
+            const center = [circle.x, circle.y];
+            const points = [
+                center,
+                [center[0] - radius, center[1] - radius],
+                [center[0] + radius, center[1] - radius],
+                [center[0] - radius, center[1] + radius],
+                [center[0] + radius, center[1] + radius],
+                [center[0] - radius / 2, center[1] - radius / 2],
+                [center[0] + radius / 2, center[1] - radius / 2],
+                [center[0] - radius / 2, center[1] + radius / 2],
+                [center[0] + radius / 2, center[1] + radius / 2]
+            ];
+    
+            for (let point of points) {
+                if (isPointInsidePolygon(point, polygon)) {
+                    return true;
+                }
+            }
+    
+            return false;
+        }
+    
+        const polygon = [co1, co2, co3, co4];
+    
+        return objects.filter((object) => {
+            return isCircleInsidePolygon(object, polygon);
+        });
+    
+    }
 
 }
 
