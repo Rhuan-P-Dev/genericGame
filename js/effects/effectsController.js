@@ -179,6 +179,8 @@ export class EffectsController {
         selfDelete = true
     ){
 
+        if(!params.object[applyType]){return}
+
         CloneObject.recursiveCloneAttribute(this.defaultTempConfig, tempConfig)
 
         if(selfDelete){
