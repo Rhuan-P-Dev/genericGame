@@ -170,6 +170,42 @@ export class GameStateController {
 
     }
 
+    getObjectOperationSlots(ID){
+
+        let object = GameState.getObject(ID)
+
+        if(
+            !this.checkObject(object)
+        ){
+            console.error(object)
+            console.error("Object:", object, " is not valid.")
+            return false
+        }
+
+        let objectExist = {}
+
+        for (let category of ["AI", "render", "physics", "rules", "stats"]) {
+            if (GAME[category][object.ID]) {
+                objectExist[category] = true
+            }else{
+                objectExist[category] = false
+            }
+        }
+
+        if(
+            GAME.team[object.team]
+            &&
+            GAME.team[object.team][object.ID]
+        ){
+            objectExist["team"] = true
+        }else{
+            objectExist["team"] = false
+        }
+
+        return objectExist
+
+    }
+
 
     }
 
