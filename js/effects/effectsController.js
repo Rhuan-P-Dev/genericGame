@@ -329,6 +329,9 @@ export class EffectsController {
         Effects.fix(config, effectName, "on", "config")
         Effects.fix(config.before, effectName, "on", "before")
 
+        config.effectName = effectName
+        config.applyOnOther = false
+
         new ComplexOnTypeFunctions().apply(config)
 
         let oldFunc = config.func
