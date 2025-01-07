@@ -159,6 +159,7 @@ export class GameStateController {
 
         Effects.closePromises(object)
         Animations.closePromises(object)
+        KeyBoard.tryAddToPlayer(object)
     }
 
     closePromises(object){
