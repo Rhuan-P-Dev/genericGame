@@ -1,3 +1,4 @@
+import { setFrameOut } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
 import { CoreAIBuilderController } from "./advancedAI/coreAIBuilderController.js"
 import { CoreAIController } from "./advancedAI/coreAIController.js"
@@ -31,6 +32,32 @@ export class AIController {
     addExclusion(object){
         excludeAI[object.ID] = true
     }
+
+    toggleAI(object, disableFramesOut) {
+
+        if(
+            object.AI === undefined
+            ||
+            object.ID == GameState.getPlayer().ID // this will give the player a little advantage
+        ){return}
+
+        this.addExclusion(object)
+
+        setFrameOut(
+            () => {
+                if(
+                    GameState.getObject(object.ID)
+                ){
+                    AIC.removeExclusion(object)
+                }else{
+                    AIC.addExclusion(object)
+                }
+            },
+            disableFramesOut,
+            1,
+            true,
+            object.ID + "_enabling AI..."
+        )
     }
 
     update(){
@@ -39,6 +66,8 @@ export class AIController {
 
         for(let objectName in allAI){
             let object = allAI[objectName]
+
+            if(excludeAI[object.ID]){continue}
 
             if(object.AI.runAll){
                 object.AI.runAll((node) => {
@@ -85,7 +114,7 @@ export class AIController {
 
 }
 
-var AI = new AIController()
+var AIC = new AIController()
 
 export class AILinkedList extends LinkedList{
 
