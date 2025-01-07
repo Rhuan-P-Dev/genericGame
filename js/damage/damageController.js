@@ -51,6 +51,10 @@ export class DamageController {
         }
     }
 
+    getDamages(object) {
+        return object.damageTypes || {}
+    }
+
     addDefense(object, stat, type, amount, force = false) {
 
         if(!object.defenseTypes[stat]){
