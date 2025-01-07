@@ -1,4 +1,3 @@
-
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 
 var CloneObject
@@ -42,7 +41,7 @@ export class CoreAIBuilderController {
         //define the number of times a type of action can be executed per frame.
         "limitedActions": {
             "movable": 1,
-            "activate": 6
+            "activate": 999
         },
 
         //how much you conserve your 'energy'
