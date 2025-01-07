@@ -399,6 +399,43 @@ export class DamageController {
         }
 
     }
+
+    ink(params, damage){
+
+        if(
+            params.object.inkProgress === undefined
+        ){
+            params.object.inkProgress = 0
+            params.object.inkProgressMax = 20
+        }
+
+        // 6 = ship size
+        const sizeMult = 6 / (
+            (
+                params.object.width + params.object.height
+            ) / 2
+        )
+
+        // 6 = ship priority
+        const priorityMult = 6 / params.object.priority
+
+        params.object.inkProgress += damage * sizeMult * priorityMult
+
+        if(
+            params.object.inkProgress >= params.object.inkProgressMax
+        ){
+
+            params.object.inkProgress = 0
+
+            GameState.changeTeam(
+                params.object,
+                params.otherObjectMaster
+            )
+
+        }
+
+
+    }
     }
 
     requiredTable = {
@@ -424,6 +461,9 @@ export class DamageController {
             },
             "death": (params, damage) => {
                 this.death(params, damage)
+            },
+            "ink": (params, damage) => {
+                this.ink(params, damage)
             },
         }
     }
