@@ -159,6 +159,28 @@ export class GameStateController {
 
         Effects.closePromises(object)
         Animations.closePromises(object)
+    }
+
+    closePromises(object){
+
+        for (
+            let index = 0;
+            object.addActivatesPromises
+            &&
+            index < object.addActivatesPromises.length;
+            index++
+        ) {
+
+            const func = object.addActivatesPromises[index]
+
+            func(object)
+
+        }
+
+        object.addActivatesPromises = []
+
+    }
+
     tryAddObjectAutoWeapons(object){
 
         for (const ID in object.activates) {
