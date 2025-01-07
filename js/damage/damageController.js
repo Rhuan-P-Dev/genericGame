@@ -125,8 +125,10 @@ export class DamageController {
 
     passDamageMultiplierTable = {
         "dark energy": 0.8,
-        "parasite blaster": 0.5,
+        "parasite blaster": 0.4,
         "surprise attack": 1,
+        "laser": 0.6,
+        "corruption": 1
     }
 
     selfSwarm(params, damage){
@@ -202,6 +204,9 @@ export class DamageController {
             5*60,
             3
         )
+
+        // agony - criar asombrasoes, naves pretas, mover coias de lugar, coisas ruins, fantasmas e inimigos reais. GRUDA - ???????????
+        // cavez que ELE morrewr ispawnar X sombras e inimigos reais? - ????????????????????????
 
     }
 
