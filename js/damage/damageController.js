@@ -436,6 +436,47 @@ export class DamageController {
 
 
     }
+
+    snow(params, damage){
+
+        const mult = Math.min(
+            Math.max(
+                CustomMath.linearReverse(
+                    damage,
+                    50
+                ),
+                0
+            ),
+            1
+        )
+
+        params.object.currentXVel *= mult
+        params.object.currentYVel *= mult
+
+    }
+
+    snowAnimation(params, damage){
+
+         for (let index = 0; index < parseInt(damage/3) + 1; index++) {
+
+            Animations.run({
+                "name":"snow",
+                "focus": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                },
+                "offset": {
+                    "x": randomInteger(-params.object.width, params.object.width),
+                    "y": randomInteger(-params.object.height, params.object.height),
+                },
+                "frameRandomOffsetX": 0,
+                "frameRandomOffsetY": 0,
+                "randomPointOffsetX": 0,
+                "randomPointOffsetY": 0,
+            })
+
+        }
+
     }
 
     requiredTable = {
@@ -451,6 +492,10 @@ export class DamageController {
         },
         "death": (params, damage) => {
             this.deathAnimation(params, damage)
+        },
+        "snow": (params, damage) => {
+            this.snowAnimation(params, damage)
+            this.snow(params, damage)
         },
     }
 
