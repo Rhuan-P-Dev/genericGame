@@ -17,12 +17,15 @@ var player = ""
 var arbitraryKeysSequence = {
    "a":"s",
    "s":"d",
-   "d":"q",
+   "d":"f",
+   "f":"q",
    "q":"w",
    "w":"e",
-   "e":"z",
+   "e":"r",
+   "r":"z",
    "z":"x",
    "x":"c",
+   "c":"v",
 }
 
 export class KeyBoardController {
