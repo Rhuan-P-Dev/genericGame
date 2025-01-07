@@ -42,6 +42,48 @@ export class ObjectActivatesController{
 
     }
 
+    removeActivate(object, activateName, removeAll = false) {
+
+        for (let activateID in object.activates) {
+
+            let activate = object.activates[activateID]
+
+            if (activate.name === activateName) {
+
+                if (
+                    GameState.getPlayer().ID === object.ID
+                    &&
+                    !activate.auto
+                ) {
+
+                    KeyBoard.removeKeyboardBinding(activate.keyBinding)
+
+                }
+
+                if(activate.auto){
+                    GameState.remove(
+                        activate
+                    )
+                }
+
+                delete object.activates[activateID]
+
+                if(!removeAll){
+                    return
+                }
+
+            }
+
+        }
+
+    }
+
+    removeAllActivate(object, activateName) {
+
+        this.removeActivate(object, activateName, true)
+
+    }
+
     setActivates(object, activates){
 
         for (let key in activates) {
