@@ -1,4 +1,3 @@
-
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { VectorController } from "../../generalUtils/vector.js"
@@ -535,6 +534,34 @@ export class AIUtilsController {
         return array
 
     }
+
+    getObjectInCoordinates(
+        object,
+        start,
+        end,
+        angle,
+        config = {
+            "minPriority": object.searchPriority.min,
+            "maxPriority": object.searchPriority.max,
+        }
+    ){
+
+        let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            object,
+            config
+        )
+
+        if(array.length == 0){return false}
+
+        return this.filterObjectsByCoordinates(
+            array,
+            start,
+            end,
+            angle,
+        );
+
+    }
+
     filterObjectsByCoordinates(
         objects,
         start,
