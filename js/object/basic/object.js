@@ -102,12 +102,12 @@ export class Object {
             },"last",10)
 
             updateThis.onDeath.add({
-                "func": () => {
+                "func": (params) => {
                     new AnimationsController().run({
                         "name":"ship dead",
                         "focus": {
-                            "x": updateThis.x,
-                            "y": updateThis.y,
+                            "x": params.object.x,
+                            "y": params.object.y,
                         },
                         "offset": {
                             "x": 0,
