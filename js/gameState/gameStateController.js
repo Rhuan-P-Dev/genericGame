@@ -127,7 +127,7 @@ export class GameStateController {
         if(
             !this.checkObject(object)
         ){
-            console.error("Object:", object, " is not valid.")
+            //console.error("Object:", object, " is not valid.")
             return false
         }
 
