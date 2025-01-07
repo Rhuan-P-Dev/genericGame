@@ -3,12 +3,14 @@ import { EffectsController } from "../effects/effectsController.js"
 import { FrameController } from "../frame/frameController.js"
 import { AnimationsController } from "../graphics/animation/animationsController.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
+import { KeyBoardController } from "../keyboard/keyBoardController.js"
 
 var Effects
 var Animations
 var Frame
 var ScreenRender
 var CoreAIBuilder
+var KeyBoard
 
 onInit(function(){
 
@@ -17,6 +19,7 @@ onInit(function(){
     Frame = new FrameController()
     ScreenRender = new ScreenRenderController()
     CoreAIBuilder = new CoreAIBuilderController()
+    KeyBoard = new KeyBoardController()
 
 })
 
@@ -257,6 +260,12 @@ export class GameStateController {
         this.removeEffects(object)
 
         this.removeAnimations(object)
+
+        if(
+            object.ID == this.getPlayer().ID
+        ){
+            KeyBoard.resetKeyboardBinding()
+        }
 
         object.disableResuls = {}
 
