@@ -82,6 +82,15 @@ export class AIUtilsController {
 
     }
 
+    pointToTarget(object, target){
+    
+        let direction = Vector.vectorNormalize(target, object)
+        
+        object.cosine = direction.x
+        object.sine = direction.y
+    
+    }
+
     getPointed(object, target){
 
         let frontOfObject = {
