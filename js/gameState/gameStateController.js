@@ -96,6 +96,8 @@ export class GameStateController {
             object === undefined
             ||
             object.ID === undefined
+            ||
+            object.ID === "newID"
             //||
             //GAME.team[object.team] === undefined
         ){
