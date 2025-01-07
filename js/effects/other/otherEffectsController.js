@@ -1,13 +1,17 @@
+import { AIUtilsController } from "../../AI/utils/AIUtils.js"
 import { DamageController } from "../../damage/damageController.js"
+import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
 
-var GameState = ""
+var GameState
 var Damage
+var AIUtils
 
 onInit(function(){
 
     GameState = new GameStateController()
     Damage = new DamageController()
+    AIUtils = new AIUtilsController()
 
 })
 
@@ -78,6 +82,81 @@ export class OtherEffectsController {
             params.calcDamage *= params.config.getPercentage(params)
             params.damage *= params.config.getPercentage(params)
 
+        },
+
+        "damage type evolution": (params) => {
+
+            const otherObjectDamage = Damage.getDamages(
+                params.otherObject
+            )
+
+            for (const damage in otherObjectDamage) {
+
+                const typeCalcDamage = otherObjectDamage[damage] * params.calcDamage
+
+                Damage.addDefense(
+                    params.object,
+                    "life",
+                    damage,
+                    typeCalcDamage * params.config.percentage
+                )
+
+            }
+
+        },
+
+        "damage split": (params) => {
+
+            if(params.calcDamage < 1){return}
+
+            const allies = AIUtils.returnArrayWithAlllObjectsOfTeams(
+                params.object,
+                {
+                    "includeEnemyTeam": false,
+                    "includeSameTeam": true,
+                    "minPriority": 2,
+                    "maxDistance": params.range,
+                }
+            )
+
+            if (allies.length === 0) {
+                return
+            }
+
+            const damagePerAlly = params.calcDamage / (allies.length+1)
+        
+            allies.forEach(ally => {
+                setFrameOut(
+                    () => {
+                        Damage.doMinimalAttack(
+                            damagePerAlly,
+                            params.otherObject.damageTypes,
+                            params.otherObject,
+                            ally,
+                        )
+                    },1
+                )
+            })
+        
+            params.calcDamage = damagePerAlly
+        
+        },
+
+        "bad to good": (params) => {
+
+            if (params.calcDamage <= 0) { return }
+        
+            let stat = params.calcDamage * params.config.getPercentage(params)
+        
+            params.statName.forEach(statName => {
+                if (typeof params.object[statName] == "number") {
+                    params.object[statName] += stat
+                } else {
+                    params.object[statName].math("+", stat)
+                }
+            })
+        
+            params.calcDamage -= stat
         },
 
     }
@@ -209,6 +288,41 @@ export class OtherEffectsController {
 
             },
 
+            "resurrection - 4": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [""],
+                        "func": this.effectsList["resurrection"],
+                        "suffixFunc": ["countDown","stopStages"],
+
+                        "countDown": {
+                            "countDownFunction": ["deleteInstruction"],
+                            "count": 5
+                        },
+
+                        "stopStages": {
+                            "stages": ["last"],
+                        },
+
+                        "stage": "last",
+                        "priority": 0,
+
+                        "getPercentage": (params) => {
+
+                            return 1
+
+                        }
+
+                    },
+        
+                    "params": {},
+
+                }
+
+            },
+
             "counterback":  {
 
                 "on": {
@@ -239,6 +353,82 @@ export class OtherEffectsController {
 
                 }
 
+            },
+
+            "defense evolution": {
+
+                "on": {
+
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["damage type evolution"],
+                        "suffixFunc": [],
+
+                        "stage": "last",
+                        "priority": 0,
+
+                        "percentage": 0.001
+
+                    },
+
+                    "params": {},
+
+                }
+
+            },
+
+            "distributor": {
+
+                "on": {
+            
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["damage split"],
+                        "suffixFunc": [],
+            
+                        "stage": "first",
+                        "priority": 0,
+            
+                    },
+            
+                    "params": {
+                        "range": 200,
+                    },
+            
+                }
+            
+            },
+
+            "harm to good": {
+
+                "on": {
+            
+                    "config": {
+                        "prefixFunc": [],
+                        "func": this.effectsList["bad to good"],
+                        "suffixFunc": ["timeout"],
+
+                        "timeout":{
+                            "frameOut": 1*60,
+                        },
+            
+                        "stage": "first",
+                        "priority": 0,
+
+                        "getPercentage": (params) => {
+
+                            return 1
+
+                        }
+            
+                    },
+            
+                    "params": {
+                        "statName": ["life","energy","shield"]
+                    },
+            
+                }
+            
             },
 
         },
