@@ -71,6 +71,24 @@ export class KeyBoardController {
         keyBoardFunctions[key] = func
         keyBoardFunctionsBoolean[key] = false
     }
+
+    reUpdateKeyBoardKeys(object){
+
+        const ObjectActivates = object.activates
+
+        for (const activateID in ObjectActivates) {
+
+            const activate = ObjectActivates[activateID]
+
+            if(activate.auto){continue}
+
+            KeyBoard.updateKeyBoardKeys(() => {
+                object.activate(activate.ID)
+            })
+
+        }
+
+    }
     resetKeyboardBinding(){
         keyBoardFunctions = {}
         keyBoardFunctionsBoolean = {}
