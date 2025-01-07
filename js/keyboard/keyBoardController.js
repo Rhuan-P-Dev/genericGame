@@ -68,6 +68,10 @@ export class KeyBoardController {
         keyBoardFunctions[key] = func
         keyBoardFunctionsBoolean[key] = false
     }
+    resetKeyboardBinding(){
+        keyBoardFunctions = {}
+        keyBoardFunctionsBoolean = {}
+    }
 
     runCommands(){
 
