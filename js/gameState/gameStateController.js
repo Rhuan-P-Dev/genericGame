@@ -157,6 +157,7 @@ export class GameStateController {
             GAME.stats[object.ID] = object
         }
 
+        GameState.tryAddObjectAutoWeapons(object)
         Effects.closePromises(object)
         Animations.closePromises(object)
         KeyBoard.tryAddToPlayer(object)
