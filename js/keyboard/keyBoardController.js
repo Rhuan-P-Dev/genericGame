@@ -89,6 +89,14 @@ export class KeyBoardController {
         }
 
     }
+
+    removeKeyboardBinding(key) {
+        if (keyBoardFunctions.hasOwnProperty(key)) {
+            delete keyBoardFunctions[key]
+            delete keyBoardFunctionsBoolean[key]
+        }
+    }
+
     resetKeyboardBinding(){
         keyBoardFunctions = {}
         keyBoardFunctionsBoolean = {}
