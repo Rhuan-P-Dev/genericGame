@@ -32,6 +32,7 @@ export class AIUtilsController {
 
         minimalObject.ID = "minimal"//randomUniqueID() + "minimal"
         minimalObject.team = object.team || "minimal"
+        minimalObject.color = object.color || "white"
 
         return minimalObject
     }
