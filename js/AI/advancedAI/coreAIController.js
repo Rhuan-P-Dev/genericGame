@@ -287,6 +287,26 @@ export class CoreAIController {
 
     }
 
+    getAllAITypes(){
+
+        let allAITypes = new Set()
+
+        for (const key in AIActionTypes) {
+            allAITypes.add(key)
+        }
+
+        for (const key in AdvancedAITypes.AItypes) {
+            allAITypes.add(key)
+        }
+
+        for (const key in GetParameters.getParametersOf) {
+            allAITypes.add(key)
+        }
+
+        return Array.from(allAITypes)
+
+    }
+
 }
 
 const CoreAI = new CoreAIController()
