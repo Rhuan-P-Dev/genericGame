@@ -22,6 +22,30 @@ import { MovableSaferPerimeter1 } from "../../shipUnits/factory/info/factory/mov
 import { SaferPerimeter1 } from "../../shipUnits/factory/info/factory/saferPerimeter1.js"
 import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
 import { SelfSwarmDrone } from "../../object/complex/special drone/selfSwarmDrone.js"
+import { GovernmentAgent1 } from "../../shipUnits/factory/info/factory/governmentAgent1.js"
+import { GovernmentAgent2 } from "../../shipUnits/factory/info/factory/governmentAgent2.js"
+import { MovableFlameThrower1 } from "../../shipUnits/factory/info/factory/movableFlameThrower1.js"
+import { MovableShotgun1 } from "../../shipUnits/factory/info/factory/movableShotgun1.js"
+import { GovernmentAgent3 } from "../../shipUnits/factory/info/factory/governmentAgent3.js"
+import { Assassin1 } from "../../shipUnits/factory/info/factory/assassin1.js"
+import { MovableMissileBurst1 } from "../../shipUnits/factory/info/factory/movableMissileBurst1.js"
+import { GovernmentAgent4 } from "../../shipUnits/factory/info/factory/governmentAgent4.js"
+import { SafePerimeterCarrier1 } from "../../shipUnits/factory/info/factory/safePerimeterCarrier1.js"
+import { GovernmentAgent5 } from "../../shipUnits/factory/info/factory/governmentAgent5.js"
+import { WarPromoter1 } from "../../shipUnits/factory/info/factory/warPromoter1.js"
+import { VanguardHelper1 } from "../../shipUnits/factory/info/factory/vanguardHelper1.js"
+import { MovableScrapper1 } from "../../shipUnits/factory/info/factory/movableScrapper1.js"
+import { MovableDisassemble1 } from "../../shipUnits/factory/info/factory/movableDisassemble1.js"
+import { Ship } from "../../object/complex/ship.js"
+import { Police } from "../../object/complex/special ship/police.js"
+import { Zombie } from "../../object/complex/special ship/zombie.js"
+import { ChessPawn } from "../../object/complex/special drone/chessPawn.js"
+import { ChessBishop } from "../../object/complex/special drone/chessBishop.js"
+import { ChessTower } from "../../object/complex/special drone/chessTower.js"
+import { MultiplyStatsController } from "../../generalUtils/multiplyStats.js"
+import { UnstableSlime } from "../../object/complex/special drone/unstableSlime.js"
+import { Slime } from "../../object/complex/special drone/slime.js"
+import { SmallSnowBulletProjectile } from "../../object/projectiles/complex/smallSnowBulletProjectile.js"
 
 
 
@@ -2159,6 +2183,59 @@ export class GenericEffectsController {
                 },
 
             },
+
+            "wanted by government": {
+
+                "effect": {
+
+                    "config": {
+                        "func": this.effectsList["gated create objects"],
+                        "frameOut": 30*60,
+                        "repeat": -1,
+                    },
+        
+                    "params": {
+                        "configs": [
+                            [
+                                new MovableSaferPerimeter1().config,
+                                new GovernmentAgent1().config,
+                                new MovableSaferPerimeter1().config,
+                            ],[
+                                new MovableShotgun1().config,
+                                new GovernmentAgent2().config,
+                                new MovableFlameThrower1().config,
+                            ],[
+                                new Assassin1().config,
+                                new MovableScrapper1().config,
+                                new GovernmentAgent3().config,
+                                new MovableDisassemble1().config,
+                                new MovableMissileBurst1().config,
+                            ],[
+                                new SafePerimeterCarrier1().config,
+                                new SafePerimeterCarrier1().config,
+                                new GovernmentAgent4().config,
+                                new SafePerimeterCarrier1().config,
+                                new SafePerimeterCarrier1().config,
+                            ],[
+                                new WarPromoter1().config,
+                                new GovernmentAgent5().config,
+                                new GovernmentAgent5().config,
+                                new GovernmentAgent5().config,
+                                new VanguardHelper1().config,
+                            ],
+                        ],
+    
+                        "baseStat": "stars",
+                        "distance": OUTOFF_VISION_RANGE,
+    
+                        "repeat": 1,
+                        "dispersion": 1,
+                        "velMult": 0,
+                    },
+
+                }
+
+            }
 
         },
 
