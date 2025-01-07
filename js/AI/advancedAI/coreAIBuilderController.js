@@ -82,14 +82,14 @@ export class CoreAIBuilderController {
 
     build(coreName = "undefined"){
 
+        if(CACHE[coreName]){
+            return true
+        }
+
         if(!this[coreName]){
 
             throw new Error(`Core: ${coreName} - not found`)
 
-        }
-
-        if(CACHE[coreName]){
-            return true
         }
 
         let newCore = this[coreName]
