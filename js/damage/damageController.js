@@ -1,6 +1,8 @@
+import { AIController } from "../AI/AIController.js"
 import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { setFrameOut } from "../frame/frameController.js"
+import { GameStateController } from "../gameState/gameStateController.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { CustomMathController } from "../generalUtils/math.js"
 import { AnimationsController } from "../graphics/animation/animationsController.js"
@@ -14,6 +16,8 @@ var ScreenRender
 var CloneObject
 var Animations
 var CustomMath
+var AIC
+var GameState
 
 onInit(function(){
 
@@ -22,6 +26,8 @@ onInit(function(){
     CloneObject = new CloneObjectController()
     Animations = new AnimationsController()
     CustomMath = new CustomMathController()
+    AIC = new AIController()
+    GameState = new GameStateController()
 
 })
 
@@ -341,6 +347,60 @@ export class DamageController {
 
     }
 
+    death(params, damage){
+
+        const stunTime = damage / 10
+
+        if(stunTime < 1){return}
+
+        AIC.toggleAI(
+            params.object,
+            stunTime * 30
+        )
+
+        setFrameOut(
+            () => {
+
+                Damage.doMinimalAttack(
+                    1,
+                    {
+                        "death": 1
+                    },
+                    params.otherObjectMaster,
+                    params.object,
+                )
+            },
+            60,
+            stunTime,
+        )
+
+    }
+
+    deathAnimation(params, damage){
+
+        for (let index = 0; index < parseInt(damage/10) + 1; index++) {
+
+            Animations.run({
+                "name":"death",
+                "focus": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                },
+                "offset": {
+                    "x": randomInteger(-params.object.width, params.object.width),
+                    "y": randomInteger(-params.object.height, params.object.height),
+                },
+                "frameRandomOffsetX": 0,
+                "frameRandomOffsetY": 0,
+                "randomPointOffsetX": 0,
+                "randomPointOffsetY": 0,
+            })
+
+        }
+
+    }
+    }
+
     requiredTable = {
         "fire": (params, damage) => {
             this.fireAnimation(params, damage)
@@ -352,12 +412,18 @@ export class DamageController {
         "agony": (params, damage) => {
             this.agony(params, damage)
         },
+        "death": (params, damage) => {
+            this.deathAnimation(params, damage)
+        },
     }
 
     specialEffectsTable = {
         "life": {
             "self swarm": (params, damage) => {
                 this.selfSwarm(params, damage)
+            },
+            "death": (params, damage) => {
+                this.death(params, damage)
             },
         }
     }
