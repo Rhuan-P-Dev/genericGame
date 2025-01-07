@@ -1,11 +1,16 @@
+import { EffectsController } from "../../effects/effectsController.js"
 import { setFrameOut } from "../../frame/frameController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
+import { InheritController } from "../../generalUtils/inherit.js"
 
 var CloneObject = ""
+var Effects
 
 onInit(function(){
 
     CloneObject = new CloneObjectController()
+    Effects = new EffectsController()
+
 })
 
 export class OnInstructionsController {
@@ -31,11 +36,62 @@ export class OnInstructionsController {
 
 export class onInstructions {
 
+    constructor(){
+
+        this.onDeath.add({
+            "func": (params) => {
+
+                if(
+                    params.object.priority >= 2
+                    &&
+                    params.object.lastAttacker
+                    &&
+                    params.object.lastAttacker.otherObjectMaster
+                    &&
+                    params.object.lastAttacker.otherObjectMaster.onKill
+                ){
+
+                    let master = params.object
+
+                    while(master.owner){
+
+                        master = master.owner
+
+                    }
+
+                    //console.log(params.object.lastAttacker)
+
+                    //Effects.linkOwnerToEffect(
+                    //    params.object.lastAttacker.otherObjectMaster,
+                    //    owner
+                    //)
+
+                    params.object.lastAttacker.otherObjectMaster.onKill.run({
+                        "object": params.object.lastAttacker.otherObjectMaster,
+                        "otherObjectMaster": master,
+                        "otherObject": params.object,
+                        "calcDamage": params.object.lastAttacker.calcDamage,
+                        "damage": params.object.lastAttacker.damage,
+                        "config": {},
+                        "typeOfDamage": params.object.lastAttacker.typeOfDamage,
+                        "typeOfDamagedStats": params.object.lastAttacker.typeOfDamagedStats
+                    })
+
+                }
+
+            },
+        },"last",9)
+
+    }
+
+
     onHit = new ComplexOnType()
 
     onDeath = new ComplexOnType()
 
     onDamage = new ComplexOnType()
+
+    onKill = new ComplexOnType()
 
 }
 
