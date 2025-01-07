@@ -409,7 +409,10 @@ export class DamageController {
             "parasite blaster": 0,
             "dark energy": 0,
             "agony": 0,
-            "surprise attack": 0
+            "surprise attack": 0,
+            "laser": 0.2,
+            "ink": 0,//?
+            "snow": 2.5,
         }
     }
 
