@@ -79,14 +79,17 @@ export class GameStateController {
     }
 
     addTo(type, object){
+
         if(
             GAME[type]
-            ||
+            &&
+            GAME[type][object.ID] == undefined
+            &&
             this.checkObject(object)
         ){
             GAME[type][object.ID] = object
         }else{
-            console.error(`Type ${type} not found in game state.`)
+            console.error(`Object ${object.ID} already exists in game state or is invalid.`)
         }
     }
 
