@@ -26,6 +26,7 @@ export class Tank1 {
     config = {
         "objectClass": DroneV2,
         "AI": ["movable","useActivates"],
+        "coreType":"default",
         "activates": {
             "special": ["basic taunt"],
             "defense": ["light defense","regen"],

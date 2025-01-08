@@ -26,6 +26,7 @@ export class Upgrader3 {
     config = {
         "objectClass": DroneV2,
         "AI": ["movable","useActivates"],
+        "coreType":"default",
         "activates": {
             "special": ["lv up"],
             "weapon": ["piston 1","small bullet cluster 1","sniper piston 1"],
