@@ -16,6 +16,9 @@ import { Swarm } from "./modifiers/swarm.js"
 import { Widen } from "./modifiers/widen.js"
 import { ModDistortion } from "./modifiers/modBased/modDistortion.js"
 import { MidWiden } from "./modifiers/midWiden.js"
+import { LittleMore } from "./modifiers/littleMore.js"
+import { LittleDamageBoost } from "./modifiers/littleDamageBoost.js"
+import { ModLittleCostEfficiency } from "./modifiers/modBased/modLittleCostEfficiency.js"
 
 var Weapons = ""
 var cloneObject = ""
@@ -49,8 +52,69 @@ export class WeaponsModifiersController{
         "barrier": Barrier,
         "shadow barrier": ShadowBarrier,
         "swarm": Swarm,
+        "little more": LittleMore,
+        "little damage boost": LittleDamageBoost,
 
-        "dice": ModDice,
+        //"dice": ModDice,
+        "mod little cost efficiency": ModLittleCostEfficiency
+    }
+
+    get(modifierName, build = false){
+
+        if(build){
+            return new this.modifiers[modifierName](true)
+        }else{
+            return this.modifiers[modifierName]
+        }
+    }
+
+    getRandomModifiers(modsCount) {
+        const modifierNames = Object.keys(this.modifiers);
+        const randomModifiers = []
+
+        for (let index = 0; index < modsCount; index++) {
+            const randomIndex = randomInteger(0, modifierNames.length-1)
+            const randomModifier = modifierNames[randomIndex]
+            randomModifiers.push(randomModifier)
+        }
+
+        return randomModifiers
+
+    }
+
+    getAll(){
+        return this.modifiers
+    }
+
+    getMult(modifier, build = false){
+        if(build){
+            return this.get(modifier, true).costMult
+        }else{
+            return modifier.costMult
+        }
+    }
+
+    getAllMults(build = false){
+
+        const mods = this.getAll()
+        let mults = {}
+
+        for(let mod in mods){
+            mults[mod] = this.getMult(mod, build)
+        }
+
+        return mults
+
+    }
+
+    getMults(modifiers, build = false){
+        let result = 0
+
+        modifiers.forEach(modifier => {
+            result += this.getMult(modifier, build)
+        })
+
+        return result
     }
 
     build(modifierName){
@@ -95,7 +159,7 @@ export class WeaponsModifiersController{
 
     useModifier(object, activate){
 
-        activate.modifiers.runAll()
+        return activate.modifiers.runAll()
 
     }
 
@@ -172,6 +236,22 @@ export class WeaponsModifiersController{
 
         }
     
+        return output
+
+    }
+
+    booster(output, modifier, config, node){
+
+        for (let index = 0; index < output.length; index++) {
+
+            if(
+                output[index].object[modifier.stat] !== undefined
+            ){
+                output[index].object[modifier.stat] *= modifier.mult
+            }
+
+        }
+
         return output
 
     }
@@ -403,7 +483,7 @@ export class ModifiersDoublyLinkedList extends LinkedList{
             node = node.previous
         }
 
-        Weapons.processObjects(node.value.activate, outputObjects)
+        return Weapons.processObjects(node.value.activate, outputObjects)
         
     }
 

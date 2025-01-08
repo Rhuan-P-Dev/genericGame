@@ -17,12 +17,15 @@ var player = ""
 var arbitraryKeysSequence = {
    "a":"s",
    "s":"d",
-   "d":"q",
+   "d":"f",
+   "f":"q",
    "q":"w",
    "w":"e",
-   "e":"z",
+   "e":"r",
+   "r":"z",
    "z":"x",
    "x":"c",
+   "c":"v",
 }
 
 export class KeyBoardController {
@@ -69,6 +72,36 @@ export class KeyBoardController {
         keyBoardFunctionsBoolean[key] = false
     }
 
+    reUpdateKeyBoardKeys(object){
+
+        const ObjectActivates = object.activates
+
+        for (const activateID in ObjectActivates) {
+
+            const activate = ObjectActivates[activateID]
+
+            if(activate.auto){continue}
+
+            KeyBoard.updateKeyBoardKeys(() => {
+                object.activate(activate.ID)
+            })
+
+        }
+
+    }
+
+    removeKeyboardBinding(key) {
+        if (keyBoardFunctions.hasOwnProperty(key)) {
+            delete keyBoardFunctions[key]
+            delete keyBoardFunctionsBoolean[key]
+        }
+    }
+
+    resetKeyboardBinding(){
+        keyBoardFunctions = {}
+        keyBoardFunctionsBoolean = {}
+    }
+
     runCommands(){
 
         for(let key in keyBoardFunctionsBoolean){
@@ -110,6 +143,24 @@ export class KeyBoardController {
             }
 
         })
+
+    }
+
+    tryAddToPlayer(object){
+
+        if(GameState.getPlayer().ID != object.ID){return}
+
+        this.makeObjectInPlayerControl(object)
+
+        for (const ID in object.activates) {
+
+            if(object.activates[ID].auto){continue}
+            
+            KeyBoard.updateKeyBoardKeys(() => {
+                object.activate(ID)
+            })
+
+        }
 
     }
 

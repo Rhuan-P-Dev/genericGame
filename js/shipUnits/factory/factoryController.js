@@ -56,18 +56,22 @@ export class FactoryController{
 
     }
 
-    createObjectNow(object, activate, config){
+    createObjectNow(object, activate, config, location = object){
 
         let newObject = Factory.createObject(object, activate, config)
 
-        Activate.primitiveAjustObject(object, newObject)
+        if(Activate.primitiveAjustObject(object, newObject, location)){
 
-        newObject.x += config.randomPos || 0
-        newObject.y += config.randomPos || 0
+            newObject.x += config.randomPos || 0
+            newObject.y += config.randomPos || 0
 
-        ObjectActivates.setActivates(newObject, config.activates)
+            ObjectActivates.setActivates(newObject, config.activates)
 
-        Activate.addObject(newObject)
+            Activate.addObject(newObject)
+
+            return newObject
+
+        }
 
     }
 
@@ -85,7 +89,13 @@ export class FactoryController{
         }
 
         if(config.AI){
-            AIC.giveAI(newObject, config.AI)
+
+            if(config.coreType){
+                AIC.giveCoreAI(newObject, config.AI, config.coreType)
+            }else{
+                AIC.giveAI(newObject, config.AI)
+            }
+
         }
 
         if(config.behavior){
@@ -105,6 +115,12 @@ export class FactoryController{
 
             newObject.lifeTime = config.lifeTime
 
+        }
+
+        if(config.creatorSpecialAttention !== undefined){
+            newObject.searchPriority.favoriteTargetsObsession[
+                object.ID
+            ] = config.creatorSpecialAttention
         }
 
         return newObject
@@ -143,10 +159,13 @@ export class FactoryController{
         // your self - facotry!
 
         if(!config.selffff){
-            config.selffff = CloneObject.clone(object) // 'self'
+            //config.selffff = CloneObject.clone(object, false) // 'self'
+
+
+            // bug! with the blessed!
         }
 
-        let clone = CloneObject.clone(config.selffff)
+        let clone = CloneObject.clone(object)
 
         MultiplyStats.multiply(clone, config.statsMult)
 

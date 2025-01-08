@@ -31,26 +31,58 @@ export class ObjectActivatesController{
 
         if(activate){
 
-            if(
-                GameState.getPlayer().ID == object.ID
-                &&
-                !activate.auto
-            ){
-
-                KeyBoard.updateKeyBoardKeys(() => {
-                    object.activate(activate.ID)
-                })
-    
-            }
-
             object.addActivate(activate)
-            
+
+            return activate
+
         }else{
             console.error("The loader have:",ActivateInfo.getLoarders()[typeOfLoader])
             throw new Error(
                 "The loader: [" + typeOfLoader + "] don't have: [" + activateName + "]"
             )
         }
+
+    }
+
+    removeActivate(object, activateName, removeAll = false) {
+
+        for (let activateID in object.activates) {
+
+            let activate = object.activates[activateID]
+
+            if (activate.name === activateName) {
+
+                if (
+                    GameState.getPlayer().ID === object.ID
+                    &&
+                    !activate.auto
+                ) {
+
+                    KeyBoard.removeKeyboardBinding(activate.keyBinding)
+
+                }
+
+                if(activate.auto){
+                    GameState.remove(
+                        activate
+                    )
+                }
+
+                delete object.activates[activateID]
+
+                if(!removeAll){
+                    return
+                }
+
+            }
+
+        }
+
+    }
+
+    removeAllActivate(object, activateName) {
+
+        this.removeActivate(object, activateName, true)
 
     }
 
@@ -70,7 +102,7 @@ export class ObjectActivatesController{
 
     }
     
-    returnRandomActivate(typeOfLoader = "random"){
+    returnRandomActivate(typeOfLoader = "random", addOnGame = true){
 
         let loaderName = this.defineTypeOfLoarderName(typeOfLoader)
 
@@ -78,7 +110,7 @@ export class ObjectActivatesController{
 
         let activateName = returnRandomObject(allActivates)
 
-        return ActivateInfo.build(loaderName, activateName)
+        return ActivateInfo.build(loaderName, activateName, addOnGame)
 
     }
 
@@ -91,13 +123,25 @@ export class ObjectActivatesController{
 
     }
 
-    defineTypeOfLoarderName(typeOfLoader){
+    defineTypeOfLoarderName(typeOfLoader = "random"){
 
         if(typeOfLoader == "random"){
             typeOfLoader = returnRandomObject(ActivateInfo.getLoarders())
         }
 
         return typeOfLoader
+
+    }
+
+    addActivateInFormat(type, activates, format){
+
+        if(!format[type]){
+            format[type] = []
+        }
+
+        format[type] = format[type].concat(activates)
+
+        return format
 
     }
 

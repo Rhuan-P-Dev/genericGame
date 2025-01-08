@@ -2,11 +2,11 @@ import { InheritController } from "../../generalUtils/inherit.js"
 
 export class SelfBuild{
 
-    selfBuild(){
+    selfBuild(object = this){
 
-        new InheritController().passBuildList(this, this)
+        new InheritController().passBuildList(object, object)
 
-        this.buildList.run(this)
+        this.buildList.run(object)
 
     }
 

@@ -1,8 +1,16 @@
 
+import { DamageController } from "../../../../../damage/damageController.js"
 import { InheritController } from "../../../../../generalUtils/inherit.js"
 import { FlameThrower1Animation } from "../../animations/flameThrower1Animation.js"
-import { FlameThrower1Effect } from "../../effects/flameThrower1Effect.js"
 import { WeaponExtend } from "../../extend/weapon.js"
+
+var Damage
+
+onInit(function(){
+
+    Damage = new DamageController()
+
+})
 
 export class FlameThrower1 {
 
@@ -11,7 +19,6 @@ export class FlameThrower1 {
         new InheritController().inherit(
             this,
             [
-                FlameThrower1Effect,
                 FlameThrower1Animation,
                 WeaponExtend
             ],
@@ -27,6 +34,8 @@ export class FlameThrower1 {
 
         this.config.weapon.multVel = 3
         this.config.weapon.damageMult = 0.3
+
+        Damage.addDamage(this, "fire", 0.5)
 
         this.config.projectiles.objectClass = ["medium bullet"]
 

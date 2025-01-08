@@ -18,6 +18,8 @@ export class EfficientShield {
 
     }
 
+    subType = ["shield"]
+
     name = "efficient shield"
     cost = 50
     func = new ActivateController().setStats

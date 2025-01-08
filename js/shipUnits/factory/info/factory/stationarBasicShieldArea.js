@@ -20,20 +20,21 @@ export class StationarBasicShieldArea {
 
     name = "stationary basic shield area"
     cost = 60
-    reload = 5*60
+    reload = 15*60
 
     currentVelMult = 0
 
     config = {
         "objectClass": StationaryObject,
-        "AI": ["useActivates"],
+        "AI": ["useActivates","areaSupport"],
+        "coreType":"factory",
         "activates": {
             "defense": ["basic shield area"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority,
         "statsMult": 0,
 
-        "lifeTime": 20*60,
+        "lifeTime": 30*60,
         
     }
 

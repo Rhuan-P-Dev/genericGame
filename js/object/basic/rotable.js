@@ -64,7 +64,7 @@ export class Rotable {
     radian = -Math.PI/2
 
     resetVel = Vector.toRadians(1) / 10
-    rotationVel = Vector.toRadians(2)
+    rotationVel = Vector.toRadians(2)/1.50
     currentRotationVel = this.resetVel
     rotationMult = 2
 

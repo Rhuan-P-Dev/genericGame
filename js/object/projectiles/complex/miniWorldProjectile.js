@@ -2,7 +2,7 @@
 import { EffectsController } from "../../../effects/effectsController.js"
 import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
-import { BasicProjetile } from "../basic/basicProjetile.js"
+import { BasicWithLifeProjectile } from "../basic/basicWithLifeProjectile.js"
 
 var Effects = ""
 var Animations
@@ -21,7 +21,7 @@ export class MiniWorldProjectile {
         new InheritController().inherit(
             this,
             [
-                BasicProjetile
+                BasicWithLifeProjectile
             ],
             build
             
@@ -48,8 +48,6 @@ export class MiniWorldProjectile {
         },
 
         ["add_miniWorldFunctions"]: (updateThis) => {
-
-            updateThis.onHit.remove("last", 0) // selfDestruction
 
             Effects.add(
                 "attraction",

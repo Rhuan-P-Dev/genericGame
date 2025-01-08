@@ -1,16 +1,65 @@
 
 import { setFrameOut } from "../../frame/frameController.js"
 import { GameStateController } from "../../gameState/gameStateController.js"
+import { WeaponsController } from "../weapons/weaponsController.js"
 
 var GameState = ""
+var Weapons
 
 onInit(function(){
 
     GameState = new GameStateController()
+    Weapons = new WeaponsController()
 
 })
 
 export class ActivateController{
+
+    getOperations = {
+        "activate cost": (object, activate) => {return activate.cost},
+        "stat": (object, activate) => {return activate.consumableStat},
+        "object resource": (object, activate) => {return object[activate.consumableStat]},
+        "object resource / activate cost": (object, activate) => {return object[activate.consumableStat] / (activate.cost+1)},
+        "object max resource": (object, activate) => {return object["max"+firstLetterUppercase(activate.consumableStat)]},
+        "object resource / object max resource": (object, activate) => {return (
+                object[activate.consumableStat]
+                /
+                object[
+                    "max"+firstLetterUppercase(
+                        activate.consumableStat
+                    )
+                ]
+            )
+        },
+        //"activate cost * second": (object, activate) => {return activate.cost * (60/activate.reload)},
+        "activate cost per second": (object, activate) => {
+            return (
+                (
+                    object[activate.consumableStat + "Regen"] * 60
+                )
+                -
+                (
+                    (activate.cost+(1/60)) * (60/activate.reload)
+                )
+            )
+        },
+    }
+
+    get(
+        object,
+        activate,
+        query
+    ){
+
+        if(
+            this.getOperations[query]
+        ){
+            return this.getOperations[query](object, activate)
+        }else{
+            return false
+        }
+
+    }
 
     useActivate(object, ID) {
 
@@ -22,7 +71,15 @@ export class ActivateController{
 
         result.activate = activate
 
-        if (object[consumableStat] >= cost && activate.reloadTemp <= 0) {
+        if (
+            (
+                cost == 0
+                ||
+                object[consumableStat] >= cost
+            )
+            &&
+            activate.reloadTemp <= 0
+        ) {
             activate.preuseActivateObserver.run(object, activate)
 
             object[consumableStat] -= cost
@@ -36,21 +93,61 @@ export class ActivateController{
 
         }
 
-        return result
+        if(
+            activate.type !== "weapon"
+            ||
+            activate.func === Weapons.returnProjectiles
+        ){
+            return result
+        }
+
+        return {}
+
     }
 
-    primitiveAjustObject(master, object){
+    checkPrimitiveObject(master, location = master){
 
-        object.ID = randomUniqueID()
-        object.team = master.team
+        if(
+            master.team === undefined
+            ||
+            master.color === undefined
+            ||
+            location.x === undefined
+            ||
+            location.y === undefined
+            ||
+            location.currentXVel === undefined
+            ||
+            location.currentYVel === undefined
+        ){
+            console.error("checkPrimitiveObject - ERROR")
+            return false
+        }else{
+            return true
+        }
 
-        object.color = master.color
+    }
 
-        object.x = master.x
-        object.y = master.y
+    primitiveAjustObject(master, object, location = master){
 
-        object.currentXVel = master.currentXVel
-        object.currentYVel = master.currentYVel
+        if(this.checkPrimitiveObject(master, location)){
+
+            object.ID = randomUniqueID()
+            object.team = master.team
+
+            object.color = master.color
+
+            object.x = location.x
+            object.y = location.y
+
+            object.currentXVel = location.currentXVel
+            object.currentYVel = location.currentYVel
+
+            return true
+
+        }else{
+            return false
+        }
 
     }
 
@@ -58,8 +155,8 @@ export class ActivateController{
 
         this.primitiveAjustObject(master, object)
 
-        object.currentXVel *= activate.currentVelMult
-        object.currentYVel *= activate.currentVelMult
+        object.currentXVel *= activate.currentVelMult || 1
+        object.currentYVel *= activate.currentVelMult || 1
 
         if(
             activate.radian

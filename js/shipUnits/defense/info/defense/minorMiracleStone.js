@@ -18,6 +18,8 @@ export class MinorMiracleStone {
 
     }
 
+    subType = ["lifeGuard"]
+
     name = "minor miracle stone"
     cost = 0
     func = new ActivateController().setPercentageStats

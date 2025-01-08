@@ -18,6 +18,8 @@ export class LittleShieldBoost {
 
     }
 
+    subType = ["midTermBenefit"]
+
     name = "little shield boost"
     cost = 30
     func = new ActivateController().setStats
@@ -31,7 +33,7 @@ export class LittleShieldBoost {
             "shieldRegen": 1 / (5 * 60),
         },
 
-        timer: 30*60
+        timer: 45*60
 
     }
 

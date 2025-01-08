@@ -19,8 +19,8 @@ export class MiniYourself1 {
     }
 
     name = "mini yourself 1"
-    cost = 50
-    reload = 1*60
+    cost = 100
+    reload = 1*60*60
 
     func = new FactoryController().yourselfFactory
 

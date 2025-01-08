@@ -18,6 +18,8 @@ export class BasicFortificationModule {
 
     }
 
+    subType = ["dodge","fortification"]
+
     name = "basic fortification module"
     cost = 2
     func = new ActivateController().setStats

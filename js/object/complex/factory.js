@@ -18,15 +18,15 @@ export class ObjectFactory{
 
         this.graphicID = "factory"
 
-        this.priority = 4
+        this.priority = 5
     
         this.maxLife = 50
 
         this.defense = 0
         this.resistance = 1
 
-        this.width = 8
-        this.height = 8
+        this.width = 16
+        this.height = 16
 
         this.energy = 300
         this.maxEnergy = 300

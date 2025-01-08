@@ -1,19 +1,64 @@
+import { setFrameOut } from "../frame/frameController.js"
 import { GameStateController } from "../gameState/gameStateController.js"
+import { CoreAIBuilderController } from "./advancedAI/coreAIBuilderController.js"
+import { CoreAIController } from "./advancedAI/coreAIController.js"
 import { TypeOfAI } from "./typesOfAI.js"
 
 var GameState = ""
-
 var AItypes = {}
+var CoreAI
+var CoreAIBuilder
 
 onInit(function(){
 
     GameState = new GameStateController()
 
     AItypes = new TypeOfAI().getAllTypeOfAI()
+    CoreAI = new CoreAIController()
+    CoreAIBuilder = new CoreAIBuilderController()
 
 })
 
+const excludeAI = {}
+
 export class AIController {
+
+    removeExclusion(object){
+        if(excludeAI[object.ID]){
+            delete excludeAI[object.ID]
+        }
+    }
+
+    addExclusion(object){
+        excludeAI[object.ID] = true
+    }
+
+    toggleAI(object, disableFramesOut) {
+
+        if(
+            object.AI === undefined
+            ||
+            object.ID == GameState.getPlayer().ID // this will give the player a little advantage
+        ){return}
+
+        this.addExclusion(object)
+
+        setFrameOut(
+            () => {
+                if(
+                    GameState.getObject(object.ID)
+                ){
+                    AIC.removeExclusion(object)
+                }else{
+                    AIC.addExclusion(object)
+                }
+            },
+            disableFramesOut,
+            1,
+            true,
+            object.ID + "_enabling AI..."
+        )
+    }
 
     update(){
 
@@ -22,10 +67,17 @@ export class AIController {
         for(let objectName in allAI){
             let object = allAI[objectName]
 
-            object.AI.runAll((node) => {
-                AItypes[node.value](object)
-            })
+            if(excludeAI[object.ID]){continue}
 
+            if(object.AI.runAll){
+                object.AI.runAll((node) => {
+                    AItypes[node.value](object)
+                })
+            }else{
+                CoreAI.think(
+                    object, object.AI
+                )
+            }
 
         }
     }
@@ -43,9 +95,26 @@ export class AIController {
         return object
     }
 
+    giveCoreAI(object, AI, coreType, recreateAIList = false){
+
+        CoreAIBuilder.build(coreType)
+
+        object.coreType = coreType
+
+        if(!object.AI || recreateAIList){
+            object.AI = []
+        }
+
+        AI.forEach(AIType => {
+            object.AI.push(AIType)
+        })
+        
+        return object
+    }
+
 }
 
-var AI = new AIController()
+var AIC = new AIController()
 
 export class AILinkedList extends LinkedList{
 

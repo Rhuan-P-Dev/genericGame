@@ -28,7 +28,11 @@ class DrawRequestLinkedList extends LinkedList{
         while(1){
             if(!node.next){return}
 
-            if(this.checkInFocusVision(node.value.params)){
+            if(
+                this.checkInFocusVision(node.value.params)
+                ||
+                node.value.params.IGORE_IN_FOCUS
+            ){
 
                 node.value.func(node.value.params)
 
@@ -77,6 +81,8 @@ class DrawRequestLinkedList extends LinkedList{
 
 var DrawRequestQueue = new DrawRequestLinkedList()
 
+var focusObject = undefined
+
 export class ScreenRenderController {
 
     mainCanvas = document.getElementById("mainCanvas")
@@ -88,13 +94,13 @@ export class ScreenRenderController {
     defaultColor = "black"
     defaultLineWidth = 1
 
-    focusObjectVisionRange = 750
+    focusObjectVisionRange = 800
 
     constructor(){
 
         setFrameOut(
             () => {
-                this.focusObject = GameState.getPlayer()
+                focusObject = GameState.getPlayer()
             }, 1
         )
 
@@ -159,16 +165,17 @@ export class ScreenRenderController {
     }
 
     getFocusObject() {
-        return this.focusObject
+        return focusObject
     }
     
     setFocusObject(object) {
-        this.focusObject = object
+        focusObject = object
     }
 
-    getCanvasXYofFocusObject(canvas) {
-
-        let focusObject = this.getFocusObject()
+    getCanvasXYofFocusObject(
+        canvas,
+        focusObject = ScreenRender.getFocusObject()
+    ){
 
         let x = focusObject.x - (canvas.canvas.width / 2)
         let y = focusObject.y - (canvas.canvas.height / 2)

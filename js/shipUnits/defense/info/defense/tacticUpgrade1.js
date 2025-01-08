@@ -18,10 +18,12 @@ export class TacticUpgrade1 {
 
     }
 
+    subType = ["longTermBenefit"]
+
     name = "tactic upgrade 1"
     cost = 100
     func = new ActivateController().setStats
-    reload = 1*60*60
+    reload = 2*60*60
 
     config = {
 
@@ -31,7 +33,7 @@ export class TacticUpgrade1 {
             "maxShield": 5,
             "energyRegen": 2 / (1 * 60),
             "shieldRegen": 1 / (1 * 60),
-            "maxVel": 0.25,
+            "maxVel": 0.05,
             "vel": 0.01,
             "defense": 1,
             "resistance": -0.01,

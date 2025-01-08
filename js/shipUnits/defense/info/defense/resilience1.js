@@ -18,10 +18,12 @@ export class Resilience1 {
 
     }
 
+    subType = ["longTermBenefit"]
+
     name = "resilience 1"
     cost = 150
     func = new DefenseController().growth
-    reload = 30*60
+    reload = 1.5*60*60
 
     config = {
 

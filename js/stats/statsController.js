@@ -26,12 +26,20 @@ export class StatsController {
 
     calcStatus(object){
 
-        if(object.lifeRegen !== 0){
+        if(object.lifeRegen !== undefined){
             object.life.math("+", object.lifeRegen)
         }
 
-        if(object.darkEnergyRegen !== 0){
+        if(object.darkEnergyRegen !== undefined){
             object.darkEnergy += object.darkEnergyRegen
+        }
+
+        if(object.divineEnergyRegen !== undefined){
+            object.divineEnergy += object.divineEnergyRegen
+        }
+
+        if(object.actionPointsRegen !== undefined){
+            object.actionPoints += object.actionPointsRegen
         }
 
         if(object.shield !== undefined){

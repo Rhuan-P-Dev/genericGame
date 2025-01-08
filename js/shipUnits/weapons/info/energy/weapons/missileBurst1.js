@@ -22,7 +22,7 @@ export class MissileBurst1 {
         this.cost = 10
         this.reload = 60
 
-        this.lifeTime = 200
+        this.lifeTime = 40
         this.range = this.lifeTime*4
 
         this.config.weapon.multVel = 2

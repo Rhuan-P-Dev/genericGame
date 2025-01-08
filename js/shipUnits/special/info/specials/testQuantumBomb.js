@@ -17,8 +17,10 @@ export class TestQuantumBomb {
 
     }
 
+    subType = ["suicide"]
+
     name = "test quantum bomb"
-    cost = 100
+    cost = 10
     func = new SpecialController().quantumBomb
     reload = 60*60
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <!-- GLOBAL -->
+    <script src="../js/globalFunctions.js"></script>
+    <script src="../js/globalVariables.js"></script>
+    <script src="../js/globalClass.js"></script>
+
+    <!-- INIT -->
+    <script type="module" src="../jsWeaponScoreVisualizer/core.js"></script>
+
+    <style>
+        table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:hover {background-color: gray;}
+
+html,body{
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+    </style>
+
+    <title>Priority Visualizer</title>
+</head>
+<body>
+
+
+    <canvas id="mainCanvas" width="1200" height="600" style="display: none;"></canvas>
+
+    <canvas id="offscreenCanvas" width="13000" height="60" style="display: none;"></canvas>
+
+</body>
+</html>

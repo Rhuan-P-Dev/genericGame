@@ -29,6 +29,10 @@ const multStats = {
 
     "normalStats_div2": [
         "priority",
+        "vel",
+        "darkEnergy",
+        "maxDarkEnergy",
+        "darkEnergyRegen",
 
     ],
 
@@ -37,14 +41,18 @@ const multStats = {
         "height",
 
         "lifeTime",
+
+        "maxVel",
+
+        "divineEnergy",
+        "maxDivineEnergy",
+        "divineEnergyRegen",
     ],
 
     "invertedStatus":[
     ],
 
     "exponentialStatus":[
-        "maxVel",
-        "vel",
         "rotationVel",
     ],
 

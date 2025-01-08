@@ -20,20 +20,21 @@ export class StationaryBasicAntiProjectileSystem {
 
     name = "stationary basic anti-projectile system"
     cost = 50
-    reload = 5*60
+    reload = 15*60
 
     currentVelMult = 0
 
     config = {
         "objectClass": StationaryObject,
-        "AI": ["useActivates"],
+        "AI": ["useActivates","areaSupport"],
+        "coreType":"factory",
         "activates": {
             "defense": ["basic anti-projectile system"],
         },
         "behavior": new FocusedTopDownBehavior().searchPriority,
         "statsMult": 0,
 
-        "lifeTime": 20*60,
+        "lifeTime": 30*60,
         
     }
 

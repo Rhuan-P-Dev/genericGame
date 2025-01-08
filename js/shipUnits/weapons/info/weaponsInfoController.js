@@ -30,12 +30,27 @@ import { EmptyColor } from "./darkEnergy/weapons/emptyColor.js"
 import { BlessedBlue } from "./darkEnergy/effectWeapons/blessedBlue.js"
 import { BlessedRed } from "./darkEnergy/effectWeapons/blessedRed.js"
 import { BlessedSpecial } from "./darkEnergy/effectWeapons/blessedSpecial.js"
+import { SelfSwarmThreeSniper } from "./energy/weapons/selfSwarmThreeSniper.js"
+import { SelfSwarmRain } from "./energy/weapons/selfSwarmRain.js"
+import { MinorJudgment } from "./divineEnergy/effectWeapons/minorJudgment.js"
+import { Lance1 } from "./energy/weapons/lance1.js"
+import { LaserSword } from "./energy/weapons/laserSword.js"
+import { FastLaser } from "./energy/weapons/fastLaser.js"
+import { BigLaser } from "./energy/weapons/bigLaser.js"
+import { BoneLauncher } from "./energy/weapons/boneLauncher.js"
+import { DeathRay } from "./energy/weapons/deathRay.js"
+import { PaintingMachinegun } from "./energy/weapons/paintingMachinegun.js"
+import { SniperLaser1 } from "./energy/weapons/sniperLaser1.js"
+import { FlameThrower2 } from "./energy/weapons/flameThrower2.js"
+import { ActionFight } from "./actionPoints/effectWeapons/actionFight.js"
+import { ActionMercy } from "./actionPoints/effectWeapons/actionMercy.js"
+import { RedemptionLance } from "./energy/weapons/redemptionLance.js"
+import { SnowLauncher } from "./energy/weapons/snowLauncher.js"
+import { LaserWeb } from "./energy/weapons/laserWeb.js"
 
-
-
-var GameState = ""
-var AIC = ""
-var ActivateInfo = ""
+var GameState
+var AIC
+var ActivateInfo
 
 onInit(function(){
 
@@ -70,6 +85,7 @@ export class WeaponsInfoController{
         "black hole generator 1": BlackHoleGenerator1,
         "mine launcher 1": MineLauncher1,
         "flame thrower 1": FlameThrower1,
+        "flame thrower 2": FlameThrower2,
         "scrapper 1": Scrapper1,
         "fragilizer 1": Fragilizer1,
         "disassemble 1": Disassemble1,
@@ -86,15 +102,38 @@ export class WeaponsInfoController{
         "toy machinegun": ToyMachinegun,
         "parasite injection 1": ParasiteInjection1,
         "death hand launcher": DeathHandLauncher,
+        "self swarm three sniper": SelfSwarmThreeSniper,
+        "self swarm rain": SelfSwarmRain,
 
+        "bone launcher": BoneLauncher,
 
+        "lance 1": Lance1,
+        "laser sword": LaserSword,
+        "fast laser": FastLaser,
+        "big laser": BigLaser,
 
+        "death ray": DeathRay,
+        "painting machinegun": PaintingMachinegun,
+        "sniper laser 1": SniperLaser1,
+        "redemption lance": RedemptionLance,
+
+        "snow launcher": SnowLauncher,
+        "laser web": LaserWeb,
 
         //dark energy
         "blessed blue": BlessedBlue,
         "blessed red": BlessedRed,
         "empty color": EmptyColor,
-        "blessed special": BlessedSpecial
+        "blessed special": BlessedSpecial,
+
+
+        //divine energy
+        "minor judgment": MinorJudgment,
+
+        //actionPoints
+        "action fight": ActionFight,
+        "action mercy": ActionMercy,
+
 
     }
 
@@ -110,14 +149,24 @@ export class WeaponsInfoController{
 
     }
 
-    build(weaponName){
+    build(weaponName, addOnGame = true){
 
         let auto = this.checkAutoWeapon(weaponName)
         weaponName = this.fixWeaponName(weaponName)
 
-        let weapon = this.weapons[weaponName]
+        const isModed = weaponName.split("|")[1]
 
-        if(!weapon){return undefined}
+        if(isModed){
+            var weapon = this.weapons[weaponName.split("|")[0]]
+        }else{
+            var weapon = this.weapons[weaponName]
+        }
+
+        if(
+            !weapon
+            &&
+            !isModed
+        ){return undefined}
 
         weapon = ActivateInfo.preBuild(new weapon(true))
 
@@ -128,8 +177,16 @@ export class WeaponsInfoController{
             this.transformIntoAutoWeapon(weapon)
 
             AIC.giveAI(weapon, ["ship_turret"])
-            GameState.addObject(weapon, true, false, false, false, false, false)
 
+            if(addOnGame){
+                GameState.addObject(weapon, true, false, false, false, false, false)
+            }
+
+        }
+
+        if(isModed){
+            const mods = weaponName.split("|").slice(1)
+            this.addMods(weapon, mods)
         }
 
         if(weapon.build){
@@ -142,6 +199,26 @@ export class WeaponsInfoController{
 
         return weapon
 
+    }
+
+    addMods(weapon, mods){
+        if(!weapon.modifiersList){return}
+        for(let mod of mods){
+            weapon.modifiersList.push(mod)
+        }
+    }
+
+    buildAll(addOnGame = true){
+
+        let weapons = []
+
+        for(let weaponName in this.weapons){
+            weapons.push(
+                this.build(weaponName, addOnGame)
+            )
+        }
+
+        return weapons
     }
 
     checkAutoWeapon(weaponName){
@@ -181,14 +258,19 @@ export class WeaponsInfoController{
         )
 
         weapon.cost *= 0.5
-        weapon.rotationVel *= 1.75
+        weapon.rotationVel *= 2
 
         weapon.reload *= 1.5
         weapon.lifeTime *= 0.75
-        weapon.range *= 0.5
+
+        if(
+            !weapon.isLaser
+        ){
+            weapon.range *= 0.75
+        }
 
         if(weapon.distance !== undefined){
-            weapon.distance *= 0.5
+            weapon.distance *= 0.75
         }
 
         if(weapon.config.weapon){

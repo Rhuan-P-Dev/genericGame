@@ -5,7 +5,8 @@ import { InheritController } from "../../../generalUtils/inherit.js"
 import { AnimationsController } from "../../../graphics/animation/animationsController.js"
 import { MovableObject } from "../../basic/movableObject.js"
 import { Rotable } from "../../basic/rotable.js"
-import { BasicProjetile } from "../basic/basicProjetile.js"
+import { Death } from "../../uncommon/death.js"
+import { BasicWithLifeProjectile } from "../basic/basicWithLifeProjectile.js"
 
 var Effects = ""
 var Animations
@@ -26,9 +27,10 @@ export class DeathHand {
         new InheritController().inherit(
             this,
             [
-                BasicProjetile,
+                BasicWithLifeProjectile,
                 Rotable,
                 MovableObject,
+                Death
             ],
             build
             
@@ -50,8 +52,6 @@ export class DeathHand {
         this.vel *= 2
         this.rotationVel *= 4
 
-        this.damageTypes["death"] = 1
-
     }
 
     passBuildList = {
@@ -62,10 +62,6 @@ export class DeathHand {
 
         ["add_deathHandFunctions"]: (updateThis) => {
 
-            Damage.immunityTo(updateThis, "death")
-
-            updateThis.onHit.remove("last", 0) // selfDestruction
-
             Effects.apply(
                 "onHit",
                 {},
@@ -74,36 +70,6 @@ export class DeathHand {
                 {
                     "object": updateThis,
                 },
-            )
-
-            Animations.applyAnimations(
-                updateThis,
-                [{
-                    "animationConfig": {
-                        "name":"death",
-                        "frameRandomOffsetX": 0,
-                        "frameRandomOffsetY": 0,
-                        "randomPointOffsetX": 0,
-                        "randomPointOffsetY": 0,
-                    },
-                    "loopConfig": {
-                        "frameOut": 10
-                    },
-                    "runTimeBuild": (object, animationConfig, loopConfig) => {
-        
-                        animationConfig.focus = {
-                            "x": object.x,
-                            "y": object.y,
-                        }
-        
-                        animationConfig.offset = {
-                            "x": randomInterval(object.width),
-                            "y": randomInterval(object.height),
-                        }
-        
-                    }
-                }],
-                true
             )
 
         }

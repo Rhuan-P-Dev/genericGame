@@ -17,6 +17,8 @@ export class ReflectShield1 {
 
     }
 
+    subType = ["directionalDefense"]
+
     name = "reflect shield 1"
     cost = 20
     func = new DefenseController().reflectShield

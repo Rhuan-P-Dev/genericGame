@@ -9,8 +9,8 @@ import { ActivateInstructions } from "../instructions/activateInstructions.js"
 import { onInstructions } from "../instructions/onInstructions.js"
 import { StatsObserverController } from "../instructions/statsObserverController.js"
 
-var GameState = ""
-var Damage = ""
+var GameState
+var Damage
 
 onInit(function(){
 
@@ -42,13 +42,30 @@ export class Object {
         Damage.addDamageOrder(this, "physical", "life")
         Damage.addDamageOrder(this, "shock", "life")
         Damage.addDamageOrder(this, "fire", "life")
-        Damage.addDamageOrder(this, "death", "life")
-        Damage.addDamageOrder(this, "dark energy", "life")
-        Damage.addDamageOrder(this, "revenge", "life")
         Damage.addDamageOrder(this, "parasite blaster", "life")
         Damage.addDamageOrder(this, "parasite self blaster", "life")
         Damage.addDamageOrder(this, "parasite suck energy damage", "life")
         Damage.addDamageOrder(this, "parasite suck energy", "life")
+        Damage.addDamageOrder(this, "self swarm", "life")
+        Damage.addDamageOrder(this, "self swarm production", "lifeRegen")
+
+        Damage.addDamageOrder(this, "death", "life")
+
+        Damage.addDamageOrder(this, "revenge", "life")
+
+        Damage.addDamageOrder(this, "dark energy", "life")
+
+        Damage.addDamageOrder(this, "agony", "life")
+
+        Damage.addDamageOrder(this, "surprise attack", "life")
+
+        Damage.addDamageOrder(this, "laser", "life")
+
+        Damage.addDamageOrder(this, "ink", "life")
+
+        Damage.addDamageOrder(this, "snow", "life")
+
+        Damage.addDamageOrder(this, "corruption", "maxLife")
 
     }
 
@@ -93,12 +110,12 @@ export class Object {
             },"last",10)
 
             updateThis.onDeath.add({
-                "func": () => {
+                "func": (params) => {
                     new AnimationsController().run({
                         "name":"ship dead",
                         "focus": {
-                            "x": updateThis.x,
-                            "y": updateThis.y,
+                            "x": params.object.x,
+                            "y": params.object.y,
                         },
                         "offset": {
                             "x": 0,
@@ -149,5 +166,19 @@ export class Object {
 
     effects = {}
     animations = {}
+
+    lastAttacker = {}
+
+    AIVarsStorage = {}
+
+    addActivatesPromises = []
+
+    // Hacky?
+
+    xMult = 1
+    yMult = 0
+
+    cosine = 1
+    sine = 0
 
 }

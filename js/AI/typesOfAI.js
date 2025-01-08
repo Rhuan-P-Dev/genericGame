@@ -153,7 +153,8 @@ function ship_turret(object){
     object.x = object.owner.x + object.xOffset
     object.y = object.owner.y + object.yOffset
 
-    let target = AIUtils.getClosestObjectOfTeams(object)
+    //let target = AIUtils.getClosestObjectOfTeams(object)
+    let target = AIUtils.getClosestObjectOfTeams(object.owner)
 
     if(!target){return}
 

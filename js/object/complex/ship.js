@@ -27,15 +27,15 @@ export class Ship {
 
         this.rotationVel *= 2
 
-        this.priority = 5
+        this.priority = 6
 
         this.maxLife = 200
 
         this.defense = 4
         this.resistance = 0.97
 
-        this.width = 6
-        this.height = 6
+        this.width = 12
+        this.height = 12
     
         this.energy = 200
         this.maxEnergy = 200

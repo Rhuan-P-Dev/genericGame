@@ -8,12 +8,16 @@ var ScreenRender = ""
 var ComplexShapesDatabase
 var GameState
 
+var Offscreen
+
 onInit(function(){
 
     Clone = new CloneObjectController()
     ScreenRender = new ScreenRenderController()
     ComplexShapesDatabase = new ComplexShapesDatabaseController()
     GameState = new GameStateController()
+
+    Offscreen = new offscreen()
 
 })
 
@@ -142,7 +146,7 @@ export class ComplexRenderController {
                 "x": Offscreen.getOffsetX() + (params.offset.x *  this.getObjectScale(object)),
                 "y": Offscreen.getOffsetY() + (params.offset.y *  this.getObjectScale(object))
             },
-            0,
+            params.rotation,
             scaleX,
             scaleY,
             ScreenRender.offscreenCanvasContext
@@ -190,25 +194,48 @@ export class ComplexRenderController {
 
     }
 
-    useComplexFormat(object){
+    useComplexFormat(
+        object,
+        targetScreen = ScreenRender.mainCanvasContext
+    ){
 
-        ScreenRender.resetCanvas()
+        // hacky
+        if(targetScreen.canvas.id === ScreenRender.mainCanvasContext.canvas.id){
+            var isNormal = true
+        }
+
+        ScreenRender.resetCanvas(
+            targetScreen
+        )
 
         let objectOffset = Offscreen.getObjectXY(object)
 
-        let focus = ScreenRender.shiftFocus(
-            ScreenRender.getCanvasXYofFocusObject(
-                ScreenRender.mainCanvasContext
-            ),
-            object,
-        )
+        if(isNormal){
+            var focus = ScreenRender.shiftFocus(
+                ScreenRender.getCanvasXYofFocusObject(
+                    targetScreen
+                ),
+                object,
+            )
+        }else{
+            var focus = ScreenRender.shiftFocus(
+                ScreenRender.getCanvasXYofFocusObject(
+                    targetScreen,
+                    object,
+                ),
+                object,
+            )
+        }
 
         ScreenRender.setCanvasState(
             focus,
             object.radian,
+            undefined,
+            undefined,
+            targetScreen
         )
 
-        ScreenRender.mainCanvasContext.drawImage(
+        targetScreen.drawImage(
             ScreenRender.offscreenCanvas,
             objectOffset.x - Offscreen.width / 2,
             objectOffset.y - Offscreen.height / 2,
@@ -222,26 +249,16 @@ export class ComplexRenderController {
 
     }
 
-    renderComplexFormat(object){
-
-        if(!Offscreen[object.team]){
-            Offscreen[object.team] = {}
-        }
-
-        if(!Offscreen[object.team][object.color]){
-            Offscreen[object.team][object.color] = {}
-        }
-
-        if(!Offscreen[object.team][object.color][object.graphicID]){
-            Offscreen[object.team][object.color][object.graphicID] = {}
-        }
-
+    renderComplexFormat(
+        object,
+        targetScreen = ScreenRender.mainCanvasContext,
+    ){
 
         if(
-            Offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] === undefined
+            Offscreen.get(object) === undefined
         ){
 
-            Offscreen[object.team][object.color][object.graphicID][this.getObjectScale(object)] = Offscreen.lenght
+            Offscreen.add(object)
 
             let drawInstructions = undefined
 
@@ -275,7 +292,7 @@ export class ComplexRenderController {
                         "x": Offscreen.getOffsetX() + (params.offset.x * this.getObjectScale(object)),
                         "y": Offscreen.getOffsetY() + (params.offset.y * this.getObjectScale(object))
                     },
-                    0,
+                    params.rotation,
                     params.canvasScale,
                     params.canvasScale,
                     ScreenRender.offscreenCanvasContext
@@ -289,11 +306,9 @@ export class ComplexRenderController {
             
             //this.drawSeparetorLine(object) // debug
 
-            Offscreen.lenght += 1
-
         }
 
-        this.useComplexFormat(object)
+        this.useComplexFormat(object, targetScreen)
 
     }
 
@@ -342,32 +357,73 @@ export class ComplexRenderController {
 
 class offscreen {
 
-    width = 50
-    height = 50
+    constructor(canvas = ScreenRender.offscreenCanvas){
+        this.height = canvas.height
 
-    lenght = 0
+        this.width = canvas.height
+    }
+
+    length = 0
+
+    cache = {}
+
+    add(object) {
+
+        if(ScreenRender.offscreenCanvas.width <= this.width * (this.length+1)){this.reset()}
+
+        if(!this.cache[object.team]){
+            this.cache[object.team] = {}
+        }
+
+        if(!this.cache[object.team][object.color]){
+            this.cache[object.team][object.color] = {}
+        }
+
+        if(!this.cache[object.team][object.color][object.graphicID]){
+            this.cache[object.team][object.color][object.graphicID] = {}
+        }
+
+        this.cache[object.team][object.color][object.graphicID][ComplexRender.getObjectScale(object)] = this.length
+
+        this.length += 1
+
+    }
+
+    get(object) {
+        if(!this.cache[object.team]){return undefined}
+        if(!this.cache[object.team][object.color]){return undefined}
+        if(!this.cache[object.team][object.color][object.graphicID]){return undefined}
+        return this.cache[object.team][object.color][object.graphicID][ComplexRender.getObjectScale(object)]
+    }
 
     getObjectXY(object) {
 
-        let lenght = this[object.team][object.color][object.graphicID][ComplexRender.getObjectScale(object)]
+        let length = this.get(object)
 
         return {
-            x: this.getOffsetX(lenght),
+            x: this.getOffsetX(length),
             y: this.getOffsetY()
         }
 
     }
 
-    getOffsetX(lenght = this.lenght) {
-        return (this.width * lenght) + (this.width / 2 )
+    getOffsetX(length = this.length-1) {
+        return (this.width * length) + (this.width / 2 )
     }
 
     getOffsetY() {
         return this.height / 2
     }
 
-}
+    reset() {
 
-const Offscreen = new offscreen()
+        this.length = 0
+        this.cache = {}
+        ScreenRender.clean(
+            ScreenRender.offscreenCanvasContext
+        )
+    }
+
+}
 
 var ComplexRender = new ComplexRenderController()

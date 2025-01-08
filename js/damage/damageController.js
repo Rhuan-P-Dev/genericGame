@@ -1,18 +1,33 @@
+import { AIController } from "../AI/AIController.js"
+import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
+import { setFrameOut } from "../frame/frameController.js"
+import { GameStateController } from "../gameState/gameStateController.js"
 import { CloneObjectController } from "../generalUtils/cloneObject.js"
 import { CustomMathController } from "../generalUtils/math.js"
+import { AnimationsController } from "../graphics/animation/animationsController.js"
 import { ScreenRenderController } from "../graphics/screenRenderController.js"
+import { SelfSwarmDrone } from "../object/complex/special drone/selfSwarmDrone.js"
+import { FactoryController } from "../shipUnits/factory/factoryController.js"
 import { ExplosionDamage } from "./damageTypes/explosion.js"
 
-var AIUtils = ""
-var ScreenRender = ""
-var CloneObject = ""
+var AIUtils
+var ScreenRender
+var CloneObject
+var Animations
+var CustomMath
+var AIC
+var GameState
 
 onInit(function(){
 
     AIUtils = new AIUtilsController()
     ScreenRender = new ScreenRenderController()
     CloneObject = new CloneObjectController()
+    Animations = new AnimationsController()
+    CustomMath = new CustomMathController()
+    AIC = new AIController()
+    GameState = new GameStateController()
 
 })
 
@@ -42,6 +57,10 @@ export class DamageController {
         }
     }
 
+    getDamages(object) {
+        return object.damageTypes || {}
+    }
+
     addDefense(object, stat, type, amount, force = false) {
 
         if(!object.defenseTypes[stat]){
@@ -56,20 +75,42 @@ export class DamageController {
         
     }
 
-    addDamageOrder(object, damageType, stat, direction, reference) {
+    addDamageOrder(object, damageType, stat, direction, reference, log = true) {
         if (!object.damageOrder[damageType]) {
             object.damageOrder[damageType] = [
                 stat
             ]
         }else{
-            insertRelativeTo(object.damageOrder[damageType], stat, direction, reference)
+            insertRelativeTo(object.damageOrder[damageType], stat, direction, reference, log)
         }
 
     }
 
+    removeDamageOrder(object, damageType, stat) {
+        if (
+            object.damageOrder
+            &&
+            object.damageOrder[damageType]
+        ) {
+            const index = object.damageOrder[damageType].indexOf(stat)
+            if (index !== -1) {
+                object.damageOrder[damageType].splice(index, 1)
+            }
+            if (object.damageOrder[damageType].length === 0) {
+                delete object.damageOrder[damageType]
+            }
+        }
+    }
+
     immunityTo(object, stat){
 
-        delete object.damageOrder[stat]
+        if(
+            object.damageOrder
+            &&
+            object.damageOrder[stat]
+        ){
+            delete object.damageOrder[stat]
+        }
 
     }
 
@@ -84,7 +125,522 @@ export class DamageController {
 
     passDamageMultiplierTable = {
         "dark energy": 0.8,
-        "parasite blaster": 0.5
+        "parasite blaster": 0.4,
+        "surprise attack": 1,
+        "laser": 0.6,
+        "corruption": 1
+    }
+
+    selfSwarm(params, damage){
+
+        if(
+            params.object.selfSwarmProduction === undefined
+        ){
+            params.object.selfSwarmProduction = 0
+            params.object.selfSwarmProductionMax = 60
+        }
+
+        params.object.selfSwarmProduction += damage
+
+        if(
+            params.object.selfSwarmProduction >= params.object.selfSwarmProductionMax
+        ){
+
+            params.object.selfSwarmProduction = 0
+
+            let config = {
+                "objectClass": SelfSwarmDrone,
+                "AI": ["missileV1"],
+                "behavior": new FocusedTopDownBehavior().searchPriority,
+                "statsMult": 0,
+                "randomPos": randomInterval(params.object.width + params.object.height)
+            }
+    
+            new FactoryController().createObjectNow(
+                params.otherObjectMaster,
+                {},
+                config,
+                params.object
+            )
+
+            params.object.selfSwarmProductionMax *= 2
+
+        }
+
+    }
+
+    agony(params, damage){
+
+        if(
+            damage <= 1
+            ||
+            params.object.life.get() <= 0
+        ){return}
+
+        let physicalDamageObject = this.getMinimalDamage(
+            damage / 3,
+            {
+                "physical": 1
+            },
+            params.otherObject
+        )
+
+        let agonyDamageObject = this.getMinimalDamage(
+            damage / 2,
+            {
+                "agony": 1
+            },
+            params.otherObject
+        )
+
+        setFrameOut(() => {
+
+            if(params.object.life.get() <= 0){return}
+
+            this.damageCalc(physicalDamageObject, params.object)
+            this.damageCalc(agonyDamageObject, params.object)
+
+        },
+            5*60,
+            3
+        )
+
+        // agony - criar asombrasoes, naves pretas, mover coias de lugar, coisas ruins, fantasmas e inimigos reais. GRUDA - ???????????
+        // cavez que ELE morrewr ispawnar X sombras e inimigos reais? - ????????????????????????
+
+    }
+
+    fireAnimation(params, damage){
+
+        for (let index = 0; index < parseInt(damage/2) + 1; index++) {
+
+            Animations.run({
+                "name":"fire",
+                //"type":"relative",
+                //"focus": params.object,
+                "focus": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                },
+                "offset": {
+                    "x": randomInteger(-params.object.width, params.object.width),
+                    "y": randomInteger(-params.object.height, params.object.height),
+                },
+                "frameRandomOffsetX": 2,
+                "frameRandomOffsetY": 2,
+                "randomPointOffsetX": 1,
+                "randomPointOffsetY": 1,
+            })
+
+        }
+
+    }
+
+    fire(params, damage){
+
+        if(
+            damage <= 1
+            ||
+            params.object.life.get() <= 0
+        ){return}
+
+        let fireDamageObject = this.getMinimalDamage(
+            damage * 0.9,
+            {
+                "fire": 1
+            },
+            params.otherObject
+        )
+
+        setFrameOut(() => {
+
+            if(params.object.life.get() <= 0){return}
+
+            this.damageCalc(fireDamageObject, params.object)
+
+        },
+            10,
+            1
+        )
+
+    }
+
+    shock(params, damage){
+
+        if(
+            damage <= 1
+            ||
+            params.object.life.get() <= 0
+        ){return}
+
+        const RANGE = damage * 10
+        const LINE_WIDTH = RANGE / 100
+        var FRAME_OUT = damage / 5
+
+        let closestAlliesObjects = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            params.object,
+            {
+                "maxDistance": RANGE,
+                "includeEnemyTeam": false,
+                "includeSameTeam": true,
+                "includeYourself": false,
+            }
+        )
+
+        ScreenRender.addDrawRequest( // debug
+            {
+                "func": ScreenRender.drawCircle,
+                "params": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                    "radius": RANGE,
+                },
+            }
+        )
+
+        let closestAllieObject = AIUtils.getObject(
+            closestAlliesObjects,
+            params.object,
+            "closest"
+        )
+
+        if(closestAllieObject){
+
+            ScreenRender.addDrawRequest(
+                {
+                    "func": ScreenRender.drawLine,
+                    "params": {
+                        "positions": [
+                            [
+                                params.object.x,
+                                params.object.y,
+                            ],[
+                                closestAllieObject.x,
+                                closestAllieObject.y,
+                            ]
+                        ],
+                        "color": "yellow",
+                        "lineWidth": LINE_WIDTH,
+                    }
+                }
+
+            )
+
+            // >>> THE FRAMEOUT CANNOT BE SMALLER THAN TWO <<<
+            if(FRAME_OUT < 2){FRAME_OUT = 2}
+
+            let shockDamageObject = this.getMinimalDamage(
+                damage * 0.75,
+                {
+                    "shock": 1
+                },
+                params.otherObject
+            )
+    
+            setFrameOut(() => {
+    
+                if(closestAllieObject.life.get() <= 0){return}
+    
+                this.damageCalc(shockDamageObject, closestAllieObject)
+    
+            },
+                FRAME_OUT,
+                1
+            )
+
+        }
+
+    }
+
+    death(params, damage){
+
+        const stunTime = damage / 10
+
+        if(stunTime < 1){return}
+
+        AIC.toggleAI(
+            params.object,
+            stunTime * 30
+        )
+
+        setFrameOut(
+            () => {
+
+                Damage.doMinimalAttack(
+                    1,
+                    {
+                        "death": 1
+                    },
+                    params.otherObjectMaster,
+                    params.object,
+                )
+            },
+            60,
+            stunTime,
+        )
+
+    }
+
+    deathAnimation(params, damage){
+
+        for (let index = 0; index < parseInt(damage/10) + 1; index++) {
+
+            Animations.run({
+                "name":"death",
+                "focus": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                },
+                "offset": {
+                    "x": randomInteger(-params.object.width, params.object.width),
+                    "y": randomInteger(-params.object.height, params.object.height),
+                },
+                "frameRandomOffsetX": 0,
+                "frameRandomOffsetY": 0,
+                "randomPointOffsetX": 0,
+                "randomPointOffsetY": 0,
+            })
+
+        }
+
+    }
+
+    ink(params, damage){
+
+        if(
+            params.object.inkProgress === undefined
+        ){
+            params.object.inkProgress = 0
+            params.object.inkProgressMax = 20
+        }
+
+        // 6 = ship size
+        const sizeMult = 6 / (
+            (
+                params.object.width + params.object.height
+            ) / 2
+        )
+
+        // 6 = ship priority
+        const priorityMult = 6 / params.object.priority
+
+        params.object.inkProgress += damage * sizeMult * priorityMult
+
+        if(
+            params.object.inkProgress >= params.object.inkProgressMax
+        ){
+
+            params.object.inkProgress = 0
+
+            GameState.changeTeam(
+                params.object,
+                params.otherObjectMaster
+            )
+
+        }
+
+
+    }
+
+    snow(params, damage){
+
+        const mult = Math.min(
+            Math.max(
+                CustomMath.linearReverse(
+                    damage,
+                    50
+                ),
+                0
+            ),
+            1
+        )
+
+        params.object.currentXVel *= mult
+        params.object.currentYVel *= mult
+
+    }
+
+    snowAnimation(params, damage){
+
+         for (let index = 0; index < parseInt(damage/3) + 1; index++) {
+
+            Animations.run({
+                "name":"snow",
+                "focus": {
+                    "x": params.object.x,
+                    "y": params.object.y,
+                },
+                "offset": {
+                    "x": randomInteger(-params.object.width, params.object.width),
+                    "y": randomInteger(-params.object.height, params.object.height),
+                },
+                "frameRandomOffsetX": 0,
+                "frameRandomOffsetY": 0,
+                "randomPointOffsetX": 0,
+                "randomPointOffsetY": 0,
+            })
+
+        }
+
+    }
+
+    requiredTable = {
+        "fire": (params, damage) => {
+            this.fireAnimation(params, damage)
+            this.fire(params, damage)
+        },
+        "shock": (params, damage) => {
+            this.shock(params, damage)
+        },
+        "agony": (params, damage) => {
+            this.agony(params, damage)
+        },
+        "death": (params, damage) => {
+            this.deathAnimation(params, damage)
+        },
+        "snow": (params, damage) => {
+            this.snowAnimation(params, damage)
+            this.snow(params, damage)
+        },
+    }
+
+    specialEffectsTable = {
+        "life": {
+            "self swarm": (params, damage) => {
+                this.selfSwarm(params, damage)
+            },
+            "death": (params, damage) => {
+                this.death(params, damage)
+            },
+            "ink": (params, damage) => {
+                this.ink(params, damage)
+            },
+        }
+    }
+
+    getMaxDamage(victim, attacker, typeOfDamagedStats) {
+
+        let maxDamage = 0
+    
+        for(let typeOfDamage in attacker.damageTypes){
+    
+            maxDamage += Math.max(
+                this.getDamage(
+                    victim,
+                    attacker,
+                    typeOfDamagedStats,
+                    typeOfDamage,
+                    attacker.damage
+                ), 0
+            )
+    
+        }
+    
+        return maxDamage
+    }
+
+    getDamage(victim, attacker, typeOfDamagedStats, typeOfDamage, damage) {
+
+        let defenseMultiplier = 0
+
+        if(
+            victim.defenseTypes[typeOfDamagedStats]
+            &&
+            victim.defenseTypes[typeOfDamagedStats][typeOfDamage])
+        {
+            defenseMultiplier = victim.defenseTypes[typeOfDamagedStats][typeOfDamage]
+        }
+    
+        damage *= attacker.damageTypes[typeOfDamage] || 0
+        damage *= victim.resistance
+        damage -= victim.defense * defenseMultiplier
+    
+        return damage
+
+    }
+
+    statOrder = {
+        "energy shield": {
+            "physical": 0.5,
+            "fire": 4,
+            "self swarm": 5,
+            "self swarm production": 1000,
+            "shock": -0.01,
+            "parasite blaster": 0,
+            "dark energy": 0,
+            "agony": 0,
+            "surprise attack": 0,
+            "laser": 0.2,
+            "ink": 0,//?
+            "snow": 2.5,
+        }
+    }
+
+    statConsume = {
+        "energy shield": "energy"
+    }
+
+    addTempStatOrder(frame, object, type){
+
+        for (const damageType in this.statOrder[type]) {
+
+            const damageTypeValue = this.statOrder[type][damageType]
+            const stat = this.statConsume[type]
+
+            this.addTempDefense(
+                frame,
+                object,
+                stat,
+                damageType,
+                damageTypeValue,
+            )
+
+            this.addTempDamageOrder(
+                frame,
+                object,
+                damageType,
+                stat,
+                "before",
+            )
+
+        }
+
+    }
+
+    addTempDamageOrder(frames, object, damageType, stat, direction, reference, log = false){
+
+        this.addDamageOrder(object, damageType, stat, direction, reference, log)
+
+        setFrameOut(
+            () => {
+                this.removeDamageOrder(object, damageType, stat)
+            },
+            frames,
+        )
+
+    }
+
+    addTempDefense(frames, object, stat, damageType, damageTypeValue){
+
+        this.addDefense(
+            object,
+            stat,
+            damageType,
+            damageTypeValue,
+        )
+
+        setFrameOut(
+            () => {
+                this.addDefense(
+                    object,
+                    stat,
+                    damageType,
+                    CustomMath.inverter(damageTypeValue)
+                )
+            },
+            frames,
+        )
+
     }
 
     reciveDamage(params){
@@ -113,24 +669,17 @@ export class DamageController {
                     damageCache[typeOfDamage] <= 0
                 ){continue}
 
-                let damage = undefined
-                let defenseMultiplier = 0
+                let damage = this.getDamage(
+                    params.object,
+                    params.otherObject,
+                    typeOfDamagedStats,
+                    typeOfDamage,
+                    damageCache[typeOfDamage] || params.calcDamage
+                )
 
-                if(
-                    params.object.defenseTypes[typeOfDamagedStats]
-                    &&
-                    params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
-                ){
-                    defenseMultiplier = params.object.defenseTypes[typeOfDamagedStats][typeOfDamage]
+                if(this.requiredTable[typeOfDamage]){
+                    this.requiredTable[typeOfDamage](params, damage)
                 }
-
-                damage = damageCache[typeOfDamage] || params.calcDamage
-
-                damage *= params.otherObject.damageTypes[typeOfDamage] || 0
-                
-                damage *= params.object.resistance
-                
-                damage -= params.object.defense * defenseMultiplier
 
                 if(
                     damage <= 0
@@ -149,6 +698,23 @@ export class DamageController {
                 }else{
                     statNumber = params.object[typeOfDamagedStats].get()
                     params.object[typeOfDamagedStats].math("-", damage)
+                }
+
+                params.object.lastAttacker = {
+                    "calcDamage": params.calcDamage,
+                    "damage": params.damage,
+                    "otherObject": params.otherObject,
+                    "otherObjectMaster": params.otherObjectMaster,
+                    "typeOfDamage": typeOfDamage,
+                    "typeOfDamagedStats": typeOfDamagedStats,
+                }
+
+                if(
+                    this.specialEffectsTable[typeOfDamagedStats]
+                    &&
+                    this.specialEffectsTable[typeOfDamagedStats][typeOfDamage]
+                ){
+                    this.specialEffectsTable[typeOfDamagedStats][typeOfDamage](params, damage)
                 }
 
                 if(
@@ -196,6 +762,8 @@ export class DamageController {
 
     damageCalc(attacker, victim){
 
+        if(!victim.onDamage){return}
+
         let damage = attacker.damage
         let bokedDamage = attacker.damage
 
@@ -211,13 +779,18 @@ export class DamageController {
 
         }
 
-        victim.onDamage.run({
-            "otherObjectMaster": master,
-            "otherObject": attacker,
-            "object": victim,
-            "damage": bokedDamage,
-            "calcDamage": damage,
-        })
+        // The 'onDamage' CANNOT be executed in the same frame as the object take damage, or it will cause a fatal recursive error.
+        setFrameOut(
+            () => {
+                victim.onDamage.run({
+                    "otherObjectMaster": master,
+                    "otherObject": attacker,
+                    "object": victim,
+                    "damage": bokedDamage,
+                    "calcDamage": damage,
+                })
+            },1
+        )
 
     }
 
@@ -275,17 +848,17 @@ export class DamageController {
         let attackerBoked = Damage.boke(attacker)
         //let victimBoked = Damage.boke(victim)
 
-        let mult = new CustomMathController().linearReverse(
+        let mult = CustomMath.linearReverse(
             AIUtils.getDistanceOfObjects(attacker, victim),
             attacker.damageConfig.range,
         )
 
-        mult += new CustomMathController().linear(
+        mult += CustomMath.linear(
             attacker.width,
             attacker.damageConfig.range
         )
 
-        mult += new CustomMathController().linear(
+        mult += CustomMath.linear(
             victim.width,
             attacker.damageConfig.range
         )
@@ -306,23 +879,65 @@ export class DamageController {
 
     }
 
-    explosionDamageShell(object){
+    getMinimalRadiusDamage(
+        minimalObject = {},
+        object = {}
+    ){
 
-        let shell = {}
-
-        shell.damageConfig = new ExplosionDamage().damageConfig
+        minimalObject.damageConfig = new ExplosionDamage().damageConfig
         
-        shell.damage = object.damage
+        minimalObject.damage = object.damage || 1
 
-        shell.ID = object.ID
-        shell.team = object.team
+        minimalObject.damageTypes = object.damageTypes || {}
 
-        shell.width = object.width
-        
-        shell.x = object.x
-        shell.y = object.y
+        minimalObject.width = object.width || 1
 
-        return shell
+        return minimalObject
+
+    }
+
+    getMinimalDamage(
+        damage,
+        damageTypes,
+        object,
+    ){
+
+        let minimalObject = {
+            "damage": damage,
+            "damageTypes": damageTypes
+        }
+
+        minimalObject.owner = object
+
+        return minimalObject
+
+    }
+
+    doMinimalAttack(
+        damage,
+        damageTypes,
+        object,
+        otherObject,
+    ){
+
+        if(
+            !object
+            ||
+            !otherObject
+            ||
+            otherObject.life.get() <= 0
+        ){return}
+
+        let damageObject = this.getMinimalDamage(
+            damage,
+            damageTypes,
+            object
+        )
+
+        this.damageCalc(
+            damageObject,
+            otherObject
+        )
 
     }
 

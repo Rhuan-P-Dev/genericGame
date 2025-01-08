@@ -19,12 +19,13 @@ export class BasicSafeZone1 {
 
     name = "basic safe zone 1"
     cost = 200
-    reload = 30*60
+    reload = 2*60*60
 
     currentVelMult = 0
 
     config = {
         "objectClass": ObjectFactory,
+        "coreType":"factory",
         "AI": ["useActivates"],
         "activates": {
             "factory": [

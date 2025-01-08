@@ -19,6 +19,8 @@ export class Blink {
 
     }
 
+    subType = ["movement","dodge"]
+
     name = "blink"
     cost = 30
     func = new SpecialController().teleport

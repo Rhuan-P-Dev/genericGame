@@ -15,11 +15,11 @@ export class MineLauncher1 {
 
         this.name = "mine launcher 1"
         this.cost = 50
-        this.reload = 1*60
+        this.reload = 10*60
 
         this.currentVelMult = 0
 
-        this.lifeTime = 10*60
+        this.lifeTime = 1*60*60
 
         this.config.weapon.multVel = 0
 

@@ -21,7 +21,7 @@ export class Drone {
 
         this.graphicID = "drone v1"
 
-        this.priority += 2
+        this.priority += 1
 
         this.vel /= 2
         this.maxVel /= 2
@@ -31,8 +31,8 @@ export class Drone {
         this.defense = 1
         this.resistance = 1
 
-        this.width = 5
-        this.height = 5
+        this.width = 10
+        this.height = 10
     
         this.energy = 50
         this.maxEnergy = 50

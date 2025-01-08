@@ -16,6 +16,8 @@ export class BasicShieldArea {
 
     }
 
+    subType = ["areaSupport"]
+
     name = "basic shield area"
     cost = 0
     func = new DefenseController().antiProjectileSystem

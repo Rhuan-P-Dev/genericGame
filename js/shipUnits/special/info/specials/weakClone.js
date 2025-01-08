@@ -18,9 +18,9 @@ export class WeakClone {
     }
 
     name = "weak clone"
-    cost = 50
+    cost = 150
     func = new SpecialController().clone
-    reload = 20*60
+    reload = 1*60*60
 
     config = {
         "statsMult": -0.5

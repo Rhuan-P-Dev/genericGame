@@ -5,6 +5,15 @@ class FrameOutList{
         next:{}
     }
 
+    restart(){
+
+        delete this.list
+        this.list = {
+            next:{}
+        }
+
+    }
+
     add(
         func,
         framesOut = 60,
@@ -146,6 +155,12 @@ export class FrameController {
 
     remove(ID){
         FrameOutFunctions.remove(ID)
+    }
+
+    restart(){
+
+        FrameOutFunctions.restart()
+
     }
 
 }

@@ -16,6 +16,8 @@ export class EnergyShield {
 
     }
 
+    subType = ["fortification"]
+
     name = "energy shield"
     cost = 0
     func = new DefenseController().energyShield
@@ -23,11 +25,11 @@ export class EnergyShield {
 
     config = {
 
-        position: [
-            "middle",
-            10
-        ]
-        
+        "duration": 1,
+        "shieldType": "energy shield",
+        "color": "lightblue",
+        "lineWidth": 1,
+
     }
 
 }

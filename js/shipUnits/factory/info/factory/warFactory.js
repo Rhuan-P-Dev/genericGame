@@ -26,6 +26,7 @@ export class WarFactory {
     config = {
         "objectClass": ObjectFactory,
         "AI": ["useActivates"],
+        "coreType":"factory",
         "activates": {
             "factory": [
                 "movable disassemble 1",

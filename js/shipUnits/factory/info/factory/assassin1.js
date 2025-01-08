@@ -19,7 +19,7 @@ export class Assassin1 {
 
     name = "assassin 1"
     cost = 70
-    reload = 10*60
+    reload = 15*60
 
     config = {
         "objectClass": DroneV2,

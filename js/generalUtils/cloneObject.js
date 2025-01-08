@@ -34,6 +34,7 @@ export class CloneObjectController {
         "onHit": this.cloneComplexOnType,
         "onDeath": this.cloneComplexOnType,
         "onDamage": this.cloneComplexOnType,
+        "onKill": this.cloneComplexOnType,
         "buildList": () => {},
         "passBuildList": () => {},
         "animations": () => {},
@@ -46,6 +47,18 @@ export class CloneObjectController {
         "disableResuls": this.shared, //will bug?
         "disableRotationResul": this.shared, //will bug?
         "disableAdvanceResul": this.shared, //will bug?
+        "addWeaponObserver": () => {},
+        "addActivateObserver": () => {},
+        "lastAttacker": () => {},
+        "AIVarsStorage": () => {},
+        "coreType": () => {},
+        "markedEnemys": () => {},
+        "damageOrderList": () => {},
+        "deathTransitions": () => {},
+        "preLaserObserver": () => {},
+        "posLaserObserver": () => {},
+        "halfingStats": () => {},
+        "addActivatesPromises": () => {},
     }
 
     clone(object){
@@ -70,6 +83,12 @@ export class CloneObjectController {
         for (let key in object) {
 
             if(typeof(object[key]) == "object"){
+
+                if(
+                    !this.cloneObjectFunctions[key]
+                ){
+                    console.warn(key)
+                }
 
                 this.cloneObjectFunctions[key](
                     object,
@@ -162,14 +181,15 @@ export class CloneObjectController {
 
     cloneActivates(object, clonedObject = {}){
 
+        // Some special ships have default activates.
+        // To avoid duplications, we will erase these default activates.
+        clonedObject.addActivatesPromises = []
+
         for (let key in object.activates) {
-
             let activate = object.activates[key]
-
             clonedObject.addActivate(
                 ActivateInfo.build(activate.type, activate.name)
             )
-
         }
 
         return clonedObject
@@ -178,7 +198,11 @@ export class CloneObjectController {
 
     cloneAI(object, clonedObject = {}){
 
-        AIC.giveAI(clonedObject, object.AI.returnAll(), true)
+        if(object.AI.returnAll){
+            AIC.giveAI(clonedObject, object.AI.returnAll(), true)
+        }else{
+            AIC.giveCoreAI(clonedObject, object.AI, object.coreType, true)
+        }
 
         return clonedObject
 
@@ -216,7 +240,7 @@ export class CloneObjectController {
 
         clonedObject.searchPriority = {}
 
-        CloneObject.cloneAttribute(
+        CloneObject.recursiveCloneAttribute(
             object.searchPriority,
             clonedObject.searchPriority
         )

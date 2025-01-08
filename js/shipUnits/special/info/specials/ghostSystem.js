@@ -16,6 +16,8 @@ export class GhostSystem {
 
     }
 
+    subType = ["dodge"]
+
     name = "ghost system"
     cost = 2
     func = new SpecialController().invulnerabilitySystem

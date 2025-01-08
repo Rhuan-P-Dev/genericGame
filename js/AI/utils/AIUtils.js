@@ -1,4 +1,3 @@
-
 import { GameStateController } from "../../gameState/gameStateController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
 import { VectorController } from "../../generalUtils/vector.js"
@@ -32,6 +31,7 @@ export class AIUtilsController {
 
         minimalObject.ID = "minimal"//randomUniqueID() + "minimal"
         minimalObject.team = object.team || "minimal"
+        minimalObject.color = object.color || "white"
 
         return minimalObject
     }
@@ -50,10 +50,20 @@ export class AIUtilsController {
         */
 
         let difference = parsePositive(
-            goal.priority - object.searchPriority.targetPriority
+            (goal.priority - object.searchPriority.targetPriority) + 1
         ) ** object.searchPriority.targetObsession
 
-        return Vector.getTriangleSize(goal, object) * difference
+        let distance = Vector.getTriangleSize(goal, object) * difference
+
+        let multDistance = (
+            object.searchPriority.favoriteTargetsObsession[
+                goal.ID
+            ] || 1
+        )
+
+        distance *= multDistance
+
+        return distance
 
     }
 
@@ -66,10 +76,19 @@ export class AIUtilsController {
     getFutureOf(object, frames = 1){
 
         return {
-            "x": (object.x + object.cosine) + (object.currentXVel * frames ),
-            "y": (object.y + object.sine) + (object.currentYVel * frames ),
+            "x": object.x + (object.currentXVel * frames ),
+            "y": object.y + (object.currentYVel * frames ),
         }
 
+    }
+
+    pointToTarget(object, target){
+    
+        let direction = Vector.vectorNormalize(target, object)
+        
+        object.cosine = direction.x
+        object.sine = direction.y
+    
     }
 
     getPointed(object, target){
@@ -103,15 +122,6 @@ export class AIUtilsController {
         }else{
             return false
         }
-
-    }
-
-    pointToTarget(object, target){
-
-        let direction = Vector.vectorNormalize(object, target)
-    
-        object.xMult = direction.x
-        object.yMult = direction.y
 
     }
 
@@ -301,7 +311,46 @@ export class AIUtilsController {
 
     }
 
-    getObject(objects, yourObject, method = "closest"){
+    getAvaregeStats(object, stats = [], aditionalValues = []){
+
+        let avaregeValue = 0
+        let avaregeDivision = 0
+
+        for (let index = 0; index < stats.length; index++) {
+
+            let statValue = undefined
+
+            if(!object[stats[index]]){continue}
+
+            if(object[stats[index]].get){
+                statValue = object[stats[index]].get()
+            }else{
+                statValue = object[stats[index]]
+            }
+
+            if(
+                statValue === undefined
+            ){
+                continue
+            }
+
+            avaregeValue += statValue
+            avaregeDivision += 1
+
+        }
+
+        for (let index = 0; index < aditionalValues.length; index++) {
+
+            avaregeValue += aditionalValues[index]
+            avaregeDivision += 1
+
+        }
+
+        return (avaregeValue / avaregeDivision) || 0
+
+    }
+
+    getObject(objects, yourObject, method = "closest", stats = []){
 
         let closestObject = undefined
 
@@ -314,6 +363,10 @@ export class AIUtilsController {
             closestObject = {
                 "distance": getDistanceFunction(yourObject, object),
                 "object": object,
+                "avarege": this.getAvaregeStats(
+                    object,
+                    stats,
+                )
             }
 
             break
@@ -326,9 +379,19 @@ export class AIUtilsController {
 
             let distance = getDistanceFunction(yourObject, object)
 
-            if(closestObject.distance > distance){
+            let avarege = this.getAvaregeStats(
+                object,
+                stats,
+            )
+
+            if(
+                closestObject.distance > distance
+                &&
+                closestObject.avarege >= avarege
+            ){
                 closestObject.distance = distance
                 closestObject.object = object
+                closestObject.avarege = avarege
             }
 
         }
@@ -341,14 +404,17 @@ export class AIUtilsController {
 
     }
 
-    getClosestObjectOfTeams(object){
+    getClosestObjectOfTeams(
+        object,
+        config = {
+            "minPriority": object.searchPriority.min,
+            "maxPriority": object.searchPriority.max,
+        }
+    ){
 
         let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
             object,
-            {
-                "minPriority": object.searchPriority.min,
-                "maxPriority": object.searchPriority.max,
-            }
+            config
         )
 
         if(array.length == 0){return false}
@@ -357,7 +423,29 @@ export class AIUtilsController {
 
     }
 
-    getStepPriorityObjectOfTeams(object){
+    getStepPriorityObjectOfSameTeam(
+        object,
+        config = {
+            "minPriority": object.searchPriority.min,
+            "maxPriority": object.searchPriority.max,
+            "includeSameTeam": true,
+            "includeEnemyTeam": false,
+        },
+        stats = []
+    ){
+
+        let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            object,
+            config
+        )
+
+        if(array.length == 0){return false}
+
+        return AIUtils.getObject(array, object, "step", stats)
+
+    }
+
+    getStepPriorityObjectOfTeams(object, stats){
 
         let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
             object,
@@ -369,7 +457,7 @@ export class AIUtilsController {
 
         if(array.length == 0){return false}
 
-        return AIUtils.getObject(array, object, "step")
+        return AIUtils.getObject(array, object, "step", stats)
 
     }
 
@@ -445,6 +533,112 @@ export class AIUtilsController {
 
         return array
 
+    }
+
+    getObjectInCoordinates(
+        object,
+        start,
+        end,
+        angle,
+        config = {
+            "minPriority": object.searchPriority.min,
+            "maxPriority": object.searchPriority.max,
+        }
+    ){
+
+        let array = AIUtils.returnArrayWithAlllObjectsOfTeams(
+            object,
+            config
+        )
+
+        if(array.length == 0){return false}
+
+        return this.filterObjectsByCoordinates(
+            array,
+            start,
+            end,
+            angle,
+        );
+
+    }
+
+    filterObjectsByCoordinates(
+        objects,
+        start,
+        end,
+    ) {
+    
+        const co1_2 = start.getLeftRightPoints()
+    
+        const co1 = [
+            co1_2[0].x,
+            co1_2[0].y
+        ]
+    
+        const co2 = [
+            co1_2[1].x,
+            co1_2[1].y
+        ]
+    
+        end.getAngle = start.getAngle
+        end.xMult = start.xMult
+        end.yMult = start.yMult
+        end.width = start.width
+        end.height = start.height
+    
+        const co3_4 = start.getLeftRightPoints(end)
+    
+        const co3 = [
+            co3_4[1].x,
+            co3_4[1].y
+        ]
+    
+        const co4 = [
+            co3_4[0].x,
+            co3_4[0].y
+        ]
+
+        function isPointInsidePolygon(point, polygon) {
+            let inside = false;
+            for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+                const xi = polygon[i][0], yi = polygon[i][1];
+                const xj = polygon[j][0], yj = polygon[j][1];
+                const intersect = ((yi > point[1]) != (yj > point[1])) && (point[0] < (xj - xi) * (point[1] - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+    
+        function isCircleInsidePolygon(circle, polygon) {
+            const radius = circle.width / 2;
+            const center = [circle.x, circle.y];
+            const points = [
+                center,
+                [center[0] - radius, center[1] - radius],
+                [center[0] + radius, center[1] - radius],
+                [center[0] - radius, center[1] + radius],
+                [center[0] + radius, center[1] + radius],
+                [center[0] - radius / 2, center[1] - radius / 2],
+                [center[0] + radius / 2, center[1] - radius / 2],
+                [center[0] - radius / 2, center[1] + radius / 2],
+                [center[0] + radius / 2, center[1] + radius / 2]
+            ];
+    
+            for (let point of points) {
+                if (isPointInsidePolygon(point, polygon)) {
+                    return true;
+                }
+            }
+    
+            return false;
+        }
+    
+        const polygon = [co1, co2, co3, co4];
+    
+        return objects.filter((object) => {
+            return isCircleInsidePolygon(object, polygon);
+        });
+    
     }
 
 }

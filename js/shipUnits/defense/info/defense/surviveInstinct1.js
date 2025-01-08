@@ -18,6 +18,8 @@ export class SurviveInstinct1 {
 
     }
 
+    subType = ["lifeGuard"]
+
     name = "survive instinct 1"
     cost = 0
     func = new ActivateController().setStats

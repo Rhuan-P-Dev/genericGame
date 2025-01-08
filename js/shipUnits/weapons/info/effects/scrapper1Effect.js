@@ -14,18 +14,12 @@ export class Scrapper1Effect {
 
                 "config": {
 
-                    "name": "fragile",
+                    "name": "scrapper",
                     "type": "onDamage",
-
-                    "countDown": {
-                        "count": 70
-                    },
 
                 },
 
-                "params": {
-                    "mult": 1.01
-                }
+                "params": {}
 
             },
 

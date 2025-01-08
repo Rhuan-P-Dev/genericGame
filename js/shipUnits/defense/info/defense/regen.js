@@ -18,6 +18,8 @@ export class Regen {
 
     }
 
+    subType = ["regen"]
+
     name = "regen"
     cost = 20
     func = new ActivateController().setStats

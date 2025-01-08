@@ -23,7 +23,7 @@ export class Splitter1 {
     reload = 10*60
 
     config = {
-        "statsMult": -0.5,
+        "statsMult": -0.2,
         "split": true,
     }
 

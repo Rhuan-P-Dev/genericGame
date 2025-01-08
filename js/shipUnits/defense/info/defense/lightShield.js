@@ -18,6 +18,8 @@ export class LightShield {
 
     }
 
+    subType = ["shield"]
+
     name = "light shield"
     cost = 20
     func = new ActivateController().setStats

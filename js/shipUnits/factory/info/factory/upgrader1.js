@@ -19,13 +19,14 @@ export class Upgrader1 {
 
     name = "upgrader 1"
     cost = 50
-    reload = 20*60
+    reload = 1*60*60
 
     currentVelMult = 0
 
     config = {
         "objectClass": Drone,
         "AI": ["movable","useActivates"],
+        "coreType":"default",
         "activates": {
             "special": ["lv up"],
             "weapon": ["piston 1","small bullet cluster 1","sniper piston 1"],

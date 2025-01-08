@@ -19,7 +19,7 @@ export class MineSeeder1 {
 
     name = "mine seeder 1"
     cost = 80
-    reload = 7*60
+    reload = 25*60
 
     currentVelMult = 0
 

@@ -17,6 +17,8 @@ export class DummyMaker {
 
     }
 
+    subType = ["evasive"]
+
     name = "dummy maker"
     cost = 25
     func = new SpecialController().distractionDummy
@@ -28,9 +30,11 @@ export class DummyMaker {
 
         "scale": 8,
 
+        "graphicID": "ship",
+
         "life": 100,
         "defense": 1,
-        "priority": 3
+        "priority": 5
     }
 
 }

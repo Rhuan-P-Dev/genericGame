@@ -18,10 +18,12 @@ export class BandAid {
 
     }
 
+    subType = ["regen","midTermBenefit"]
+
     name = "band aid"
-    cost = 50
+    cost = 60
     func = new ActivateController().setStats
-    reload = 5*60
+    reload = 10*60
 
     config = {
 

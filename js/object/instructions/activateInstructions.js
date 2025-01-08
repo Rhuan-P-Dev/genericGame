@@ -15,6 +15,13 @@ export class ActivateInstructions{
 
     addWeapon(weapon){
 
+        if(this.getAngle === undefined){
+
+            console.error("Angle not defined, cannot add weapon")
+
+            return false
+        }
+
         setWeaponAngle(this, weapon)
 
         this.setAngleObserver.add( () => {
@@ -31,7 +38,12 @@ export class ActivateInstructions{
             weapon.rotateToLeft(vel)
         })
 
+        this.addWeaponObserver.run(weapon)
+
     }
+
+    addWeaponObserver = new Observer()
+    addActivateObserver = new Observer()
 
     addActivate(activate){
 
@@ -43,7 +55,9 @@ export class ActivateInstructions{
         }
 
         this.activates[activate.ID] = activate
-        
+
+        this.addActivateObserver.run(activate)
+
     }
 
     activate(ID){
@@ -70,6 +84,20 @@ export class ActivateInstructions{
             this.activates[ID] = this.disableResuls[ID]
             delete this.disableResuls[ID]
         }
+    }
+
+    getAll(object){
+
+        let result = []
+
+        for (let ID in object.activates) {
+            result.push(
+                object.activates[ID]
+            )
+        }
+
+        return result
+
     }
 
 }

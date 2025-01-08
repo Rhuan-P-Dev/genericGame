@@ -20,7 +20,7 @@ export class Piston1 {
 
         this.lifeTime = 30
 
-        this.config.weapon.multVel = 8
+        this.config.weapon.multVel = 12
 
         this.config.projectiles.objectClass = ["small bullet"]
 

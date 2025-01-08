@@ -1,3 +1,4 @@
+import { GenericEffectsScorerController } from "../../jsWaveGame/scorers/effects/generic/genericEffectsScorerController.js"
 import { FocusedTopDownBehavior } from "../AI/behavior/focusedTopDownBehavior.js"
 import { AIUtilsController } from "../AI/utils/AIUtils.js"
 import { FrameController, setFrameOut } from "../frame/frameController.js"
@@ -23,6 +24,7 @@ var CloneObject = ""
 
 var GenericEffects = ""
 var OtherEffects = ""
+var GenericEffectsScorer
 
 onInit(function(){
 
@@ -36,6 +38,7 @@ onInit(function(){
 
     GenericEffects = new GenericEffectsController()
     OtherEffects = new OtherEffectsController()
+    GenericEffectsScorer = new GenericEffectsScorerController()
 
 })
 
@@ -44,6 +47,45 @@ export class EffectsController {
     effectsList = {}
 
     builded = false
+
+    getMinimalObject(
+        minimalObject = {},
+        object = {}
+    ){
+
+        minimalObject.effects = {}
+
+        return minimalObject
+
+    }
+
+    setEffects(object, effects, promise = false){
+
+        for (let effectType in effects.add) {
+
+            for (let index = 0; index < effects.add[effectType].length; index++) {
+
+                let effectName = effects.add[effectType][index]
+
+                this.add(
+                    effectName,
+                    effectType,
+                    {
+                        object: object,
+                    },
+                    {},
+                    promise
+                )
+
+            }
+
+        }
+
+        if(effects.apply){
+            Effects.applyEffects(object, effects.apply)
+        }
+
+    }
 
     buildGeneric(){
 
@@ -94,6 +136,7 @@ export class EffectsController {
         "onHit": this.addOn,
         "onDeath": this.addOn,
         "onDamage": this.addOn,
+        "onKill": this.addOn,
     }
 
     getAll(){
@@ -121,7 +164,7 @@ export class EffectsController {
 
     defaultTempConfig = {
         "prefixFunc": [],
-        "suffixFunc": ["deleteInstruction"],
+        "suffixFunc": [],
         
         "stage": "middle",
         "priority": 5,
@@ -134,15 +177,21 @@ export class EffectsController {
         effectType,
         params,
         config = {},
-        ID = randomUniqueID()
+        selfDelete = true
     ){
 
+        if(!params.object[applyType]){return}
+
         CloneObject.recursiveCloneAttribute(this.defaultTempConfig, tempConfig)
+
+        if(selfDelete){
+            //console.log(tempConfig)
+            tempConfig.suffixFunc.push("deleteInstruction")
+        }
 
         tempConfig.func = (localParams) => {
 
             let objects = []
-            let IDs = [ID]
 
             if(
                 localParams.otherObject
@@ -199,7 +248,7 @@ export class EffectsController {
                     newParams,
                     config,
                     false,
-                    IDs[index] || randomUniqueID(),
+                    randomUniqueID()
                 )
                 
             }
@@ -210,11 +259,19 @@ export class EffectsController {
 
         tempConfig.config = tempConfig
 
-        return params.object[applyType].add(
+        tempConfig.effectName = effectName
+        tempConfig.applyOnOther = true
+
+        let priority = params.object[applyType].add(
             tempConfig,
             tempConfig.stage || "first",
             tempConfig.priority || 0
         )
+
+        tempConfig.priority = priority
+        tempConfig.config.priority = priority
+
+        return priority
 
     }
 
@@ -276,11 +333,25 @@ export class EffectsController {
         config
     ){
 
+        if(!config.before){
+            config.before = {}
+        }
+
         Effects.fix(config, effectName, "on", "config")
+        Effects.fix(config.before, effectName, "on", "before")
+
+        config.effectName = effectName
+        config.applyOnOther = false
 
         new ComplexOnTypeFunctions().apply(config)
 
         let oldFunc = config.func
+        let oldFuncBefore = config.before?.config?.func || null
+
+        let callFuncs = (runtimeParams) => {
+            if(oldFuncBefore){oldFuncBefore(runtimeParams)}
+            oldFunc(runtimeParams)
+        }
 
         config.config = config
 
@@ -294,7 +365,7 @@ export class EffectsController {
                 true,
             )
 
-            oldFunc(runtimeParams)
+            callFuncs(runtimeParams)
 
         }
 
@@ -302,6 +373,12 @@ export class EffectsController {
             config,
             config.stage || "first",
             config.priority || 0
+        )
+
+        Effects.linkOwnerToEffect(
+            params,
+            params.object,
+            false
         )
 
         delete params.object
@@ -329,6 +406,12 @@ export class EffectsController {
             },
             effectName,
             "effect"
+        )
+
+        Effects.linkOwnerToEffect(
+            params,
+            params.object,
+            false
         )
 
         if(!promise){
@@ -523,6 +606,7 @@ export class EffectsController {
                 effect.config.type,
                 effect.params,
                 effect.config,
+                apply.selfDelete
             )
 
         }else{
@@ -535,6 +619,213 @@ export class EffectsController {
             )
 
         }
+
+    }
+
+    simpleApplyEffectsTemplate(effectName, effectType, apply = false, applyType, selfDelete = true){
+
+        return {
+        
+            "apply": {
+
+                "apply": apply,
+                "applyType": applyType,
+                "selfDelete": selfDelete
+
+            },
+
+            "effect": {
+
+                "config": {
+
+                    "name": effectName,
+                    "type": effectType,
+
+                },
+
+                "params": {
+                },
+
+            },
+
+        }
+
+    }
+
+    getEffectsCount(object){
+
+        let maybeEffects = [
+            ...object.onDamage.getAll(true),
+            ...object.onHit.getAll(true),
+            ...object.onDeath.getAll(true),
+        ]
+
+        let effects = 0
+
+        for (let index = 0; index < maybeEffects.length; index++) {
+
+            let maybeEffect = maybeEffects[index]
+
+            if(maybeEffect.effectName){
+                effects++
+            }
+
+        }
+
+        return effects
+    }
+
+    getAllEffectsInfo(object){
+
+        let effects = []
+
+        let maybeEffects = [
+            ...object.onDamage.getAll(true),
+            ...object.onHit.getAll(true),
+            ...object.onDeath.getAll(true),
+            ...object.onKill.getAll(true),
+        ]
+
+        for (let index = 0; index < maybeEffects.length; index++) {
+
+            let maybeEffect = maybeEffects[index]
+
+            if(maybeEffect.effectName){
+                effects.push(
+                    maybeEffect
+                )
+            }
+
+        }
+
+        for (let ID in object.effects){
+
+            effects.push(object.effects[ID])
+
+        }
+
+        return effects
+
+    }
+
+    getTotalEffects(object){
+        return Object.keys(object.effects).length + this.getEffectsCount(object)
+    }
+
+    // maybe this score is wrong
+    formatEffectsScore(
+        effect,
+        effectsObject = {
+            "add": {
+                "effect": [],
+                "onHit": [],
+                "onDamage": [],
+                "onDeath": [],
+                "onKill": [],
+            },
+            "apply": []
+        }
+    ){
+
+        if(!effect){return effectsObject}
+
+        let effectName = effect[0]
+        let deBuff = effect[1]
+        let applyType = effect[2]
+
+        if(deBuff == "positive"){
+
+            effectsObject.add[applyType].push(effectName)
+
+        }else{
+
+            let metaEffectType = applyType
+            let metaApplyType = "onDamage"
+
+            if(GenericEffectsScorer.haveThis(
+                effectName
+            )){
+                metaEffectType = "effect"
+
+                if(applyType !== "effect"){
+                    metaApplyType = applyType
+                }
+
+            }
+
+            effectsObject.apply.push(
+                Effects.simpleApplyEffectsTemplate(
+                    effectName,
+                    metaEffectType,
+                    true,
+                    metaApplyType,
+                    false
+                )
+            )
+
+        }
+
+        return effectsObject
+    }
+
+    formatAllEffectsScore(effects){
+
+        let effectsObject = this.formatEffectsScore()
+
+        if(!effects){effects = []}
+
+        for (let index = 0; index < effects.length; index++) {
+
+            if(!effectsObject){
+                effectsObject = this.formatEffectsScore(
+                    effects[index]
+                )
+            }else{
+                effectsObject = this.formatEffectsScore(
+                    effects[index],
+                    effectsObject
+                )
+            }
+
+        }
+
+        return effectsObject
+
+    }
+
+    addEffectsInActivates(object, effects){
+
+        for (let index = 0; index < effects.length; index++) {
+
+            let effect = effects[index]
+
+            for (let ID in object.activates) {
+
+                this.addEffectInActivate(
+                    object.activates[ID],
+                    effect
+                )
+
+            }
+
+        }
+
+    }
+
+    addEffectInActivate(activate, effect){
+
+        if(
+            activate.type !== "weapon"
+        ){return}
+
+        if(!activate.effects){
+            activate.effects = []
+        }
+
+        activate.effects = [
+            ...activate.effects,
+            effect
+        ]
 
     }
 

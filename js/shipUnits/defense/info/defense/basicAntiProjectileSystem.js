@@ -16,6 +16,8 @@ export class BasicAntiProjectileSystem {
 
     }
 
+    subType = ["areaSupport"]
+
     name = "basic anti-projectile system"
     cost = 0
     func = new DefenseController().antiProjectileSystem
