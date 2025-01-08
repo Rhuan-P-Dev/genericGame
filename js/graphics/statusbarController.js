@@ -1,19 +1,24 @@
 import { GameStateController } from "../gameState/gameStateController.js"
+import { FPSController } from "../misc/FPSController.js"
 import { ScreenRenderController } from "./screenRenderController.js"
 
 var GameState = ""
 var ScreenRender = ""
+var FPSC
 
 onInit(function(){
 
     GameState = new GameStateController()
     ScreenRender = new ScreenRenderController()
+    FPSC = new FPSController()
 
 })
 
 export class StatusbarController {
 
     update(){
+
+        if(FPSC.getFPS() < FPSC.FPSCap){return}
 
         let allObjectsRenderable = GameState.getAllObjectsRender()
 
