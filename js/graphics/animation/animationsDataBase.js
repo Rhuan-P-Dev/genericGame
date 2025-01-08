@@ -110,6 +110,43 @@ export class AnimationsDataBase {
             "0":{"func":"writeText","loop":1,"seconds":3,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0},{"y":-6}],"text":["You winning was always an illusion"],"fontSize":[30]}}
         },
 
+        "divine halo": {
+            "0":{"func":"drawCircle","loop":1,"seconds":0.2,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":255,"2":0}}],"lineWidth":[2],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[25]}}
+        },
+
+        "miss attack": {
+            "0":{"func":"writeText","loop":1,"seconds":0.5,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0},{"y":-6}],"text":["miss"],"fontSize":[30]}}
+        },
+
+        "undead":{
+            "0":{"func":"drawLine","loop":1,"seconds":0.6,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":122,"2":0}}],"lineWidth":[1],"fill":[true],"continuous":[{"0":{"0":-2.25,"1":2.25},"1":{"0":-2.25,"1":-2.25},"2":{"0":2.25,"1":-2.25},"3":{"0":2.25,"1":2.25}}]}}
+        },
+
+        "reaper's death pulse": {
+            "0": {"func":"drawCircle","loop":1,"seconds":0.25,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[5],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[1,400]}}
+        },
+
+        "reaper's final invitation": {
+            "0": {"func":"drawCircle","loop":1,"seconds":0.25,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[10,1],"fill":[false],"xy":[{"x":0,"y":0}],"radius":[1,1000]}}
+        },
+
+        "action fight": {
+            "0":{"func":"writeText","loop":1,"seconds":0.10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":20}],"text":["FIGHT"],"fontSize":[70]}},
+        },
+
+        "action mercy": {
+            "0":{"func":"writeText","loop":1,"seconds":0.10,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":20}],"text":["MERCY"],"fontSize":[70]}},
+        },
+
+        "save point": {
+            "0":{"func":"drawLine","loop":1,"seconds":1,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":255,"2":0}}],"lineWidth":[1],"fill":[true],"continuous":[{"0":{"0":0,"1":-6},"1":{"0":6,"1":0},"2":{"0":0,"1":6},"3":{"0":-6,"1":0}}]}}
+        },
+        "hero's wish":{
+            "0":{"func":"writeText","loop":1,"seconds":2,"frameRate":60,"frames":{"color":[{"0":{"0":0,"1":0,"2":0}}],"lineWidth":[1],"fill":[false],"xy":[{"x":0,"y":0},{"y":0}],"text":["I just wanted a power to overcome all evil..."],"fontSize":[20]}}
+        },
+        "snow":{
+            "0":{"func":"drawLine","loop":1,"seconds":0.6,"frameRate":60,"frames":{"color":[{"0":{"0":255,"1":255,"2":255}}],"lineWidth":[1],"fill":[true],"continuous":[{"0":{"0":-2.25,"1":2.25},"1":{"0":-2.25,"1":-2.25},"2":{"0":2.25,"1":-2.25},"3":{"0":2.25,"1":2.25}}]}}
+        }
     }
 
     get(animation){
