@@ -4,6 +4,7 @@ import { ScreenRenderController } from "../screenRenderController.js"
 import { AnimationsDataBase } from "./animationsDataBase.js"
 import { InterpolateController } from "./interpolateController.js"
 import { CloneObjectController } from "../../generalUtils/cloneObject.js"
+import { FPSController } from "../../misc/FPSController.js"
 
 var GameState = ""
 var ScreenRender = ""
@@ -11,6 +12,7 @@ var DataBase = ""
 var Interpolate
 var CloneObject
 var Frame
+var FPSC
 
 
 onInit(function(){
@@ -27,11 +29,15 @@ onInit(function(){
 
     Frame = new FrameController()
 
+    FPSC = new FPSController()
+
 })
 
 export class AnimationsController {
 
     run(animationConfig){
+
+        if(FPSC.getFPS() < FPSC.FPSCap){return}
 
         let animationData = new AnimationsDataBase().get(animationConfig.name)
 
@@ -63,6 +69,8 @@ export class AnimationsController {
     }
 
     lazyAnimationEngine(animationConfig, shapeData, animationObject, tempAnimationData, currentLoop = 0, currentFrameLenght = 0){
+
+        if(FPSC.getFPS() < FPSC.FPSCap){return}
 
         if(shapeData.loop <= currentLoop){
             return
@@ -164,6 +172,8 @@ export class AnimationsController {
     }
 
     applyAnimations(object, animations, promise = false){
+
+        if(FPSC.getFPS() < FPSC.FPSCap){return}
 
         for (let index = 0; index < animations.length; index++) {
 
