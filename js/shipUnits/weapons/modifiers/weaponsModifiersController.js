@@ -79,6 +79,18 @@ export class WeaponsModifiersController{
     getAll(){
         return this.modifiers
     }
+    getAllMults(build = false){
+
+        const mods = this.getAll()
+        let mults = {}
+
+        for(let mod in mods){
+            mults[mod] = this.getMult(mod, build)
+        }
+
+        return mults
+
+    }
 
     getMults(modifiers, build = false){
         let result = 0
