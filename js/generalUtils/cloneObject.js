@@ -181,14 +181,15 @@ export class CloneObjectController {
 
     cloneActivates(object, clonedObject = {}){
 
+        // Some special ships have default activates.
+        // To avoid duplications, we will erase these default activates.
+        clonedObject.addActivatesPromises = []
+
         for (let key in object.activates) {
-
             let activate = object.activates[key]
-
             clonedObject.addActivate(
                 ActivateInfo.build(activate.type, activate.name)
             )
-
         }
 
         return clonedObject
