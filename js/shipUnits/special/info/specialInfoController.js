@@ -14,6 +14,10 @@ import { GhostSystem } from "./specials/ghostSystem.js"
 import { Turbo1 } from "./specials/turbo1.js"
 import { Splitter1 } from "./specials/splitter1.js"
 import { Camouflage } from "./specials/camouflage.js"
+import { MinorPerfectAreaClone } from "./specials/divineEnergy/minorPerfectAreaClone.js"
+import { Turbo2 } from "./specials/turbo2.js"
+import { ActionLoad } from "./specials/actionLoad.js"
+import { ActionSave } from "./specials/actionSave.js"
 
 var ActivateInfo = ""
 
@@ -39,7 +43,15 @@ export class SpecialInfoController{
         "test quantum bomb": TestQuantumBomb,
         "ghost system": GhostSystem,
         "turbo 1": Turbo1,
+        "turbo 2": Turbo2,
         "splitter 1": Splitter1,
+
+        //divine energy
+        "minor perfect area clone": MinorPerfectAreaClone,
+
+        //actionPoints
+        "action load": ActionLoad,
+        "action save": ActionSave,
     }
 
     getAll(){
