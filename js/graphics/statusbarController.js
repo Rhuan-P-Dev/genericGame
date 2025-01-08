@@ -37,12 +37,20 @@ export class StatusbarController {
         "above": [
             { name: "life", max: "maxLife", color: "red"},
             { name: "shield", max: "maxShield", color: "lightblue"},
+            { name: "xp", max: "xpMax", color: "greenyellow"},
+            { name: "lv", color: "black", type: "text" },
         ],
         "below": [
-            { name: "energy", max: "maxEnergy", color: "rgb(200, 200, 0)"},
+            { name: "actionPoints", max: "maxActionPoints", color: "white"},
+            { name: "energy", max: "maxEnergy", color: "rgb(240, 240, 0)"},
             { name: "divineEnergy", max: "maxDivineEnergy", color: "yellow"},
             { name: "darkEnergy", max: "maxDarkEnergy", color: "purple"},
+            { name: "royaltyPoints", max: "royaltyPointsMax", color: "greenyellow"},
+
+            { name: "inkProgress", max: "inkProgressMax", color: "white"},
             { name: "selfSwarmProduction", max: "selfSwarmProductionMax", color: "green"},
+
+            { name: "stars", max: "maxStars", color: "yellow", type: "star"},
         ],
     }
 
@@ -56,23 +64,33 @@ export class StatusbarController {
 
                 let status = this.statusTable[direction][index]
     
-                if (!object.hasOwnProperty(status.name) || !object.hasOwnProperty(status.max)) {
-                    continue
-                }
-    
-                let stat = typeof object[status.name] == "number" ? object[status.name] : object[status.name].get()
-    
-                this.renderStat(
-                    object,
-                    {
-                        start: { x: 25, y: (object.height*2) * position },
-                        end: { x: 25, y: (object.height*2) * position },
-                        formula: stat / object[status.max],
-                        lineWidth: 2,
-                        color: status.color,
+                if (
+                    status.type === "text"
+                    &&
+                    object.hasOwnProperty(status.name)
+                ) {
+                    let stat = object[status.name]
+                    this.renderText(object, stat, position, status.color)
+                } else {
+                    if (!object.hasOwnProperty(status.name) || !object.hasOwnProperty(status.max)) {
+                        continue
                     }
-                )
-    
+                    let stat = typeof object[status.name] == "number" ? object[status.name] : object[status.name].get()
+                    if (status.type === "star") {
+                        this.renderStars(object, stat, position, status.color)
+                    } else {
+                        this.renderStat(
+                            object,
+                            {
+                                start: { x: 25, y: (object.height*2) * position },
+                                end: { x: 25, y: (object.height*2) * position },
+                                formula: stat / object[status.max],
+                                lineWidth: 2,
+                                color: status.color,
+                            }
+                        )
+                    }
+                }
                 position += direction === "above" ? 0.5 : -0.5
                 
             }
