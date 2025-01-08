@@ -64,3 +64,8 @@ function insertRelativeTo(arr, element, direction = "after", seach, log = true) 
 
     return arr
 }
+
+function numberToCash(num) {
+    // Convert the number to a string with a dot as the thousand separator
+    return num.toLocaleString('de-DE', { minimumFractionDigits: 0 });
+}
