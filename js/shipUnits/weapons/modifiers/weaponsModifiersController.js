@@ -79,6 +79,15 @@ export class WeaponsModifiersController{
     getAll(){
         return this.modifiers
     }
+
+    getMult(modifier, build = false){
+        if(build){
+            return this.get(modifier, true).costMult
+        }else{
+            return modifier.costMult
+        }
+    }
+
     getAllMults(build = false){
 
         const mods = this.getAll()
