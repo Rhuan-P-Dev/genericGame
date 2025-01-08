@@ -25,9 +25,14 @@ export class HealPulse1 {
 
     config = {
 
-        heal: 5,
+        "heal": 5,
 
-        range: 100
+        "stats": [
+            "life",
+        ],
+
+        "range": 100,
+        "color": "black",
 
     }
 
