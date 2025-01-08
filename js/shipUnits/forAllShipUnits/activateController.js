@@ -71,7 +71,15 @@ export class ActivateController{
 
         result.activate = activate
 
-        if (object[consumableStat] >= cost && activate.reloadTemp <= 0) {
+        if (
+            (
+                cost == 0
+                ||
+                object[consumableStat] >= cost
+            )
+            &&
+            activate.reloadTemp <= 0
+        ) {
             activate.preuseActivateObserver.run(object, activate)
 
             object[consumableStat] -= cost
