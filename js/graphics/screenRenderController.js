@@ -168,9 +168,10 @@ export class ScreenRenderController {
         focusObject = object
     }
 
-    getCanvasXYofFocusObject(canvas) {
-
-        let focusObject = this.getFocusObject()
+    getCanvasXYofFocusObject(
+        canvas,
+        focusObject = ScreenRender.getFocusObject()
+    ){
 
         let x = focusObject.x - (canvas.canvas.width / 2)
         let y = focusObject.y - (canvas.canvas.height / 2)
