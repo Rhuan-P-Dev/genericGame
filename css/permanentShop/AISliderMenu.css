@@ -1,0 +1,71 @@
+.AISliderMenu > .up{
+    justify-content: space-around;
+}
+
+.AISliderMenu > .up button{
+    width: 80px;
+    height: 30px;
+}
+
+.AISliderMenu > .mid{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+
+.AISliderMenu > .down{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow-y: auto
+}
+
+.AISliderMenu > .down > *{
+    padding: 7px;
+}
+
+.slider{
+    width: 45%;
+}
+
+.slider > *{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid white;
+}
+
+.slider > .mid{
+    display: flex;
+}
+
+.slider > .mid > *{
+    display: flex;
+    border: 1px solid white;
+    width: 33%;
+}
+
+.slider > .mid > .left{
+    justify-content: start;
+}
+
+.slider > .mid > .mid{
+    justify-content: center;
+}
+
+.slider > .mid > .right{
+    justify-content: end;
+}
+
+.slider > .down > *{
+    width: 100%;
+}
+
+.onOffButton{
+    background-color: white;
+    color: black;
+}
