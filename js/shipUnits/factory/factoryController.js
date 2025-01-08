@@ -69,6 +69,8 @@ export class FactoryController{
 
             Activate.addObject(newObject)
 
+            return newObject
+
         }
 
     }
