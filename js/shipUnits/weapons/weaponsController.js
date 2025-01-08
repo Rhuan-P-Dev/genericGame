@@ -79,6 +79,11 @@ export class WeaponsController{
         object.currentXVel += cosine_X * ( weapon.config.weapon.multVel + config.tempMultVel )
         object.currentYVel += sine_Y * ( weapon.config.weapon.multVel + config.tempMultVel )
 
+        if(object.cosine !== undefined){
+            object.cosine += cosine_X
+            object.sine += sine_Y
+        }
+
 
 
 
