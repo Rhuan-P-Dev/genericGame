@@ -84,6 +84,12 @@ export class CloneObjectController {
 
             if(typeof(object[key]) == "object"){
 
+                if(
+                    !this.cloneObjectFunctions[key]
+                ){
+                    console.warn(key)
+                }
+
                 this.cloneObjectFunctions[key](
                     object,
                     clonedObject,
