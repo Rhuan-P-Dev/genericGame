@@ -34,6 +34,7 @@ export class CloneObjectController {
         "onHit": this.cloneComplexOnType,
         "onDeath": this.cloneComplexOnType,
         "onDamage": this.cloneComplexOnType,
+        "onKill": this.cloneComplexOnType,
         "buildList": () => {},
         "passBuildList": () => {},
         "animations": () => {},
