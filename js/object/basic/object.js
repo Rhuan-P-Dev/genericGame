@@ -163,6 +163,8 @@ export class Object {
 
     AIVarsStorage = {}
 
+    addActivatesPromises = []
+
     // Hacky?
 
     xMult = 1

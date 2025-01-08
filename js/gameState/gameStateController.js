@@ -158,6 +158,7 @@ export class GameStateController {
         }
 
         GameState.tryAddObjectAutoWeapons(object)
+        GameState.closePromises(object)
         Effects.closePromises(object)
         Animations.closePromises(object)
         KeyBoard.tryAddToPlayer(object)
