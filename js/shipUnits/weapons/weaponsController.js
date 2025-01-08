@@ -120,7 +120,16 @@ export class WeaponsController{
 
         }
 
+        if(object.laserLength !== undefined){
+            var range = weapon.range
 
+            if(weapon.auto){
+                range *= 0.5
+            }
+
+            object.laserLength = range
+
+        }
 
         if(weapon.effects){
 
