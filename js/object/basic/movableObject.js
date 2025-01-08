@@ -8,11 +8,13 @@ import { AnimationsController } from "../../graphics/animation/animationsControl
 import { ComplexRenderController } from "../../graphics/complexRenderController.js"
 import { ScreenRenderController } from "../../graphics/screenRenderController.js"
 import { setFrameOut } from "../../frame/frameController.js"
+import { FPSController } from "../../misc/FPSController.js"
 
 var AIUtils = ""
 var CustomMath = ""
 var ScreenRender
 var ComplexRender
+var FPSC
 
 onInit(function(){
 
@@ -20,6 +22,7 @@ onInit(function(){
     CustomMath = new CustomMathController()
     ScreenRender = new ScreenRenderController()
     ComplexRender = new ComplexRenderController()
+    FPSC = new FPSController()
 
 })
 
@@ -47,6 +50,8 @@ export class MovableObject {
 
     addMovimentationTrace(){
 
+        if(FPSC.getFPS() < FPSC.FPSCap){return}
+
         let object = new Object()
 
         object.team = "particule"
@@ -61,6 +66,8 @@ export class MovableObject {
 
         setFrameOut(
             () => {
+
+                if(FPSC.getFPS() < FPSC.FPSCap){return}
 
                 ScreenRender.addDrawRequest(
                     {
