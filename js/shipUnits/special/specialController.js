@@ -236,6 +236,41 @@ export class SpecialController{
         })
 
     }
+
+    savePoint(object, activate, config){
+
+        const clonedObject = CloneObject.clone(object)
+
+        let loadOnDeath = {
+            "prefixFunc": [],
+            "func": (params) => {
+
+                GameState.overwriteObject(
+                    clonedObject
+                )
+
+            },
+            "suffixFunc": ["stopStages","deleteInstruction"],
+
+            "stopStages": {
+                "stages": ["middle","last"],
+            },
+
+            "stage": "middle",
+            "priority": 1,
+
+        }
+
+        new ComplexOnTypeFunctions().apply(loadOnDeath)
+
+        object.onDeath.add(
+            loadOnDeath,
+            loadOnDeath.stage,
+            loadOnDeath.priority
+        )
+
+    }
+
 }
 
 var Special = new SpecialController()
