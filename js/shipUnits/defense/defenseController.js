@@ -339,6 +339,7 @@ export class DefenseController{
                     "x": object.x,
                     "y": object.y,
                     "radius": config.range,
+                    "color": config.color
                 },
             }
         )
