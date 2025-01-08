@@ -39,6 +39,8 @@ GAME.team = {}
 GAME.team.playerTeam = {}
 GAME.team.enemyTeam = {}
 GAME.team.neutralTeam = {}
+GAME.team.arenaCloseTeam = {}
+GAME.team.genocideTeam = {}
 
 let player = {
     "ID": "undefined",
