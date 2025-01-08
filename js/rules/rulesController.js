@@ -62,6 +62,10 @@ export class RulesController {
             object.energy = object.maxEnergy
         }
 
+        if(object.actionPoints > object.maxActionPoints){
+            object.actionPoints = object.maxActionPoints
+        }
+
         if(object.shield !== undefined){
             if(object.shield > object.maxShield){
                 object.shield = object.maxShield
