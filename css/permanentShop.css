@@ -1,0 +1,431 @@
+.dualLeftRightPanels{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+}
+
+.dualLeftRightPanels > .left, .dualLeftRightPanels > .right{
+    width: 10%;
+    height: 100%;
+    border: 1px solid white;
+    overflow-y: auto;
+}
+
+.dualLeftRightPanels > .left > *, .dualLeftRightPanels > .right > *{
+    display: flex;
+    width: 100%;
+    height: 100px;
+    border-bottom: 1px solid grey;
+    color: white;
+    cursor: pointer;
+    padding: 2px;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.dualLeftRightPanels > * > * > *, .dualLeftRightPanels > * > * > *{
+    align-self: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.genericInterface{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.genericInterface > *{
+    border: 1px solid white;
+}
+
+.genericInterface > .up{
+    display: flex;
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+}
+
+.genericInterface > .up > *{
+    align-self: center;
+}
+
+.genericInterface > .mid{
+    width: 100%;
+    height: 100%;
+}
+
+.genericInterface > .down{
+    display: flex;
+    width: 100%;
+    height: 10%;
+    justify-content: center;
+}
+
+.permanentShopButton{
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+.permanentShop{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    position: absolute;
+    z-index: 1111;
+}
+
+.mainShopMenu > .up{
+    display: flex;
+    justify-content: space-around;
+}
+
+.mainShopMenu > .up > *{
+    width: 100px;
+    height: 40px
+}
+
+.mainShopMenu > .mid{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+
+.mainShopMenu > .mid > *{
+    display: flex;
+    align-self: center;
+    border: 1px solid white;
+    cursor: pointer;
+    margin: 10px 20px;
+    font-size: 60px;
+}
+
+.mainShopMenu > .mid > * > *{
+    align-self: center;
+}
+
+.mainShopMenu > .down{
+    justify-content: space-around;
+}
+
+.mainShopMenu > .down > button{
+    width: 10%;
+    min-width: 60px;
+    height: 50px;
+    align-self: center;
+}
+
+.buyShipMenu{
+    width: 100%;
+    height: 100%;
+}
+
+.buyShipMenu > .up{
+    display: flex;
+    justify-content: center
+}
+
+.buyShipMenu > .up > *{
+    align-self: center;
+}
+
+.buyShipMenu > .mid{
+    height: 100%;
+}
+
+.buyShipMenu > .mid > .up{
+    display: flex;
+    height: 95%;
+    justify-content: center;
+}
+
+.buyShipMenu > .mid > .up > *{
+    width: 100%;
+    border: 1px solid white;
+}
+
+.buyShipMenu > .mid > .up > .left, .buyShipMenu > .mid > .up > .right{
+    display: flex;
+    justify-content: center;
+    width: 10%;
+}
+
+.buyShipMenu > .mid > .up > .left > *, .buyShipMenu > .mid > .up > .right > *{
+    align-self: center;
+    font-size: 80px;
+    padding: 0px 20px;
+}
+
+.buyShipMenu > .mid > .up > .mid{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.buyShipMenu > .mid > .down{
+    display: flex;
+    height: 5%;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center
+}
+
+.buyShipMenu > .mid > .down > *{
+    margin: auto;
+}
+
+.buyShipMenu > .mid > .down > button{
+    width: 150px;
+}
+
+.buyShipMenu > .mid > .down > * *{
+    font-size: 20px;
+}
+
+.buyShipMenu > .down{
+    height: 40%;
+    overflow-y: auto;
+}
+
+.shipInfoBox{
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.shipInfoBox > *{
+    display: inline-flex;
+    flex-direction: column;
+    border: 2px solid white;
+    margin: 10px;
+}
+
+.shipInfoBox > * > *:not(:last-child){
+    border-bottom: 2px solid grey;
+}
+
+.shipInfoBox > * > *{
+    cursor: pointer;
+    padding: 0px 5px;
+}
+
+.shipInfoBox *{
+    font-size: 20px;
+}
+
+.buyForObject > .mid{
+    height: 100%;
+}
+
+.buyForObject > .mid > .up{
+    display: flex;
+    justify-content: space-around;
+}
+
+.buyForObject > .mid > .up > *{
+    align-self: center;
+}
+
+.buyForObject > .mid > .mid > .up{
+    display: flex;
+    height: 95%;
+    justify-content: center;
+}
+
+.buyForObject > .mid > .mid > .up > *{
+    border: 1px solid white;
+}
+
+.buyForObject > .mid > .mid > .up > .mid{
+    width: 100%;
+}
+
+.buyForObject > .mid > .mid > .down{
+    display: flex;
+    height: 5%;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    border-top: 2px solid white;
+    align-items: center;
+}
+
+.buyForObject > .mid > .mid > .down > *{
+    margin: auto;
+}
+
+.buyForObject > .mid > .mid > .down > button{
+    width: 150px;
+}
+
+.buyForObject > .mid > .mid > .down > * *{
+    font-size: 20px;
+}
+
+.buyForObject > .mid > .down{
+    display: flex;
+    flex-direction: column;
+    height: 45%;
+}
+
+.buyForObject > .mid > .down > *{
+    border: 1px solid white;
+}
+
+.buyForObject > .mid > .down > .up{
+    height: 10%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2.5px;
+}
+
+.buyForObject > .mid > .down > .up > button{
+    padding: 2.5px;
+}
+
+.shipInfoBox > * > *:hover{
+    border-bottom: 2px solid white;
+}
+
+.buyForObjectStore > *:hover{
+    border-bottom: 1px solid white;
+}
+
+
+
+
+
+
+
+.buyWeaponsMods {
+    width: 100%;
+    height: 100%;
+}
+
+.buyWeaponsMods > .left, .buyWeaponsMods > .right {
+    width: 10%;
+    height: 100%;
+    border: 1px solid white;
+    overflow-y: auto;
+}
+
+.buyWeaponsMods > .left > *, .buyWeaponsMods > .right > * {
+    display: flex;
+    width: 100%;
+    height: 100px;
+    border-bottom: 1px solid grey;
+    color: white;
+    cursor: pointer;
+    padding: 2px;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.buyWeaponsMods > .mid {
+    width: 90%;
+    height: 100%;
+}
+
+.buyWeaponsMods > .mid > .up {
+    display: flex;
+    width: 100%;
+    height: 10%;
+    justify-content: space-around;
+}
+
+.buyWeaponsMods > .mid > .mid {
+    width: 100%;
+    height: 50%;
+}
+
+.buyWeaponsMods > .mid > .mid > .up {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+}
+
+.buyWeaponsMods > .mid > .mid > .down {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 2px solid white;
+}
+
+.buyWeaponsMods > .mid > .mid > .down > button{
+    width: 150px;
+}
+
+.buyWeaponsMods > .mid > .down {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.buyWeaponsMods > .mid > .down > * {
+    border: 1px solid white;
+}
+
+.buyWeaponsMods > .mid > .down > .up{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.buyWeaponsMods > .mid > .down > .down{
+    width: 100%;
+    height: 90%;
+}
+
+.buyWeaponsMods > .mid > .down > .up > *{
+    border: 1px solid white;
+    padding: 2.5px 5px;
+}
+
+.buyWeaponsModsInfoBox {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.buyWeaponsModsInfoBox > * {
+    display: inline-flex;
+    flex-direction: column;
+    border: 2px solid white;
+    margin: 10px;
+}
+
+.buyWeaponsModsInfoBox > * > *:not(:last-child) {
+    border-bottom: 2px solid grey;
+}
+
+.buyWeaponsModsInfoBox > * > * {
+    cursor: pointer;
+    padding: 0px 5px;
+}
+
+.buyWeaponsModsInfoBox * {
+    font-size: 20px;
+}
+
+.buyWeaponsModsStore > *:hover {
+    border-bottom: 1px solid white;
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/permanentShop.css">
+    <link rel="stylesheet" href="../css/waveGame.css">
+
+    <link rel="stylesheet" href="../css/permanentShop/AISliderMenu.css">
+
+    <!-- GLOBAL -->
+    <script src="../js/globalFunctions.js"></script>
+    <script src="../js/globalVariables.js"></script>
+    <script src="../js/globalClass.js"></script>
+
+    <!-- CORE -->
+    <script type="module" src="../jsWaveGame/CORE/core.js"></script>
+
+    <title>Generic Game</title>
+</head>
+<body>
+
+    <div class="permanentShop" id="permanentShop">
+        <div class="mainShopMenu genericInterface" id="mainShopMenu">
+            <div class="up">
+                <button type="button" class="permanentShopButton" id="mainShopMenuAISliderMenuButton">AI Slider</button>
+                <h1 id="mainShopMenuDisplayPlayerCash">???????????????</h1>
+                <button type="button" class="permanentShopButton" id="mainShopMenuBuyModsButton">buy mods</button>
+                <button type="button" class="permanentShopButton" id="mainShopMenuBuyForObjectButton">buy for object</button>
+            </div>
+            <div class="mid" id="buyShipMenuObjects">
+                <div>
+                    <button type="button" class="permanentShopButton" style="font-size: 80px; padding: 7px;" id="addShipButton">ADD</button>
+                </div>
+            </div>
+            <div class="down">
+                <button type="button" class="permanentShopButton" id="saveButton">Save</button>
+                <button type="button" class="permanentShopButton" id="startGameButton">Start</button>
+                <button type="button" class="permanentShopButton" id="loadButton">Load</button>
+            </div>
+        </div>
+        <div class="buyShipMenu genericInterface" id="buyShipMenu" style="display: none;">
+            <div class="up">
+                <h1 id="buyShipNameCostDisplay">??????????? - ???????????</h1>
+            </div>
+            <div class="mid">
+                <div class="up">
+                    <div class="left">
+                        <button type="button" id="buyShipMenuLeftButton" class="permanentShopButton"><</button>
+                    </div>
+                    <div class="mid">
+                        <canvas id="buyShipDisplay" width="400" height="400">
+
+                        </canvas>
+                    </div>
+                    <div class="right">
+                        <button type="button" id="buyShipMenuRightButton" class="permanentShopButton">></button>
+                    </div>
+                </div>
+                <div class="down">
+                    <button type="button" id="backToMainMenuByBuyShipMenuButton" class="permanentShopButton" >Back</button>
+                    <div class="box">
+                        <span>Cash: </span><span id="buyShipMenuDisplayPlayerCash">1.000.000.000</span>
+                    </div>
+                    
+                    <button type="button" id="buyForObjectButton" class="permanentShopButton" >Buy</button>
+                </div>
+            </div>
+            <div class="down">
+                <div class="shipInfoBox" id="shipInfoBox"></div>
+            </div>
+        </div>
+        <div class="buyForObject dualLeftRightPanels" id="buyForObject" style="display: none;">
+            <div class="left buyForObjectStore" id="buyForObjectStore"></div>
+            <div class="mid genericInterface">
+                <div class="up">
+                    <h1 id="buyForObjectBuyTotalCostDisplay">??????????? - ???????????</h1>
+                    <h1 id="buyForObjectCostDisplay">??????????? - ???????????</h1>
+                    <h1 id="buyForObjectSellTotalCostDisplay">??????????? - ???????????</h1>
+                </div>
+                <div class="mid">
+                    <div class="up">
+                        <canvas id="buyForObjectDisplay" width="400" height="300">
+
+                        </canvas>
+                    </div>
+                    <div class="down">
+                        <button type="button" id="backToMainMenuByBuyForObjectButton" class="permanentShopButton" >Back</button>
+                    </div>
+                </div>
+                <div class="down">
+
+                    <div class="up">
+                        <button class="permanentShopButton" id="buyForObjectWeaponsButton" >Weapon</button>
+                        <button class="permanentShopButton" id="buyForObjectDefenseButton" >Defense</button>
+                        <button class="permanentShopButton" id="buyForObjectFactoryButton" >Factory</button>
+                        <button class="permanentShopButton" id="buyForObjectSpecialButton" >Special</button>
+                        <button class="permanentShopButton" id="buyForObjectStatsButton" >Stats</button>
+                        <button class="permanentShopButton" id="buyForObjectDefenseTypeButton" >DefenseTypes</button>
+                        <button class="permanentShopButton" id="buyForObjectAscensionsButton" >Ascensions</button>
+                        <button class="permanentShopButton" id="buyForObjectEffectsButton" >Effects</button>
+                        <button class="permanentShopButton" id="buyForObjectApplyEffectsButton" >Apply effects</button>
+                    </div>
+                    <div class="down shipInfoBox" id="buyForObjectShipInfoBox"></div>
+
+                </div>
+            </div>
+            <div class="right buyForObjectOwnership" id="buyForObjectOwnership">
+            </div>
+        </div>
+        <div class="AISliderMenu genericInterface" id="AISliderMenu" style="display: none;">
+            <div class="up">
+                <h1 id="AISliderMenuNameDisplay">??????????? - ???????????</h1>
+                <button type="button" id="AISliderMenuBackButton" class="permanentShopButton" >Back</button>
+            </div>
+            <div class="mid" id="AISliderMenuContent">
+            </div>
+            <div class="down" id="AISliderMenuOnOffContent">
+            </div>
+        </div>
+        <div class="buyWeaponsMods dualLeftRightPanels" id="buyWeaponsMods" style="display: none;">
+            <div class="left buyWeaponsModsStore" id="buyWeaponsModsStore"></div>
+            <div class="mid genericInterface">
+                <div class="up">
+                    <h1 id="buyWeaponsModsBuyTotalCostDisplay">???????????</h1>
+                    <h1 id="buyWeaponsModsCostDisplay">???????????</h1>
+                    <h1 id="buyWeaponsModsSellTotalCostDisplay">???????????</h1>
+                </div>
+                <div class="mid">
+                    <div class="up">
+                        <canvas id="buyWeaponsModsDisplay" width="400" height="300"></canvas>
+                    </div>
+                    <div class="down">
+                        <button type="button" id="backToMainMenuByBuyWeaponsModsButton" class="permanentShopButton">Back</button>
+                    </div>
+                </div>
+                <div class="down">
+                    <div class="up" id="buyWeaponsModsWeaponsBox">
+                        
+                    </div>
+                    <div class="down buyWeaponsModsInfoBox" id="buyWeaponsModsInfoBox"></div>
+                </div>
+            </div>
+            <div class="right buyWeaponsModsOwnership" id="buyWeaponsModsOwnership"></div>
+        </div>
+    </div>
+
+    <div class="waveShop" id="waveShop" style="display: none;">
+        <div class="up">
+            <div class="box">
+                <span>Current: </span><span id="currentWaveDisplay">0</span>
+            </div>
+            
+            <h1>SHOP</h1>
+
+            <div class="box">
+                <span>Best: </span><span id="bestWaveDisplay">0</span>
+            </div>
+        </div>
+        <div class="mid" id="activateBox"></div>
+        <div class="down">
+            <div>
+                <span>Cash: </span><span id="cash">0</span>
+            </div>
+            <button type="button" id="waveShopCloseButton">CLOSE</button>
+            <button type="button" id="waveShopEndButton">END</button>
+        </div>
+    </div>
+
+    <canvas id="mainCanvas" width="1500" height="750"></canvas>
+
+    <canvas id="offscreenCanvas" width="45000" height="500" style="display: none;"></canvas>
+
+</body>
+</html>
