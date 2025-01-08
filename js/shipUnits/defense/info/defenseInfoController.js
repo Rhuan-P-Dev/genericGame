@@ -18,6 +18,8 @@ import { ReflectShield1 } from "./defense/reflectShield1.js"
 import { TacticUpgrade1 } from "./defense/tacticUpgrade1.js"
 import { IronMind } from "./defense/ironMind.js"
 import { HealPulse1 } from "./defense/healPulse1.js"
+import { MinorDivineRevitalization } from "./defense/divineEnergy/minorDivineRevitalization.js"
+import { HealPulse2 } from "./defense/healPulse2.js"
 
 var ActivateInfo = ""
 
@@ -63,6 +65,8 @@ export class DefenseInfoController{
         /* suport */
 
         "heal pulse 1": HealPulse1,
+        "heal pulse 2": HealPulse2,
+        "minor divine revitalization": MinorDivineRevitalization
 
 
     }
