@@ -62,6 +62,20 @@ export class WeaponsModifiersController{
         }
     }
 
+    getRandomModifiers(modsCount) {
+        const modifierNames = Object.keys(this.modifiers);
+        const randomModifiers = []
+
+        for (let index = 0; index < modsCount; index++) {
+            const randomIndex = randomInteger(0, modifierNames.length-1)
+            const randomModifier = modifierNames[randomIndex]
+            randomModifiers.push(randomModifier)
+        }
+
+        return randomModifiers
+
+    }
+
     getAll(){
         return this.modifiers
     }
