@@ -155,8 +155,8 @@ export class ActivateController{
 
         this.primitiveAjustObject(master, object)
 
-        object.currentXVel *= activate.currentVelMult
-        object.currentYVel *= activate.currentVelMult
+        object.currentXVel *= activate.currentVelMult || 1
+        object.currentYVel *= activate.currentVelMult || 1
 
         if(
             activate.radian
