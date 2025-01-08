@@ -229,6 +229,13 @@ export class SpecialController{
 
     }
 
+    selfDelete(object, activate, config){
+
+        object.onDeath.run({
+            "object": object
+        })
+
+    }
 }
 
 var Special = new SpecialController()
