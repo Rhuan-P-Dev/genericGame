@@ -48,6 +48,14 @@ export class EnergizedIntermediary {
                 "life",
             )
 
+            Damage.addDamageOrder(
+                updateThis,
+                "corruption",
+                "maxEnergy",
+                "before",
+                "maxLife",
+            )
+
         }
 
     }

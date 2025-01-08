@@ -38,6 +38,9 @@ export class ShieldIntermediary {
         "self swarm",
         "agony",
         "surprise attack",
+        "laser",
+        "ink",
+        "snow"
     ]
 
     passBuildList = {
@@ -72,6 +75,16 @@ export class ShieldIntermediary {
             Damage.addDefense(updateThis, "shield", "fire", 2)
             Damage.addDefense(updateThis, "shield", "self swarm", 0.9)
             Damage.addDefense(updateThis, "shield", "self swarm production", 1000)
+            Damage.addDefense(updateThis, "shield", "laser", 0.05)
+            Damage.addDefense(updateThis, "shield", "snow", 1)
+
+            Damage.addDamageOrder(
+                updateThis,
+                "corruption",
+                "maxShield",
+                "before",
+                "maxLife",
+            )
 
         }
 
