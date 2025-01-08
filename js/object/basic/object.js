@@ -59,6 +59,14 @@ export class Object {
 
         Damage.addDamageOrder(this, "surprise attack", "life")
 
+        Damage.addDamageOrder(this, "laser", "life")
+
+        Damage.addDamageOrder(this, "ink", "life")
+
+        Damage.addDamageOrder(this, "snow", "life")
+
+        Damage.addDamageOrder(this, "corruption", "maxLife")
+
     }
 
     passBuildList = {
