@@ -6,4 +6,6 @@ const MID_RANGE = 400
 
 const VAST_RANGE = 900
 
+const OUTOFF_VISION_RANGE = 2500
+
 const MAX_RANGE = 20000
