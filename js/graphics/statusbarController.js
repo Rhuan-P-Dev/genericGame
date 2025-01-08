@@ -148,6 +148,47 @@ export class StatusbarController {
         }
     }
 
+    drawStar(x, y, size, color){
+        const starPoints = [
+            [x, y - size],
+            [x + size * Math.cos(Math.PI / 10), y - size * Math.sin(Math.PI / 10)],
+            [x + size * Math.cos(3 * Math.PI / 10), y + size * Math.sin(3 * Math.PI / 10)],
+            [x + size * Math.cos(7 * Math.PI / 10), y + size * Math.sin(7 * Math.PI / 10)],
+            [x + size * Math.cos(9 * Math.PI / 10), y - size * Math.sin(9 * Math.PI / 10)],
+            [x, y - size],
+            [x - size * Math.cos(9 * Math.PI / 10), y - size * Math.sin(9 * Math.PI / 10)],
+            [x - size * Math.cos(7 * Math.PI / 10), y + size * Math.sin(7 * Math.PI / 10)],
+            [x - size * Math.cos(3 * Math.PI / 10), y + size * Math.sin(3 * Math.PI / 10)],
+            [x - size * Math.cos(Math.PI / 10), y - size * Math.sin(Math.PI / 10)],
+        ]
+
+        // Draw the star border
+        ScreenRender.addDrawRequest(
+            {
+                "func": ScreenRender.drawLine,
+                "params": {
+                    "positions": starPoints,
+                    "color": "black",
+                    "lineWidth": 2,
+                    "fill": false,
+                }
+            }
+        )
+
+        // Draw the star fill
+        ScreenRender.addDrawRequest(
+            {
+                "func": ScreenRender.drawLine,
+                "params": {
+                    "positions": starPoints,
+                    "color": color,
+                    "lineWidth": 2,
+                    "fill": true,
+                }
+            }
+        )
+    
+    }
 }
 
 var Statusbar = new StatusbarController()
