@@ -15,12 +15,23 @@ import { SmallBulletProjetile } from "../../object/projectiles/complex/smallBull
 import { MissileProjetile } from "../../object/projectiles/complex/missileProjectile.js"
 import { BlackHoleProjetile } from "../../object/projectiles/complex/blackHoleProjectile.js"
 import { MineProjetile } from "../../object/projectiles/complex/mineProjectile.js"
-import { MediumBulletProjetiles } from "../../object/projectiles/complex/mediumBulletProjectile.js"
 import { MiniWorldProjectile } from "../../object/projectiles/complex/miniWorldProjectile.js"
 import { ExplosiveSmallBulletProjetile } from "../../object/projectiles/complex/explosiveSmallBulletProjectile.js"
 import { ExplosiveMediumBulletProjectile } from "../../object/projectiles/complex/explosiveMediumBulletProjectile.js"
 import { DeathHand } from "../../object/projectiles/complex/deathHand.js"
 import { EmptyColorProjetile } from "../../object/projectiles/complex/emptyColorProjectile.js"
+import { LaserProjectile } from "../../object/projectiles/complex/laser/laserProjectile.js"
+import { BigLaserProjectile } from "../../object/projectiles/complex/laser/bigLaserProjectile.js"
+import { BoneProjectile } from "../../object/projectiles/complex/boneProjectile.js"
+import { DeathLaserProjectile } from "../../object/projectiles/complex/laser/deathLaserProjectile.js"
+import { BigDeathLaserProjectile } from "../../object/projectiles/complex/laser/bigDeathLaserProjectile.js"
+import { InkDropProjectile } from "../../object/projectiles/complex/inkDropProjectile.js"
+import { InkLaserProjectile } from "../../object/projectiles/complex/laser/inkLaserProjectile.js"
+import { SmallSnowBulletProjectile } from "../../object/projectiles/complex/smallSnowBulletProjectile.js"
+import { MediumBulletProjetiles } from "../../object/projectiles/complex/mediumBulletProjectile.js"
+import { MediumSnowBulletProjetiles } from "../../object/projectiles/complex/mediumSnowBulletProjectile.js"
+import { GuidedLaserProjectile } from "../../object/projectiles/complex/laser/guidedLaserProjectile.js"
+import { BigGuidedLaserProjectile } from "../../object/projectiles/complex/laser/bigGuidedLaserProjectile.js"
 
 var Activate = ""
 var Effects = ""
@@ -244,7 +255,18 @@ export class WeaponsController{
         "explosive small bullet": ExplosiveSmallBulletProjetile,
         "explosive medium bullet": ExplosiveMediumBulletProjectile,
         "death's hand": DeathHand,
-        "empty color": EmptyColorProjetile
+        "empty color": EmptyColorProjetile,
+        "laser": LaserProjectile,
+        "big laser": BigLaserProjectile,
+        "bone": BoneProjectile,
+        "death laser": DeathLaserProjectile,
+        "big death laser": BigDeathLaserProjectile,
+        "ink drop": InkDropProjectile,
+        "ink laser": InkLaserProjectile,
+        "small snow bullet": SmallSnowBulletProjectile,
+        "medium snow bullet": MediumSnowBulletProjetiles,
+        "guided laser": GuidedLaserProjectile,
+        "big guided laser": BigGuidedLaserProjectile,
 
     }
 
