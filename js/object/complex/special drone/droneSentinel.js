@@ -1,8 +1,7 @@
 import { InheritController } from "../../../generalUtils/inherit.js"
-import { SelfSwarmObject } from "../../uncommon/selfSwarmObject.js"
 import { DroneV2 } from "../droneV2.js"
 
-export class SelfSwarmDrone{
+export class DroneSentinel{
 
     constructor(build = false){
 
@@ -10,22 +9,24 @@ export class SelfSwarmDrone{
             this,
             [
                 DroneV2,
-                SelfSwarmObject
             ],
             build
         )
 
-        this.graphicID = "self swarm drone"
+        this.graphicID = "drone sentinel - upscale"
 
-        this.priority += 1
+        this.priority += 3
 
-        this.defense *= 5
+        this.defense *= 6
 
-        this.vel *= 1.25
-        this.maxVel *= 1.25
+        this.energy *= 2
+        this.maxEnergy *= 2
+        this.energyRegen *= 1.1
+
+        this.vel *= 1.5
         this.rotationVel *= 1.5
 
-        this.lifeRegen = -4/60
+        this.lifeRegen = -1/60
 
     }
 
