@@ -189,6 +189,24 @@ export class StatusbarController {
         )
     
     }
+
+    renderText(object, stat, position, color) {
+        const text = `LV ${stat}`
+        const x = object.x
+        const y = object.y - (object.height * 2) * position
+        ScreenRender.addDrawRequest({
+            "func": ScreenRender.writeText,
+            "params": {
+                "text": text,
+                "x": x,
+                "y": y,
+                "color": color,
+                "fontSize": 12, // Adjust as needed
+                "align": "center",
+            }
+        })
+    }
+
 }
 
 var Statusbar = new StatusbarController()
