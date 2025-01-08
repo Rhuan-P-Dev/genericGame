@@ -328,7 +328,13 @@ export class DefenseController{
 
             let otherObject = closestAlliesObjects[objectName]
 
-            otherObject.life.math("+", config.heal)
+            for (let index = 0; index < config.stats.length; index++) {
+
+                const stat = config.stats[index]
+
+                typeof object[stat] == "number" ? otherObject[stat] += config.heal : otherObject[stat].math("+", config.heal)
+
+            }
 
         }
 
