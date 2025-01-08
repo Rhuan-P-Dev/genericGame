@@ -119,9 +119,19 @@ export class WeaponsInfoController{
         let auto = this.checkAutoWeapon(weaponName)
         weaponName = this.fixWeaponName(weaponName)
 
-        let weapon = this.weapons[weaponName]
+        const isModed = weaponName.split("|")[1]
 
-        if(!weapon){return undefined}
+        if(isModed){
+            var weapon = this.weapons[weaponName.split("|")[0]]
+        }else{
+            var weapon = this.weapons[weaponName]
+        }
+
+        if(
+            !weapon
+            &&
+            !isModed
+        ){return undefined}
 
         weapon = ActivateInfo.preBuild(new weapon(true))
 
@@ -137,6 +147,11 @@ export class WeaponsInfoController{
                 GameState.addObject(weapon, true, false, false, false, false, false)
             }
 
+        }
+
+        if(isModed){
+            const mods = weaponName.split("|").slice(1)
+            this.addMods(weapon, mods)
         }
 
         if(weapon.build){
