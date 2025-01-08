@@ -52,6 +52,13 @@ export class CloneObjectController {
         "lastAttacker": () => {},
         "AIVarsStorage": () => {},
         "coreType": () => {},
+        "markedEnemys": () => {},
+        "damageOrderList": () => {},
+        "deathTransitions": () => {},
+        "preLaserObserver": () => {},
+        "posLaserObserver": () => {},
+        "halfingStats": () => {},
+        "addActivatesPromises": () => {},
     }
 
     clone(object){
