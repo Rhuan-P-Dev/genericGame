@@ -194,25 +194,48 @@ export class ComplexRenderController {
 
     }
 
-    useComplexFormat(object){
+    useComplexFormat(
+        object,
+        targetScreen = ScreenRender.mainCanvasContext
+    ){
 
-        ScreenRender.resetCanvas()
+        // hacky
+        if(targetScreen.canvas.id === ScreenRender.mainCanvasContext.canvas.id){
+            var isNormal = true
+        }
+
+        ScreenRender.resetCanvas(
+            targetScreen
+        )
 
         let objectOffset = Offscreen.getObjectXY(object)
 
-        let focus = ScreenRender.shiftFocus(
-            ScreenRender.getCanvasXYofFocusObject(
-                ScreenRender.mainCanvasContext
-            ),
-            object,
-        )
+        if(isNormal){
+            var focus = ScreenRender.shiftFocus(
+                ScreenRender.getCanvasXYofFocusObject(
+                    targetScreen
+                ),
+                object,
+            )
+        }else{
+            var focus = ScreenRender.shiftFocus(
+                ScreenRender.getCanvasXYofFocusObject(
+                    targetScreen,
+                    object,
+                ),
+                object,
+            )
+        }
 
         ScreenRender.setCanvasState(
             focus,
             object.radian,
+            undefined,
+            undefined,
+            targetScreen
         )
 
-        ScreenRender.mainCanvasContext.drawImage(
+        targetScreen.drawImage(
             ScreenRender.offscreenCanvas,
             objectOffset.x - Offscreen.width / 2,
             objectOffset.y - Offscreen.height / 2,
