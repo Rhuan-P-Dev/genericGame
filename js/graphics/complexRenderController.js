@@ -228,6 +228,7 @@ export class ComplexRenderController {
 
     renderComplexFormat(
         object,
+        targetScreen = ScreenRender.mainCanvasContext,
     ){
 
         if(
@@ -284,7 +285,7 @@ export class ComplexRenderController {
 
         }
 
-        this.useComplexFormat(object)
+        this.useComplexFormat(object, targetScreen)
 
     }
 
