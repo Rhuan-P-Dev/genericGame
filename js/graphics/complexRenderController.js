@@ -275,7 +275,7 @@ export class ComplexRenderController {
                         "x": Offscreen.getOffsetX() + (params.offset.x * this.getObjectScale(object)),
                         "y": Offscreen.getOffsetY() + (params.offset.y * this.getObjectScale(object))
                     },
-                    0,
+                    params.rotation,
                     params.canvasScale,
                     params.canvasScale,
                     ScreenRender.offscreenCanvasContext
