@@ -104,7 +104,7 @@ export class ComplexShapesDatabaseController {
     applyParams(object, params){
     
         object.params.canvasScale += params.canvasScale
-        object.params.rotation = params.rotation
+        object.params.rotation += params.rotation
         object.params.offset = {}
         object.params.offset.x = params.offset.x
         object.params.offset.y = params.offset.y
