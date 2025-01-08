@@ -234,6 +234,22 @@ export class WeaponsModifiersController{
 
     }
 
+    booster(output, modifier, config, node){
+
+        for (let index = 0; index < output.length; index++) {
+
+            if(
+                output[index].object[modifier.stat] !== undefined
+            ){
+                output[index].object[modifier.stat] *= modifier.mult
+            }
+
+        }
+
+        return output
+
+    }
+
     spread(output, modifier, config, node){
 
         for (let index = 0; index < output.length; index++) {
