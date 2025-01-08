@@ -16,6 +16,9 @@ import { Swarm } from "./modifiers/swarm.js"
 import { Widen } from "./modifiers/widen.js"
 import { ModDistortion } from "./modifiers/modBased/modDistortion.js"
 import { MidWiden } from "./modifiers/midWiden.js"
+import { LittleMore } from "./modifiers/littleMore.js"
+import { LittleDamageBoost } from "./modifiers/littleDamageBoost.js"
+import { ModLittleCostEfficiency } from "./modifiers/modBased/modLittleCostEfficiency.js"
 
 var Weapons = ""
 var cloneObject = ""
@@ -49,8 +52,11 @@ export class WeaponsModifiersController{
         "barrier": Barrier,
         "shadow barrier": ShadowBarrier,
         "swarm": Swarm,
+        "little more": LittleMore,
+        "little damage boost": LittleDamageBoost,
 
         //"dice": ModDice,
+        "mod little cost efficiency": ModLittleCostEfficiency
     }
 
     get(modifierName, build = false){
