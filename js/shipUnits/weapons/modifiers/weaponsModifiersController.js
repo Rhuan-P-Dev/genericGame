@@ -80,8 +80,14 @@ export class WeaponsModifiersController{
         return this.modifiers
     }
 
-    getMult(modifier){
-        return modifier.costMult
+    getMults(modifiers, build = false){
+        let result = 0
+
+        modifiers.forEach(modifier => {
+            result += this.getMult(modifier, build)
+        })
+
+        return result
     }
 
     build(modifierName){
