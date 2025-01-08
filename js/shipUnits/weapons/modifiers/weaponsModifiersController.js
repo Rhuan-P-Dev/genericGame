@@ -50,7 +50,7 @@ export class WeaponsModifiersController{
         "shadow barrier": ShadowBarrier,
         "swarm": Swarm,
 
-        "dice": ModDice,
+        //"dice": ModDice,
     }
 
     get(modifierName, build = false){
