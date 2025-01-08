@@ -208,14 +208,14 @@ export class WeaponsInfoController{
         )
 
         weapon.cost *= 0.5
-        weapon.rotationVel *= 1.75
+        weapon.rotationVel *= 2
 
         weapon.reload *= 1.5
         weapon.lifeTime *= 0.75
         weapon.range *= 0.5
 
         if(weapon.distance !== undefined){
-            weapon.distance *= 0.5
+            weapon.distance *= 0.75
         }
 
         if(weapon.config.weapon){
