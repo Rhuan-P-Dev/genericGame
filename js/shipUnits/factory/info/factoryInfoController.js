@@ -28,7 +28,21 @@ import { Upgrader2 } from "./factory/upgrader2.js"
 import { Upgrader3 } from "./factory/upgrader3.js"
 import { SelfSwarmMelee } from "./factory/selfSwarmMelee.js"
 import { SelfSwarmSniper } from "./factory/selfSwarmSniper.js"
-
+import { SummonSeniorSoldier } from "./factory/divineEnergy/summonSeniorSoldier.js"
+import { SummonShip } from "./factory/divineEnergy/summonShip.js"
+import { SummonHolyGeneral } from "./factory/divineEnergy/summonHolyGeneral.js"
+import { FastLaserSentinel } from "./factory/fastLaserSentinel.js"
+import { BigLaserSentinel } from "./factory/bigLaserSentinel.js"
+import { GovernmentAgent1 } from "./factory/governmentAgent1.js"
+import { GovernmentAgent2 } from "./factory/governmentAgent2.js"
+import { GovernmentAgent3 } from "./factory/governmentAgent3.js"
+import { GovernmentAgent5 } from "./factory/governmentAgent5.js"
+import { GovernmentAgent4 } from "./factory/governmentAgent4.js"
+import { CallChessBishop } from "./factory/royaltyPoints/callChessBishop.js"
+import { CallChessHorse } from "./factory/royaltyPoints/callChessHorse.js"
+import { CallChessTower } from "./factory/royaltyPoints/callChessTower.js"
+import { CallChessPawn } from "./factory/royaltyPoints/callChessPawn.js"
+import { FactoryShip } from "./factory/factoryShip.js"
 
 var ActivateInfo = ""
 
@@ -63,7 +77,6 @@ export class FactoryInfoController{
         "mini yourself 1": MiniYourself1, // imcompleto
 
 
-        
         "upgrader 1": Upgrader1,
         "upgrader 2": Upgrader2,
         "upgrader 3": Upgrader3,
@@ -85,6 +98,30 @@ export class FactoryInfoController{
 
         "self swarm melee": SelfSwarmMelee,
         "self swarm sniper": SelfSwarmSniper,
+
+        "fast laser sentinel": FastLaserSentinel,
+        "big laser sentinel": BigLaserSentinel,
+
+        "factory ship": FactoryShip,
+
+        // GovernmentAgent
+        "government agent 1": GovernmentAgent1,
+        "government agent 2": GovernmentAgent2,
+        "government agent 3": GovernmentAgent3,
+        "government agent 4": GovernmentAgent4,
+        "government agent 5": GovernmentAgent5,
+
+        //royaltyPoints
+        "call chess pawn": CallChessPawn,
+        "call chess tower": CallChessTower,
+        "call chess horse": CallChessHorse,
+        "call chess bishop": CallChessBishop,
+
+        //divineEnergy
+        "summon senior soldier": SummonSeniorSoldier,
+        "summon ship": SummonShip,
+        "summon holy general": SummonHolyGeneral,
+
     }
 
     getAll(){
