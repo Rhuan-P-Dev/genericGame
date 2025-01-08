@@ -90,7 +90,7 @@ export class ScreenRenderController {
     defaultColor = "black"
     defaultLineWidth = 1
 
-    focusObjectVisionRange = 750
+    focusObjectVisionRange = 800
 
     constructor(){
 
