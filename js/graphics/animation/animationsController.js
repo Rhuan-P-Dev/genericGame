@@ -171,6 +171,8 @@ export class AnimationsController {
 
             if(!promise){
 
+                if(!GameState.getObject(object.ID)){return}
+
                 let animationConfig = animations[index].animationConfig
                 let loopConfig = animations[index].loopConfig
                 let runTimeBuild = animations[index].runTimeBuild
