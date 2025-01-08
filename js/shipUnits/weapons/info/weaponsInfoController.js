@@ -151,6 +151,13 @@ export class WeaponsInfoController{
 
     }
 
+    addMods(weapon, mods){
+        if(!weapon.modifiersList){return}
+        for(let mod of mods){
+            weapon.modifiersList.push(mod)
+        }
+    }
+
     buildAll(addOnGame = true){
 
         let weapons = []
