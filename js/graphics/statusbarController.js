@@ -135,6 +135,19 @@ export class StatusbarController {
 
     }
 
+    renderStars(object, stat, position, color){
+        const starSize = 4
+        const spacing = 15
+        const startX = object.x - 25
+        const startY = object.y - (object.height*2) * position
+
+        for (let i = 0; i < stat; i++) {
+            const x = startX + i * spacing
+            const y = startY
+            this.drawStar(x, y, starSize, color)
+        }
+    }
+
 }
 
 var Statusbar = new StatusbarController()
