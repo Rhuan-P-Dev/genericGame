@@ -28,7 +28,11 @@ class DrawRequestLinkedList extends LinkedList{
         while(1){
             if(!node.next){return}
 
-            if(this.checkInFocusVision(node.value.params)){
+            if(
+                this.checkInFocusVision(node.value.params)
+                ||
+                node.value.params.IGORE_IN_FOCUS
+            ){
 
                 node.value.func(node.value.params)
 
