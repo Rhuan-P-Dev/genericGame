@@ -62,8 +62,6 @@ function CreateGuidedLaserProjectile(params){
     newLaser.owner = params.object.owner
     newLaser.damageTypes = params.object.damageTypes
 
-    console.log(params.object)
-
     Activate.addObject(newLaser)
 
         const target = AIUtils.getClosestObjectOfTeams(
