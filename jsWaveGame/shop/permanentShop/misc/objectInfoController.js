@@ -186,6 +186,7 @@ export class ObjectInfoController {
     get(){
         this.delete()
         let object = new (this.curretObject)(true)
+        object.ID = "INFO OBJECT"
         GameState.addObject(object, false, false, false, false, false, false)
         this.set(object)
         Frame.update()
