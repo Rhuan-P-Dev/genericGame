@@ -189,16 +189,16 @@ export class WeaponsController{
 
         tempEffect.params.object = minimalObject
 
-        Effects.linkOwnerToEffect(
-            tempEffect.params,
-            object
-        )
-
         Effects.add(
             tempEffect.config.name,
             tempEffect.config.type,
             tempEffect.params,
             tempEffect.config
+        )
+
+        Effects.linkOwnerToEffect(
+            tempEffect.params,
+            object,
         )
 
         Weapons.deactivateEffect(minimalObject, (tempEffect.dellObjectTimer || 1) + 1)
