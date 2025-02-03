@@ -35,12 +35,10 @@ export class RoyaltyPrivileges {
 
         "add_RoyaltyPrivileges": (updateThis) => {
 
-            setFrameOut(
-                () => {
-
-                    ObjectActivates.giveActivate(updateThis, "factory", "call chess pawn")
-
-                },1
+            updateThis.addActivatesPromises.push(
+                (object) => {
+                    ObjectActivates.giveActivate(object, "factory", "call chess pawn")
+                }
             )
 
             Effects.add(
