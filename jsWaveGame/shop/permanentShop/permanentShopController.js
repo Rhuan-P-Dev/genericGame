@@ -48,8 +48,19 @@ var isOpen = true
 var playerID = false
 
 var playerData = {
-    "spawnPlayerObjects": {},
-    "customActivatesForPlayerObjects": {},
+    "spawnPlayerObjects": {
+        "ID710148133797322": "Ship"
+      },
+      "customActivatesForPlayerObjects": {
+        "ID710148133797322": {
+          "weapon": [
+            "piston 1",
+          ],
+          "defense": [
+            "regen"
+          ]
+        }
+      },
     "upgradeStats": {},
     "upgradeDefenseType": {},
     "ascensions": {},
@@ -59,7 +70,7 @@ var playerData = {
     "AITypeState": {},
     "weaponMod": {},
     "bestWave": 0,
-    "playerCash": 60000
+    "playerCash": 0
 }
 
 export class PermanentShopController {
