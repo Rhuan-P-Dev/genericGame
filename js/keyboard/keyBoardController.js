@@ -28,6 +28,8 @@ var arbitraryKeysSequence = {
    "c":"v",
 }
 
+const firstKeySequence = "a"
+
 export class KeyBoardController {
 
     HTML = document.querySelector("html")
@@ -161,6 +163,22 @@ export class KeyBoardController {
             })
 
         }
+
+    }
+
+    getKey() {
+
+        var returnKey = firstKeySequence
+
+        while(returnKey){
+
+            if(!keyBoardFunctions[returnKey]){break}
+
+            returnKey = arbitraryKeysSequence[returnKey]
+
+        }
+
+        return returnKey
 
     }
 

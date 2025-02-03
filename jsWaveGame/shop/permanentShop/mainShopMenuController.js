@@ -89,6 +89,17 @@ export class MainShopMenuController {
 
         this.addPlayerObjectsInit()
 
+
+    }
+
+    selectFirstObject() {
+        let objectsNodes = this.buyShipMenuObjects.childNodes
+        if (objectsNodes.length >= 3) {
+            let firstObject = objectsNodes[2]
+            if (firstObject.hasAttribute("unitid")) {
+                this.handleBuyShipMenuObjectsClick(firstObject.childNodes[0])
+            }
+        }
     }
 
     addPlayerObjectsInit(){
