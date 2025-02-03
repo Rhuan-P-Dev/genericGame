@@ -161,6 +161,8 @@ function browseInit(){
     PermanentShop.init()
     BuyWeaponsMods.init()
 
+    MainShopMenu.selectFirstObject()
+
 }
 
 // CLONE PARA CASETE GOJO SPECIAL - DEJKGFH54870YFUJSDRGHFERYREHGUY???
