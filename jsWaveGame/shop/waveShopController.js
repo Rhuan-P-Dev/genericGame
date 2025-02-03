@@ -563,8 +563,14 @@ export class WaveShopController {
                     activate.price *= mult
                 }
 
+                let activateFinalName = activate.name
+
+                if(!activateFinalName.includes("auto")){
+                    activateFinalName += " - ["+ KeyBoard.getKey() +"]"
+                }
+
                 this.createShopClickBlock(
-                    activate.name,
+                    activateFinalName,
                     type,
                     (params) => {
                         const activate = ObjectActivates.giveActivate(
