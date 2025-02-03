@@ -127,7 +127,30 @@ onInit(function(){
 
 })
 
+function resizeCanvas(canvas) {
+    // Get the screen width
+    const screenWidth = window.innerWidth;
+    
+    // Calculate the ratio
+    const ratio = screenWidth / 1600;
+    
+    // Apply the ratio to the canvas dimensions
+    canvas.width = canvas.width * ratio;
+    canvas.height = canvas.height * ratio;
+    
+    // If the canvas has a context, adjust the scale
+    if (canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+            ctx.scale(ratio, ratio);
+        }
+    }
+}
+
+
 function browseInit(){
+
+    resizeCanvas(document.getElementById("mainCanvas"))
 
     KeyBoard.addTriggers()
     WaveShop.init()
