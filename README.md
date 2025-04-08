@@ -6,8 +6,8 @@
 
 # Dev Tools
 
-- [genericGraphicMaker](https://github.com/rhuan-p-dev/genericGraphicMaker)
-- [priorityVisualizer](https://rhuan-p-dev.github.io/genericGame/html/priorityVisualizer.html)
+- [GenericGraphicMaker](https://github.com/rhuan-p-dev/genericGraphicMaker)
+- [PriorityVisualizer](https://rhuan-p-dev.github.io/genericGame/html/priorityVisualizer.html)
 - [WeaponScoreVisualizer](https://rhuan-p-dev.github.io/genericGame/html/weaponScoreVisualizer.html)
 
 # Credits
